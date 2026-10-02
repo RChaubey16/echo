@@ -3,6 +3,7 @@ import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { redirect } from "next/navigation";
+import { cache } from "react";
 import { db } from "@/server/db";
 import { AppError } from "@/server/http";
 
@@ -29,16 +30,19 @@ export type SessionUser = {
 };
 
 /**
- * Reads the signed-in user from the database session.
+ * Reads the signed-in user from the database session, once per request.
+ *
+ * Wrapped in React.cache() so layouts, pages and helpers that all ask for the user share a single
+ * session lookup within one server render (vercel-react-best-practices: server-cache-react).
  *
  * @returns The signed-in user, or null when there is no valid session.
  */
-export async function getSessionUser(): Promise<SessionUser | null> {
+export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
   const session = await auth();
   const user = session?.user;
   if (!user?.id || !user.email) return null;
   return { id: user.id, email: user.email, name: user.name ?? null, image: user.image ?? null };
-}
+});
 
 /**
  * Returns the signed-in user for a route handler, or throws UNAUTHORIZED.

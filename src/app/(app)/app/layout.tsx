@@ -12,8 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default async function AppLayout({ children }: { children: ReactNode }) {
-  const user = await requireUserPage();
-  const collapsed = isSidebarCollapsed((await cookies()).get(SIDEBAR_COOKIE)?.value);
+  // Independent: the session lookup and the cookie read run concurrently.
+  const [user, cookieStore] = await Promise.all([requireUserPage(), cookies()]);
+  const collapsed = isSidebarCollapsed(cookieStore.get(SIDEBAR_COOKIE)?.value);
 
   return (
     <div className="bg-surface-soft text-ink">
