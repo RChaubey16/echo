@@ -1,0 +1,36 @@
+# Secrets: never commit env files (the template .env.example is the exception)
+.env
+.env.*
+!.env.example
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# testing
+/coverage
+/test-results/
+/playwright-report/
+/playwright/.cache/
+/tests/e2e/.auth/
+
+# next.js
+/.next/
+/out/
+/build
+
+# misc
+.DS_Store
+*.pem
+npm-debug.log*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# python (design-system scripts)
+__pycache__/

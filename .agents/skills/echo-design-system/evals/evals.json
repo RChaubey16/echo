@@ -1,0 +1,23 @@
+{
+  "skill_name": "echo-design-system",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Build the QuoteCard component for the library page. It should show the quote, author/source, a favorite heart I can toggle, tags, and when it was saved. Put it in src/components/echo/.",
+      "expected_output": "A QuoteCard (and QuoteText/FavoriteButton if missing) built only from DESIGN.md tokens. It uses the stretched-link card pattern, an optimistic aria-pressed heart in Lagoon, line-clamped quote, attribution omitted when empty, a <time> element, and hover/focus/reduced-motion states, followed by a validation note.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "the home page needs the Today's Echo section with an 'echo me something' button that swaps in a random quote. make it feel nice but not over the top",
+      "expected_output": "A TodaysEcho section as the screen's single loud moment. The swap is a cross-fade using motion tokens, keeps the container's minimum height, announces through aria-live, has a reduced-motion fallback and a pill button. It adds no feed patterns and no animation libraries.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "On my phone the Add Echo form is annoying - the save button is way down below all the optional fields and the keyboard covers it. Can you fix the mobile layout of the form?",
+      "expected_output": "The EchoForm becomes mobile-first, with optional fields behind a 'More details' disclosure and a sticky bottom action bar with safe-area padding. Inputs are 16px, labels are visible, and Cmd/Ctrl+Enter submits. Validation is described at 320 and 375px.",
+      "files": []
+    }
+  ]
+}
