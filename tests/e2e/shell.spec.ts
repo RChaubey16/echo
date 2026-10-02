@@ -72,6 +72,22 @@ test.describe("signed in", () => {
   });
 });
 
+test.describe("tablet", () => {
+  test.use({ viewport: { width: 744, height: 900 } });
+
+  test("the rail shows labelled icons and a single Add Echo orb", async ({ page }) => {
+    await page.goto("/app");
+    const sidebar = page.getByRole("complementary", { name: "Sidebar" });
+    await expect(sidebar).toHaveCSS("width", "96px");
+    await expect(
+      sidebar.getByRole("link", { name: "Add Echo" }).filter({ visible: true }),
+    ).toHaveCount(1);
+    await expect(sidebar.getByRole("searchbox")).toBeHidden();
+    await expect(sidebar.getByRole("link", { name: "Search", exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Collapse sidebar" })).toBeHidden();
+  });
+});
+
 test.describe("mobile", () => {
   test.use({ viewport: { width: 375, height: 812 } });
 

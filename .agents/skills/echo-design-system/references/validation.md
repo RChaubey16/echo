@@ -7,7 +7,7 @@ Run these checks before calling UI work done. They are ordered from cheapest to 
 Run from the project root:
 
 ```bash
-npm run typecheck && npm run lint
+pnpm typecheck && pnpm lint
 python3 .agents/skills/echo-design-system/scripts/audit_ui.py src        # design drift + a11y slips
 python3 .agents/skills/echo-design-system/scripts/contrast.py            # only if you touched tokens or color pairs
 python3 .agents/skills/echo-design-system/scripts/contrast.py --theme dark
@@ -28,7 +28,7 @@ Check the long-content cases explicitly. They are the most common way Echo cards
 
 ## 3. Run it and look (when the app can run)
 
-Use the project's `run` skill, or `npm run dev`, then look at the change at these widths: **320, 375, 744, 1128 and 1440px**. With Playwright available, a quick script does all five:
+Use the project's `run` skill, or `pnpm dev`, then look at the change at these widths: **320, 375, 744, 1128 and 1440px**. With Playwright available, a quick script does all five:
 
 ```ts
 // scratch script, not committed

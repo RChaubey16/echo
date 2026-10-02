@@ -28,7 +28,6 @@ const ITEM = [
 ].join(" ");
 
 const SHOW_EXPANDED = `hidden desktop:group-data-[expanded=true]/side:block`;
-const SHOW_FLEX_EXPANDED = `hidden desktop:group-data-[expanded=true]/side:flex`;
 const SHOW_RAIL = `desktop:group-data-[expanded=true]/side:hidden`;
 
 /**
@@ -94,14 +93,17 @@ export function AppSidebar({ collapsed, onCollapsedChange, user }: AppSidebarPro
       </div>
 
       <div className="flex min-h-0 flex-1 [scrollbar-width:thin] flex-col gap-6 overflow-x-hidden overflow-y-auto px-3 pt-2 pb-4 [&>*]:shrink-0">
-        <Link
-          href={ADD_ECHO_HREF}
-          aria-keyshortcuts="n"
-          className={buttonClasses("primary", `${SHOW_FLEX_EXPANDED} w-full`)}
-        >
-          <PlusIcon className="h-5 w-5 shrink-0" />
-          <span>Add Echo</span>
-        </Link>
+        {/* The wrapper owns visibility: `hidden` on the link itself loses to the button's inline-flex. */}
+        <div className={SHOW_EXPANDED}>
+          <Link
+            href={ADD_ECHO_HREF}
+            aria-keyshortcuts="n"
+            className={buttonClasses("primary", "w-full")}
+          >
+            <PlusIcon className="h-5 w-5 shrink-0" />
+            <span>Add Echo</span>
+          </Link>
+        </div>
         <Link
           href={ADD_ECHO_HREF}
           aria-label="Add Echo"

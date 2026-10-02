@@ -4,6 +4,8 @@
 
 Private personal quote & reflection web app. Spec: `docs/echo-techincal-prod-spec.md`. Build plan: `docs/development/` (start with `README.md`).
 
+Package manager: **pnpm** (never npm or yarn).
+
 Stack: Next.js (App Router) + Route Handlers, TypeScript strict, Prisma, Postgres on Supabase (DB only), Auth.js with Google OAuth only, Tailwind, Zod, Vitest, Playwright.
 
 ## Rules

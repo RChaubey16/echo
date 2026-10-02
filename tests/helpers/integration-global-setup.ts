@@ -9,7 +9,7 @@ import { testDatabaseUrl } from "./test-db.mts";
  */
 export default async function setup(): Promise<void> {
   const url = testDatabaseUrl();
-  execSync("npx prisma migrate deploy", {
+  execSync("pnpm exec prisma migrate deploy", {
     stdio: "pipe",
     env: { ...process.env, DATABASE_URL: url, DIRECT_URL: url },
   });

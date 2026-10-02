@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # CI never talks to echo-prod. These are throwaway values for the local service container.
+  DATABASE_URL: postgresql://echo:echo@localhost:5432/echo
+  DIRECT_URL: postgresql://echo:echo@localhost:5432/echo
+  TEST_DATABASE_URL: postgresql://echo:echo@localhost:5432/echo_test
+  AUTH_SECRET: ci-only-secret-not-used-anywhere-else-000
+  AUTH_GOOGLE_ID: ci-google-id
+  AUTH_GOOGLE_SECRET: ci-google-secret
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: echo
+          POSTGRES_PASSWORD: echo
+          POSTGRES_DB: echo_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U echo -d echo_test"
+          --health-interval 2s
+          --health-timeout 5s
+          --health-retries 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm format:check
+      - name: Design-system audit
+        run: pnpm audit:ui
+      - name: Unit tests
+        run: pnpm test:unit
+      - name: Integration tests
+        run: pnpm test:integration
+      - run: pnpm build
+      - name: Install Playwright browser
+        run: pnpm exec playwright install --with-deps chromium
+      - name: E2E tests
+        run: pnpm test:e2e
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

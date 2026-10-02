@@ -1,0 +1,34 @@
+name: Migrate production
+
+# The only place migrations reach echo-prod. Never runs from a PR or a Preview build.
+on:
+  push:
+    branches: [main]
+    paths: ["prisma/migrations/**", "prisma/schema.prisma"]
+  workflow_dispatch:
+
+concurrency:
+  group: migrate-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: production
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: prisma migrate deploy
+        run: pnpm db:deploy
+        env:
+          # Supabase session pooler (5432) + ?sslmode=require
+          DIRECT_URL: ${{ secrets.DIRECT_URL }}
