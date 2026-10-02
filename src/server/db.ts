@@ -2,6 +2,8 @@ import "server-only";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@/generated/prisma/client";
 import { env } from "@/env";
+import { pgPoolConfig } from "@/server/db-config";
+import { SUPABASE_ROOT_CA } from "@/server/supabase-ca";
 
 /**
  * Creates a Prisma client that connects through the node-postgres driver adapter.
@@ -9,7 +11,7 @@ import { env } from "@/env";
  * @returns A new Prisma client.
  */
 function createPrismaClient(): PrismaClient {
-  const adapter = new PrismaPg({ connectionString: env.DATABASE_URL });
+  const adapter = new PrismaPg(pgPoolConfig(env.DATABASE_URL, SUPABASE_ROOT_CA));
   return new PrismaClient({ adapter });
 }
 
