@@ -18,4 +18,5 @@ Stack: Next.js (App Router) + Route Handlers, TypeScript strict, Prisma, Postgre
 - Never log quote/reflection text, request bodies, or tokens.
 - Never render user content as HTML.
 - One Supabase project only (`echo-prod`). Local dev and tests use Docker Postgres; never run seed, reset, or tests against `echo-prod`. Migrations must be backward-compatible.
+- Every new table's migration runs `ALTER TABLE ... ENABLE ROW LEVEL SECURITY` (no policies). Supabase's Data API roles (`anon`, `authenticated`) must never read app tables; `tests/integration/data-api-lockdown.test.ts` enforces this.
 - **Do not use superpowers skills** (`superpowers:*`) in this project. Execute plans directly.
