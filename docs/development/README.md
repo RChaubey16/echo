@@ -129,7 +129,7 @@ tests/
    * @returns The formatted currency string.
    */
   ```
-- **Commits.** Git commit messages are a single line, with no body.
+- **Commits.** Git commit messages are a single line, with no body, prefixed with a type: `feat:`, `bug:`, `doc:`, `refactor:`, `chore:` (also `test:`, `perf:`, `ci:`, `style:`). See `CLAUDE.md`.
 - **Definition of done for any task:**
   - the types check;
   - the linter passes;

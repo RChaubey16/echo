@@ -11,7 +11,9 @@ Stack: Next.js (App Router) + Route Handlers, TypeScript strict, Prisma, Postgre
 ## Rules
 
 - **Any UI work** (pages, components, styling, layout, forms, states, responsive, accessibility, motion) must use the `echo-design-system` skill first and pass its validation checklist. `DESIGN.md` is the source of truth for visual tokens.
-- Git commit messages are **one line**, no body.
+- Git commit messages are **one line**, no body, prefixed with a type: `type: summary` (optional scope: `type(scope): summary`), lowercase imperative summary, no trailing period.
+  - Types: `feat:` (new behavior), `bug:` (bug fix), `doc:` (documentation), `refactor:` (no behavior change), `chore:` (deps, tooling, config), plus `test:`, `perf:`, `ci:`, `style:` when they fit better.
+  - Examples: `feat: add quick capture dialog`, `bug: verify Supabase TLS against pinned root CA`, `doc: mark phase 1 complete`.
 - Every utility function and back-end function (`src/server/**`, `src/lib/**`) has a TSDoc block: one-sentence summary, `@param name - description.` per parameter, `@returns`.
 - Every query on user-owned data is scoped by `userId`; not-owned by-id lookups return 404.
 - Echo reads always filter `deletedAt: null`.
