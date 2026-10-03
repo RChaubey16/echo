@@ -20,7 +20,7 @@ import { useToast } from "@/components/ui/toast";
 import { ApiError, api } from "@/lib/api";
 import { EchoFields } from "./echo-fields";
 import { submitOnModEnter } from "./echo-form";
-import { EMPTY_VALUES, isDirty } from "./echo-values";
+import { EMPTY_LINKS, EMPTY_VALUES, isDirty } from "./echo-values";
 import { useEchoDraft } from "./use-echo-draft";
 
 export const NEW_ECHO_HREF = "/app/echoes/new";
@@ -84,13 +84,13 @@ function QuickCapture({ open, onClose }: { open: boolean; onClose: () => void })
   const titleId = useId();
   const quoteRef = useRef<HTMLTextAreaElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
-  const draft = useEchoDraft(EMPTY_VALUES, false, formRef);
+  const draft = useEchoDraft(EMPTY_VALUES, EMPTY_LINKS, false, formRef);
   const [saving, setSaving] = useState(false);
   const [confirmDiscard, setConfirmDiscard] = useState(false);
   const [failure, setFailure] = useState<string | null>(null);
 
   const close = () => {
-    draft.reset(EMPTY_VALUES);
+    draft.reset(EMPTY_VALUES, EMPTY_LINKS);
     setConfirmDiscard(false);
     setFailure(null);
     onClose();
@@ -98,7 +98,7 @@ function QuickCapture({ open, onClose }: { open: boolean; onClose: () => void })
 
   const requestClose = () => {
     if (saving) return;
-    if (isDirty(draft.values)) setConfirmDiscard(true);
+    if (isDirty(draft.values, EMPTY_VALUES, draft.links)) setConfirmDiscard(true);
     else close();
   };
 
@@ -160,6 +160,11 @@ function QuickCapture({ open, onClose }: { open: boolean; onClose: () => void })
           onChange={(name, value) => {
             setConfirmDiscard(false);
             draft.setField(name, value);
+          }}
+          links={draft.links}
+          onLinkChange={(name, value) => {
+            setConfirmDiscard(false);
+            draft.setLink(name, value);
           }}
           onBlur={draft.blurField}
           detailsOpen={draft.detailsOpen}

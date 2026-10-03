@@ -31,6 +31,7 @@ const DEFAULTS: Record<ErrorCode, { status: number; message: string }> = {
 export class AppError extends Error {
   readonly code: ErrorCode;
   readonly status: number;
+  readonly fields?: Record<string, string[]>;
 
   /**
    * Creates an API error.
@@ -38,13 +39,20 @@ export class AppError extends Error {
    * @param code - The error code from spec §39.
    * @param message - A friendly message; defaults to the code's standard message.
    * @param status - The HTTP status; defaults to the code's standard status.
+   * @param fields - Per-field messages for a form to show inline.
    * @returns A new AppError.
    */
-  constructor(code: ErrorCode, message?: string, status?: number) {
+  constructor(
+    code: ErrorCode,
+    message?: string,
+    status?: number,
+    fields?: Record<string, string[]>,
+  ) {
     super(message ?? DEFAULTS[code].message);
     this.name = "AppError";
     this.code = code;
     this.status = status ?? DEFAULTS[code].status;
+    this.fields = fields;
   }
 }
 
@@ -76,7 +84,13 @@ export function toErrorResponse(error: unknown, requestId: string, route?: strin
   if (error instanceof AppError) {
     return errorResponse(
       error.status,
-      { error: { code: error.code, message: error.message } },
+      {
+        error: {
+          code: error.code,
+          message: error.message,
+          ...(error.fields ? { fields: error.fields } : {}),
+        },
+      },
       requestId,
     );
   }

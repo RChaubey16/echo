@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { definedFields, nextFavoritedAt } from "@/server/services/echo-rules";
+import { definedFields, diffIds, nextFavoritedAt } from "@/server/services/echo-rules";
 
 const now = new Date("2026-10-02T12:00:00Z");
 const earlier = new Date("2026-09-01T08:00:00Z");
@@ -31,5 +31,26 @@ describe("definedFields", () => {
       author: null,
       mood: "calm",
     });
+  });
+
+  it("leaves out tag and collection fields, which are written through join tables", () => {
+    expect(
+      definedFields({ mood: "calm", tagIds: [], tagNames: ["x"], collectionIds: ["c"] }),
+    ).toEqual({ mood: "calm" });
+  });
+});
+
+describe("diffIds", () => {
+  it("adds the missing IDs and removes the ones no longer wanted", () => {
+    expect(diffIds(["a", "b", "c"], ["b", "d"])).toEqual({ toAdd: ["d"], toRemove: ["a", "c"] });
+  });
+
+  it("does nothing when the sets match, in any order", () => {
+    expect(diffIds(["a", "b"], ["b", "a"])).toEqual({ toAdd: [], toRemove: [] });
+  });
+
+  it("clears every link for an empty set and ignores duplicates", () => {
+    expect(diffIds(["a", "b"], [])).toEqual({ toAdd: [], toRemove: ["a", "b"] });
+    expect(diffIds([], ["a", "a"])).toEqual({ toAdd: ["a"], toRemove: [] });
   });
 });

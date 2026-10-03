@@ -20,14 +20,43 @@ export function nextFavoritedAt(
   return next ? now : null;
 }
 
+const RELATION_FIELDS = new Set(["tagIds", "tagNames", "collectionIds"]);
+
+/** The Echo's own columns that a patch can change; tags and collections are written separately. */
+export type EchoColumnPatch = Partial<Omit<EchoUpdate, "tagIds" | "tagNames" | "collectionIds">>;
+
 /**
- * Removes keys whose value is undefined so Prisma only writes fields the patch actually set.
+ * Picks the Echo columns a patch actually set, so Prisma only writes those.
+ *
+ * Undefined values and the tag and collection fields are left out; those relations are replaced
+ * through their join tables.
  *
  * @param patch - The parsed update patch.
- * @returns The patch without undefined values.
+ * @returns The column values to write.
  */
-export function definedFields(patch: EchoUpdate): Partial<EchoUpdate> {
+export function definedFields(patch: EchoUpdate): EchoColumnPatch {
   return Object.fromEntries(
-    Object.entries(patch).filter(([, value]) => value !== undefined),
-  ) as Partial<EchoUpdate>;
+    Object.entries(patch).filter(
+      ([key, value]) => value !== undefined && !RELATION_FIELDS.has(key),
+    ),
+  ) as EchoColumnPatch;
+}
+
+/**
+ * Works out how to turn the current set of linked IDs into the requested one.
+ *
+ * @param current - The IDs linked now.
+ * @param next - The IDs that should be linked afterwards; duplicates are ignored.
+ * @returns The IDs to link and the IDs to unlink.
+ */
+export function diffIds(
+  current: readonly string[],
+  next: readonly string[],
+): { toAdd: string[]; toRemove: string[] } {
+  const have = new Set(current);
+  const want = new Set(next);
+  return {
+    toAdd: [...want].filter((id) => !have.has(id)),
+    toRemove: [...have].filter((id) => !want.has(id)),
+  };
 }

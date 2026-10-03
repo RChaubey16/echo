@@ -11,7 +11,20 @@ import type { EchoDto } from "@/types/echo";
 
 export type EchoField = "quote" | "author" | "source" | "reflection" | "mood";
 export type EchoValues = Record<EchoField, string>;
-export type EchoErrors = Partial<Record<EchoField, string>>;
+/** The Echo's tags (by normalized name) and collections (by id). */
+export type EchoLinks = { tagNames: string[]; collectionIds: string[] };
+export type EchoLink = keyof EchoLinks;
+export type EchoErrors = Partial<Record<EchoField | EchoLink, string>>;
+
+const ERROR_KEYS: ReadonlyArray<EchoField | EchoLink> = [
+  "quote",
+  "author",
+  "source",
+  "reflection",
+  "mood",
+  "tagNames",
+  "collectionIds",
+];
 
 export const DETAIL_FIELDS: Array<{
   name: Exclude<EchoField, "quote">;
@@ -53,6 +66,22 @@ export const EMPTY_VALUES: EchoValues = {
   mood: "",
 };
 
+export const EMPTY_LINKS: EchoLinks = { tagNames: [], collectionIds: [] };
+
+/**
+ * Builds the tag and collection choices from a saved Echo.
+ *
+ * @param echo - The saved Echo, or undefined for a new one.
+ * @returns The tag names and collection ids.
+ */
+export function linksFromEcho(echo?: EchoDto): EchoLinks {
+  if (!echo) return EMPTY_LINKS;
+  return {
+    tagNames: echo.tags.map((tag) => tag.name),
+    collectionIds: echo.collections.map((collection) => collection.id),
+  };
+}
+
 /**
  * Builds form values from a saved Echo, turning nulls into empty strings.
  *
@@ -74,10 +103,14 @@ export function valuesFromEcho(echo?: EchoDto): EchoValues {
  * Validates form values with the same schema the API uses, keeping the first message per field.
  *
  * @param values - The current form values.
+ * @param links - The chosen tags and collections.
  * @returns The parsed Echo on success, or the per-field errors.
  */
-export function validateEcho(values: EchoValues): { data: EchoCreate } | { errors: EchoErrors } {
-  const result = echoCreateSchema.safeParse(values);
+export function validateEcho(
+  values: EchoValues,
+  links: EchoLinks = EMPTY_LINKS,
+): { data: EchoCreate } | { errors: EchoErrors } {
+  const result = echoCreateSchema.safeParse({ ...values, ...links });
   if (result.success) return { data: result.data };
   return {
     errors: errorsFromFields(
@@ -96,22 +129,37 @@ export function validateEcho(values: EchoValues): { data: EchoCreate } | { error
  */
 export function errorsFromFields(fields: Record<string, string[]>): EchoErrors {
   const errors: EchoErrors = {};
-  for (const name of Object.keys(FIELD_MAX) as EchoField[]) {
-    const message = fields[name]?.[0];
-    if (message && !errors[name]) errors[name] = message;
+  for (const [key, messages] of Object.entries(fields)) {
+    // Array items report as "tagNames.3"; the form shows them on the whole field.
+    const name = key.split(".")[0] as EchoField | EchoLink;
+    const message = messages[0];
+    if (ERROR_KEYS.includes(name) && message && !errors[name]) errors[name] = message;
   }
   return errors;
 }
 
 /**
- * Reports whether any field has text, so a draft is never discarded silently.
+ * Reports whether any field changed, so a draft is never discarded silently.
  *
  * @param values - The current form values.
  * @param initial - The values the form started from.
- * @returns True when the values differ from where the form started.
+ * @param links - The current tags and collections.
+ * @param initialLinks - The tags and collections the form started from.
+ * @returns True when the draft differs from where the form started.
  */
-export function isDirty(values: EchoValues, initial: EchoValues = EMPTY_VALUES): boolean {
-  return (Object.keys(values) as EchoField[]).some(
-    (name) => values[name].trim() !== initial[name].trim(),
+export function isDirty(
+  values: EchoValues,
+  initial: EchoValues = EMPTY_VALUES,
+  links: EchoLinks = EMPTY_LINKS,
+  initialLinks: EchoLinks = EMPTY_LINKS,
+): boolean {
+  const sameSet = (a: string[], b: string[]) =>
+    a.length === b.length && a.every((item) => b.includes(item));
+  return (
+    (Object.keys(values) as EchoField[]).some(
+      (name) => values[name].trim() !== initial[name].trim(),
+    ) ||
+    !sameSet(links.tagNames, initialLinks.tagNames) ||
+    !sameSet(links.collectionIds, initialLinks.collectionIds)
   );
 }
