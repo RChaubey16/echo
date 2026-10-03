@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LogoMark } from "@/components/echo/logo";
+import { AddEchoLink } from "@/components/echo/quick-capture";
 import { PlusIcon, UserIcon } from "@/components/ui/icons";
 import { cn } from "@/lib/cn";
 import { AccountMenu } from "./account-menu";
-import { ADD_ECHO_HREF, MOBILE_TABS, NAV, activeNavId } from "./nav-items";
+import { MOBILE_TABS, NAV, activeNavId } from "./nav-items";
 
 /** The 64px mobile header (<744px): logo and the account menu. */
 export function MobileHeader({ email }: { email: string }) {
@@ -47,13 +48,12 @@ export function BottomTabBar() {
           if (id === "add") {
             return (
               <li key="add" className="flex items-start justify-center">
-                <Link
-                  href={ADD_ECHO_HREF}
+                <AddEchoLink
                   aria-label="Add Echo"
                   className="-mt-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-on-primary shadow-float transition-[background-color,transform] duration-fast ease-standard hover:bg-primary-active active:scale-95 motion-reduce:active:scale-100"
                 >
                   <PlusIcon className="h-5 w-5" />
-                </Link>
+                </AddEchoLink>
               </li>
             );
           }
