@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AccentDot } from "@/components/echo/accent-dot";
+import { AddToCollection } from "@/components/echo/add-to-collection";
 import { DeleteEchoDialog } from "@/components/echo/delete-echo-dialog";
 import { FavoriteButton } from "@/components/echo/favorite-button";
 import { QuoteText, attribution } from "@/components/echo/quote-text";
 import { SavedDate } from "@/components/echo/saved-date";
 import { buttonClasses } from "@/components/ui/button-classes";
+import { ChipLink } from "@/components/ui/chip";
 import { ArrowLeftIcon, EditIcon } from "@/components/ui/icons";
 import { fullDate } from "@/lib/dates";
 import { requireUserPage } from "@/server/auth";
@@ -52,6 +55,18 @@ export default async function EchoDetailPage({ params }: PageProps<"/app/echoes/
         </section>
       )}
 
+      {echo.tags.length > 0 && (
+        <ul aria-label="Tags" className="mt-8 flex flex-wrap gap-2">
+          {echo.tags.map((tag) => (
+            <li key={tag.id} className="max-w-full min-w-0">
+              <ChipLink href={`/app/echoes?tag=${tag.id}`} title={tag.name}>
+                <span className="truncate">{tag.name}</span>
+              </ChipLink>
+            </li>
+          ))}
+        </ul>
+      )}
+
       <dl className="mt-8 border-t border-hairline">
         {meta.map((row) => (
           <div
@@ -62,6 +77,32 @@ export default async function EchoDetailPage({ params }: PageProps<"/app/echoes/
             <dd className="min-w-0 [overflow-wrap:anywhere] text-ink">{row.value}</dd>
           </div>
         ))}
+        <div className="grid grid-cols-[6rem_1fr] gap-4 border-b border-hairline-soft py-3 text-body-md tablet:grid-cols-[8rem_1fr]">
+          <dt className="text-muted">Collections</dt>
+          <dd className="flex min-w-0 flex-col items-start gap-2">
+            {echo.collections.length > 0 && (
+              <ul className="grid grid-cols-1 gap-1">
+                {echo.collections.map((collection) => (
+                  <li key={collection.id} className="min-w-0">
+                    <Link
+                      href={`/app/collections/${collection.id}`}
+                      className="inline-flex max-w-full items-center gap-2 rounded-xs text-ink underline-offset-4 hover:underline"
+                    >
+                      <AccentDot accent={collection.accent} />
+                      <span className="truncate" title={collection.name}>
+                        {collection.name}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <AddToCollection
+              echoId={echo.id}
+              collectionIds={echo.collections.map((collection) => collection.id)}
+            />
+          </dd>
+        </div>
         <div className="grid grid-cols-[6rem_1fr] gap-4 py-3 text-body-md tablet:grid-cols-[8rem_1fr]">
           <dt className="text-muted">Saved</dt>
           <dd className="text-ink">

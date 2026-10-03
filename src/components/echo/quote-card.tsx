@@ -1,5 +1,7 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { Card } from "@/components/ui/card";
+import { ChipLink } from "@/components/ui/chip";
 import { cn } from "@/lib/cn";
 import type { EchoDto } from "@/types/echo";
 import { FavoriteButton } from "./favorite-button";
@@ -9,22 +11,30 @@ import { SavedDate } from "./saved-date";
 export type QuoteCardProps = {
   echo: EchoDto;
   showReflection?: boolean;
-  /** Tags arrive in Phase 3; this prop does nothing until then. */
+  /** Shows up to four tag chips, each opening the library filtered by that tag. */
   showTags?: boolean;
   showSavedDate?: boolean;
   compact?: boolean;
+  /** A card-level action shown in the footer, e.g. "Remove" on a collection page. */
+  action?: ReactNode;
   className?: string;
 };
+
+const VISIBLE_TAGS = 4;
 
 /** An Echo as a card: the quote opens the detail page, the heart stays independently clickable. */
 export function QuoteCard({
   echo,
   showReflection = false,
+  showTags = false,
   showSavedDate = true,
   compact = false,
+  action,
   className,
 }: QuoteCardProps) {
   const credit = attribution(echo);
+  const tags = showTags && !compact ? echo.tags : [];
+  const hiddenTags = tags.length - VISIBLE_TAGS;
   return (
     <Card as="article" interactive compact={compact} className={cn("flex flex-col", className)}>
       <figure className="min-w-0">
@@ -48,7 +58,35 @@ export function QuoteCard({
           {echo.reflection}
         </p>
       )}
-      {showSavedDate && <SavedDate savedAt={echo.savedAt} className="mt-4" />}
+      {tags.length > 0 && (
+        // Above the stretched link, so each chip stays independently clickable.
+        <ul aria-label="Tags" className="relative z-10 mt-4 flex flex-wrap gap-1">
+          {tags.slice(0, VISIBLE_TAGS).map((tag) => (
+            <li key={tag.id} className="max-w-full min-w-0">
+              <ChipLink href={`/app/echoes?tag=${tag.id}`} title={tag.name}>
+                <span className="truncate">{tag.name}</span>
+              </ChipLink>
+            </li>
+          ))}
+          {hiddenTags > 0 && (
+            <li>
+              <ChipLink
+                href={`/app/echoes/${echo.id}`}
+                aria-label={`${hiddenTags} more ${hiddenTags === 1 ? "tag" : "tags"}`}
+                className="tabular-nums"
+              >
+                +{hiddenTags}
+              </ChipLink>
+            </li>
+          )}
+        </ul>
+      )}
+      {(showSavedDate || action) && (
+        <div className="mt-4 flex min-h-6 items-center justify-between gap-4">
+          {showSavedDate ? <SavedDate savedAt={echo.savedAt} /> : <span />}
+          {action && <div className="relative z-10 -my-2 shrink-0">{action}</div>}
+        </div>
+      )}
       {/* After the quote in the DOM so tab order matches reading order; positioned top-right. */}
       <FavoriteButton
         echoId={echo.id}

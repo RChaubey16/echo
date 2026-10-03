@@ -1,5 +1,6 @@
+import type { CollectionCreateInput } from "@/server/validation/collection";
 import type { EchoCreateInput } from "@/server/validation/echo";
-import type { EchoDto } from "@/types/echo";
+import type { CollectionDto, EchoDto, EchoListDto, TagDto } from "@/types/echo";
 
 /** A failed API call, carrying the spec §39 error code and any per-field messages. */
 export class ApiError extends Error {
@@ -93,4 +94,84 @@ export const api = {
    */
   deleteEcho: (id: string) =>
     request<void>(`/api/echoes/${encodeURIComponent(id)}`, { method: "DELETE" }),
+
+  /**
+   * Lists the user's Echoes, e.g. to pick some for a collection.
+   *
+   * @param query - Query parameters such as `search`, `limit` and `page`.
+   * @returns One page of Echoes.
+   */
+  listEchoes: (query: Record<string, string>) =>
+    request<EchoListDto>(`/api/echoes?${new URLSearchParams(query).toString()}`),
+
+  /**
+   * Lists the user's tags with their usage counts.
+   *
+   * @returns The tags, alphabetically.
+   */
+  listTags: () => request<{ items: TagDto[] }>("/api/tags"),
+
+  /**
+   * Lists the user's collections with their Echo counts.
+   *
+   * @returns The collections, alphabetically.
+   */
+  listCollections: () => request<{ items: CollectionDto[] }>("/api/collections"),
+
+  /**
+   * Creates a collection.
+   *
+   * @param input - The name, and optionally a description and accent.
+   * @returns The new collection.
+   */
+  createCollection: (input: CollectionCreateInput) =>
+    request<CollectionDto>("/api/collections", { method: "POST", json: input }),
+
+  /**
+   * Renames a collection or changes its description.
+   *
+   * @param id - The collection ID.
+   * @param patch - The fields to change.
+   * @returns The updated collection.
+   */
+  updateCollection: (id: string, patch: Partial<CollectionCreateInput>) =>
+    request<CollectionDto>(`/api/collections/${encodeURIComponent(id)}`, {
+      method: "PATCH",
+      json: patch,
+    }),
+
+  /**
+   * Deletes a collection; its Echoes are kept.
+   *
+   * @param id - The collection ID.
+   * @returns Nothing.
+   */
+  deleteCollection: (id: string) =>
+    request<void>(`/api/collections/${encodeURIComponent(id)}`, { method: "DELETE" }),
+
+  /**
+   * Adds an Echo to a collection.
+   *
+   * @param collectionId - The collection ID.
+   * @param echoId - The Echo ID.
+   * @returns The collection with its new count.
+   */
+  addToCollection: (collectionId: string, echoId: string) =>
+    request<CollectionDto>(`/api/collections/${encodeURIComponent(collectionId)}/echoes`, {
+      method: "POST",
+      json: { echoId },
+    }),
+
+  /**
+   * Removes an Echo from a collection; the Echo is kept.
+   *
+   * @param collectionId - The collection ID.
+   * @param echoId - The Echo ID.
+   * @returns The collection with its new count.
+   */
+  removeFromCollection: (collectionId: string, echoId: string) =>
+    request<CollectionDto>(
+      `/api/collections/${encodeURIComponent(collectionId)}/echoes/${encodeURIComponent(echoId)}`,
+      { method: "DELETE" },
+    ),
 };
