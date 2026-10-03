@@ -180,7 +180,7 @@ Mutations go through **Server Actions** or `fetch` to the route handlers. Pick o
 
 - [x] All Phase 2 UI passes the `echo-design-system` validation checklist (`audit_ui.py` 0 errors, 320–1440px screenshots, keyboard pass).
 - [x] Saving a quote-only Echo takes ≤3 interactions: click +, paste, Cmd+Enter.
-- [ ] All CRUD works end to end on the preview deploy.
+- [x] All CRUD works end to end on the preview deploy.
 - [x] Every authorization integration test passes.
 - [x] No user content appears in the server logs. Check this by grepping logs from a test run.
   - `tests/integration/echoes.test.ts` captures every log line from the API run and asserts no quote text appears.
