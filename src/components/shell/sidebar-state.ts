@@ -9,3 +9,6 @@ export const SIDEBAR_COOKIE = "echo-sidebar";
 export function isSidebarCollapsed(value: string | undefined): boolean {
   return value === "collapsed";
 }
+
+/** How many collections the expanded sidebar lists before "All collections". */
+export const SIDEBAR_COLLECTIONS = 5;

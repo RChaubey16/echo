@@ -2,12 +2,12 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useId, useRef, useState, useTransition } from "react";
+import { PAGE_SEARCH_ID } from "@/components/shell/search-ids";
 import { SearchIcon } from "@/components/ui/icons";
 import { Spinner } from "@/components/ui/spinner";
 import { SEARCH_MAX } from "@/server/validation/echo";
 
 const DEBOUNCE_MS = 250;
-export const PAGE_SEARCH_ID = "page-search";
 
 /**
  * The search page's field (DESIGN.md search-bar-pill, one segment). The URL is the source of
@@ -46,12 +46,13 @@ export function SearchField({ initialQuery }: { initialQuery: string }) {
     });
   };
 
-  useEffect(() => {
-    const timer = window.setTimeout(() => navigate(value), DEBOUNCE_MS);
-    return () => window.clearTimeout(timer);
-    // `navigate` reads the latest URL each render; only typing restarts the timer.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
+  // Typing schedules the URL update; each keystroke restarts the 250ms wait.
+  const timer = useRef<number | undefined>(undefined);
+  const schedule = (next: string) => {
+    window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => navigate(next), DEBOUNCE_MS);
+  };
+  useEffect(() => () => window.clearTimeout(timer.current), []);
 
   return (
     <form
@@ -59,6 +60,7 @@ export function SearchField({ initialQuery }: { initialQuery: string }) {
       aria-labelledby={labelId}
       onSubmit={(event) => {
         event.preventDefault();
+        window.clearTimeout(timer.current);
         navigate(value);
       }}
     >
@@ -77,10 +79,14 @@ export function SearchField({ initialQuery }: { initialQuery: string }) {
           aria-keyshortcuts="/"
           maxLength={SEARCH_MAX}
           value={value}
-          onChange={(event) => setValue(event.target.value)}
+          onChange={(event) => {
+            setValue(event.target.value);
+            schedule(event.target.value);
+          }}
           onKeyDown={(event) => {
             if (event.key === "Escape") {
               event.preventDefault();
+              window.clearTimeout(timer.current);
               setValue("");
               navigate("");
               inputRef.current?.blur();

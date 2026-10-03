@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, type RefObject } from "react";
+import { useId, useMemo, type RefObject } from "react";
 import { CharacterCount, FieldError, Input, Label, Textarea } from "@/components/ui/field";
 import { ChevronDownIcon } from "@/components/ui/icons";
 import { cn } from "@/lib/cn";
@@ -59,7 +59,8 @@ export function EchoFields({
   const detailsId = `${id}-details`;
   // Tags and collections load the first time the details open.
   const options = useLibraryOptions(detailsOpen);
-  const tagNames = options.tags.map((tag) => tag.name);
+  // Memoized so TagInput's option list only recomputes when the tags actually change.
+  const tagNames = useMemo(() => options.tags.map((tag) => tag.name), [options.tags]);
 
   return (
     <div className="flex flex-col gap-4">

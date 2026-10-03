@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "@/lib/api";
+import { compareNames } from "@/lib/sort";
 import type { CollectionDto, TagDto } from "@/types/echo";
 
 export type LibraryOptions = {
@@ -50,7 +51,7 @@ export function useLibraryOptions(enabled: boolean): LibraryOptions {
   const addCollection = useCallback((collection: CollectionDto) => {
     setCollections((current) =>
       [...current.filter((c) => c.id !== collection.id), collection].sort((a, b) =>
-        a.name.localeCompare(b.name, "en", { sensitivity: "base" }),
+        compareNames(a.name, b.name),
       ),
     );
   }, []);

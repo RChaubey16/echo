@@ -1,4 +1,7 @@
+import { z } from "zod";
 import { ECHO_SORTS, type EchoSort } from "@/server/validation/echo";
+
+const uuidSchema = z.uuid();
 
 type Param = string | string[] | undefined;
 
@@ -35,6 +38,17 @@ export function parseSort<T extends EchoSort>(
  */
 export function parseString(value: Param): string | undefined {
   return typeof value === "string" && value.trim() !== "" ? value : undefined;
+}
+
+/**
+ * Reads a UUID parameter, ignoring anything malformed.
+ *
+ * @param value - The raw parameter.
+ * @returns The UUID, or undefined when missing or not a UUID.
+ */
+export function parseUuid(value: Param): string | undefined {
+  const text = parseString(value);
+  return text && uuidSchema.safeParse(text).success ? text : undefined;
 }
 
 /**

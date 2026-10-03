@@ -3,9 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { isTypingTarget } from "@/components/echo/quick-capture";
-import { PAGE_SEARCH_ID } from "@/components/echo/search-field";
-
-export const SIDEBAR_SEARCH_ID = "sidebar-search";
+import { PAGE_SEARCH_ID, SIDEBAR_SEARCH_ID } from "./search-ids";
 
 /**
  * Finds the search field to focus for `/`: the search page's own field, else the sidebar's when it

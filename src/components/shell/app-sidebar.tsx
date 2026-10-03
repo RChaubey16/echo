@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useRef } from "react";
+import { Suspense, use, useRef } from "react";
 import { AccentDot } from "@/components/echo/accent-dot";
 import { LogoMark } from "@/components/echo/logo";
 import { NewCollectionButton } from "@/components/echo/new-collection-button";
@@ -16,19 +16,18 @@ import {
   SearchIcon,
   UserIcon,
 } from "@/components/ui/icons";
-import type { CollectionDto } from "@/types/echo";
+import type { SidebarCollectionsDto } from "@/types/echo";
 import { AccountMenu } from "./account-menu";
 import { NAV, SIDEBAR_NAV, activeNavId, type NavId } from "./nav-items";
-import { SIDEBAR_SEARCH_ID } from "./search-shortcut";
+import { SIDEBAR_SEARCH_ID } from "./search-ids";
 
 type AppSidebarProps = {
   collapsed: boolean;
   onCollapsedChange: (collapsed: boolean) => void;
   user: { name: string | null; email: string };
-  collections: CollectionDto[];
+  /** Streams in; null when it failed to load. */
+  collections: Promise<SidebarCollectionsDto | null>;
 };
-
-const SIDEBAR_COLLECTIONS = 5;
 
 /*
  * Tablet shows the 96px rail. Desktop shows the 256px sidebar unless the user collapsed it.
@@ -65,17 +64,17 @@ function SidebarLink({ id, active }: { id: NavId; active: boolean }) {
 }
 
 /**
- * The expanded sidebar's Collections list: up to five collections, then "All collections". It is
- * a one-column grid, so long names truncate instead of widening the sidebar.
+ * The expanded sidebar's Collections section: a heading with "New collection", then the list,
+ * which streams in behind its own Suspense boundary.
  *
- * @param props - The user's collections and the current path.
+ * @param props - The streaming collections and the current path.
  * @returns The section.
  */
 function SidebarCollections({
   collections,
   pathname,
 }: {
-  collections: CollectionDto[];
+  collections: Promise<SidebarCollectionsDto | null>;
   pathname: string;
 }) {
   return (
@@ -91,48 +90,86 @@ function SidebarCollections({
           <PlusIcon className="h-4 w-4" />
         </NewCollectionButton>
       </div>
-      {collections.length === 0 ? (
-        <p className="mt-1 px-3 text-body-sm text-muted">No collections yet.</p>
-      ) : (
-        <ul className="mt-1 grid grid-cols-1 gap-0.5">
-          {collections.slice(0, SIDEBAR_COLLECTIONS).map((collection) => {
-            const href = `/app/collections/${collection.id}`;
-            const current = pathname === href;
-            return (
-              <li key={collection.id} className="min-w-0">
-                <Link
-                  href={href}
-                  aria-current={current ? "page" : undefined}
-                  className="flex h-10 min-w-0 items-center gap-3 rounded-sm px-3 text-body-sm text-body transition-colors duration-fast ease-standard hover:bg-surface-soft hover:text-ink aria-[current=page]:bg-surface-soft aria-[current=page]:font-semibold aria-[current=page]:text-ink"
-                >
-                  <AccentDot accent={collection.accent} />
-                  <span className="min-w-0 flex-1 truncate" title={collection.name}>
-                    {collection.name}
-                  </span>
-                  <span className="shrink-0 text-muted tabular-nums">
-                    <span className="sr-only">, </span>
-                    {collection.echoCount}
-                    <span className="sr-only">
-                      {" "}
-                      {collection.echoCount === 1 ? "Echo" : "Echoes"}
-                    </span>
-                  </span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      )}
-      {collections.length > 0 && (
-        <Link
-          href="/app/collections"
-          className="mt-0.5 flex h-10 items-center gap-1.5 rounded-sm px-3 text-body-sm text-muted transition-colors duration-fast ease-standard hover:bg-surface-soft hover:text-ink"
-        >
-          All collections
-          <ArrowRightIcon className="h-4 w-4" />
-        </Link>
-      )}
+      <Suspense fallback={<SidebarCollectionsSkeleton />}>
+        <SidebarCollectionList collections={collections} pathname={pathname} />
+      </Suspense>
     </section>
+  );
+}
+
+/**
+ * Three placeholder rows shaped like collection rows, shown while the list streams in.
+ *
+ * @returns The skeleton.
+ */
+function SidebarCollectionsSkeleton() {
+  return (
+    <div aria-hidden className="mt-1 flex flex-col">
+      {[0, 1, 2].map((row) => (
+        <div key={row} className="flex h-10 items-center gap-3 px-3">
+          <div className="h-2 w-2 rounded-full bg-surface-strong" />
+          <div className="h-3 flex-1 animate-skeleton rounded-xs bg-surface-strong motion-reduce:animate-none" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * The first few collections (accent dot, name, count), then "All collections". It is a
+ * one-column grid, so long names truncate instead of widening the sidebar.
+ *
+ * @param props - The streaming collections and the current path.
+ * @returns The list.
+ */
+function SidebarCollectionList({
+  collections: promise,
+  pathname,
+}: {
+  collections: Promise<SidebarCollectionsDto | null>;
+  pathname: string;
+}) {
+  const collections = use(promise);
+  if (!collections) {
+    return <p className="mt-1 px-3 text-body-sm text-muted">Couldn&apos;t load collections.</p>;
+  }
+  if (collections.total === 0) {
+    return <p className="mt-1 px-3 text-body-sm text-muted">No collections yet.</p>;
+  }
+  return (
+    <>
+      <ul className="mt-1 grid grid-cols-1 gap-0.5">
+        {collections.items.map((collection) => {
+          const href = `/app/collections/${collection.id}`;
+          return (
+            <li key={collection.id} className="min-w-0">
+              <Link
+                href={href}
+                aria-current={pathname === href ? "page" : undefined}
+                className="flex h-10 min-w-0 items-center gap-3 rounded-sm px-3 text-body-sm text-body transition-colors duration-fast ease-standard hover:bg-surface-soft hover:text-ink aria-[current=page]:bg-surface-soft aria-[current=page]:font-semibold aria-[current=page]:text-ink"
+              >
+                <AccentDot accent={collection.accent} />
+                <span className="min-w-0 flex-1 truncate" title={collection.name}>
+                  {collection.name}
+                </span>
+                <span className="shrink-0 text-muted tabular-nums">
+                  <span className="sr-only">, </span>
+                  {collection.echoCount}
+                  <span className="sr-only"> {collection.echoCount === 1 ? "Echo" : "Echoes"}</span>
+                </span>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+      <Link
+        href="/app/collections"
+        className="mt-0.5 flex h-10 items-center gap-1.5 rounded-sm px-3 text-body-sm text-muted transition-colors duration-fast ease-standard hover:bg-surface-soft hover:text-ink"
+      >
+        All collections
+        <ArrowRightIcon className="h-4 w-4" />
+      </Link>
+    </>
   );
 }
 

@@ -10,7 +10,7 @@ import { chipClasses } from "@/components/ui/chip";
 import { EmptyState } from "@/components/ui/empty-state";
 import { CloseIcon, QuoteMarksIcon } from "@/components/ui/icons";
 import { Pagination } from "@/components/ui/pagination";
-import { hrefWith, parsePage, parseSort, parseString } from "@/lib/search-params";
+import { hrefWith, parsePage, parseSort, parseString, parseUuid } from "@/lib/search-params";
 import { requireUserPage } from "@/server/auth";
 import { getLibraryFilters } from "@/server/organization-pages";
 import { listEchoes } from "@/server/services/echoes";
@@ -48,27 +48,27 @@ export default async function LibraryPage({ searchParams }: PageProps<"/app/echo
   const [user, params] = await Promise.all([requireUserPage(), searchParams]);
   const page = parsePage(params.page);
   const sort = parseSort(params.sort, LIBRARY_SORTS);
-  const tagId = parseString(params.tag);
-  const collectionId = parseString(params.collection);
-  const filters = await getLibraryFilters(user.id, tagId, collectionId);
+  const tagParam = parseString(params.tag);
+  const collectionParam = parseString(params.collection);
+  const tagId = parseUuid(tagParam);
+  const collectionId = parseUuid(collectionParam);
+  // Both only need the URL, so they run together. Listing by a not-owned ID is safe (every query
+  // is scoped to the user); such a filter is dropped by the redirect below.
+  const [filters, result] = await Promise.all([
+    getLibraryFilters(user.id, tagId, collectionId),
+    listEchoes(user.id, { page, limit: PAGE_SIZE, sort, tag: tagId, collection: collectionId }),
+  ]);
   const state: LibraryState = {
     page,
     sort,
     tag: filters.tag?.id,
     collection: filters.collection?.id,
   };
-  // Unknown or not-owned filter IDs are dropped rather than shown as an empty library.
-  if ((tagId && !filters.tag) || (collectionId && !filters.collection)) {
+  // Unknown, malformed or not-owned filter IDs are dropped rather than shown as an empty library.
+  if ((tagParam && !filters.tag) || (collectionParam && !filters.collection)) {
     redirect(libraryHref(state));
   }
 
-  const result = await listEchoes(user.id, {
-    page,
-    limit: PAGE_SIZE,
-    sort,
-    tag: state.tag,
-    collection: state.collection,
-  });
   const pageCount = Math.max(1, Math.ceil(result.total / PAGE_SIZE));
   if (result.total > 0 && page > pageCount) redirect(libraryHref({ ...state, page: pageCount }));
   const filtered = Boolean(filters.tag || filters.collection);

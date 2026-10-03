@@ -4,6 +4,7 @@ import { useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { chipClasses } from "@/components/ui/chip";
 import { CloseIcon, PlusIcon } from "@/components/ui/icons";
 import { cn } from "@/lib/cn";
+import { compareNames } from "@/lib/sort";
 import { TAG_NAME_MAX, TAGS_PER_ECHO_MAX, normalizeTagName } from "@/server/validation/tag";
 
 const MAX_OPTIONS = 8;
@@ -36,7 +37,7 @@ type Option = { name: string; isNew: boolean };
 export function tagOptions(query: string, suggestions: string[], chosen: string[]): Option[] {
   const available = suggestions.filter((name) => !chosen.includes(name) && name.includes(query));
   available.sort(
-    (a, b) => Number(!a.startsWith(query)) - Number(!b.startsWith(query)) || a.localeCompare(b),
+    (a, b) => Number(!a.startsWith(query)) - Number(!b.startsWith(query)) || compareNames(a, b),
   );
   const options: Option[] = available.slice(0, MAX_OPTIONS).map((name) => ({ name, isNew: false }));
   if (

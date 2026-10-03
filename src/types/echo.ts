@@ -58,3 +58,9 @@ export type CollectionDto = {
 
 /** A collection with one page of its Echoes. */
 export type CollectionDetailDto = CollectionDto & { echoes: EchoListDto };
+
+/** The sidebar's short Collections list: the first few collections and how many there are. */
+export type SidebarCollectionsDto = {
+  items: Array<Pick<CollectionDto, "id" | "name" | "accent" | "echoCount">>;
+  total: number;
+};

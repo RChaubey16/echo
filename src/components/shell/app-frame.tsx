@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import type { CollectionDto } from "@/types/echo";
+import type { SidebarCollectionsDto } from "@/types/echo";
 import { AppSidebar } from "./app-sidebar";
 import { useSearchShortcut } from "./search-shortcut";
 import { SIDEBAR_COOKIE } from "./sidebar-state";
@@ -9,7 +9,8 @@ import { SIDEBAR_COOKIE } from "./sidebar-state";
 type AppFrameProps = {
   initialCollapsed: boolean;
   user: { name: string | null; email: string };
-  collections: CollectionDto[];
+  /** Streams in; null when it failed to load. */
+  collections: Promise<SidebarCollectionsDto | null>;
   children: ReactNode;
 };
 

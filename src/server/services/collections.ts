@@ -1,5 +1,6 @@
 import "server-only";
 import type { Collection } from "@/generated/prisma/client";
+import { compareNames } from "@/lib/sort";
 import { db } from "@/server/db";
 import { AppError } from "@/server/http";
 import { listEchoes, liveEchoes } from "@/server/services/echoes";
@@ -10,7 +11,7 @@ import {
   type CollectionUpdate,
 } from "@/server/validation/collection";
 import type { EchoListQuery } from "@/server/validation/echo";
-import type { CollectionDetailDto, CollectionDto } from "@/types/echo";
+import type { CollectionDetailDto, CollectionDto, SidebarCollectionsDto } from "@/types/echo";
 
 const NAME_TAKEN = "You already have a collection with that name.";
 
@@ -69,9 +70,34 @@ export async function listCollections(userId: string): Promise<CollectionDto[]> 
     orderBy: [{ name: "asc" }, { id: "asc" }],
     include: LIVE_ECHO_COUNT,
   });
-  return collections
-    .map(serializeCollection)
-    .sort((a, b) => a.name.localeCompare(b.name, "en", { sensitivity: "base" }));
+  return collections.map(serializeCollection).toSorted((a, b) => compareNames(a.name, b.name));
+}
+
+/**
+ * Lists the first few of the user's collections, alphabetically, with only the fields the sidebar
+ * shows, plus the total so it knows whether to link to the rest.
+ *
+ * @param userId - The owner's user ID.
+ * @param limit - How many collections to return.
+ * @returns The collections and the user's total number of collections.
+ */
+export async function listSidebarCollections(
+  userId: string,
+  limit: number,
+): Promise<SidebarCollectionsDto> {
+  // Sorted here, not in SQL, so the order matches the Collections page whatever the database's
+  // collation. A user has dozens of collections at most, and only these four fields are read.
+  const rows = await db.collection.findMany({
+    where: { userId },
+    select: { id: true, name: true, accent: true, ...LIVE_ECHO_COUNT },
+  });
+  return {
+    items: rows
+      .toSorted((a, b) => compareNames(a.name, b.name) || a.id.localeCompare(b.id))
+      .slice(0, limit)
+      .map(({ _count, ...collection }) => ({ ...collection, echoCount: _count.echoes })),
+    total: rows.length,
+  };
 }
 
 /**
@@ -88,8 +114,12 @@ export async function getCollection(
   id: string,
   query: EchoListQuery,
 ): Promise<CollectionDetailDto> {
-  const collection = await getCollectionSummary(userId, id);
-  const echoes = await listEchoes(userId, { ...query, collection: id });
+  // Checked up front so the two queries below can run together on a valid ID.
+  assertUuid(id, "COLLECTION_NOT_FOUND");
+  const [collection, echoes] = await Promise.all([
+    getCollectionSummary(userId, id),
+    listEchoes(userId, { ...query, collection: id }),
+  ]);
   return { ...collection, echoes };
 }
 

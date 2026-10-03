@@ -17,6 +17,7 @@ import { GET as search } from "@/app/api/search/route";
 import { DELETE as deleteTag, PATCH as patchTag } from "@/app/api/tags/[id]/route";
 import { GET as listTags, POST as postTag } from "@/app/api/tags/route";
 import { db } from "@/server/db";
+import { listSidebarCollections } from "@/server/services/collections";
 import type {
   CollectionDetailDto,
   CollectionDto,
@@ -258,6 +259,39 @@ describe("collections", () => {
       expect(response.status).toBe(200);
       expect(((await response.json()) as EchoDto).collections).toEqual([]);
     }
+  });
+});
+
+describe("sidebar collections", () => {
+  it("returns the first few collections alphabetically, the user's total, and live counts only", async () => {
+    const user = await createTestUser(process.env.DATABASE_URL!, { name: "Sidebar" });
+    const names = ["Delta", "alpha", "Charlie", "bravo"];
+    const created = [];
+    for (const name of names) created.push(await createCollection(user, { name }));
+    const alpha = created[1]!;
+    await createEcho(user, { quote: "Kept", collectionIds: [alpha.id] });
+    const doomed = await createEcho(user, { quote: "Gone", collectionIds: [alpha.id] });
+    await deleteEcho(
+      makeRequest(`/api/echoes/${doomed.id}`, { method: "DELETE", cookie: user.cookie }),
+      idCtx(doomed.id),
+    );
+
+    const sidebar = await listSidebarCollections(user.user.id, 3);
+    expect(sidebar.total).toBe(4);
+    expect(sidebar.items.map((collection) => collection.name)).toEqual([
+      "alpha",
+      "bravo",
+      "Charlie",
+    ]);
+    expect(sidebar.items[0]).toEqual({
+      id: alpha.id,
+      name: "alpha",
+      accent: alpha.accent,
+      echoCount: 1,
+    });
+    expect((await listSidebarCollections(alice.user.id, 5)).items.map((c) => c.id)).not.toContain(
+      alpha.id,
+    );
   });
 });
 

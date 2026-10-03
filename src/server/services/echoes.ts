@@ -1,5 +1,6 @@
 import "server-only";
 import type { Prisma } from "@/generated/prisma/client";
+import { compareNames } from "@/lib/sort";
 import { db } from "@/server/db";
 import { AppError } from "@/server/http";
 import { definedFields, diffIds, nextFavoritedAt } from "@/server/services/echo-rules";
@@ -71,7 +72,7 @@ export function liveEchoes(
  * @returns A new, sorted array.
  */
 function byName<T extends { name: string }>(items: T[]): T[] {
-  return [...items].sort((a, b) => a.name.localeCompare(b.name, "en", { sensitivity: "base" }));
+  return items.toSorted((a, b) => compareNames(a.name, b.name));
 }
 
 /**
