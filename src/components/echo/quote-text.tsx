@@ -1,0 +1,45 @@
+import type { ReactNode } from "react";
+import { cn } from "@/lib/cn";
+
+export type QuoteSize = "hero" | "card" | "compact";
+
+const SIZES: Record<QuoteSize, string> = {
+  hero: "font-quote text-quote-card tablet:text-quote-hero",
+  card: "font-quote text-quote-card",
+  compact: "font-quote text-quote-compact",
+};
+
+/**
+ * Returns the quote typography for a size. QuoteText is the only place quote type is defined; the
+ * quote textarea uses this so typed text looks like a saved Echo.
+ *
+ * @param size - The quote size.
+ * @returns The class string.
+ */
+export function quoteClasses(size: QuoteSize): string {
+  return cn(SIZES[size], "whitespace-pre-wrap text-pretty text-ink [overflow-wrap:anywhere]");
+}
+
+type QuoteTextProps = {
+  size: QuoteSize;
+  /** The quote, rendered as plain text with its line breaks. Never HTML. */
+  children: ReactNode;
+  /** Layout and clamping only (e.g. `line-clamp-6`, `pr-8`). */
+  className?: string;
+};
+
+/** A quote in Newsreader. Wrap it in a `<figure>` with the attribution in a `<figcaption>`. */
+export function QuoteText({ size, children, className }: QuoteTextProps) {
+  return <blockquote className={cn(quoteClasses(size), className)}>{children}</blockquote>;
+}
+
+/**
+ * Joins author and source into the attribution line, or null when both are missing.
+ *
+ * @param echo - The Echo's author and source.
+ * @returns Text such as "Author, Source", or null.
+ */
+export function attribution(echo: { author: string | null; source: string | null }): string | null {
+  const parts = [echo.author, echo.source].filter(Boolean);
+  return parts.length > 0 ? parts.join(", ") : null;
+}

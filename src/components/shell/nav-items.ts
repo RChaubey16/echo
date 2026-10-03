@@ -42,7 +42,6 @@ export const MOBILE_TABS: Array<NavId | "add"> = [
   "search",
   "collections",
 ];
-export const ADD_ECHO_HREF = "/app/echoes/new";
 
 /**
  * Finds the nav item that matches the current path, preferring the longest match.

@@ -102,6 +102,21 @@ export function toErrorResponse(error: unknown, requestId: string, route?: strin
 }
 
 /**
+ * Reads a request body as JSON, treating a malformed body as a validation error.
+ *
+ * @param request - The incoming request.
+ * @returns The parsed JSON value.
+ * @throws AppError VALIDATION_ERROR when the body is not valid JSON.
+ */
+export async function readJson(request: Request): Promise<unknown> {
+  try {
+    return await request.json();
+  } catch {
+    throw new AppError("VALIDATION_ERROR", "The request body must be valid JSON.");
+  }
+}
+
+/**
  * Wraps a route handler with a request ID, timing logs and spec §39 error mapping.
  *
  * @param fn - The route handler to wrap.

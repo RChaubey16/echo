@@ -4,10 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef } from "react";
 import { LogoMark } from "@/components/echo/logo";
+import { AddEchoLink } from "@/components/echo/quick-capture";
 import { buttonClasses } from "@/components/ui/button-classes";
 import { CollapseIcon, ExpandIcon, PlusIcon, SearchIcon, UserIcon } from "@/components/ui/icons";
 import { AccountMenu } from "./account-menu";
-import { ADD_ECHO_HREF, NAV, SIDEBAR_NAV, activeNavId, type NavId } from "./nav-items";
+import { NAV, SIDEBAR_NAV, activeNavId, type NavId } from "./nav-items";
 
 type AppSidebarProps = {
   collapsed: boolean;
@@ -95,22 +96,17 @@ export function AppSidebar({ collapsed, onCollapsedChange, user }: AppSidebarPro
       <div className="flex min-h-0 flex-1 [scrollbar-width:thin] flex-col gap-6 overflow-x-hidden overflow-y-auto px-3 pt-2 pb-4 [&>*]:shrink-0">
         {/* The wrapper owns visibility: `hidden` on the link itself loses to the button's inline-flex. */}
         <div className={SHOW_EXPANDED}>
-          <Link
-            href={ADD_ECHO_HREF}
-            aria-keyshortcuts="n"
-            className={buttonClasses("primary", "w-full")}
-          >
+          <AddEchoLink className={buttonClasses("primary", "w-full")}>
             <PlusIcon className="h-5 w-5 shrink-0" />
             <span>Add Echo</span>
-          </Link>
+          </AddEchoLink>
         </div>
-        <Link
-          href={ADD_ECHO_HREF}
+        <AddEchoLink
           aria-label="Add Echo"
           className={`${SHOW_RAIL} mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary text-on-primary transition-[background-color,transform] duration-fast ease-standard hover:bg-primary-active active:scale-95 motion-reduce:active:scale-100`}
         >
           <PlusIcon className="h-5 w-5 shrink-0" />
-        </Link>
+        </AddEchoLink>
 
         <form role="search" action={NAV.search.href} className={SHOW_EXPANDED}>
           <label htmlFor="sidebar-search" className="sr-only">
