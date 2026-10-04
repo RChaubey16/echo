@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "./button";
+import { AlertIcon } from "./icons";
 import { buttonClasses } from "./button-classes";
 import { EmptyState } from "./empty-state";
 
@@ -39,14 +40,12 @@ export function ErrorState({
       body={body}
       className={className}
       action={
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col items-start gap-4">
           {onRetry ? (
-            <Button variant="secondary" onClick={onRetry}>
-              Try again
-            </Button>
+            <Button onClick={onRetry}>Try again</Button>
           ) : retryHref ? (
             // A full load on purpose: a client navigation could reuse the broken render.
-            <a href={retryHref} className={buttonClasses("secondary")}>
+            <a href={retryHref} className={buttonClasses("primary")}>
               Try again
             </a>
           ) : null}
@@ -66,11 +65,11 @@ export function ErrorState({
 function ErrorId({ id }: { id: string }) {
   const [copied, setCopied] = useState(false);
   return (
-    <p className="flex flex-wrap items-center justify-center gap-x-2 text-caption-sm text-muted">
+    <p className="flex flex-wrap items-center gap-x-2 text-caption-sm text-muted">
       <span className="[overflow-wrap:anywhere]">Error ID: {id}</span>
       <button
         type="button"
-        className="inline-flex h-11 items-center rounded-sm px-2 underline underline-offset-4 hover:text-ink"
+        className="inline-flex h-11 items-center rounded-md px-2 underline underline-offset-4 hover:text-ink"
         onClick={() => {
           void navigator.clipboard?.writeText(id).then(() => setCopied(true));
         }}
@@ -94,14 +93,16 @@ function ErrorId({ id }: { id: string }) {
  */
 export function SectionError({ what, retryHref }: { what: string; retryHref: string }) {
   return (
-    <p role="alert" className="mt-4 text-body-sm text-body">
-      Couldn&apos;t load {what}.{" "}
-      <a
-        href={retryHref}
-        className="inline-flex min-h-6 items-center text-primary underline underline-offset-4 hover:decoration-2"
-      >
+    <div
+      role="alert"
+      className="mt-4 flex items-center gap-3 rounded-md bg-error-tint py-2 pr-2 pl-4 text-body-md text-ink"
+    >
+      <AlertIcon className="h-4 w-4 shrink-0 text-error" />
+      <span className="min-w-0 flex-1">Couldn&apos;t load {what}.</span>
+      {/* A full load on purpose, like the route-level retry. */}
+      <a href={retryHref} className={buttonClasses("secondary", "h-11", "sm")}>
         Try again
       </a>
-    </p>
+    </div>
   );
 }

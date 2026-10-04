@@ -9,8 +9,10 @@ import {
 import { cn } from "@/lib/cn";
 import { AlertIcon } from "./icons";
 
-const CONTROL =
-  "w-full rounded-md border bg-canvas px-3 text-body-md text-ink placeholder:text-muted focus:border-ink focus:outline-1 focus:-outline-offset-2 focus:outline-ink disabled:bg-surface-soft disabled:text-muted-soft";
+// Focus: the border becomes 2px ink (the inset ring adds the second pixel without a layout shift),
+// plus the global primary focus ring outside it.
+export const CONTROL =
+  "w-full rounded-md border bg-canvas px-4 text-body-md text-ink transition-colors duration-fast ease-standard placeholder:text-muted hover:border-ink focus:border-ink focus:ring-1 focus:ring-ink focus:ring-inset disabled:border-hairline disabled:bg-surface-soft disabled:text-muted";
 
 /**
  * Returns the border classes for a control in its normal or error state.
@@ -19,7 +21,9 @@ const CONTROL =
  * @returns The border class string.
  */
 function borderFor(invalid: boolean | undefined): string {
-  return invalid ? "border-error" : "border-border-input";
+  return invalid
+    ? "border-error ring-1 ring-error ring-inset hover:border-error"
+    : "border-border-input";
 }
 
 /**
@@ -36,12 +40,12 @@ function growWithoutFieldSizing(textarea: HTMLTextAreaElement): void {
 
 /** A visible field label; never replace it with a placeholder. */
 export function Label({ className, ...rest }: LabelHTMLAttributes<HTMLLabelElement>) {
-  return <label className={cn("text-caption text-muted", className)} {...rest} />;
+  return <label className={cn("text-caption text-ink", className)} {...rest} />;
 }
 
 type ControlProps = { invalid?: boolean; errorId?: string };
 
-/** A single-line text input, 56px tall. */
+/** A single-line text input, 52px tall. */
 export const Input = forwardRef<
   HTMLInputElement,
   InputHTMLAttributes<HTMLInputElement> & ControlProps
@@ -51,14 +55,14 @@ export const Input = forwardRef<
       ref={ref}
       aria-invalid={invalid || undefined}
       aria-describedby={invalid ? errorId : undefined}
-      className={cn(CONTROL, "h-14", borderFor(invalid), className)}
+      className={cn(CONTROL, "h-13", borderFor(invalid), className)}
       {...rest}
     />
   );
 });
 
 /**
- * A textarea that grows with its content (CSS `field-sizing: content`), starting at 128px.
+ * A textarea that grows with its content (CSS `field-sizing: content`), starting at 112px.
  * `className` may set typography (QuoteText styling for the quote field) and min height.
  */
 export const Textarea = forwardRef<
@@ -76,7 +80,7 @@ export const Textarea = forwardRef<
       aria-describedby={invalid ? errorId : undefined}
       className={cn(
         CONTROL,
-        "[field-sizing:content] max-h-[60vh] min-h-32 py-3 pointer-coarse:resize-none", // audit-ignore: 60vh cap keeps long quotes scrollable inside dialogs
+        "[field-sizing:content] max-h-[60vh] min-h-28 py-3.5 pointer-coarse:resize-none", // audit-ignore: 60vh cap keeps long quotes scrollable inside dialogs
         borderFor(invalid),
         className,
       )}
@@ -89,8 +93,8 @@ export const Textarea = forwardRef<
 export function FieldError({ id, children }: { id: string; children?: string }) {
   if (!children) return null;
   return (
-    <p id={id} className="flex items-start gap-1.5 text-body-sm text-error">
-      <AlertIcon className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+    <p id={id} className="flex items-start gap-1.5 text-caption-sm text-error">
+      <AlertIcon className="h-4 w-4 shrink-0" />
       <span>{children}</span>
     </p>
   );

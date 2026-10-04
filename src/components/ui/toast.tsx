@@ -57,7 +57,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       {children}
       <div
         aria-live="polite"
-        className="pointer-events-none fixed inset-x-0 bottom-20 z-50 flex flex-col items-center gap-2 px-4 tablet:bottom-6"
+        className="pointer-events-none fixed inset-x-0 bottom-28 z-50 flex flex-col items-center gap-2 px-4 tablet:bottom-6"
       >
         {toasts.map((toast) => (
           <ToastItem key={toast.id} toast={toast} onDismiss={() => dismiss(toast.id)} />
@@ -89,14 +89,14 @@ function ToastItem({ toast, onDismiss }: { toast: Toast; onDismiss: () => void }
       onPointerLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
-      className="pointer-events-auto flex max-w-md animate-rise-in items-center gap-4 rounded-md bg-ink px-4 py-3 text-body-sm text-canvas shadow-float motion-reduce:animate-fade-in"
+      className="pointer-events-auto flex min-h-13 max-w-md animate-rise-in items-center gap-3 rounded-md bg-ink py-1 pr-2 pl-4 text-body-md text-canvas shadow-float motion-reduce:animate-fade-in"
     >
-      <span className="min-w-0">{toast.message}</span>
+      <span className="min-w-0 flex-1 py-2">{toast.message}</span>
       {toast.action && (
         <Link
           href={toast.action.href}
           onClick={onDismiss}
-          className="shrink-0 font-semibold text-canvas underline underline-offset-4 focus-visible:outline-canvas"
+          className="inline-flex h-11 shrink-0 items-center rounded-md px-3 font-semibold text-canvas underline underline-offset-4 focus-visible:outline-canvas"
         >
           {toast.action.label}
         </Link>

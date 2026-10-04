@@ -37,11 +37,11 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
           user={{ name: user.name, email: user.email }}
           collections={collections}
         >
-          <MobileHeader email={user.email} />
+          <MobileHeader name={user.name} email={user.email} />
           <main
             id="main"
             tabIndex={-1}
-            className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pb-16 focus-visible:outline-none tablet:px-6 tablet:pb-12 desktop:px-8"
+            className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pb-28 focus-visible:outline-none tablet:px-6 tablet:pb-12 desktop:px-8"
           >
             {children}
           </main>

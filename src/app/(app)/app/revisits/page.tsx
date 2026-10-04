@@ -52,7 +52,7 @@ export default async function RevisitsPage() {
 
       {due.length === 0 && upcoming.length === 0 ? (
         <EmptyState
-          icon={<CalendarIcon className="h-12 w-12" />}
+          icon={<CalendarIcon className="h-5 w-5" />}
           title="Nothing scheduled."
           body="Pick an Echo and choose a day to see it again."
         />

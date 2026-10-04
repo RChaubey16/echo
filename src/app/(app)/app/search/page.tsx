@@ -37,7 +37,7 @@ export default async function SearchPage({ searchParams }: PageProps<"/app/searc
 
       {!result ? (
         <EmptyState
-          icon={<SearchIcon className="h-12 w-12" />}
+          icon={<SearchIcon className="h-5 w-5" />}
           title="Search your library."
           body="Find Echoes by a word, an author, a source, a reflection, a tag or a collection."
         />

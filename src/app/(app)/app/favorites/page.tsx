@@ -47,7 +47,7 @@ export default async function FavoritesPage({ searchParams }: PageProps<"/app/fa
       <div className="flex flex-1 items-center justify-center py-12">
         <EmptyState
           headingLevel="h1"
-          icon={<HeartIcon className="h-12 w-12" />}
+          icon={<HeartIcon className="h-5 w-5" />}
           title="Nothing here yet."
           body="Favorite the Echoes you never want to lose."
         />

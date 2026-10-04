@@ -3,14 +3,15 @@ import { cn } from "@/lib/cn";
 
 type CardProps = HTMLAttributes<HTMLElement> & {
   as?: "article" | "section" | "div";
-  /** Adds the hover float for cards whose content is a link (stretched-link pattern). */
+  /** Darkens the border on hover, for cards whose content is a link (stretched-link pattern). */
   interactive?: boolean;
   compact?: boolean;
 };
 
 export const CARD_CLASSES = "relative rounded-lg border border-hairline bg-canvas";
+// Cards never lift or gain a shadow; the border darkens instead.
 export const CARD_INTERACTIVE =
-  "transition-shadow duration-base ease-standard hover:border-transparent hover:shadow-float";
+  "transition-colors duration-fast ease-standard hover:border-border-input";
 
 /** The base surface for QuoteCard and CollectionCard. `className` is for layout only. */
 export function Card({

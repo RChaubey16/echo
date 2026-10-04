@@ -2,14 +2,15 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
+// 36px visual chip with a 44px hit area.
 const CHIP =
-  "inline-flex h-8 max-w-full items-center gap-1.5 rounded-full border px-3 text-button-sm transition-colors duration-fast ease-standard";
-const RESTING = "border-hairline bg-canvas text-ink hover:border-ink";
+  "relative inline-flex h-9 max-w-full items-center gap-1.5 rounded-sm px-3 text-caption transition-colors duration-fast ease-standard before:absolute before:inset-x-0 before:-inset-y-1 before:content-['']";
+const RESTING = "bg-surface-strong text-body hover:bg-hairline hover:text-ink";
 // Ink fill is Echo's selection language; the primary accent stays reserved for saved state and primary actions.
-const SELECTED = "border-ink bg-ink text-canvas";
+const SELECTED = "bg-ink text-canvas";
 
 /**
- * Returns the tag-chip classes (DESIGN.md category-strip pill), for links, buttons and spans.
+ * Returns the tag-chip classes, for links, buttons and spans.
  *
  * @param selected - Whether the chip is the active filter or choice.
  * @param className - Layout classes only.
@@ -39,12 +40,12 @@ export function ChipLink({ href, selected, className, children, ...rest }: ChipL
   );
 }
 
-/** A small rounded label for counts and states such as "Favorite". 11px is the floor. */
+/** A small label for counts and states such as "Favorite". 12px is the floor. */
 export function Badge({ children, className }: { children: ReactNode; className?: string }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full bg-surface-strong px-2.5 py-1 text-badge text-ink tabular-nums",
+        "inline-flex items-center rounded-sm bg-surface-strong px-2 py-0.5 text-badge text-body tabular-nums",
         className,
       )}
     >

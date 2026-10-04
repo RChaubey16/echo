@@ -15,7 +15,7 @@ type TabsProps = {
 };
 
 /**
- * In-page tabs (DESIGN.md `product-tab-*`): an ink underline marks the selected tab. Arrow keys,
+ * In-page tabs: a 2px ink underline marks the selected tab; the rest are quiet. Arrow keys,
  * Home and End move between tabs and select them; Tab moves into the panel. For navigation between
  * pages, use links with `aria-current` instead.
  */
@@ -46,7 +46,7 @@ export function Tabs({ label, items, defaultTab, className }: TabsProps) {
         role="tablist"
         aria-label={label}
         onKeyDown={onKeyDown}
-        className="flex [scrollbar-width:none] gap-6 overflow-x-auto border-b border-hairline"
+        className="flex [scrollbar-width:none] gap-1 overflow-x-auto border-b border-hairline"
       >
         {items.map((item) => {
           const active = item.id === selected;
@@ -65,8 +65,10 @@ export function Tabs({ label, items, defaultTab, className }: TabsProps) {
               tabIndex={active ? 0 : -1}
               onClick={() => setSelected(item.id)}
               className={cn(
-                "-mb-px h-11 shrink-0 border-b-2 text-nav-link whitespace-nowrap transition-colors duration-fast ease-standard",
-                active ? "border-ink text-ink" : "border-transparent text-muted hover:text-ink",
+                "-mb-px h-12 shrink-0 rounded-t-md border-b-2 px-3.5 text-nav-link whitespace-nowrap transition-colors duration-fast ease-standard",
+                active
+                  ? "border-ink text-ink"
+                  : "border-transparent font-medium text-body hover:bg-surface-strong hover:text-ink",
               )}
             >
               {item.label}
