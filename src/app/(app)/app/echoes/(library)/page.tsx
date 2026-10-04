@@ -78,7 +78,7 @@ export default async function LibraryPage({ searchParams }: PageProps<"/app/echo
       <div className="flex flex-1 items-center justify-center py-12">
         <EmptyState
           headingLevel="h1"
-          icon={<QuoteMarksIcon className="h-12 w-12" />}
+          icon={<QuoteMarksIcon className="h-5 w-5" />}
           title="Your library is empty."
           body="Save the words that make you stop and think."
           action={

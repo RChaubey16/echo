@@ -1,8 +1,8 @@
 # Echo components
 
-> **Inkwell migration in progress.** Tokens moved to Inkwell in PR 1 (see DESIGN.md). Component
-> styles and structure move in PR 2 (primitives and shell) and PR 3 (Echo components and screens).
-> Until then, the classes below describe the code as built. When this file and the export's
+> **Inkwell migration in progress.** Tokens (PR 1), primitives and the shell (PR 2) are on
+> Inkwell. Echo components and screens move in PR 3; until then their entries below describe the
+> code as built. When this file and the export's
 > component sheet (`docs/design/claude-design/export/Echo Design System.dc.html`) differ, the
 > export is the target, and `docs/design/claude-design/implementation-plan.md` lists the
 > structural changes.
@@ -14,10 +14,11 @@ This file is the inventory of Echo's components. For each one it gives the DESIG
 1. [Layout frame](#layout-frame)
 2. [State matrix (every component)](#state-matrix)
 3. [Primitives: `src/components/ui/`](#primitives)
-4. [Echo components: `src/components/echo/`](#echo-components)
-5. [Screen recipes](#screen-recipes)
-6. [Empty, loading and error states](#empty-loading-and-error-states)
-7. [Voice and copy](#voice-and-copy)
+4. [Navigation: `src/components/shell/`](#navigation-srccomponentsshell)
+5. [Echo components: `src/components/echo/`](#echo-components)
+6. [Screen recipes](#screen-recipes)
+7. [Empty, loading and error states](#empty-loading-and-error-states)
+8. [Voice and copy](#voice-and-copy)
 
 ## Layout frame
 
@@ -28,7 +29,7 @@ This file is the inventory of Echo's components. For each one it gives the DESIG
 | Side gutter | `px-4 tablet:px-6 desktop:px-8` |
 | Section rhythm | `py-12 tablet:py-16` between major sections; `gap-8` between groups inside one |
 | Card grids | `grid gap-4 items-start`, with 1 column, then `tablet:grid-cols-2`, then `desktop:grid-cols-3`. Cards are as tall as their content: equal-height cards leave empty gaps under short quotes. Quotes need line length, so never use 4 columns, even though DESIGN.md's photo cards do. |
-| Surfaces | App background `bg-surface-soft`. Panels and cards are `bg-canvas` with `border-hairline-soft`. The featured panel uses `bg-tint-moss`; time and memory panels may use `bg-tint-ochre` / `bg-tint-heather`. |
+| Surfaces | App background `bg-paper`. Panels and cards are `bg-canvas` with `border-hairline`. The featured panel uses `bg-tint-moss`; time and memory panels may use `bg-tint-ochre` / `bg-tint-heather`. |
 | Separation | Separate with whitespace first, surfaces second, and a hairline third. |
 | Collection accents | Each collection gets an accent slot, stored as lagoon, bronze, plum or neutral and shown as moss, ochre, heather or a neutral ring. It appears as an 8px dot, an icon chip or a 4px card bar, always next to its name. |
 
@@ -39,8 +40,8 @@ A component isn't finished until it handles every state that applies to it.
 | State | Interactive elements | Data views |
 |---|---|---|
 | Default | ✓ | ✓ |
-| Hover | Only inside `@media (hover:hover)`, which Tailwind's `hover:` variant does in v4. It must be a visible change, never the only path to an action. | Cards: `hover:shadow-float` |
-| Focus-visible | A 2px ink outline (global), or the documented component focus. Never removed without a replacement. | Focusable cards |
+| Hover | Only inside `@media (hover:hover)`, which Tailwind's `hover:` variant does in v4. It must be a visible change, never the only path to an action. | Cards: `hover:border-border-input` |
+| Focus-visible | A 2px primary outline offset 2px (global), or the documented component focus. Never removed without a replacement. | Focusable cards |
 | Active/pressed | `active:` color shift plus, for buttons, `active:scale-98` | — |
 | Disabled | Tokens, `disabled:cursor-not-allowed`, and the native `disabled` attribute (not just a style) | — |
 | Loading | Busy affordance inside the control, `aria-busy="true"`, width kept, double-submit prevented | Skeleton that matches the final layout |
@@ -51,75 +52,128 @@ A component isn't finished until it handles every state that applies to it.
 
 ## Primitives
 
-### Button (DESIGN.md `button-*`)
+These match the component sheet (`Echo Design System.dc.html`, sections 05–11) as built in PR 2.
+
+### Button (`buttonClasses` / `Button`)
+
+All variants share `relative inline-flex items-center justify-center gap-2 rounded-md`, `transition-[background-color,border-color,color,transform] duration-fast ease-standard` and `disabled:cursor-not-allowed`. Labels are `text-button-md` (15/600).
 
 | Variant | Classes | Use |
 |---|---|---|
-| `primary` | `h-12 px-6 rounded-md bg-primary text-on-primary text-button-md hover:bg-primary-active active:bg-primary-active active:scale-98 disabled:bg-primary-disabled disabled:text-muted-soft` | One per view: Save Echo, Create collection |
-| `secondary` | `h-12 px-6 rounded-md border border-ink bg-canvas text-ink text-button-md hover:bg-surface-soft active:bg-surface-strong` | Cancel, Edit, other secondary actions |
-| `tertiary` | `h-auto px-0 text-ink text-button-md underline-offset-4 hover:underline` | Show more, Skip, inline actions |
-| `pill` | `rounded-full px-5 py-2.5 bg-primary text-on-primary text-button-sm hover:bg-primary-active` | Featured soft call to action: **Echo me something** |
-| `danger` | `h-12 px-6 rounded-md bg-error text-on-primary hover:bg-error-hover` | Confirm buttons inside delete dialogs only |
+| `primary` | `h-12 px-5 bg-primary text-on-primary hover:bg-primary-hover active:bg-primary-active active:scale-98 disabled:bg-primary-disabled disabled:text-muted-soft` | One per view: Save Echo, Echo me something, Create collection |
+| `secondary` | `h-12 px-5 border border-border-input text-ink hover:border-ink hover:bg-surface-strong active:bg-hairline disabled:border-hairline disabled:text-muted-soft` (no fill, so it sits on any surface) | Cancel, Open, Edit |
+| `tertiary` | `h-11 px-3 text-ink hover:bg-surface-strong active:bg-hairline disabled:text-muted-soft` | Skip, Show more, quiet inline actions |
+| `danger` | `h-12 px-5 bg-error text-on-error hover:bg-error-hover focus-visible:outline-error disabled:bg-error-tint disabled:text-muted-soft` | Confirm buttons in delete dialogs only |
+| `icon` | `h-11 w-11 rounded-full bg-surface-strong text-ink hover:bg-hairline active:bg-border-input active:text-canvas` | Icon-only actions; `aria-label` is required |
+| `pill` | An alias of `primary`, kept for existing callers. Inkwell has no pill buttons. | — |
 
-- **Sizes:** `md` (48px, the default) and `sm` (`h-10 px-4 text-button-sm`), for dense desktop toolbars only. On touch, keep a hit area of at least 44px.
-- **Loading:** show a 16px spinner before the label, change the label to its progressive form ("Saving…"), and set `disabled`. Keep the button the same width so the layout doesn't jump.
-- **Transitions:** `transition-[background-color,transform] duration-fast ease-standard`. Never `transition-all`.
-- Links that look like buttons are `<a>`/`<Link>` with the button classes. Actions are `<button type="button">`.
+- **Sizes:** `md` (48px, the default) and `sm` (`h-10`, `text-button-sm`), with a `::before` that extends the hit area to 44px. Use `sm` only in dense toolbars and inline banners.
+- **Loading:** show a 16px spinner before the label, change the label to its progressive form ("Saving…"), and set `disabled`. Keep the button the same width.
+- **Focus:** the global 2px `primary` ring, offset 2px. Danger buttons use an `error` ring.
+- Links that look like buttons are `<a>`/`<Link>` with `buttonClasses`. Actions are `<button type="button">`.
 
-### IconButton (DESIGN.md `icon-button-circle` / `icon-button-outline`)
+### Input / Textarea / Select (`field.tsx`, `select.tsx`)
 
-- `circle`: a 32px visual `rounded-full bg-surface-strong text-ink`, with the hit area extended to 44px using a `before:absolute before:-inset-1.5` pseudo-element.
-- `outline`: 40px, `rounded-full border border-hairline bg-canvas`.
-- `aria-label` is a **required** prop in the TypeScript type. Icons are `aria-hidden`.
-- Hover: `hover:bg-surface-soft` (outline) or `hover:bg-hairline-soft` (circle).
-
-### Input / Textarea (DESIGN.md `text-input`)
-
-- `h-14 px-3 rounded-md border border-border-input bg-canvas text-body-md text-ink placeholder:text-muted`. `border-input` (#8a7f72) is 3.7:1 on canvas, meeting the 3:1 boundary contrast WCAG requires.
-- **Focus:** DESIGN.md asks for "2px ink, no glow, no ring". Get it without layout shift by keeping the 1px border and adding an inset outline: `focus:border-ink focus:outline-1 focus:outline-ink focus:-outline-offset-2`. If you choose a different technique, check it at runtime.
-- **Label:** a visible `<label>` above the field, in `text-caption text-muted`, with `gap-1.5`. A placeholder is an example of the input, not a label.
-- **Error:** `border-error`, `aria-invalid="true"`, and a message below the field in `text-body-sm text-error` with a 14px icon, linked through `aria-describedby`. Validate on blur and on submit, not on every keystroke.
-- **Disabled:** `bg-surface-soft text-muted-soft`.
-- **Textarea:** grows with its content (`field-sizing: content` where supported, otherwise grow in JS), with `min-h-32`, and has no manual resize handle on touch devices.
-- **Counter:** show it only when within 10% of the maximum length (the spec limits a quote to 10,000 characters and author to 500). Use `text-caption-sm text-muted`, turning to error color once the limit is passed.
+- `CONTROL` (shared): `rounded-md border bg-canvas px-4 text-body-md text-ink placeholder:text-muted hover:border-ink`.
+  - The input is `h-13` (52px).
+  - A stacked select is `h-13`; an inline (toolbar) select is `h-11`.
+  - The textarea is `min-h-28 py-3.5` and grows with its content.
+- **Resting border:** `border-border-input` (3.7:1 on canvas, meeting SC 1.4.11).
+- **Focus:** the border becomes 2px ink, and the global primary ring sits outside it:
+  - `focus:border-ink focus:ring-1 focus:ring-ink focus:ring-inset`;
+  - the inset ring adds the second pixel without a layout shift.
+- **Label:** a visible `<label>` above the field in `text-caption text-ink`. A placeholder is an example, not a label.
+- **Error:**
+  - the field gets `border-error ring-1 ring-error ring-inset` (2px error) and `aria-invalid="true"`;
+  - below it goes `FieldError` (`text-caption-sm text-error` with a 16px alert icon), linked through `aria-describedby`;
+  - validate on blur and on submit.
+- **Disabled / read-only:** `border-hairline bg-surface-soft text-muted`.
+- **Quote textarea:** uses `quoteClasses("card")`, so typed text looks like a saved Echo.
+- **Counter:** shown only within 10% of the limit, in `text-caption-sm text-muted`, turning to `text-error` past it.
 
 ### Card (base for QuoteCard and CollectionCard)
 
-`relative rounded-lg border border-hairline bg-canvas p-6`. When interactive, add `transition-shadow duration-base ease-standard hover:border-transparent hover:shadow-float`. When the content is the click target, use the stretched-link pattern: the main `<Link>` gets `after:absolute after:inset-0`, and nested buttons get `relative z-10`. Never nest interactive elements inside a `<a>`.
+`relative rounded-lg border border-hairline bg-canvas p-6`.
 
-### Tag chip (DESIGN.md `category-strip` / `button-sm` pill)
+- **Interactive cards** add `transition-colors duration-fast ease-standard hover:border-border-input`. Cards never lift and never gain a shadow.
+- **When the content is the click target,** use the stretched-link pattern:
+  - the main `<Link>` gets `after:absolute after:inset-0`;
+  - nested buttons get `relative z-10`.
 
-- `inline-flex h-8 items-center rounded-full border border-hairline px-3 text-button-sm text-ink hover:border-ink`.
-- **Selected or active filter:** `bg-ink text-canvas border-ink`. Ink fill is Echo's selection language (it matches `date-picker-day-selected`). Don't use the primary accent here: it means *saved* and *primary action*.
-- **Removable chip** (TagInput): a trailing × IconButton labelled `Remove tag courage`.
+### Tag chip (`chipClasses`, `ChipLink`)
 
-### Badge (DESIGN.md `guest-favorite-badge`)
+- **Resting:** `relative inline-flex h-9 items-center rounded-sm px-3 text-caption bg-surface-strong text-body hover:bg-hairline hover:text-ink`. That is a 36px visual chip, with a `::before` that extends the hit area to 44px.
+- **Selected or active filter:** `bg-ink text-canvas`, plus a check icon where the chip is a toggle. Ink fill is Echo's selection language. Never use the primary accent here.
+- **Removable chip** (TagInput): a trailing × button labelled `Remove tag courage`.
 
-`rounded-full bg-canvas px-2.5 py-1 text-badge text-ink`. Add `shadow-float` only when it floats over other content. Use it for "Revisit due", "Favorite" and counts. **Don't use `text-uppercase-tag` (8px)** in Echo. It is below a readable size, so use `text-badge` (11px) as the floor.
+### Badge
+
+`rounded-sm bg-surface-strong px-2 py-0.5 text-badge text-body`, for counts and small states. `text-badge` (12px) is the floor.
 
 ### Dialog / Sheet
 
-- **Backdrop:** `bg-scrim`, fading in with `animate-fade-in`.
-- **Panel:** `rounded-lg bg-canvas p-6 shadow-float w-full max-w-md`, entering with `animate-rise-in`.
-- **Below 744px,** it becomes a bottom sheet: `rounded-t-lg` (32px), full width, with a drag handle (`h-1 w-10 rounded-full bg-hairline`) and bottom safe-area padding.
-- Focus is trapped and returns to the trigger when the dialog closes. Esc closes it. The title is linked with `aria-labelledby`. Prefer Radix Dialog if it's installed; otherwise use native `<dialog>` with `showModal()`.
-- **Destructive dialogs:** the primary (danger) button sits on the right, and Cancel gets initial focus.
+- **Backdrop:** `bg-scrim`, fading in.
+- **Panel:** `rounded-lg bg-canvas p-6 shadow-float`, `max-w-md` (or `max-w-lg`), entering with `animate-rise-in`.
+- **Below 744px,** it becomes a bottom sheet: `rounded-t-lg`, full width, with a drag handle and bottom safe-area padding.
+- Native `<dialog>` with `showModal()`. Focus is trapped and returns to the trigger. Esc asks the owner to close it.
+- **Destructive dialogs:** Cancel (secondary) gets initial focus, and the danger button sits on the right.
 
-### Dropdown / Menu / Popover
+### Dropdown / Menu (`dropdown.tsx`, `account-menu.tsx`)
 
-`rounded-lg bg-canvas shadow-float py-2 min-w-48`. Items are `h-10 px-4 text-body-md hover:bg-surface-soft focus-visible:bg-surface-soft`. Use full keyboard support (arrows, Home/End, typeahead, Esc). Prefer Radix.
+- **Menu:** `min-w-56 rounded-lg bg-canvas p-1.5 shadow-float`.
+- **Items:** `h-11 rounded-md px-3 gap-2.5 text-body-md hover:bg-surface-strong focus-visible:bg-surface-strong`, with 18px muted icons.
+- **Destructive items** read in `text-error` and sit after a `hairline-soft` separator.
+- Full keyboard support: arrows, Home/End, typeahead and Esc.
 
 ### Toast
 
-`rounded-md bg-ink text-canvas px-4 py-3 text-body-sm shadow-float`, placed at the bottom center (above the bottom tab bar on mobile). Toasts live in an `aria-live="polite"` region, auto-dismiss after 4s, pause on hover or focus, and can carry one optional action ("Undo", "View"). Use toasts to confirm an action, never to report a form error.
+- **Style:** inverted, `min-h-13 rounded-md bg-ink text-canvas pl-4 pr-2 text-body-md shadow-float`.
+- **Placement:** bottom center, raised above the mobile tab bar and its Add button (`bottom-28`, or `tablet:bottom-6`).
+- **Action:** one optional action ("Undo", "View") as a 44px underlined button.
+- **Behavior:** toasts live in an `aria-live="polite"` region, auto-dismiss after 4s and pause on hover or focus. They confirm actions; they never report form errors.
 
-### Tabs / nav tabs (DESIGN.md `product-tab-*`)
+### Tabs
 
-The active tab is `text-ink border-b-2 border-ink`, inactive tabs are `text-muted hover:text-ink`, and all use `text-nav-link`. Mark the current item with `aria-current="page"` for navigation, or with `role="tab"` and `aria-selected` for in-page tabs.
+- **Tab:** `h-12 px-3.5 rounded-t-md text-nav-link`.
+- **Active:** a 2px ink underline (`border-b-2 border-ink text-ink`).
+- **Inactive:** `font-medium text-body`, with a `surface-strong` fill on hover.
+- Use `role="tab"` and `aria-selected` for in-page tabs, and links with `aria-current="page"` for navigation.
+
+### Pagination
+
+- Previous / numbered pages / Next. `pageList()` shows the first and last page plus the current page and its neighbours, with "…" for gaps.
+- **Numbers:** 44px squares (`rounded-md`). The current page is `bg-ink text-canvas font-semibold` with `aria-current="page"`, and the others get a `surface-strong` hover.
+- **Previous / Next:** text with chevrons. When unavailable, they show `text-muted-soft` and are not links.
 
 ### Skeleton
 
-`rounded-sm bg-surface-strong animate-skeleton motion-reduce:animate-none`. Always shape it like the content it replaces (see below), and keep the same container size so nothing shifts when the content arrives.
+`rounded-sm bg-surface-strong animate-skeleton motion-reduce:animate-none`. Shape it like the content it replaces, and keep the container size so nothing shifts.
+
+### EmptyState / ErrorState / SectionError
+
+- **EmptyState:** a left-aligned card, `max-w-xl rounded-lg border border-hairline bg-canvas p-6 tablet:p-8`.
+  - It holds an optional icon on a 44px `tint-moss` disc (`text-mark-moss`), a `text-display-sm` title, one line of `text-body-md text-body`, and one action.
+- **ErrorState:** the same card, with a primary **Try again** and an optional error ID with Copy.
+- **SectionError** (a section that failed inside a working page): an `error-tint` banner with an alert icon, the message, and a small secondary **Try again**.
+
+## Navigation (`src/components/shell/`)
+
+- **Wordmark:** "Echo" set in `text-display-sm tracking-tight`, the interface sans. The logo mark stays on public pages and the favicon.
+- **Sidebar (≥1128px, `w-64`):**
+  - **Add Echo:** a full-width primary button.
+  - **Search:** a 44px `rounded-md` field with a `/` hint.
+  - **Nav items:** `h-11 px-3 text-body-md text-body`, with a `hover:bg-surface-soft`.
+  - **Collections:** a `text-label uppercase` heading with a 44px "+" button. Rows are `h-10 text-body-sm`, followed by "All collections" in `text-primary`.
+  - **Footer:** Settings, then the account button. It shows a heather initial avatar, the name (600) and the email (muted, truncated).
+- **Rail (744–1127px, or collapsed):**
+  - `w-24`, with 80px-wide items that stack an icon over a `text-badge` label.
+  - Add is a 56px round primary button.
+- **Mobile (<744px):**
+  - **Header:** 64px, with the wordmark and a 44px account button holding the avatar.
+  - **BottomTabBar:** `h-18` (72px). The raised Add is a 56px primary circle with `shadow-float`, sitting `-mt-6`.
+  - **Active tab:** a neutral `surface-strong` pill behind the icon, and a weight-600 label.
+  - The main content pads `pb-28` so nothing hides under the bar.
+- **Active state everywhere:** `bg-surface-strong font-semibold text-ink`. Never the accent.
 
 ## Echo components
 
@@ -216,21 +270,6 @@ Used on the Echo detail page for Author, Source, Saved, Collections and Revisit.
 - **Calendar cells:** 40px `rounded-full text-body-sm tabular-nums`. The selected day is `bg-ink text-canvas`. Today is `ring-1 ring-hairline`. Past days are disabled, in `text-muted-soft line-through`.
 - The calendar is a grid (`role="grid"`) navigated with the arrow keys, and each cell's label is the full date ("Thursday, April 1, 2027").
 - Once a date is chosen, show the result as text: "Revisit on Apr 1, 2027" plus a "Change" tertiary button.
-
-### Navigation (DESIGN.md `app-sidebar`)
-
-- **Sidebar (≥1128px, expanded):**
-  - `fixed inset-y-0 left-0 w-64 border-r border-hairline bg-canvas`, with the page content offset by the same width;
-  - top: logo plus a collapse button (`aria-expanded`, `aria-controls`);
-  - a full-width primary **Add Echo** button, then a search field (press `/`);
-  - nav items Home, Library, Favorites, Collections, Revisits: `h-10 px-3 rounded-md text-body-md text-body hover:bg-surface-soft`. The active item (`aria-current="page"`) gets `bg-surface-soft text-ink font-semibold`. Never the primary accent;
-  - a Collections list: at most 5 rows of accent dot, name and count (`text-body-sm`), then "All collections";
-  - Settings and the account at the bottom, above a hairline.
-- **Rail (744–1127px, or collapsed on desktop):** `w-24`. Items stack an icon over a `text-caption-sm` label (labels stay visible; never icon-only). Add becomes the 48px round primary button, and Search becomes a nav item. On desktop an Expand button sits at the end of the nav.
-- **Mobile (<744px):** no sidebar. A 64px header with the logo and account, plus the BottomTabBar: Home, Library, **Add** (the orb, raised `-mt-4`), Search, Collections. Favorites, Revisits and Settings live in the account menu.
-- The user's collapse choice is remembered per browser.
-- **The sidebar never scrolls sideways.** Its middle section is `overflow-y-auto overflow-x-hidden [scrollbar-width:thin]`. Every list in it uses `grid grid-cols-1` (a `minmax(0,1fr)` track), so long collection names truncate instead of widening the column. A plain `grid` sizes its column to the longest row.
-- **Marketing pages** (`/`, `/login`) use the DESIGN.md top-nav, with a hamburger below 744px.
 
 ### EchoRow (dense lists inside panels)
 

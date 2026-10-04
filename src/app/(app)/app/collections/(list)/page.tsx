@@ -3,7 +3,7 @@ import { CollectionCard, echoCount } from "@/components/echo/collection-card";
 import { NewCollectionButton } from "@/components/echo/new-collection-button";
 import { buttonClasses } from "@/components/ui/button-classes";
 import { EmptyState } from "@/components/ui/empty-state";
-import { FolderIcon, PlusIcon } from "@/components/ui/icons";
+import { LayersIcon, PlusIcon } from "@/components/ui/icons";
 import { requireUserPage } from "@/server/auth";
 import { listCollections } from "@/server/services/collections";
 
@@ -18,7 +18,7 @@ export default async function CollectionsPage() {
       <div className="flex flex-1 items-center justify-center py-12">
         <EmptyState
           headingLevel="h1"
-          icon={<FolderIcon className="h-12 w-12" />}
+          icon={<LayersIcon className="h-5 w-5" />}
           title="No collections yet."
           body="Collections help you gather Echoes around ideas, moments, and themes."
           action={

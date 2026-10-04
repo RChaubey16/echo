@@ -5,7 +5,7 @@ import { MarkReflectedButton } from "@/components/echo/mark-reflected-button";
 import { QuoteCard } from "@/components/echo/quote-card";
 import { TodaysEcho } from "@/components/echo/todays-echo";
 import { SectionError } from "@/components/ui/error-state";
-import { CalendarIcon, ClockIcon, FolderIcon, HeartIcon, LibraryIcon } from "@/components/ui/icons";
+import { CalendarIcon, ClockIcon, LayersIcon, HeartIcon, LibraryIcon } from "@/components/ui/icons";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/cn";
 import type { LibraryCounts } from "@/server/services/discovery";
@@ -276,7 +276,7 @@ const STATS: Array<{
     key: "collections",
     label: "Collections",
     href: "/app/collections",
-    icon: FolderIcon,
+    icon: LayersIcon,
     chip: "bg-tint-ochre text-mark-ochre",
   },
   {

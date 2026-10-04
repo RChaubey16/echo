@@ -4,20 +4,13 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Suspense, use, useRef } from "react";
 import { AccentDot } from "@/components/echo/accent-dot";
-import { LogoMark } from "@/components/echo/logo";
 import { NewCollectionButton } from "@/components/echo/new-collection-button";
 import { AddEchoLink } from "@/components/echo/quick-capture";
 import { buttonClasses } from "@/components/ui/button-classes";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  ArrowRightIcon,
-  CollapseIcon,
-  ExpandIcon,
-  PlusIcon,
-  SearchIcon,
-  UserIcon,
-} from "@/components/ui/icons";
+import { CollapseIcon, ExpandIcon, PlusIcon, SearchIcon } from "@/components/ui/icons";
 import type { SidebarCollectionsDto } from "@/types/echo";
+import { AccountAvatar } from "./account-avatar";
 import { AccountMenu } from "./account-menu";
 import { NAV, SIDEBAR_NAV, activeNavId, type NavId } from "./nav-items";
 import { SIDEBAR_SEARCH_ID } from "./search-ids";
@@ -36,10 +29,11 @@ type AppSidebarProps = {
  * renders the right layout from the cookie and nothing shifts after hydration. Tailwind only
  * detects literal class strings, so keep the variant written out in full.
  */
+// The active item is a neutral surface-strong fill with weight 600, never the accent.
 const ITEM = [
-  "flex h-16 w-full flex-col items-center justify-center gap-1 rounded-md text-caption-sm text-muted transition-colors duration-fast ease-standard hover:bg-surface-soft hover:text-ink",
-  "aria-[current=page]:bg-surface-soft aria-[current=page]:font-semibold aria-[current=page]:text-ink",
-  `desktop:group-data-[expanded=true]/side:h-10 desktop:group-data-[expanded=true]/side:flex-row desktop:group-data-[expanded=true]/side:justify-start desktop:group-data-[expanded=true]/side:gap-3 desktop:group-data-[expanded=true]/side:px-3 desktop:group-data-[expanded=true]/side:text-body-md desktop:group-data-[expanded=true]/side:text-body`,
+  "mx-auto flex w-20 flex-col items-center justify-center gap-1 rounded-md py-2 text-badge text-body transition-colors duration-fast ease-standard hover:bg-surface-soft hover:text-ink",
+  "aria-[current=page]:bg-surface-strong aria-[current=page]:font-semibold aria-[current=page]:text-ink",
+  `desktop:group-data-[expanded=true]/side:h-11 desktop:group-data-[expanded=true]/side:w-full desktop:group-data-[expanded=true]/side:flex-row desktop:group-data-[expanded=true]/side:justify-start desktop:group-data-[expanded=true]/side:gap-3 desktop:group-data-[expanded=true]/side:px-3 desktop:group-data-[expanded=true]/side:py-0 desktop:group-data-[expanded=true]/side:text-body-md`,
 ].join(" ");
 
 const SHOW_EXPANDED = `hidden desktop:group-data-[expanded=true]/side:block`;
@@ -79,14 +73,17 @@ function SidebarCollections({
   pathname: string;
 }) {
   return (
-    <section aria-labelledby="sidebar-collections" className={SHOW_EXPANDED}>
-      <div className="flex items-center justify-between pr-1 pl-3">
-        <h2 id="sidebar-collections" className="text-caption text-muted">
+    <section
+      aria-labelledby="sidebar-collections"
+      className={`${SHOW_EXPANDED} border-t border-hairline-soft pt-3`}
+    >
+      <div className="flex items-center justify-between pl-3">
+        <h2 id="sidebar-collections" className="text-label text-muted uppercase">
           Collections
         </h2>
         <NewCollectionButton
           aria-label="New collection"
-          className="relative flex h-8 w-8 items-center justify-center rounded-full text-muted transition-colors duration-fast ease-standard before:absolute before:-inset-1.5 hover:bg-surface-soft hover:text-ink"
+          className="flex h-11 w-11 items-center justify-center rounded-full text-muted transition-colors duration-fast ease-standard hover:bg-surface-strong hover:text-ink"
         >
           <PlusIcon className="h-4 w-4" />
         </NewCollectionButton>
@@ -147,7 +144,7 @@ function SidebarCollectionList({
               <Link
                 href={href}
                 aria-current={pathname === href ? "page" : undefined}
-                className="flex h-10 min-w-0 items-center gap-3 rounded-md px-3 text-body-sm text-body transition-colors duration-fast ease-standard hover:bg-surface-soft hover:text-ink aria-[current=page]:bg-surface-soft aria-[current=page]:font-semibold aria-[current=page]:text-ink"
+                className="flex h-10 min-w-0 items-center gap-2.5 rounded-md px-3 text-body-sm text-body transition-colors duration-fast ease-standard hover:bg-surface-soft hover:text-ink aria-[current=page]:bg-surface-strong aria-[current=page]:font-semibold aria-[current=page]:text-ink"
               >
                 <AccentDot accent={collection.accent} />
                 <span className="min-w-0 flex-1 truncate" title={collection.name}>
@@ -165,10 +162,9 @@ function SidebarCollectionList({
       </ul>
       <Link
         href="/app/collections"
-        className="mt-0.5 flex h-10 items-center gap-1.5 rounded-md px-3 text-body-sm text-muted transition-colors duration-fast ease-standard hover:bg-surface-soft hover:text-ink"
+        className="mt-0.5 flex h-10 items-center rounded-md px-3 text-body-sm font-medium text-primary transition-colors duration-fast ease-standard hover:bg-surface-soft hover:underline"
       >
         All collections
-        <ArrowRightIcon className="h-4 w-4" />
       </Link>
     </>
   );
@@ -195,30 +191,30 @@ export function AppSidebar({ collapsed, onCollapsedChange, user, collections }: 
       className="group/side fixed inset-y-0 left-0 z-30 hidden w-24 flex-col border-r border-hairline bg-canvas tablet:flex desktop:data-[expanded=true]:w-64"
     >
       <div
-        className={`flex h-20 items-center justify-center px-4 desktop:group-data-[expanded=true]/side:justify-between`}
+        className={`flex h-19 items-center justify-center px-4 desktop:group-data-[expanded=true]/side:justify-between desktop:group-data-[expanded=true]/side:pl-5`}
       >
+        {/* The wordmark is set in the interface sans; the serif is kept for quotes. */}
         <Link
           href="/app"
-          className="flex items-center gap-2 rounded-md text-ink"
+          className="flex h-11 min-w-11 items-center rounded-md text-display-sm tracking-tight text-ink"
           aria-label="Echo home"
         >
-          <LogoMark />
-          <span className={`text-display-sm ${SHOW_EXPANDED}`}>echo</span>
+          Echo
         </Link>
         <button
           ref={collapseRef}
           type="button"
-          className={`hidden h-8 w-8 items-center justify-center rounded-full text-muted transition-colors duration-fast ease-standard hover:bg-surface-soft hover:text-ink desktop:group-data-[expanded=true]/side:flex`}
+          className={`hidden h-11 w-11 items-center justify-center rounded-full text-muted transition-colors duration-fast ease-standard hover:bg-surface-strong hover:text-ink desktop:group-data-[expanded=true]/side:flex`}
           aria-label="Collapse sidebar"
           aria-controls="sidebar"
           aria-expanded="true"
           onClick={() => remember(true)}
         >
-          <CollapseIcon className="h-4 w-4" />
+          <CollapseIcon className="h-5 w-5" />
         </button>
       </div>
 
-      <div className="flex min-h-0 flex-1 [scrollbar-width:thin] flex-col gap-6 overflow-x-hidden overflow-y-auto px-3 pt-2 pb-4 [&>*]:shrink-0">
+      <div className="flex min-h-0 flex-1 [scrollbar-width:thin] flex-col gap-4 overflow-x-hidden overflow-y-auto px-2 pb-4 desktop:group-data-[expanded=true]/side:px-4 [&>*]:shrink-0">
         {/* The wrapper owns visibility: `hidden` on the link itself loses to the button's inline-flex. */}
         <div className={SHOW_EXPANDED}>
           <AddEchoLink className={buttonClasses("primary", "w-full")}>
@@ -228,9 +224,9 @@ export function AppSidebar({ collapsed, onCollapsedChange, user, collections }: 
         </div>
         <AddEchoLink
           aria-label="Add Echo"
-          className={`${SHOW_RAIL} mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary text-on-primary transition-[background-color,transform] duration-fast ease-standard hover:bg-primary-active active:scale-95 motion-reduce:active:scale-100`}
+          className={`${SHOW_RAIL} mx-auto mb-2 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-on-primary transition-[background-color,transform] duration-fast ease-standard hover:bg-primary-hover active:scale-95 active:bg-primary-active motion-reduce:active:scale-100`}
         >
-          <PlusIcon className="h-5 w-5 shrink-0" />
+          <PlusIcon className="h-6 w-6 shrink-0" />
         </AddEchoLink>
 
         <form
@@ -247,7 +243,7 @@ export function AppSidebar({ collapsed, onCollapsedChange, user, collections }: 
           <label htmlFor={SIDEBAR_SEARCH_ID} className="sr-only">
             Search your Echoes
           </label>
-          <div className="flex h-10 items-center gap-2 rounded-full border border-border-input bg-canvas pr-2 pl-3 focus-within:border-ink focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ink">
+          <div className="flex h-11 items-center gap-2 rounded-md border border-border-input bg-canvas pr-2 pl-3 transition-colors duration-fast ease-standard focus-within:border-ink focus-within:ring-1 focus-within:ring-ink focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary focus-within:ring-inset hover:border-ink">
             <SearchIcon className="h-4 w-4 shrink-0 text-muted" />
             <input
               id={SIDEBAR_SEARCH_ID}
@@ -262,7 +258,7 @@ export function AppSidebar({ collapsed, onCollapsedChange, user, collections }: 
               }}
               placeholder="Search"
               aria-keyshortcuts="/"
-              className="min-w-0 flex-1 bg-transparent text-body-sm text-ink placeholder:text-muted focus-visible:outline-none"
+              className="min-w-0 flex-1 bg-transparent text-body-md text-ink placeholder:text-muted focus-visible:outline-none"
             />
             <kbd
               className="rounded-sm border border-hairline px-1.5 text-caption-sm text-muted"
@@ -274,7 +270,7 @@ export function AppSidebar({ collapsed, onCollapsedChange, user, collections }: 
         </form>
 
         <nav aria-label="Main">
-          <ul className="grid grid-cols-1 gap-1">
+          <ul className="grid grid-cols-1 gap-0.5">
             {SIDEBAR_NAV.map((id) => (
               <SidebarLink key={id} id={id} active={active === id} />
             ))}
@@ -287,40 +283,44 @@ export function AppSidebar({ collapsed, onCollapsedChange, user, collections }: 
           <button
             ref={expandRef}
             type="button"
-            className={`mx-auto mt-2 hidden h-10 w-10 items-center justify-center rounded-full text-muted transition-colors duration-fast ease-standard hover:bg-surface-soft hover:text-ink desktop:flex desktop:group-data-[expanded=true]/side:hidden`}
+            className={`mx-auto mt-2 hidden h-11 w-11 items-center justify-center rounded-full text-muted transition-colors duration-fast ease-standard hover:bg-surface-strong hover:text-ink desktop:flex desktop:group-data-[expanded=true]/side:hidden`}
             aria-label="Expand sidebar"
             aria-controls="sidebar"
             aria-expanded="false"
             onClick={() => remember(false)}
           >
-            <ExpandIcon className="h-4 w-4" />
+            <ExpandIcon className="h-5 w-5" />
           </button>
         </nav>
 
         <SidebarCollections collections={collections} pathname={pathname} />
       </div>
 
-      <div className="border-t border-hairline p-3">
-        <ul className="grid grid-cols-1 gap-1">
+      <div className="border-t border-hairline-soft px-2 py-3 desktop:group-data-[expanded=true]/side:px-4">
+        <ul className="grid grid-cols-1 gap-0.5">
           <SidebarLink id="settings" active={active === "settings"} />
         </ul>
         <AccountMenu
           placement="up"
           email={user.email}
-          triggerClassName={`mt-1 flex w-full items-center justify-center gap-3 rounded-md p-2 text-left transition-colors duration-fast ease-standard hover:bg-surface-soft desktop:group-data-[expanded=true]/side:justify-start`}
+          triggerClassName={`mt-1 flex min-h-13 w-full items-center justify-center gap-3 rounded-md px-3 py-2 text-left transition-colors duration-fast ease-standard hover:bg-surface-soft desktop:group-data-[expanded=true]/side:justify-start`}
           trigger={
             <>
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface-strong text-ink">
-                <UserIcon className="h-5 w-5" />
-              </span>
+              <AccountAvatar
+                name={user.name}
+                email={user.email}
+                className="h-9 w-9 desktop:group-data-[expanded=true]/side:h-8 desktop:group-data-[expanded=true]/side:w-8"
+              />
               <span className={`${SHOW_EXPANDED} min-w-0 text-left`}>
                 <span
-                  className="block truncate text-title-sm text-ink"
+                  className="block truncate text-body-sm font-semibold text-ink"
                   title={user.name ?? user.email}
                 >
                   {user.name ?? "Your account"}
                 </span>
-                <span className="block text-caption-sm text-muted">Private library</span>
+                <span className="block truncate text-badge text-muted" title={user.email}>
+                  {user.email}
+                </span>
               </span>
             </>
           }

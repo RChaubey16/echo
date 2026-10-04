@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useId, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
-import { FolderIcon } from "@/components/ui/icons";
+import { LayersIcon } from "@/components/ui/icons";
 import { useToast } from "@/components/ui/toast";
 import { api, failureMessage } from "@/lib/api";
 import { cn } from "@/lib/cn";
@@ -76,7 +76,7 @@ export function AddToCollection({ echoId, collectionIds, className }: AddToColle
         className={cn("gap-2 text-button-sm", className)}
         onClick={() => setOpen(true)}
       >
-        <FolderIcon className="h-4 w-4 shrink-0" />
+        <LayersIcon className="h-4 w-4 shrink-0" />
         {collectionIds.length > 0 ? "Change collections" : "Add to collection"}
       </Button>
       <Dialog open={open} onRequestClose={close} labelledBy={titleId} initialFocusRef={doneRef}>

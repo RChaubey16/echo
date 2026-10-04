@@ -57,7 +57,7 @@ export default async function HomePage() {
       <div className="flex flex-1 items-center justify-center py-12">
         <EmptyState
           headingLevel="h1"
-          icon={<QuoteMarksIcon className="h-12 w-12" />}
+          icon={<QuoteMarksIcon className="h-5 w-5" />}
           title="Welcome to Echo."
           body="Save the words you don't want to forget."
           action={

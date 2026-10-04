@@ -2,6 +2,7 @@
 
 import { useId, type SelectHTMLAttributes } from "react";
 import { cn } from "@/lib/cn";
+import { CONTROL } from "./field";
 import { ChevronDownIcon } from "./icons";
 
 type SelectProps = Omit<SelectHTMLAttributes<HTMLSelectElement>, "children"> & {
@@ -17,13 +18,17 @@ export function Select({ label, inline = false, options, className, id, ...rest 
   const selectId = id ?? generated;
   return (
     <div className={cn("flex", inline ? "items-center gap-2" : "flex-col gap-1.5", className)}>
-      <label htmlFor={selectId} className="text-caption text-muted">
+      <label htmlFor={selectId} className={cn("text-caption", inline ? "text-muted" : "text-ink")}>
         {label}
       </label>
       <div className="relative">
         <select
           id={selectId}
-          className="h-10 w-full appearance-none rounded-md border border-border-input bg-canvas pr-8 pl-3 text-body-md text-ink focus:border-ink focus:outline-1 focus:-outline-offset-2 focus:outline-ink disabled:bg-surface-soft disabled:text-muted-soft"
+          className={cn(
+            CONTROL,
+            "appearance-none border-border-input pr-10", // audit-ignore: room for the chevron
+            inline ? "h-11" : "h-13",
+          )}
           {...rest}
         >
           {options.map((option) => (
@@ -32,7 +37,7 @@ export function Select({ label, inline = false, options, className, id, ...rest 
             </option>
           ))}
         </select>
-        <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-muted" />
+        <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-3 h-5 w-5 -translate-y-1/2 text-muted" />
       </div>
     </div>
   );

@@ -34,7 +34,7 @@ type DropdownProps = {
 };
 
 const ITEM =
-  "flex h-10 w-full items-center gap-3 px-4 text-left text-body-md transition-colors duration-fast ease-standard hover:bg-surface-soft focus-visible:bg-surface-soft focus-visible:outline-none";
+  "flex h-11 w-full items-center gap-2.5 rounded-md px-3 text-left text-body-md transition-colors duration-fast ease-standard hover:bg-surface-strong focus-visible:bg-surface-strong focus-visible:outline-none";
 
 /**
  * A menu button: arrows, Home/End and first-letter typeahead move between items, Esc closes and
@@ -114,29 +114,36 @@ export function Dropdown({
           aria-label={label}
           onKeyDown={onMenuKeyDown}
           className={cn(
-            "absolute top-full z-40 mt-2 min-w-48 animate-menu-in rounded-lg bg-canvas py-2 shadow-float motion-reduce:animate-fade-in",
+            "absolute top-full z-40 mt-2 min-w-56 animate-menu-in rounded-lg bg-canvas p-1.5 shadow-float motion-reduce:animate-fade-in",
             align === "end" ? "right-0 origin-top-right" : "left-0 origin-top-left",
           )}
         >
-          {items.map((item) => {
+          {items.map((item, index) => {
             const Icon = item.icon;
             return (
-              <button
-                key={item.label}
-                type="button"
-                role="menuitem"
-                tabIndex={-1}
-                className={cn(ITEM, item.danger ? "text-error" : "text-ink")}
-                onClick={() => {
-                  // Focus goes back to the trigger first, so a dialog opened by the item returns
-                  // focus there when it closes.
-                  close(true);
-                  item.onSelect();
-                }}
-              >
-                {Icon && <Icon className={cn("h-5 w-5 shrink-0", !item.danger && "text-muted")} />}
-                {item.label}
-              </button>
+              <div key={item.label}>
+                {/* A hairline sets a destructive action apart from the rest. */}
+                {item.danger && index > 0 && (
+                  <div role="separator" className="mx-0 my-1.5 h-px bg-hairline-soft" />
+                )}
+                <button
+                  type="button"
+                  role="menuitem"
+                  tabIndex={-1}
+                  className={cn(ITEM, item.danger ? "text-error" : "text-ink")}
+                  onClick={() => {
+                    // Focus goes back to the trigger first, so a dialog opened by the item returns
+                    // focus there when it closes.
+                    close(true);
+                    item.onSelect();
+                  }}
+                >
+                  {Icon && (
+                    <Icon className={cn("h-4.5 w-4.5 shrink-0", !item.danger && "text-muted")} />
+                  )}
+                  {item.label}
+                </button>
+              </div>
             );
           })}
         </div>

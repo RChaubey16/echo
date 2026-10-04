@@ -1,7 +1,7 @@
 import type { ComponentType, SVGProps } from "react";
 import {
   CalendarIcon,
-  FolderIcon,
+  LayersIcon,
   HeartIcon,
   HomeIcon,
   LibraryIcon,
@@ -27,7 +27,7 @@ export const NAV: Record<NavId, NavItem> = {
     id: "collections",
     label: "Collections",
     href: "/app/collections",
-    icon: FolderIcon,
+    icon: LayersIcon,
   },
   revisits: { id: "revisits", label: "Revisits", href: "/app/revisits", icon: CalendarIcon },
   search: { id: "search", label: "Search", href: "/app/search", icon: SearchIcon },

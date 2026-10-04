@@ -1,30 +1,36 @@
 import { cn } from "@/lib/cn";
 
-export type ButtonVariant = "primary" | "secondary" | "tertiary" | "danger" | "pill";
+export type ButtonVariant = "primary" | "secondary" | "tertiary" | "danger" | "pill" | "icon";
 export type ButtonSize = "md" | "sm";
 
 const BASE =
-  "inline-flex items-center justify-center gap-2 transition-[background-color,transform] duration-fast ease-standard disabled:cursor-not-allowed motion-reduce:active:scale-100";
+  "relative inline-flex shrink-0 items-center justify-center gap-2 rounded-md transition-[background-color,border-color,color,transform] duration-fast ease-standard disabled:cursor-not-allowed motion-reduce:active:scale-100";
+
+const PRIMARY =
+  "h-12 bg-primary px-5 text-button-md text-on-primary hover:bg-primary-hover active:scale-98 active:bg-primary-active disabled:bg-primary-disabled disabled:text-muted-soft";
 
 const VARIANTS: Record<ButtonVariant, string> = {
-  primary:
-    "h-12 rounded-md bg-primary px-6 text-button-md text-on-primary hover:bg-primary-active active:scale-98 active:bg-primary-active disabled:bg-primary-disabled disabled:text-muted-soft",
+  primary: PRIMARY,
   secondary:
-    "h-12 rounded-md border border-ink bg-canvas px-6 text-button-md text-ink hover:bg-surface-soft active:bg-surface-strong disabled:border-hairline disabled:text-muted-soft",
-  // Featured-panel CTA (Echo me something). 44px keeps the touch target.
-  pill: "h-11 rounded-full bg-primary px-5 text-button-sm text-on-primary hover:bg-primary-active active:scale-98 active:bg-primary-active disabled:bg-primary-disabled disabled:text-muted-soft",
-  tertiary: "h-auto px-0 text-button-md text-ink underline-offset-4 hover:underline",
+    "h-12 border border-border-input px-5 text-button-md text-ink hover:border-ink hover:bg-surface-strong active:border-ink active:bg-hairline disabled:border-hairline disabled:bg-transparent disabled:text-muted-soft",
+  // Echo me something. Inkwell has no pills, so it is the primary button.
+  pill: PRIMARY,
+  tertiary:
+    "h-11 px-3 text-button-md text-ink hover:bg-surface-strong active:bg-hairline disabled:bg-transparent disabled:text-muted-soft",
   danger:
-    "h-12 rounded-md bg-error px-6 text-button-md text-on-error hover:bg-error-hover active:scale-98 active:bg-error-hover disabled:bg-primary-disabled disabled:text-muted-soft",
+    "h-12 bg-error px-5 text-button-md text-on-error hover:bg-error-hover focus-visible:outline-error active:scale-98 active:bg-error-hover disabled:bg-error-tint disabled:text-muted-soft",
+  icon: "h-11 w-11 rounded-full bg-surface-strong text-ink hover:bg-hairline active:bg-border-input active:text-canvas disabled:bg-surface-strong disabled:text-muted-soft",
 };
 
-// The dense size only changes height, padding and type; tertiary has no box to shrink.
+// The dense size changes height, padding and type, and keeps a 44px hit area through ::before.
+const HIT_AREA = "before:absolute before:inset-x-0 before:-inset-y-0.5 before:content-['']";
 const SMALL: Record<ButtonVariant, string> = {
-  primary: "h-10 px-4 text-button-sm",
-  secondary: "h-10 px-4 text-button-sm",
-  tertiary: "text-button-sm",
-  pill: "",
-  danger: "h-10 px-4 text-button-sm",
+  primary: `h-10 px-4 text-button-sm ${HIT_AREA}`,
+  secondary: `h-10 px-4 text-button-sm ${HIT_AREA}`,
+  pill: `h-10 px-4 text-button-sm ${HIT_AREA}`,
+  tertiary: `h-10 px-3 text-button-sm ${HIT_AREA}`,
+  danger: `h-10 px-4 text-button-sm ${HIT_AREA}`,
+  icon: "",
 };
 
 /**
@@ -32,7 +38,7 @@ const SMALL: Record<ButtonVariant, string> = {
  *
  * @param variant - The button variant.
  * @param className - Extra layout classes (width, margins) only.
- * @param size - "md" (48px, the default) or "sm" (40px, dense desktop toolbars only).
+ * @param size - "md" (48px, the default) or "sm" (40px with a 44px hit area; dense toolbars only).
  * @returns The class string.
  */
 export function buttonClasses(

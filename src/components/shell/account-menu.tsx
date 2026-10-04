@@ -19,7 +19,7 @@ type AccountMenuProps = {
 };
 
 const ITEM =
-  "flex h-10 w-full items-center gap-3 px-4 text-left text-body-md text-ink transition-colors duration-fast ease-standard hover:bg-surface-soft focus-visible:bg-surface-soft focus-visible:outline-none";
+  "flex h-11 w-full items-center gap-2.5 rounded-md px-3 text-left text-body-md text-ink transition-colors duration-fast ease-standard hover:bg-surface-strong focus-visible:bg-surface-strong focus-visible:outline-none";
 
 /**
  * Lists the menu's focusable items in order.
@@ -113,13 +113,13 @@ export function AccountMenu({
           aria-label="Account"
           onKeyDown={onMenuKeyDown}
           className={cn(
-            "absolute z-40 min-w-56 animate-menu-in rounded-lg bg-canvas py-2 shadow-float motion-reduce:animate-fade-in",
+            "absolute z-40 min-w-56 animate-menu-in rounded-lg bg-canvas p-1.5 shadow-float motion-reduce:animate-fade-in",
             placement === "up"
               ? "bottom-full left-0 mb-2 origin-bottom-left"
               : "top-full right-0 mt-2 origin-top-right",
           )}
         >
-          <p className="truncate px-4 pt-1 pb-2 text-caption-sm text-muted" title={email}>
+          <p className="truncate px-3 pt-1.5 pb-2 text-caption-sm text-muted" title={email}>
             {email}
           </p>
           {links.map((id) => {
@@ -133,14 +133,14 @@ export function AccountMenu({
                 className={ITEM}
                 onClick={() => close(false)}
               >
-                <Icon className="h-5 w-5 shrink-0 text-muted" />
+                <Icon className="h-4.5 w-4.5 shrink-0 text-muted" />
                 {item.label}
               </Link>
             );
           })}
           <form action={signOutAction}>
             <button type="submit" role="menuitem" className={ITEM}>
-              <SignOutIcon className="h-5 w-5 shrink-0 text-muted" />
+              <SignOutIcon className="h-4.5 w-4.5 shrink-0 text-muted" />
               Sign out
             </button>
           </form>
