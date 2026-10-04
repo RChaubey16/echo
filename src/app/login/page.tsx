@@ -5,9 +5,15 @@ import { LogoMark } from "@/components/echo/logo";
 import { buttonClasses } from "@/components/ui/button-classes";
 import { GoogleIcon } from "@/components/ui/icons";
 import { SkipLink } from "@/components/ui/skip-link";
+import { publicPageMetadata } from "@/lib/site";
 import { getSessionUser, signIn } from "@/server/auth";
 
-export const metadata: Metadata = { title: "Sign in" };
+export const metadata: Metadata = publicPageMetadata({
+  title: "Sign in",
+  description:
+    "Sign in to Echo with Google to open your private library of quotes and reflections.",
+  path: "/login",
+});
 
 /**
  * Starts the Google OAuth flow and lands the user on /app afterwards.

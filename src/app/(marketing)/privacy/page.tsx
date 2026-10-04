@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ContactLine, LegalList, LegalPage, LegalSection } from "@/components/echo/legal-page";
+import { publicPageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = publicPageMetadata({
   title: "Privacy policy",
   description: "What Echo stores, who can see it, and how to take it with you or delete it.",
-};
+  path: "/privacy",
+});
 
 const inlineLink = "text-primary underline underline-offset-4 hover:decoration-2";
 

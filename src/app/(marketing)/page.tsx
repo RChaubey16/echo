@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { MarketingFooter } from "@/components/echo/marketing-footer";
 import { MarketingNav } from "@/components/echo/marketing-nav";
 import { buttonClasses } from "@/components/ui/button-classes";
 import { SkipLink } from "@/components/ui/skip-link";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE, publicPageMetadata } from "@/lib/site";
+
+export const metadata: Metadata = {
+  ...publicPageMetadata({ description: SITE_DESCRIPTION, path: "/" }),
+  title: { absolute: `${SITE_NAME} · ${SITE_TAGLINE}` },
+};
 
 export default async function LandingPage({ searchParams }: PageProps<"/">) {
   // Set by the Delete account dialog after the account is gone.
