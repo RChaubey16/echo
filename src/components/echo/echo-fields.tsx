@@ -2,7 +2,7 @@
 
 import { useId, useMemo, type RefObject } from "react";
 import { CharacterCount, FieldError, Input, Label, Textarea } from "@/components/ui/field";
-import { ChevronDownIcon } from "@/components/ui/icons";
+import { ChevronRightIcon } from "@/components/ui/icons";
 import { cn } from "@/lib/cn";
 import { CollectionPicker } from "./collection-picker";
 import {
@@ -33,6 +33,8 @@ type EchoFieldsProps = {
   disabled?: boolean;
   /** Blocks typing without changing the look, e.g. until the form has hydrated. */
   readOnly?: boolean;
+  /** Shows "Only the words are needed." under the quote (Quick Capture). */
+  quoteHint?: boolean;
 };
 
 /**
@@ -52,6 +54,7 @@ export function EchoFields({
   autoFocus,
   disabled,
   readOnly,
+  quoteHint = false,
 }: EchoFieldsProps) {
   const id = useId();
   const fieldId = (name: EchoField) => `${id}-${name}`;
@@ -61,6 +64,33 @@ export function EchoFields({
   const options = useLibraryOptions(detailsOpen);
   // Memoized so TagInput's option list only recomputes when the tags actually change.
   const tagNames = useMemo(() => options.tags.map((tag) => tag.name), [options.tags]);
+
+  const renderField = (name: Exclude<EchoField, "quote">) => {
+    const field = DETAIL_FIELDS.find((candidate) => candidate.name === name)!;
+    const shared = {
+      id: fieldId(field.name),
+      name: field.name,
+      value: values[field.name],
+      disabled,
+      readOnly,
+      placeholder: field.placeholder,
+      invalid: Boolean(errors[field.name]),
+      errorId: errorId(field.name),
+      onBlur: () => onBlur?.(field.name),
+    };
+    return (
+      <div className="flex min-w-0 flex-col gap-1.5">
+        <Label htmlFor={fieldId(field.name)}>{field.label}</Label>
+        {field.multiline ? (
+          <Textarea {...shared} onChange={(event) => onChange(field.name, event.target.value)} />
+        ) : (
+          <Input {...shared} onChange={(event) => onChange(field.name, event.target.value)} />
+        )}
+        <FieldError id={errorId(field.name)}>{errors[field.name]}</FieldError>
+        <CharacterCount length={values[field.name].trim().length} max={field.max} />
+      </div>
+    );
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -87,6 +117,9 @@ export function EchoFields({
         />
         <FieldError id={errorId("quote")}>{errors.quote}</FieldError>
         <CharacterCount length={values.quote.trim().length} max={FIELD_MAX.quote} />
+        {quoteHint && !errors.quote && (
+          <p className="text-caption-sm text-muted">Only the words are needed.</p>
+        )}
       </div>
 
       <div>
@@ -95,15 +128,15 @@ export function EchoFields({
           aria-expanded={detailsOpen}
           aria-controls={detailsId}
           onClick={() => onDetailsOpenChange(!detailsOpen)}
-          className="-mx-1 inline-flex h-11 items-center gap-1.5 rounded-md px-1 text-button-sm text-ink underline-offset-4 hover:underline"
+          className="-ml-2.5 inline-flex h-11 items-center gap-1.5 rounded-md px-2.5 text-button-md text-ink transition-colors duration-fast ease-standard hover:bg-surface-strong"
         >
-          More details
-          <ChevronDownIcon
+          <ChevronRightIcon
             className={cn(
               "h-4 w-4 transition-transform duration-base ease-standard motion-reduce:transition-none",
-              detailsOpen && "rotate-180",
+              detailsOpen && "rotate-90",
             )}
           />
+          {detailsOpen ? "Fewer details" : "More details"}
         </button>
         <div
           id={detailsId}
@@ -117,54 +150,31 @@ export function EchoFields({
           {/* Clip only while collapsed: open, the tag suggestions and collection popover must be
               able to overflow the panel. */}
           <div className={cn("min-h-0", !detailsOpen && "overflow-hidden")}>
-            <div className="flex flex-col gap-4 pt-2 pb-1">
-              {DETAIL_FIELDS.map((field) => {
-                const shared = {
-                  id: fieldId(field.name),
-                  name: field.name,
-                  value: values[field.name],
-                  disabled,
-                  readOnly,
-                  placeholder: field.placeholder,
-                  invalid: Boolean(errors[field.name]),
-                  errorId: errorId(field.name),
-                  onBlur: () => onBlur?.(field.name),
-                };
-                return (
-                  <div key={field.name} className="flex flex-col gap-1.5">
-                    <Label htmlFor={fieldId(field.name)}>{field.label}</Label>
-                    {field.multiline ? (
-                      <Textarea
-                        {...shared}
-                        onChange={(event) => onChange(field.name, event.target.value)}
-                      />
-                    ) : (
-                      <Input
-                        {...shared}
-                        onChange={(event) => onChange(field.name, event.target.value)}
-                      />
-                    )}
-                    <FieldError id={errorId(field.name)}>{errors[field.name]}</FieldError>
-                    <CharacterCount length={values[field.name].trim().length} max={field.max} />
-                  </div>
-                );
-              })}
-              <div className="flex flex-col gap-1.5">
-                <Label htmlFor={`${id}-tags`}>Tags</Label>
-                <TagInput
-                  id={`${id}-tags`}
-                  value={links.tagNames}
-                  onChange={(next) => onLinkChange("tagNames", next)}
-                  suggestions={tagNames}
-                  invalid={Boolean(errors.tagNames)}
-                  errorId={`${id}-tags-error`}
-                  disabled={disabled}
-                  readOnly={readOnly}
-                />
-                <FieldError id={`${id}-tags-error`}>{errors.tagNames}</FieldError>
+            <div className="flex flex-col gap-5 pt-3 pb-1">
+              <div className="grid grid-cols-1 gap-5 tablet:grid-cols-2 tablet:gap-4">
+                {renderField("author")}
+                {renderField("source")}
+              </div>
+              {renderField("reflection")}
+              <div className="grid grid-cols-1 gap-5 tablet:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] tablet:gap-4">
+                {renderField("mood")}
+                <div className="flex min-w-0 flex-col gap-1.5">
+                  <Label htmlFor={`${id}-tags`}>Tags</Label>
+                  <TagInput
+                    id={`${id}-tags`}
+                    value={links.tagNames}
+                    onChange={(next) => onLinkChange("tagNames", next)}
+                    suggestions={tagNames}
+                    invalid={Boolean(errors.tagNames)}
+                    errorId={`${id}-tags-error`}
+                    disabled={disabled}
+                    readOnly={readOnly}
+                  />
+                  <FieldError id={`${id}-tags-error`}>{errors.tagNames}</FieldError>
+                </div>
               </div>
               <div className="flex flex-col gap-1.5">
-                <span id={`${id}-collections-label`} className="text-caption text-muted">
+                <span id={`${id}-collections-label`} className="text-caption text-ink">
                   Collections
                 </span>
                 <CollectionPicker

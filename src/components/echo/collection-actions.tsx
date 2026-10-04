@@ -23,10 +23,10 @@ import { CollectionFormDialog } from "./collection-form-dialog";
 import { QuoteText, attribution } from "./quote-text";
 
 type CollectionActionsProps = {
-  collection: Pick<CollectionDto, "id" | "name" | "description">;
+  collection: Pick<CollectionDto, "id" | "name" | "description" | "accent">;
 };
 
-/** The collection page's actions: Add Echoes, and Rename / Delete in a "More" menu. */
+/** The collection page's actions: Add Echoes, and Edit / Delete in a "More" menu. */
 export function CollectionActions({ collection }: CollectionActionsProps) {
   const [dialog, setDialog] = useState<"rename" | "delete" | null>(null);
   const router = useRouter();
@@ -38,10 +38,10 @@ export function CollectionActions({ collection }: CollectionActionsProps) {
       <AddEchoesButton collectionId={collection.id} />
       <Dropdown
         label="More actions for this collection"
-        triggerClassName="flex h-12 w-12 items-center justify-center rounded-full border border-hairline bg-canvas text-ink transition-colors duration-fast ease-standard hover:bg-surface-soft"
+        triggerClassName={buttonClasses("icon")}
         trigger={<MoreIcon className="h-5 w-5" />}
         items={[
-          { label: "Rename", icon: EditIcon, onSelect: () => setDialog("rename") },
+          { label: "Edit", icon: EditIcon, onSelect: () => setDialog("rename") },
           {
             label: "Delete collection",
             icon: TrashIcon,
@@ -360,7 +360,8 @@ export function RemoveFromCollectionButton({
     <Button
       variant="tertiary"
       aria-label="Remove from this collection"
-      className="h-11 px-1"
+      size="sm"
+      className="px-2.5"
       loading={removing}
       loadingLabel="Removing…"
       onClick={async () => {

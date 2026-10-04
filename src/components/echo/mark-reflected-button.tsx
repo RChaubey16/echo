@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useOptimistic, useTransition } from "react";
+import { buttonClasses } from "@/components/ui/button-classes";
 import { CheckIcon } from "@/components/ui/icons";
 import { useToast } from "@/components/ui/toast";
 import { api, failureMessage } from "@/lib/api";
@@ -10,7 +11,17 @@ import { api, failureMessage } from "@/lib/api";
  * "Mark as reflected" on a due Revisit. It shows "Reflected" at once (optimistic) and keeps it
  * until the refreshed list drops the row; a failure reverts it and explains with a toast.
  */
-export function MarkReflectedButton({ revisitId }: { revisitId: string }) {
+export function MarkReflectedButton({
+  revisitId,
+  className,
+  size = "sm",
+}: {
+  revisitId: string;
+  /** Layout only, e.g. `w-full` on phones. */
+  className?: string;
+  /** "sm" (40px, panels) or "md" (48px, Revisit cards). */
+  size?: "sm" | "md";
+}) {
   const router = useRouter();
   const toast = useToast();
   const [done, setDone] = useOptimistic(false);
@@ -36,9 +47,13 @@ export function MarkReflectedButton({ revisitId }: { revisitId: string }) {
       type="button"
       onClick={onClick}
       aria-disabled={done || undefined}
-      className="inline-flex h-11 items-center gap-2 text-button-sm whitespace-nowrap text-ink underline-offset-4 hover:underline aria-disabled:cursor-default aria-disabled:no-underline"
+      className={buttonClasses(
+        "secondary",
+        `whitespace-nowrap aria-disabled:cursor-default aria-disabled:border-hairline aria-disabled:bg-transparent ${className ?? ""}`,
+        size,
+      )}
     >
-      {done && <CheckIcon className="h-4 w-4 text-primary" />}
+      <CheckIcon className={done ? "h-4 w-4 text-primary" : "h-4 w-4"} />
       {done ? "Reflected" : "Mark as reflected"}
     </button>
   );

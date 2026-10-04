@@ -71,13 +71,12 @@ export function AddToCollection({ echoId, collectionIds, className }: AddToColle
 
   return (
     <>
-      <Button
-        variant="tertiary"
-        className={cn("gap-2 text-button-sm", className)}
-        onClick={() => setOpen(true)}
-      >
-        <LayersIcon className="h-4 w-4 shrink-0" />
-        {collectionIds.length > 0 ? "Change collections" : "Add to collection"}
+      <Button variant="tertiary" className={cn("gap-2", className)} onClick={() => setOpen(true)}>
+        <LayersIcon className="h-4.5 w-4.5 shrink-0" />
+        {/* The label is visually hidden on phones, where the toolbar shows icons only. */}
+        <span className="sr-only tablet:not-sr-only">
+          {collectionIds.length > 0 ? "Change collections" : "Add to collection"}
+        </span>
       </Button>
       <Dialog open={open} onRequestClose={close} labelledBy={titleId} initialFocusRef={doneRef}>
         <h2 id={titleId} className="text-display-sm text-ink">

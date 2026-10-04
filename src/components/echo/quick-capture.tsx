@@ -193,6 +193,7 @@ function QuickCapture({
           detailsOpen={draft.detailsOpen}
           onDetailsOpenChange={draft.setDetailsOpen}
           quoteRef={quoteRef}
+          quoteHint
         />
 
         {failure && (
@@ -227,10 +228,10 @@ function QuickCapture({
             </div>
           </div>
         ) : (
-          <div className="flex gap-3 tablet:justify-end">
+          <div className="flex gap-2 border-t border-hairline-soft pt-5 tablet:justify-end">
             <Button
-              variant="secondary"
-              className="flex-1 tablet:flex-none"
+              variant="tertiary"
+              className="h-12 flex-1 tablet:flex-none"
               onClick={requestClose}
               disabled={saving}
             >
@@ -240,6 +241,8 @@ function QuickCapture({
               type="submit"
               loading={saving}
               loadingLabel="Saving…"
+              // Nothing to save until there are words; Ctrl/Cmd+Enter is ignored too.
+              disabled={draft.values.quote.trim() === ""}
               aria-keyshortcuts="Control+Enter Meta+Enter"
               className="flex-1 tablet:flex-none"
             >

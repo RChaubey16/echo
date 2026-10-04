@@ -121,17 +121,20 @@ Tailwind's default `--spacing` is 4px, matching DESIGN.md's base unit.
 | 12 | `3` | list row padding, chip padding |
 | 16 | `4` | card grid gaps, compact card padding |
 | 24 | `6` | card padding, dialog padding |
+| 28 | `7` | roomy card padding (settings, due Revisits), gaps inside Today's Echo |
 | 32 | `8` | the desktop gutter, gaps between groups |
+| 40 | `10` | gaps between Home's sections, tablet panel padding |
 | 48 | `12` | mobile section spacing |
+| 56 | `14` | Today's Echo's desktop padding, the welcome card |
 | 64 | `16` | section spacing at tablet and wider |
-| 96 | `24` | the landing page's section rhythm |
+| 80 | `20` | the public pages' desktop gutter and section rhythm |
+| 96 | `24` | the largest section breaks |
 
-Off-system steps (`7`, `9`, `10`, `11`, …) are flagged by `audit_ui.py`, with a few exceptions:
-
-- `5` (20px) is the mobile gutter and button padding.
-- `14` (56px) is Today's Echo's desktop padding.
-- Control heights the design specifies directly: buttons `h-12` (48), small buttons `h-10` (40)
-  with a 44px hit area, inputs `h-13` (52).
+`2.5` (10), `3.5` (14), `4.5` (18) and `5` (20, the mobile gutter and button padding) are for fine
+alignment inside components. Other steps (`9`, `11`, `18`, `22`, `28`) are flagged by
+`audit_ui.py`. Control heights the design specifies directly: buttons `h-12` (48), small buttons
+`h-10` (40) with a 44px hit area, inputs `h-13` (52), the search field `h-15` (60), the mobile tab
+bar `h-18` (72).
 
 ## Rules
 

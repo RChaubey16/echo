@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { fullDate, relativeDate, savedLabel } from "@/lib/dates";
+import { fullDate, inFromNow, relativeDate, savedLabel } from "@/lib/dates";
 
 const now = new Date("2026-10-02T12:00:00Z");
 const ago = (days: number) => new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
@@ -29,5 +29,20 @@ describe("savedLabel and fullDate", () => {
 
   it("formats the full date", () => {
     expect(fullDate(new Date("2025-11-02T10:00:00Z"))).toBe("November 2, 2025");
+  });
+});
+
+describe("inFromNow", () => {
+  const ahead = (days: number) => new Date(now.getTime() + days * 24 * 60 * 60 * 1000);
+  it.each([
+    [0.5, "tomorrow"],
+    [1, "tomorrow"],
+    [3, "in 3 days"],
+    [21, "in 3 weeks"],
+    [150, "in 5 months"],
+    [365, "in 1 year"],
+    [800, "in 2 years"],
+  ])("%d days ahead reads %s", (days, expected) => {
+    expect(inFromNow(ahead(days), now)).toBe(expected);
   });
 });

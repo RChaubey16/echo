@@ -63,10 +63,10 @@ export function AppearancePicker({ stored }: { stored: Theme | null }) {
             <label
               key={option.value}
               className={cn(
-                "relative flex min-h-14 cursor-pointer items-center gap-3 rounded-md border px-4 py-3 transition-colors duration-fast ease-standard has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ink",
+                "relative flex min-h-14 cursor-pointer items-center gap-3 rounded-md py-3 transition-colors duration-fast ease-standard has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-primary",
                 checked
-                  ? "border-ink bg-surface-soft"
-                  : "border-border-input bg-canvas hover:bg-surface-soft",
+                  ? "border-2 border-ink bg-surface-strong px-3.75"
+                  : "border border-border-input bg-canvas px-4 hover:border-ink hover:bg-surface-strong",
               )}
             >
               <input

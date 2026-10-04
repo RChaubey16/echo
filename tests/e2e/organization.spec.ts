@@ -121,7 +121,9 @@ test("search finds a word from a reflection and opens the result", async ({ page
   await expect(page).toHaveURL(new RegExp(`/app/echoes/${echo.id}$`));
 
   await open(page, "/app/search?q=zzzznothing");
-  await expect(page.getByRole("heading", { name: 'No Echoes match "zzzznothing".' })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Nothing matches “zzzznothing” yet." }),
+  ).toBeVisible();
 });
 
 test("create, rename and delete a collection; its Echoes stay", async ({ page, context }) => {
@@ -144,8 +146,8 @@ test("create, rename and delete a collection; its Echoes stay", async ({ page, c
   await expect(page.getByText("A line worth keeping.")).toBeVisible();
 
   await page.getByRole("button", { name: "More actions for this collection" }).click();
-  await page.getByRole("menuitem", { name: "Rename" }).click();
-  const rename = page.getByRole("dialog", { name: "Rename collection" });
+  await page.getByRole("menuitem", { name: "Edit" }).click();
+  const rename = page.getByRole("dialog", { name: "Edit collection" });
   await rename.getByLabel("Name").fill("Keepsakes");
   await rename.getByRole("button", { name: "Save changes" }).click();
   await expect(page.getByRole("heading", { level: 1, name: "Keepsakes" })).toBeVisible();

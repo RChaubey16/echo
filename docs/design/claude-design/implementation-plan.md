@@ -72,3 +72,29 @@ Design started from, not part of Echo.
 - `pnpm test`.
 - `pnpm test:e2e`, including axe.
 - Manual screenshots compared against the export.
+
+## Status
+
+- PR 1 (tokens and docs): merged as #21.
+- PR 2 (primitives and shell): merged as #22.
+- PR 3 (Echo components and screens): this branch.
+
+## Decisions made during PR 3
+
+1. **Collection colour picker.** The export's "New collection" dialog has a Color choice, and the
+   original brief asked for one.
+   - The API already accepted `accent`, so the dialog now offers Moss / Ochre / Heather / Neutral.
+   - Leaving it unset on a new collection keeps the automatic colour cycle.
+   - The collection menu's "Rename" became "Edit", since the dialog now edits the colour too.
+2. **Echo detail quote size.** The detail mockup sets the quote at 48px, while DESIGN.md and the
+   handoff give `quote-hero` as 38px and make Today's Echo (44px) the largest. The detail page uses
+   38px.
+3. **Search side column.** The export shows matching collections and tags beside the results. The
+   search API returns Echoes only, so the column is left out. Collection names are still
+   highlighted on each result.
+4. **Collection detail list.** The export shows rows there; the page keeps the QuoteCard masonry
+   used by Library and Favorites, so tags and the Remove action stay visible.
+5. **Spacing scale.** The export uses 28, 40, 56 and 80px throughout, so these were added to the
+   scale (Tailwind `7`, `10`, `14`, `20`) in DESIGN.md, `tokens.md` and `audit_ui.py`.
+6. **Logo mark.** The export uses a text wordmark everywhere, so `LogoMark` was removed. The
+   recoloured mark remains as the favicon, apple-icon and OG image.

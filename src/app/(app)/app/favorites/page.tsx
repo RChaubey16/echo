@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { QuoteCard } from "@/components/echo/quote-card";
+import { MASONRY, MASONRY_ITEM, QuoteCard } from "@/components/echo/quote-card";
 import { ChipLink } from "@/components/ui/chip";
 import { EmptyState } from "@/components/ui/empty-state";
 import { HeartIcon } from "@/components/ui/icons";
@@ -80,9 +80,9 @@ export default async function FavoritesPage({ searchParams }: PageProps<"/app/fa
           </ul>
         </nav>
       </header>
-      <ul className="grid grid-cols-1 items-start gap-4 tablet:grid-cols-2 desktop:grid-cols-3">
+      <ul className={MASONRY}>
         {result.items.map((echo) => (
-          <li key={echo.id} className="min-w-0">
+          <li key={echo.id} className={MASONRY_ITEM}>
             <QuoteCard echo={echo} showReflection showTags />
           </li>
         ))}

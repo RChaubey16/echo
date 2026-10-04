@@ -309,7 +309,8 @@ export function AppSidebar({ collapsed, onCollapsedChange, user, collections }: 
               <AccountAvatar
                 name={user.name}
                 email={user.email}
-                className="h-9 w-9 desktop:group-data-[expanded=true]/side:h-8 desktop:group-data-[expanded=true]/side:w-8"
+                size="md"
+                className="desktop:group-data-[expanded=true]/side:h-8 desktop:group-data-[expanded=true]/side:w-8"
               />
               <span className={`${SHOW_EXPANDED} min-w-0 text-left`}>
                 <span

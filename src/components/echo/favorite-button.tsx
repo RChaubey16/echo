@@ -9,8 +9,11 @@ import { cn } from "@/lib/cn";
 type FavoriteButtonProps = {
   echoId: string;
   isFavorite: boolean;
-  /** "icon" is the bare heart (cards, rows); "labelled" adds visible text (detail page). */
-  variant?: "icon" | "labelled";
+  /**
+   * "icon" is the bare heart (cards, rows), "filled" a 48px heart on a surface-strong disc
+   * (Today's Echo), and "labelled" adds visible text.
+   */
+  variant?: "icon" | "filled" | "labelled";
   className?: string;
 };
 
@@ -50,7 +53,7 @@ export function FavoriteButton({
       key={pops}
       fill={isFavorite ? "currentColor" : "none"}
       className={cn(
-        "h-6 w-6 shrink-0 transition-colors duration-fast ease-standard",
+        "h-5 w-5 shrink-0 transition-colors duration-fast ease-standard",
         isFavorite && pops > 0 && "animate-heart-pop motion-reduce:animate-none",
       )}
     />
@@ -63,7 +66,7 @@ export function FavoriteButton({
         aria-pressed={isFavorite}
         onClick={toggle}
         className={cn(
-          "inline-flex h-12 items-center gap-2 rounded-md border border-ink bg-canvas px-5 text-button-md text-ink transition-[background-color,transform] duration-fast ease-standard hover:bg-surface-soft active:scale-98 active:bg-surface-strong motion-reduce:active:scale-100",
+          "inline-flex h-11 items-center gap-2 rounded-md px-3 text-button-md text-ink transition-[background-color,transform] duration-fast ease-standard hover:bg-surface-strong active:scale-98 active:bg-hairline motion-reduce:active:scale-100",
           className,
         )}
       >
@@ -82,7 +85,10 @@ export function FavoriteButton({
       title={label}
       onClick={toggle}
       className={cn(
-        "flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-fast ease-standard hover:bg-surface-soft",
+        "flex items-center justify-center rounded-full transition-colors duration-fast ease-standard",
+        variant === "filled"
+          ? "h-12 w-12 bg-surface-strong hover:bg-hairline"
+          : "h-11 w-11 hover:bg-surface-strong",
         isFavorite ? "text-primary" : "text-muted hover:text-ink",
         className,
       )}

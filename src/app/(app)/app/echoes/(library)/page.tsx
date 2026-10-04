@@ -2,18 +2,20 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { AccentDot } from "@/components/echo/accent-dot";
-import { QuoteCard } from "@/components/echo/quote-card";
+import { MASONRY, MASONRY_ITEM, QuoteCard } from "@/components/echo/quote-card";
 import { AddEchoLink } from "@/components/echo/quick-capture";
 import { SortSelect } from "@/components/echo/sort-select";
 import { buttonClasses } from "@/components/ui/button-classes";
 import { chipClasses } from "@/components/ui/chip";
 import { EmptyState } from "@/components/ui/empty-state";
-import { CloseIcon, QuoteMarksIcon } from "@/components/ui/icons";
+import { CheckIcon, CloseIcon, QuoteMarksIcon } from "@/components/ui/icons";
 import { Pagination } from "@/components/ui/pagination";
 import { hrefWith, parsePage, parseSort, parseString, parseUuid } from "@/lib/search-params";
 import { requireUserPage } from "@/server/auth";
 import { getLibraryFilters } from "@/server/organization-pages";
 import { listEchoes } from "@/server/services/echoes";
+import { listTags } from "@/server/services/tags";
+import type { TagDto } from "@/types/echo";
 import type { EchoSort } from "@/server/validation/echo";
 
 export const metadata: Metadata = { title: "Library" };
@@ -54,9 +56,10 @@ export default async function LibraryPage({ searchParams }: PageProps<"/app/echo
   const collectionId = parseUuid(collectionParam);
   // Both only need the URL, so they run together. Listing by a not-owned ID is safe (every query
   // is scoped to the user); such a filter is dropped by the redirect below.
-  const [filters, result] = await Promise.all([
+  const [filters, result, tags] = await Promise.all([
     getLibraryFilters(user.id, tagId, collectionId),
     listEchoes(user.id, { page, limit: PAGE_SIZE, sort, tag: tagId, collection: collectionId }),
+    listTags(user.id),
   ]);
   const state: LibraryState = {
     page,
@@ -102,21 +105,14 @@ export default async function LibraryPage({ searchParams }: PageProps<"/app/echo
         <SortSelect value={sort} />
       </header>
 
-      {filtered && (
+      <TagFilter
+        tags={tags}
+        selected={filters.tag?.id}
+        hrefFor={(tag) => libraryHref({ ...state, tag, page: 1 })}
+      />
+
+      {filters.collection && (
         <ul aria-label="Active filters" className="-mt-4 flex flex-wrap items-center gap-2">
-          {filters.tag && (
-            <li className="max-w-full min-w-0">
-              <Link
-                href={libraryHref({ ...state, tag: undefined, page: 1 })}
-                className={chipClasses(true)}
-                aria-label={`Remove filter: tag ${filters.tag.name}`}
-                title={filters.tag.name}
-              >
-                <span className="truncate">Tag: {filters.tag.name}</span>
-                <CloseIcon className="h-3.5 w-3.5 shrink-0" />
-              </Link>
-            </li>
-          )}
           {filters.collection && (
             <li className="max-w-full min-w-0">
               <Link
@@ -134,7 +130,7 @@ export default async function LibraryPage({ searchParams }: PageProps<"/app/echo
           <li>
             <Link
               href={libraryHref({ page: 1, sort })}
-              className="inline-flex h-8 items-center px-2 text-button-sm text-ink underline-offset-4 hover:underline"
+              className={buttonClasses("tertiary", "", "sm")}
             >
               Clear filters
             </Link>
@@ -153,9 +149,9 @@ export default async function LibraryPage({ searchParams }: PageProps<"/app/echo
           }
         />
       ) : (
-        <ul className="grid grid-cols-1 items-start gap-4 tablet:grid-cols-2 desktop:grid-cols-3">
+        <ul className={MASONRY}>
           {result.items.map((echo) => (
-            <li key={echo.id} className="min-w-0">
+            <li key={echo.id} className={MASONRY_ITEM}>
               <QuoteCard echo={echo} showReflection showTags />
             </li>
           ))}
@@ -167,5 +163,99 @@ export default async function LibraryPage({ searchParams }: PageProps<"/app/echo
         hrefFor={(target) => libraryHref({ ...state, page: target })}
       />
     </div>
+  );
+}
+
+/** How many tags the filter shows on phones before "More tags". */
+const MOBILE_TAGS = 3;
+/** How many of the most-used tags the filter offers at all. */
+const MAX_TAGS = 12;
+
+/**
+ * The tag filter strip: "All" plus the most-used tags with their counts. The selected tag is ink
+ * with a check. Phones show three tags, and the rest behind "More tags".
+ *
+ * @param props - The user's tags, the selected tag, and the URL builder.
+ * @returns The filter, or null when the user has no tags.
+ */
+function TagFilter({
+  tags,
+  selected,
+  hrefFor,
+}: {
+  tags: TagDto[];
+  selected?: string;
+  hrefFor: (tagId: string | undefined) => string;
+}) {
+  const used = tags.filter((tag) => tag.echoCount > 0 || tag.id === selected);
+  if (used.length === 0) return null;
+  const top = [...used]
+    .sort((a, b) => b.echoCount - a.echoCount || a.name.localeCompare(b.name))
+    .slice(0, MAX_TAGS);
+  // Keep a selected tag visible even when it isn't among the most used.
+  const chosen = used.find((tag) => tag.id === selected);
+  if (chosen && !top.includes(chosen)) top.push(chosen);
+
+  const chip = (tag: TagDto, className?: string) => {
+    const active = tag.id === selected;
+    return (
+      <li key={tag.id} className={className ?? "max-w-full min-w-0"}>
+        <Link
+          href={hrefFor(active ? undefined : tag.id)}
+          aria-current={active ? "true" : undefined}
+          // The selected tag clears the filter when pressed, and says so.
+          aria-label={active ? `Remove filter: tag ${tag.name}` : undefined}
+          title={tag.name}
+          className={chipClasses(active)}
+        >
+          {active && <CheckIcon className="h-4 w-4 shrink-0" />}
+          <span className="truncate">{tag.name}</span>
+          <span className={active ? "font-normal" : "font-normal text-muted"}>
+            <span className="sr-only">, </span>
+            {tag.echoCount}
+          </span>
+        </Link>
+      </li>
+    );
+  };
+
+  return (
+    <nav
+      aria-label="Filter by tag"
+      className="-mt-2 flex flex-wrap items-center gap-2 border-b border-hairline pb-5"
+    >
+      <span className="mr-1 text-caption text-body">Tags</span>
+      <ul className="contents">
+        <li>
+          <Link
+            href={hrefFor(undefined)}
+            aria-current={selected ? undefined : "true"}
+            className={chipClasses(!selected)}
+          >
+            All
+          </Link>
+        </li>
+        {top.slice(0, MOBILE_TAGS).map((tag) => chip(tag))}
+        {/* The rest show inline from tablet up; on phones they wait behind "More tags". */}
+        {top.slice(MOBILE_TAGS).map((tag) => chip(tag, "hidden max-w-full min-w-0 tablet:block"))}
+      </ul>
+      {top.length > MOBILE_TAGS && (
+        <details className="group w-full tablet:hidden">
+          <summary
+            className={buttonClasses(
+              "tertiary",
+              "list-none px-2.5 [&::-webkit-details-marker]:hidden",
+              "sm",
+            )}
+          >
+            <span className="group-open:hidden">More tags</span>
+            <span className="hidden group-open:inline">Fewer tags</span>
+          </summary>
+          <ul className="mt-2 flex flex-wrap gap-2">
+            {top.slice(MOBILE_TAGS).map((tag) => chip(tag))}
+          </ul>
+        </details>
+      )}
+    </nav>
   );
 }
