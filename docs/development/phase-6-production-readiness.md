@@ -19,8 +19,10 @@
 
 ## Status (2026-10-04)
 
-The code side of this phase is done. What's left needs access to the provider dashboards, so the
-owner has to do it; those items stay unchecked below.
+The code shipped in PR #8 (`13f7bd5`) and is deployed to production. The dashboard setup that
+can be done before launch is done. What's left needs the production deploy and the custom domain:
+Sentry alerts, the Google consent screen, inspecting real payloads and the spec §67 run. Those items
+stay unchecked below.
 
 **Implementation notes**
 
@@ -28,27 +30,38 @@ owner has to do it; those items stay unchecked below.
 - **CSP:** `src/proxy.ts` now runs on every page (not only `/app`) and sets a per-request nonce CSP (`src/lib/security-headers.ts`). `style-src` keeps `'unsafe-inline'` because React style props and `next/font` emit inline styles. API routes get `default-src 'none'`. The static headers live in `next.config.ts`.
 - **Rate limits:** `apiHandler` puts the route's policy in an AsyncLocalStorage scope; `requireUser()` counts it against the user ID, so every authenticated mutation is limited without each handler remembering to. Without `UPSTASH_REDIS_REST_URL`/`TOKEN` (local, CI, tests) limits are off; production logs a warning if they are missing.
 - **Authorization lint:** `no-restricted-syntax` forbids `findUnique` in `src/server` and `src/app`. The two existing calls (own user row, `daily_echoes` keyed by `userId`) carry justified disables. The grep found every `update`/`delete`/`$queryRaw` already scoped by `userId` or by an owned row looked up first.
-- **Sentry v11** replaced `sendDefaultPii` with `dataCollection`; everything there is off, including stack-frame variables (a local can hold a quote). `beforeSend` (`src/lib/sentry-scrub.ts`) also strips bodies, cookies, user, query strings (`?q=`) and content keys. Tracing is off and there is no Replay. Server-rendered errors are reported by `onRequestError`; unhandled API errors are captured with their `errorId`; error boundaries report browser-only errors.
+- **Sentry v11** replaced `sendDefaultPii` with `dataCollection`; everything there is off, including stack-frame variables (a local can hold a quote). `beforeSend` (`src/lib/sentry-scrub.ts`) also strips bodies, cookies, user, query strings (`?q=`) and content keys. Tracing is off and there is no Replay. Server-rendered errors are reported by `onRequestError`; unhandled API errors are captured with their `errorId`; error boundaries report browser-only errors. The browser SDK is loaded only when `NEXT_PUBLIC_SENTRY_DSN` is set, and asynchronously after start-up, so it never slows first load or hydration (loading it eagerly made CI hydration slow enough to expose the `ThemeSync` race below).
 - **Analytics:** PostHog EU, server-side only through its capture HTTP API (no SDK, no client script, no CSP host). `$process_person_profile: false`, so there is no person profile. `echo_opened`, `collection_opened` and the search page fire from Server Components.
 - **Export** includes the account, every collection and tag (even empty ones) and each Echo's Revisits, beyond the spec's example. Soft-deleted Echoes are not exported. CSV starts with a UTF-8 BOM so Excel reads it correctly.
 - **Account deletion** is one `DELETE FROM users` that cascades. Google tokens are revoked after the response (best effort). The goodbye message is `/?goodbye=1`.
+- **ThemeSync fix:** it now reapplies the saved theme when the page's `data-theme` disagrees with the cookie, not only when the cookie does. A slow-hydrating tab could rewrite the cookie after another page was rendered without it, leaving that page on the wrong theme.
+- **Free tiers only:** every service runs on its free plan (Vercel Hobby, Supabase Free, PostHog, Upstash, Sentry Developer).
 - **Backups: dropped (owner decision, 2026-10-04).** `echo-prod` stays on the Supabase free plan, which has no backups, and no independent dump runs. A database loss would be unrecoverable. `/privacy` and `/terms` say so and point users to Settings › Your data to export.
 
-**Owner actions (dashboards and accounts)**
+**Owner actions**
 
-1. Supabase: rotate the DB password and re-confirm the anon key can't read `echoes`.
-2. Vercel production env: set a fresh `AUTH_SECRET` (different from preview's), `UPSTASH_REDIS_REST_URL`/`TOKEN`, `SENTRY_DSN`, `NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_ORG`/`PROJECT`/`AUTH_TOKEN`, `POSTHOG_KEY`, `POSTHOG_PERSONAL_API_KEY`, `POSTHOG_PROJECT_ID` and `NEXT_PUBLIC_CONTACT_EMAIL`.
-3. PostHog (EU cloud): create the project and turn off autocapture and session recording in its settings, even though Echo never loads the client script.
-4. Sentry: create alert rules (error rate) and an uptime monitor on `/api/health` every minute. Inspect a real event and a real PostHog event to confirm no quote or reflection text gets through.
-5. GitHub: make the CI `check` job (which includes the authorization suite) and the `Security` workflow required for merge.
-6. Launch: publish the Google OAuth consent screen (app name, logo, privacy URL `/privacy`, verified domain), set up the custom domain on Vercel, then run spec §67 by hand on prod with a fresh Google account.
+Done (2026-10-04):
+
+- [x] Supabase: DB password rotated; anon key confirmed unable to read `echoes`.
+- [x] Vercel Production env: fresh `AUTH_SECRET`, Upstash, Sentry and PostHog keys and `NEXT_PUBLIC_CONTACT_EMAIL`, set for Production only (not Preview).
+- [x] PostHog (EU cloud): project created; autocapture and session recording off.
+- [x] GitHub: a `main` ruleset (PR required with 0 approvals, no force pushes or deletion) requiring `check`, `Secret scan` and `Dependency audit`.
+- [x] Local `.env` holds the PostHog keys for reference; test runs set `ANALYTICS_DISABLED=1` so they never send events.
+
+After the production deploy:
+
+- [ ] Custom domain with HTTPS on Vercel.
+- [ ] Sentry: an uptime monitor on `https://<domain>/api/health` every minute, and an email alert on errors.
+- [ ] Google OAuth consent screen: app name, logo, privacy (`/privacy`) and terms (`/terms`) URLs, the verified domain and the `https://<domain>/api/auth/callback/google` redirect URI; then publish it to production.
+- [ ] Inspect a real PostHog event and a real Sentry event: no quote or reflection text, cookies or request bodies.
+- [ ] Run spec §67 by hand on prod with a fresh Google account, then export that account's data and delete it.
 
 ## 1. Security review
 
 **Authentication and sessions**
 
 - [x] Session cookies are `HttpOnly`, `Secure` and `SameSite=Lax`. Auth.js does this by default; verify it.
-- [ ] `AUTH_SECRET` is rotated for prod and differs per environment.
+- [x] `AUTH_SECRET` is rotated for prod and differs per environment.
 - [x] Sign out invalidates the session row.
 
 **Authorization**
@@ -87,8 +100,8 @@ Vercel functions are stateless, so use **Upstash Redis + `@upstash/ratelimit`**:
 
 **Supabase**
 
-- [ ] Confirm the Data API is disabled, or RLS is enabled on every table. Test with the anon key: it must not be able to read `echoes`.
-- [ ] Rotate the DB password. Restrict the network to Vercel egress if your plan supports it.
+- [x] Confirm the Data API is disabled, or RLS is enabled on every table. Test with the anon key: it must not be able to read `echoes`.
+- [x] Rotate the DB password. Restrict the network to Vercel egress if your plan supports it. (Network restrictions aren't available on the free plan; skipped.)
 - [x] The service-role key is never present in the app's env.
 
 **Dependencies**
@@ -126,11 +139,11 @@ A dedicated `tests/integration/authz.test.ts`. It creates users A and B, gives e
 ## 4. Error monitoring & logging (spec §63)
 
 - [x] Sentry (`@sentry/nextjs`) on the client and server, with these settings:
-  - `sendDefaultPii: false`;
+  - `sendDefaultPii: false` (in Sentry v11 this is `dataCollection`, with every switch off);
   - a `beforeSend` hook that strips request bodies, cookies and the `quote`, `reflection` and `name` fields;
   - no Session Replay, or Replay with all text masked.
 - [x] Logs include the request ID, error ID, route, status and duration. The `error.tsx` UI shows the same error ID.
-- [ ] Log drain: Vercel log drain → Axiom / Better Stack, or Vercel's built-in logs to start with.
+- [x] Log drain: Vercel log drain → Axiom / Better Stack, or Vercel's built-in logs to start with. (Vercel's built-in logs for now.)
 - [ ] Alerts:
   - error rate above the threshold;
   - `/api/health` failing (uptime check every minute).
@@ -183,7 +196,7 @@ A dedicated `tests/integration/authz.test.ts`. It creates users A and B, gives e
 - [ ] Google OAuth consent screen published, moved from "Testing" to "In production", with the app name, logo, privacy URL and domain verified.
 - [ ] Custom domain with HTTPS on Vercel.
 - [x] `robots.txt`: allow `/` and `/login`; disallow `/app` and `/api`.
-- [ ] Prod env vars reviewed. Local development and CI point only at Docker Postgres. Previews share `echo-prod`, so no seed, reset or test script can run there.
+- [x] Prod env vars reviewed. Local development and CI point only at Docker Postgres. Previews share `echo-prod`, so no seed, reset or test script can run there.
 - [ ] Full spec §67 Definition of Done run by hand on prod with a fresh Google account.
 - [ ] Spec §64 E2E critical flows green against a production-like environment. The Signup flow is replaced by Google sign-in via a seeded session.
 
@@ -199,7 +212,7 @@ A dedicated `tests/integration/authz.test.ts`. It creates users A and B, gives e
 
 - [x] The Phase 6 UI (export, account deletion, legal pages) passes the `echo-design-system` validation checklist.
 - [ ] All 15 items of spec §67 pass on production.
-- [ ] Authorization suite green. No open high or critical findings from the security review.
+- [x] Authorization suite green. No open high or critical findings from the security review.
 - ~~A backup restore has been tested at least once, and the runbook is written.~~ Dropped with §3.
 - [ ] Analytics and Sentry are confirmed, by inspecting real payloads, to carry no quote or reflection text.
 - [ ] A user can export their data and delete their account on their own.
