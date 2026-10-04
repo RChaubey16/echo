@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Newsreader } from "next/font/google";
 import { cookies } from "next/headers";
 import type { ReactNode } from "react";
+import { SITE_DESCRIPTION, SITE_NAME, siteUrl } from "@/lib/site";
 import { THEME_COOKIE, parseTheme } from "@/lib/theme";
 import "./globals.css";
 
@@ -14,8 +15,11 @@ const newsreader = Newsreader({
 });
 
 export const metadata: Metadata = {
-  title: { default: "Echo", template: "%s · Echo" },
-  description: "Words worth coming back to.",
+  metadataBase: siteUrl(),
+  applicationName: SITE_NAME,
+  title: { default: SITE_NAME, template: `%s · ${SITE_NAME}` },
+  description: SITE_DESCRIPTION,
+  formatDetection: { telephone: false, email: false, address: false },
 };
 
 export const viewport: Viewport = {
