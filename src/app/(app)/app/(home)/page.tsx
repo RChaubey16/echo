@@ -76,7 +76,10 @@ export default async function HomePage() {
         <h1 className="text-display-lg text-ink">{greetingFor(localHour(timeZone, now))}</h1>
         <p className="mt-1 text-body-md text-body">
           {counts.revisitsDue > 0 ? (
-            <Link href="/app/revisits" className="text-primary underline-offset-4 hover:underline">
+            <Link
+              href="/app/revisits"
+              className="text-primary underline underline-offset-4 hover:decoration-2"
+            >
               {counts.revisitsDue === 1
                 ? "1 Echo is due for a revisit."
                 : `${counts.revisitsDue} Echoes are due for a revisit.`}

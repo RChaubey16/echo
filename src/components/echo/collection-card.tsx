@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import type { CollectionDto } from "@/types/echo";
 import { AccentDot } from "./accent-dot";
 
@@ -39,13 +40,12 @@ export function CollectionCard({ collection }: { collection: CollectionDto }) {
 
 /** The CollectionCard skeleton: a name bar, a count bar and two description bars. */
 export function CollectionCardSkeleton() {
-  const bar = "animate-skeleton rounded-xs bg-surface-strong motion-reduce:animate-none";
   return (
     <div aria-hidden className="rounded-md border border-hairline bg-surface-card p-6">
-      <div className={`h-5 w-1/2 ${bar}`} />
-      <div className={`mt-2 h-4 w-1/4 ${bar}`} />
-      <div className={`mt-4 h-4 w-full ${bar}`} />
-      <div className={`mt-2 h-4 w-2/3 ${bar}`} />
+      <Skeleton className="h-5 w-1/2" />
+      <Skeleton className="mt-2 h-4 w-1/4" />
+      <Skeleton className="mt-4 h-4 w-full" />
+      <Skeleton className="mt-2 h-4 w-2/3" />
     </div>
   );
 }

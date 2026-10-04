@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { buttonClasses } from "@/components/ui/button-classes";
 import { OpenQuoteIcon, ShuffleIcon } from "@/components/ui/icons";
 import { useToast } from "@/components/ui/toast";
-import { api } from "@/lib/api";
+import { api, failureMessage } from "@/lib/api";
 import { cn } from "@/lib/cn";
 import { fullDate, relativeDate } from "@/lib/dates";
 import { RANDOM_EXCLUDE_MAX } from "@/server/services/discovery-rules";
@@ -73,8 +73,8 @@ export function TodaysEcho({ echo: initial, date, dateLabel }: TodaysEchoProps) 
       setEcho(next);
       setSwaps((count) => count + 1);
       setStatus(announcement(next));
-    } catch {
-      toast({ message: "Couldn't find another Echo. Try again." });
+    } catch (error) {
+      toast({ message: failureMessage(error, "Couldn't find another Echo.") });
     } finally {
       setPhase("idle");
       setMinHeight(undefined);

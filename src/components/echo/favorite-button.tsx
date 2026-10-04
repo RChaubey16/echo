@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { HeartIcon } from "@/components/ui/icons";
 import { useToast } from "@/components/ui/toast";
-import { api } from "@/lib/api";
+import { api, failureMessage } from "@/lib/api";
 import { cn } from "@/lib/cn";
 
 type FavoriteButtonProps = {
@@ -37,10 +37,10 @@ export function FavoriteButton({
     try {
       const saved = await api.updateEcho(echoId, { isFavorite: next });
       if (call === pending.current) setIsFavorite(saved.isFavorite);
-    } catch {
+    } catch (error) {
       if (call !== pending.current) return;
       setIsFavorite(!next);
-      toast({ message: "Couldn't update favorites. Try again." });
+      toast({ message: failureMessage(error, "Couldn't update favorites.") });
     }
   };
 

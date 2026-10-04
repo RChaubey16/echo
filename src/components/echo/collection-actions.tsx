@@ -16,7 +16,8 @@ import {
   TrashIcon,
 } from "@/components/ui/icons";
 import { useToast } from "@/components/ui/toast";
-import { ApiError, api } from "@/lib/api";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ApiError, api, failureMessage } from "@/lib/api";
 import type { CollectionDto, EchoDto } from "@/types/echo";
 import { CollectionFormDialog } from "./collection-form-dialog";
 import { QuoteText, attribution } from "./quote-text";
@@ -103,7 +104,7 @@ function DeleteCollectionDialog({
     } catch (error) {
       if (!(error instanceof ApiError && error.status === 404)) {
         setDeleting(false);
-        setFailure("Couldn't delete this collection. Check your connection and try again.");
+        setFailure(failureMessage(error, "Couldn't delete this collection."));
         return;
       }
     }
@@ -229,9 +230,9 @@ export function AddEchoesButton({ collectionId }: { collectionId: string }) {
     inflight.current.add(call);
     try {
       await call;
-    } catch {
+    } catch (error) {
       setInCollection((current) => flip(current, !adding));
-      toast({ message: "Couldn't update this collection. Try again." });
+      toast({ message: failureMessage(error, "Couldn't update this collection.") });
     } finally {
       inflight.current.delete(call);
       setBusy((current) => flip(current, false));
@@ -284,10 +285,7 @@ export function AddEchoesButton({ collectionId }: { collectionId: string }) {
           ) : results === null ? (
             <div className="flex flex-col gap-4 py-2">
               {[0, 1, 2].map((row) => (
-                <div
-                  key={row}
-                  className="h-10 animate-skeleton rounded-xs bg-surface-strong motion-reduce:animate-none"
-                />
+                <Skeleton key={row} className="h-10" />
               ))}
             </div>
           ) : results.length === 0 ? (
@@ -374,9 +372,9 @@ export function RemoveFromCollectionButton({
           await api.removeFromCollection(collectionId, echoId);
           toast({ message: "Removed from this collection" });
           router.refresh();
-        } catch {
+        } catch (error) {
           setRemoving(false);
-          toast({ message: "Couldn't remove this Echo. Try again." });
+          toast({ message: failureMessage(error, "Couldn't remove this Echo.") });
         }
       }}
     >

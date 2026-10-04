@@ -4,6 +4,7 @@ import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { redirect } from "next/navigation";
 import { cache } from "react";
+import { parseTheme, type Theme } from "@/lib/theme";
 import { db } from "@/server/db";
 import { AppError } from "@/server/http";
 
@@ -17,10 +18,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     session({ session, user }) {
       // The database adapter hands over the whole users row, including our own columns.
-      const row = user as typeof user & { timezone?: string | null; onboardedAt?: Date | null };
+      const row = user as typeof user & {
+        timezone?: string | null;
+        onboardedAt?: Date | null;
+        theme?: string | null;
+      };
       session.user.id = user.id;
       session.user.timezone = row.timezone ?? null;
       session.user.onboardedAt = row.onboardedAt ?? null;
+      session.user.theme = parseTheme(row.theme) ?? null;
       return session;
     },
   },
@@ -35,6 +41,8 @@ export type SessionUser = {
   timezone: string | null;
   /** When the first-Echo reflection prompt was answered or skipped. */
   onboardedAt: Date | null;
+  /** The saved Appearance choice, or null for System. */
+  theme: Theme | null;
 };
 
 /**
@@ -56,6 +64,7 @@ export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
     image: user.image ?? null,
     timezone: user.timezone ?? null,
     onboardedAt: user.onboardedAt ?? null,
+    theme: user.theme ?? null,
   };
 });
 

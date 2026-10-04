@@ -16,7 +16,7 @@ export function MobileHeader({ email }: { email: string }) {
       <div className="flex h-16 items-center justify-between px-4">
         <Link
           href="/app"
-          className="flex items-center gap-2 rounded-sm text-ink"
+          className="flex h-11 items-center gap-2 rounded-sm text-ink"
           aria-label="Echo home"
         >
           <LogoMark />
@@ -26,7 +26,7 @@ export function MobileHeader({ email }: { email: string }) {
           placement="down"
           email={email}
           links={["favorites", "revisits", "settings"]}
-          triggerClassName="relative flex h-10 w-10 items-center justify-center rounded-full border border-hairline bg-canvas text-ink transition-colors duration-fast ease-standard hover:bg-surface-soft before:absolute before:-inset-0.5"
+          triggerClassName="flex h-11 w-11 items-center justify-center rounded-full border border-hairline bg-canvas text-ink transition-colors duration-fast ease-standard hover:bg-surface-soft"
           trigger={<UserIcon className="h-5 w-5" />}
         />
       </div>

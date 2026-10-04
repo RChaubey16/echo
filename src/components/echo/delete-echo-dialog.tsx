@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { AlertIcon, TrashIcon } from "@/components/ui/icons";
 import { useToast } from "@/components/ui/toast";
-import { ApiError, api } from "@/lib/api";
+import { ApiError, api, failureMessage } from "@/lib/api";
 import { cn } from "@/lib/cn";
 
 type DeleteEchoDialogProps = {
@@ -40,7 +40,7 @@ export function DeleteEchoDialog({ echoId, className }: DeleteEchoDialogProps) {
       // Already gone (e.g. deleted in another tab) counts as done.
       if (!(error instanceof ApiError && error.status === 404)) {
         setDeleting(false);
-        setFailure("Couldn't delete this Echo. Check your connection and try again.");
+        setFailure(failureMessage(error, "Couldn't delete this Echo."));
         return;
       }
     }

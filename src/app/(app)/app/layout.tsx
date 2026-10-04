@@ -6,6 +6,7 @@ import { SIDEBAR_COLLECTIONS } from "@/components/shell/sidebar-state";
 import { AppProviders } from "@/components/shell/app-providers";
 import { BottomTabBar, MobileHeader } from "@/components/shell/mobile-chrome";
 import { SIDEBAR_COOKIE, isSidebarCollapsed } from "@/components/shell/sidebar-state";
+import { ThemeSync } from "@/components/shell/theme-sync";
 import { TimeZoneSync } from "@/components/shell/time-zone-sync";
 import { SkipLink } from "@/components/ui/skip-link";
 import { logger } from "@/lib/logger";
@@ -47,6 +48,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
         </AppFrame>
         <BottomTabBar />
         <TimeZoneSync stored={user.timezone} />
+        <ThemeSync stored={user.theme} />
       </AppProviders>
     </div>
   );

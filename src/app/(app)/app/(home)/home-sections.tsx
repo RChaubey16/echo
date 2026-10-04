@@ -4,7 +4,9 @@ import { EchoRow } from "@/components/echo/echo-row";
 import { MarkReflectedButton } from "@/components/echo/mark-reflected-button";
 import { QuoteCard } from "@/components/echo/quote-card";
 import { TodaysEcho } from "@/components/echo/todays-echo";
+import { SectionError } from "@/components/ui/error-state";
 import { CalendarIcon, ClockIcon, FolderIcon, HeartIcon, LibraryIcon } from "@/components/ui/icons";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/cn";
 import type { LibraryCounts } from "@/server/services/discovery";
 import type { EchoDto, EchoListDto, RevisitWithEchoDto, TodaysEchoDto } from "@/types/echo";
@@ -27,19 +29,6 @@ export function settle<T>(promise: Promise<T>): Promise<Settled<T>> {
 }
 
 const LINK = "text-body-sm font-medium text-ink underline-offset-4 hover:underline";
-const SKELETON = "animate-skeleton rounded-xs bg-surface-strong motion-reduce:animate-none";
-
-/** The inline message a home panel shows when its data couldn't load. */
-function SectionError({ what }: { what: string }) {
-  return (
-    <p role="alert" className="mt-4 text-body-sm text-body">
-      Couldn&apos;t load {what}.{" "}
-      <a href="/app" className="text-primary underline-offset-4 hover:underline">
-        Try again
-      </a>
-    </p>
-  );
-}
 
 /** A tinted side panel's header: a round icon chip and the heading, with an optional link. */
 function PanelHeader({
@@ -99,7 +88,7 @@ export async function TodaySection({ data }: { data: Promise<Settled<TodaysEchoD
         <h2 id="today-heading" className="text-caption text-primary">
           Today&apos;s Echo
         </h2>
-        <SectionError what="today's Echo" />
+        <SectionError what="today's Echo" retryHref="/app" />
       </section>
     );
   }
@@ -111,13 +100,13 @@ export async function TodaySection({ data }: { data: Promise<Settled<TodaysEchoD
 export function TodaySkeleton() {
   return (
     <div aria-hidden className="rounded-md bg-tint-lagoon p-6 tablet:p-8">
-      <div className={cn("h-4 w-48", SKELETON)} />
+      <Skeleton className="h-4 w-48" />
       <div className="mt-6 grid gap-3">
-        <div className={cn("h-7 w-11/12", SKELETON)} />
-        <div className={cn("h-7 w-8/12", SKELETON)} />
+        <Skeleton className="h-7 w-11/12" />
+        <Skeleton className="h-7 w-8/12" />
       </div>
-      <div className={cn("mt-6 h-4 w-40", SKELETON)} />
-      <div className={cn("mt-8 h-11 w-48 rounded-full", SKELETON)} />
+      <Skeleton className="mt-6 h-4 w-40" />
+      <Skeleton className="mt-8 h-11 w-48 rounded-full" />
     </div>
   );
 }
@@ -146,7 +135,7 @@ export async function RecentSection({ data }: { data: Promise<Settled<EchoListDt
           ))}
         </ul>
       ) : (
-        <SectionError what="your recent Echoes" />
+        <SectionError what="your recent Echoes" retryHref="/app" />
       )}
     </section>
   );
@@ -158,8 +147,8 @@ function SkeletonRows() {
     <ul aria-hidden className="mt-4 grid grid-cols-1">
       {[0, 1, 2].map((row) => (
         <li key={row} className={cn("py-4", row > 0 && "border-t border-hairline-soft")}>
-          <div className={cn("h-4 w-10/12", SKELETON)} />
-          <div className={cn("mt-2 h-3 w-4/12", SKELETON)} />
+          <Skeleton className="h-4 w-10/12" />
+          <Skeleton className="mt-2 h-3 w-4/12" />
         </li>
       ))}
     </ul>
@@ -172,7 +161,7 @@ export function RecentSkeleton({ className }: { className?: string }) {
       aria-hidden
       className={cn("rounded-md border border-hairline-soft bg-canvas p-6", className)}
     >
-      <div className={cn("h-5 w-36", SKELETON)} />
+      <Skeleton className="h-5 w-36" />
       <SkeletonRows />
     </div>
   );
@@ -215,7 +204,7 @@ export async function RevisitsDueSection({
           ))}
         </ul>
       ) : (
-        <SectionError what="your Revisits" />
+        <SectionError what="your Revisits" retryHref="/app" />
       )}
     </section>
   );
@@ -241,7 +230,7 @@ export async function FromThePastSection({
           </div>
         </>
       ) : (
-        <SectionError what="this memory" />
+        <SectionError what="this memory" retryHref="/app" />
       )}
     </section>
   );
@@ -250,9 +239,9 @@ export async function FromThePastSection({
 export function SidePanelSkeleton({ tint, className }: { tint: string; className?: string }) {
   return (
     <div aria-hidden className={cn("rounded-md p-6", tint, className)}>
-      <div className={cn("h-5 w-32", SKELETON)} />
-      <div className={cn("mt-4 h-4 w-full", SKELETON)} />
-      <div className={cn("mt-2 h-4 w-8/12", SKELETON)} />
+      <Skeleton className="h-5 w-32" />
+      <Skeleton className="mt-4 h-4 w-full" />
+      <Skeleton className="mt-2 h-4 w-8/12" />
     </div>
   );
 }
@@ -358,7 +347,7 @@ export async function FavoritesSection({ data }: { data: Promise<Settled<EchoLis
           ))}
         </ul>
       ) : (
-        <SectionError what="your favorites" />
+        <SectionError what="your favorites" retryHref="/app" />
       )}
     </section>
   );

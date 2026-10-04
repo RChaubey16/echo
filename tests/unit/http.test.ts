@@ -20,6 +20,17 @@ describe("apiHandler", () => {
     expect(response.headers.get("x-request-id")).toMatch(/^[0-9a-f-]{36}$/);
   });
 
+  it("marks every response private and uncacheable, errors included", async () => {
+    vi.spyOn(console, "info").mockImplementation(() => {});
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    const ok = await apiHandler(async () => Response.json({ ok: true }))(request(), {});
+    const failed = await apiHandler(async () => {
+      throw new Error("boom");
+    })(request(), {});
+    expect(ok.headers.get("cache-control")).toBe("private, no-store");
+    expect(failed.headers.get("cache-control")).toBe("private, no-store");
+  });
+
   it("maps AppError to the spec §39 shape with its status", async () => {
     vi.spyOn(console, "info").mockImplementation(() => {});
     const handler = apiHandler(async () => {

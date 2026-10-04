@@ -48,7 +48,10 @@ export default async function LoginPage() {
           </form>
           <p className="mt-6 text-body-sm text-muted">
             New here? Your account is created the first time you sign in.{" "}
-            <Link href="/#privacy" className="text-primary underline-offset-2 hover:underline">
+            <Link
+              href="/#privacy"
+              className="text-primary underline underline-offset-4 hover:decoration-2"
+            >
               How Echo keeps your library private
             </Link>
           </p>

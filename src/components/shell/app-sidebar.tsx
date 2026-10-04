@@ -8,6 +8,7 @@ import { LogoMark } from "@/components/echo/logo";
 import { NewCollectionButton } from "@/components/echo/new-collection-button";
 import { AddEchoLink } from "@/components/echo/quick-capture";
 import { buttonClasses } from "@/components/ui/button-classes";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   ArrowRightIcon,
   CollapseIcon,
@@ -108,7 +109,7 @@ function SidebarCollectionsSkeleton() {
       {[0, 1, 2].map((row) => (
         <div key={row} className="flex h-10 items-center gap-3 px-3">
           <div className="h-2 w-2 rounded-full bg-surface-strong" />
-          <div className="h-3 flex-1 animate-skeleton rounded-xs bg-surface-strong motion-reduce:animate-none" />
+          <Skeleton className="h-3 flex-1" />
         </div>
       ))}
     </div>

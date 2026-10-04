@@ -116,11 +116,11 @@
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-soft: cubic-bezier(0.4, 0, 1, 1);
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
-  --animate-fade-in: fade-in 200ms var(--ease-out-soft) both;
-  --animate-rise-in: rise-in 320ms var(--ease-out-soft) both;
-  --animate-heart-pop: heart-pop 320ms var(--ease-out-soft);
-  --animate-menu-in: menu-in 200ms var(--ease-out-soft) both;
-  --animate-skeleton: skeleton 1.6s ease-in-out infinite;
+  --animate-fade-in: fade-in 200ms var(--ease-out-soft) both; /* audit-ignore: token definition; usages pair it with motion-reduce: */
+  --animate-rise-in: rise-in 320ms var(--ease-out-soft) both; /* audit-ignore: token definition; usages pair it with motion-reduce: */
+  --animate-heart-pop: heart-pop 320ms var(--ease-out-soft); /* audit-ignore: token definition; usages pair it with motion-reduce: */
+  --animate-menu-in: menu-in 200ms var(--ease-out-soft) both; /* audit-ignore: token definition; usages pair it with motion-reduce: */
+  --animate-skeleton: skeleton 1.6s ease-in-out infinite; /* audit-ignore: token definition; usages pair it with motion-reduce: */
 
   @keyframes fade-in {
     from {

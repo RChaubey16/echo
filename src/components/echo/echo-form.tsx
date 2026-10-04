@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { buttonClasses } from "@/components/ui/button-classes";
 import { AlertIcon } from "@/components/ui/icons";
 import { useToast } from "@/components/ui/toast";
-import { ApiError, api } from "@/lib/api";
+import { ApiError, api, failureMessage } from "@/lib/api";
 import { useHydrated } from "@/lib/use-hydrated";
 import type { EchoDto } from "@/types/echo";
 import { EchoFields } from "./echo-fields";
@@ -100,7 +100,7 @@ export function EchoForm({
       setSummary(
         error instanceof ApiError && error.status === 404
           ? "This Echo no longer exists."
-          : "Couldn't save your Echo. Check your connection and try again.",
+          : failureMessage(error, "Couldn't save your Echo."),
       );
       requestAnimationFrame(() => summaryRef.current?.focus());
     }
