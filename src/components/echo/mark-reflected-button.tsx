@@ -53,7 +53,11 @@ export function MarkReflectedButton({
         size,
       )}
     >
-      <CheckIcon className={done ? "h-4 w-4 text-primary" : "h-4 w-4"} />
+      <CheckIcon
+        className={
+          done ? "h-4 w-4 animate-heart-pop text-primary motion-reduce:animate-none" : "h-4 w-4"
+        }
+      />
       {done ? "Reflected" : "Mark as reflected"}
     </button>
   );

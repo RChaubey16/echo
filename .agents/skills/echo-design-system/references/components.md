@@ -157,7 +157,7 @@ All variants share `relative inline-flex items-center justify-center gap-2 round
 
 ## Navigation (`src/components/shell/`)
 
-- **Wordmark:** "Echo" set in `text-display-sm tracking-tight`, the interface sans. The logo mark stays on public pages and the favicon.
+- **Logo:** `LogoMark` (the primary disc with two sound waves, `size` sm 28 / md 32 / lg 48) beside the "Echo" wordmark in `text-display-sm tracking-tight`. The rail shows the mark alone; the mobile header, the marketing nav and the sign-in card show both. The link carries `group/logo`, so the waves ripple on hover and focus.
 - **Sidebar (≥1128px, `w-64`):**
   - **Add Echo:** a full-width primary button.
   - **Search:** a 44px `rounded-md` field with a `/` hint.

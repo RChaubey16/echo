@@ -49,6 +49,8 @@ export function TodaysEcho({ echo: initial, date, dateLabel }: TodaysEchoProps) 
   const [echo, setEcho] = useState(initial);
   const [phase, setPhase] = useState<"idle" | "loading" | "out">("idle");
   const [swaps, setSwaps] = useState(0);
+  // Each press turns the shuffle icon half a turn, so the button answers before the new Echo lands.
+  const [presses, setPresses] = useState(0);
   const [status, setStatus] = useState("");
   const shown = useRef<string[]>([initial.id]);
   const regionRef = useRef<HTMLDivElement>(null);
@@ -58,6 +60,7 @@ export function TodaysEcho({ echo: initial, date, dateLabel }: TodaysEchoProps) 
 
   const echoMeSomething = async () => {
     if (phase !== "idle") return;
+    setPresses((count) => count + 1);
     // Keep the region's height through the swap, so nothing below it jumps.
     setMinHeight(regionRef.current?.offsetHeight);
     setPhase("loading");
@@ -93,7 +96,7 @@ export function TodaysEcho({ echo: initial, date, dateLabel }: TodaysEchoProps) 
   return (
     <section
       aria-labelledby="today-heading"
-      className="rounded-lg border border-hairline bg-canvas p-6 tablet:p-10 desktop:p-14"
+      className="animate-rise-in rounded-lg border border-hairline bg-canvas p-6 motion-reduce:animate-fade-in tablet:p-10 desktop:p-14"
     >
       <div
         ref={regionRef}
@@ -157,7 +160,10 @@ export function TodaysEcho({ echo: initial, date, dateLabel }: TodaysEchoProps) 
             aria-busy={phase !== "idle" || undefined}
             className="w-full tablet:w-auto"
           >
-            <ShuffleIcon className="h-4 w-4" />
+            <ShuffleIcon
+              className="h-4 w-4 transition-transform duration-slow ease-out-soft"
+              style={{ transform: `rotate(${presses * 180}deg)` }}
+            />
             Echo me something
           </Button>
           <div className="flex gap-2.5 tablet:contents">

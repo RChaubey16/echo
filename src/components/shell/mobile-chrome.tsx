@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { LogoMark } from "@/components/echo/logo";
 import { AddEchoLink } from "@/components/echo/quick-capture";
 import { PlusIcon } from "@/components/ui/icons";
 import { cn } from "@/lib/cn";
@@ -9,16 +10,17 @@ import { AccountAvatar } from "./account-avatar";
 import { AccountMenu } from "./account-menu";
 import { MOBILE_TABS, NAV, activeNavId } from "./nav-items";
 
-/** The 64px mobile header (<744px): the wordmark and the account menu. */
+/** The 64px mobile header (<744px): the logo and wordmark, and the account menu. */
 export function MobileHeader({ name, email }: { name: string | null; email: string }) {
   return (
     <header className="sticky top-0 z-30 border-b border-hairline bg-canvas tablet:hidden">
       <div className="flex h-16 items-center justify-between pr-2.5 pl-5">
         <Link
           href="/app"
-          className="flex h-11 min-w-11 items-center rounded-md text-display-sm tracking-tight text-ink"
+          className="group/logo flex h-11 min-w-11 items-center gap-2.5 rounded-md text-display-sm tracking-tight text-ink"
           aria-label="Echo home"
         >
+          <LogoMark size="sm" />
           Echo
         </Link>
         <AccountMenu
@@ -75,7 +77,10 @@ export function BottomTabBar() {
                 <span
                   className={cn(
                     "flex rounded-full px-4 py-1 transition-colors duration-fast ease-standard",
-                    current ? "bg-surface-strong" : "group-hover/tab:bg-surface-soft",
+                    // The pill settles in under the icon each time a tab becomes current.
+                    current
+                      ? "animate-pill-in bg-surface-strong motion-reduce:animate-none"
+                      : "group-hover/tab:bg-surface-soft",
                   )}
                 >
                   <Icon className="h-5 w-5" />

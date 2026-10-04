@@ -57,6 +57,12 @@ These are the only durations. If something seems to need 500ms or more, it is pr
 | **Skeleton** | `animate-skeleton` (an opacity pulse of 1→0.55 every 1.6s). Don't use a moving shimmer gradient, which is busier and harder on battery. |
 | **Loading button** | The spinner fades in after 150ms. Fast saves then never flash a spinner. |
 | **Copy-to-clipboard** | Swap the icon to a check for 1.5s with a 150ms cross-fade, and set the label to "Copied" in a live region. |
+| **Logo (the one decorative moment)** | Inside a `group/logo` link, the mark's two waves ripple outward once on hover or keyboard focus: `animate-echo-wave` (opacity 0.1 → their own, 250ms), the outer wave 100ms after the inner. Off under reduced motion. |
+| **Home sections arriving** | Each streamed section rises in once (`animate-rise-in`), 40ms apart (`[animation-delay:40ms]` … `160ms`). Sections only, never the items inside them. |
+| **Echo me something icon** | The shuffle icon turns half a turn per press (`transition-transform duration-slow`), so the button answers before the new Echo lands. |
+| **Mobile tab bar** | The active tab's pill settles in (`animate-pill-in`: opacity plus `scaleX(0.6 → 1)`, 200ms) each time a tab becomes current. |
+| **Mark as reflected** | The check pops (`animate-heart-pop`) when it flips to "Reflected". |
+| **Dialog / toast exits** | Dialogs sink out (`animate-sink-out`, 150ms) and toasts fade out (`animate-fade-out`, 150ms) before they leave; focus returns once the dialog has gone. Reopening mid-exit cancels it. |
 
 ## Page and route transitions
 

@@ -135,6 +135,36 @@
   --animate-heart-pop: heart-pop 250ms var(--ease-out-soft); /* audit-ignore: token definition; usages pair it with motion-reduce: */
   --animate-menu-in: menu-in 200ms var(--ease-out-soft) both; /* audit-ignore: token definition; usages pair it with motion-reduce: */
   --animate-skeleton: skeleton 1.6s ease-in-out infinite; /* audit-ignore: token definition; usages pair it with motion-reduce: */
+  /* Exits run faster than entrances (150ms, ease-in-soft). */
+  --animate-fade-out: fade-out 150ms var(--ease-in-soft) both; /* audit-ignore: token definition; usages pair it with motion-reduce: */
+  --animate-sink-out: sink-out 150ms var(--ease-in-soft) both; /* audit-ignore: token definition; usages pair it with motion-reduce: */
+  /* The logo's waves ripple outward once on hover: the brand's one decorative moment. */
+  --animate-echo-wave: echo-wave 250ms var(--ease-out-soft) both; /* audit-ignore: token definition; usages pair it with motion-reduce: */
+  /* The mobile tab bar's active pill settles in under its icon. */
+  --animate-pill-in: pill-in 200ms var(--ease-out-soft) both; /* audit-ignore: token definition; usages pair it with motion-reduce: */
+
+  @keyframes fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes sink-out {
+    to {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+  @keyframes echo-wave {
+    from {
+      opacity: 0.1;
+    }
+  }
+  @keyframes pill-in {
+    from {
+      opacity: 0;
+      transform: scaleX(0.6);
+    }
+  }
 
   @keyframes fade-in {
     from {
@@ -323,5 +353,8 @@
     --animate-menu-in: fade-in 150ms var(--ease-out-soft) both; /* audit-ignore: reduced-motion token override */
     --animate-heart-pop: none; /* audit-ignore: reduced-motion token override */
     --animate-skeleton: none; /* audit-ignore: reduced-motion token override */
+    --animate-sink-out: fade-out 150ms var(--ease-in-soft) both; /* audit-ignore: reduced-motion token override */
+    --animate-echo-wave: none; /* audit-ignore: reduced-motion token override */
+    --animate-pill-in: none; /* audit-ignore: reduced-motion token override */
   }
 }

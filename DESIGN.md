@@ -283,6 +283,15 @@ The swap is a short fade and rise with a height ease, so a long passage never ma
 jump. With reduced motion there is no movement: every transition and entrance becomes a 150ms
 opacity or colour change, so state changes stay visible (see the skill's `motion.md`).
 
+Small, meaningful touches (per ui-ux-pro-max: one or two key elements per view, exits faster than
+entrances, staggers of 30–50ms):
+- Home's sections rise in 40ms apart as they stream in.
+- The shuffle icon turns on each press.
+- The mobile tab pill settles in under the active icon.
+- "Reflected" checks pop.
+- Dialogs and toasts fade out faster than they arrived.
+- The logo's waves ripple once on hover, the brand's one decorative moment.
+
 ## Layout and navigation
 
 Breakpoints are tablet 744px, desktop 1128px and wide 1440px.
@@ -295,7 +304,7 @@ Breakpoints are tablet 744px, desktop 1128px and wide 1440px.
 
 The desktop sidebar holds:
 
-- the wordmark and a collapse button;
+- the logo mark and wordmark, and a collapse button;
 - a full-width Add Echo button;
 - search, with the `/` shortcut;
 - the nav: Home, Library, Favorites, Collections, Revisits;
