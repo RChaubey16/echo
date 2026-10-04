@@ -92,22 +92,20 @@ Tailwind's default `sm`, `md`, `lg` and `xl` prefixes are **reset and unavailabl
 
 These ratios were checked against DESIGN.md values. Run `scripts/contrast.py` to recheck after any token change.
 
-| Pair | Ratio | Verdict |
-|---|---|---|
-| `ink` on `canvas` | 15.9:1 | ✓ any text |
-| `body` on `canvas` | 10.5:1 | ✓ any text |
-| `muted` on `canvas` | 5.4:1 | ✓ text, the minimum for secondary text |
-| `muted` on `surface-soft` | 5.0:1 | ✓ text |
-| `muted` on `tint-lagoon` / `tint-bronze` / `tint-plum` | 4.9 / 4.9 / 4.7:1 | ✓ text |
-| `primary` on `tint-lagoon` | 4.6:1 | ✓ links, icons |
-| `muted-soft` on `canvas` | 3.1:1 | ✗ for text: use only for disabled text, which WCAG exempts |
-| `on-primary` on `primary` | 5.1:1 | ✓ button labels |
-| `primary` on `canvas` (links) | 5.1:1 | ✓ links |
-| `on-primary` on `primary-error-text` | 5.5:1 | ✓ danger button |
-| `on-primary-disabled` on `primary-disabled` | 5.8:1 (dark 6.2:1) | ✓ disabled CTA label |
-| `legal-link` on `canvas` | 3.3:1 | ✗ for text: don't use |
-| `hairline` on `canvas` | 1.4:1 | Decorative dividers only |
-| `border-input` on `canvas` / `surface-soft` | 3.7 / 3.4:1 (dark 4.5 / 5.0:1) | ✓ input boundary (SC 1.4.11) |
-| Dark theme, all text pairs | ≥ 4.5:1 (muted 6.5:1 on panels) | ✓ run `contrast.py --theme dark` |
+| Pair | Light | Dark | Verdict |
+|---|---|---|---|
+| `ink` on `canvas` | 14.1:1 | 13.7:1 | ✓ any text |
+| `body` on `canvas` | 9.8:1 | 10.1:1 | ✓ any text |
+| `muted` on `canvas` | 6.0:1 | 5.8:1 | ✓ text |
+| `muted` on `surface-soft` / `surface-strong` | 5.5 / 4.9:1 | 6.3 / 5.1:1 | ✓ text |
+| `muted` on `tint-moss` / `tint-ochre` / `tint-heather` | 5.4 / 5.4 / 5.3:1 | 5.1 / 5.3 / 5.4:1 | ✓ text |
+| `primary` on `canvas` (links, focus ring) | 8.5:1 | 8.6:1 | ✓ links |
+| `on-primary` on `primary` | 8.5:1 | 8.5:1 | ✓ button labels |
+| `on-error` on `error` / `error` on `canvas` | 6.4 / 6.4:1 | 8.1 / 7.6:1 | ✓ danger button, error text |
+| `canvas` on `ink` | 14.1:1 | 13.7:1 | ✓ toast, selected chip |
+| `muted-soft` on `canvas` | 3.0:1 | 2.9:1 | ✗ for text: disabled text only (WCAG exempts it) |
+| `muted-soft` on `primary-disabled` | 2.3:1 | 2.2:1 | disabled CTA label (exempt) |
+| `hairline` on `canvas` | 1.4:1 | 1.3:1 | decorative dividers only |
+| `border-input` on `canvas` / `surface-soft` | 3.7 / 3.4:1 | 3.9 / 4.3:1 | ✓ input boundary (SC 1.4.11) |
 
 Check both themes after any token change: `python3 scripts/contrast.py` and `python3 scripts/contrast.py --theme dark`.

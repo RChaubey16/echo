@@ -17,7 +17,7 @@ export function MarketingFooter() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="inline-flex min-h-11 items-center rounded-sm underline-offset-4 hover:text-ink hover:underline"
+                  className="inline-flex min-h-11 items-center rounded-md underline-offset-4 hover:text-ink hover:underline"
                 >
                   {link.label}
                 </Link>

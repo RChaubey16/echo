@@ -11,7 +11,7 @@ export default function SettingsLoading() {
       {[0, 1].map((section) => (
         <div key={section} className="border-t border-hairline py-8">
           <Skeleton className="h-5 w-36" />
-          <Skeleton className="mt-6 h-14 w-full rounded-sm" />
+          <Skeleton className="mt-6 h-14 w-full rounded-md" />
           <Skeleton className="mt-4 h-4 w-1/2" />
         </div>
       ))}

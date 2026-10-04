@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "Build the QuoteCard component for the library page. It should show the quote, author/source, a favorite heart I can toggle, tags, and when it was saved. Put it in src/components/echo/.",
-      "expected_output": "A QuoteCard (and QuoteText/FavoriteButton if missing) built only from DESIGN.md tokens. It uses the stretched-link card pattern, an optimistic aria-pressed heart in Lagoon, line-clamped quote, attribution omitted when empty, a <time> element, and hover/focus/reduced-motion states, followed by a validation note.",
+      "expected_output": "A QuoteCard (and QuoteText/FavoriteButton if missing) built only from DESIGN.md tokens. It uses the stretched-link card pattern, an optimistic aria-pressed heart in primary, line-clamped quote, attribution omitted when empty, a <time> element, and hover/focus/reduced-motion states, followed by a validation note.",
       "files": []
     },
     {

@@ -10,7 +10,7 @@ export function Skeleton({ className }: { className?: string }) {
     <div
       aria-hidden
       className={cn(
-        "animate-skeleton rounded-xs bg-surface-strong motion-reduce:animate-none",
+        "animate-skeleton rounded-sm bg-surface-strong motion-reduce:animate-none",
         className,
       )}
     />

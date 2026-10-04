@@ -9,7 +9,7 @@ export function MarketingNav({ showSignIn = true }: { showSignIn?: boolean }) {
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 tablet:px-6 desktop:px-8">
         <Link
           href="/"
-          className="flex items-center gap-2 rounded-sm text-ink"
+          className="flex items-center gap-2 rounded-md text-ink"
           aria-label="Echo home"
         >
           <LogoMark />

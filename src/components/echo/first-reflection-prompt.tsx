@@ -56,7 +56,7 @@ export function FirstReflectionPrompt({ echoId }: { echoId: string }) {
   return (
     <section
       aria-labelledby={`${id}-title`}
-      className="mt-8 animate-rise-in rounded-md bg-tint-lagoon p-6 motion-reduce:animate-none"
+      className="mt-8 animate-rise-in rounded-lg bg-tint-moss p-6 motion-reduce:animate-none"
     >
       <h2 id={`${id}-title`} className="text-display-sm text-ink">
         Why did this speak to you?

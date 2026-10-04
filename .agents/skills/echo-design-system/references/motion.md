@@ -18,15 +18,15 @@ All tokens are defined in `tokens.md`.
 
 | Token | Value | Use |
 |---|---|---|
-| `duration-fast` | 120ms | Press feedback, color and border changes, toggles |
-| `duration-base` | 200ms | Hover elevation, fades, small movements (≤8px), menus opening |
-| `duration-slow` | 320ms | Dialogs and sheets entering, the Today's Echo swap, the heart pop |
-| `ease-out-soft` | `cubic-bezier(0.22, 1, 0.36, 1)` | Anything **entering** or arriving: it decelerates into place |
+| `duration-fast` | 150ms | Hover, press feedback, color and border changes, chip toggles |
+| `duration-base` | 200ms | Dialogs, menus and toasts entering, fades, small movements (≤8px) |
+| `duration-slow` | 250ms | The Echo me something swap, the mobile sheet, the heart pop |
+| `ease-out-soft` | `cubic-bezier(0.2, 0, 0, 1)` | Anything **entering** or arriving: it decelerates into place |
 | `ease-in-soft` | `cubic-bezier(0.4, 0, 1, 1)` | Anything **leaving**: it accelerates away |
 | `ease-standard` | `cubic-bezier(0.2, 0, 0, 1)` | State changes in place (hover, color, shadow) |
 | linear | — | Only for constant-rate progress (spinner rotation, progress bars) |
 
-Exits run at about 70% of the enter duration: a dialog enters in 320ms and leaves in 200ms. The user has already decided to leave, so don't make them wait for it.
+Exits run faster than entrances: a dialog enters in 200–250ms and leaves in 150ms. The user has already decided to leave, so don't make them wait for it.
 
 These are the only durations. If something seems to need 500ms or more, it is probably decoration, so reconsider it.
 
@@ -43,20 +43,20 @@ These are the only durations. If something seems to need 500ms or more, it is pr
 
 | Interaction | Recipe |
 |---|---|
-| **Button hover/press** | `transition-[background-color,transform] duration-fast ease-standard hover:bg-primary-active active:scale-98`. Secondary buttons: `hover:bg-surface-soft active:bg-surface-strong`. |
-| **Card hover** | `transition-shadow duration-base ease-standard hover:shadow-float hover:border-transparent`. No lift with `translate`: DESIGN.md's float is a shadow, not movement. |
+| **Button hover/press** | `transition-[background-color,transform] duration-fast ease-standard hover:bg-primary-hover active:bg-primary-active active:scale-98`. Secondary buttons: `hover:bg-surface-soft active:bg-surface-strong`. |
+| **Card hover** | `transition-colors duration-fast ease-standard hover:border-border-input`. Cards never lift and never gain a shadow on hover. |
 | **Focus** | Instant. Never animate the focus ring, because a fading ring can be missed. |
-| **Favorite (heart)** | On save: fill with `text-primary`, plus `animate-heart-pop` (320ms, scale 1→1.2→1). On unsave: a 120ms color change only, with no pop. Removing should feel quieter than adding. |
+| **Favorite (heart)** | On save: fill with `text-primary`, plus `animate-heart-pop` (250ms, scale 1→1.2→1). On unsave: a 150ms color change only, with no pop. Removing should feel quieter than adding. |
 | **Tag chip added** | `animate-fade-in` on the new chip. On removal, remove it instantly. Animating removal shifts the chips around while the user is still typing. |
-| **Toast** | Enter: `animate-rise-in` from the bottom. Exit: opacity to 0 over 200ms with `ease-in-soft`. On mobile, it sits above the tab bar. |
-| **Dialog** | The backdrop runs `animate-fade-in` while the panel runs `animate-rise-in` (desktop) or slides up from `translate-y-full` (mobile sheet) at 320ms with `ease-out-soft`. Exit takes 200ms with `ease-in-soft`. |
-| **Menu/popover** | `animate-menu-in` (200ms: opacity 0→1 and scale 0.98→1), with `origin-top-left` or `origin-top-right` matching the trigger. Exit takes 120ms. With reduced motion, use `motion-reduce:animate-fade-in`. |
+| **Toast** | Enter: `animate-rise-in` from the bottom. Exit: opacity to 0 over 150ms with `ease-in-soft`. On mobile, it sits above the tab bar. |
+| **Dialog** | The backdrop runs `animate-fade-in` while the panel runs `animate-rise-in` (desktop) or slides up from `translate-y-full` (mobile sheet) at 250ms with `ease-out-soft`. Exit takes 150ms with `ease-in-soft`. |
+| **Menu/popover** | `animate-menu-in` (200ms: opacity 0→1 and scale 0.98→1), with `origin-top-left` or `origin-top-right` matching the trigger. Exit takes 150ms. With reduced motion, use `motion-reduce:animate-fade-in`. |
 | **"More details" disclosure** | Animate the content's opacity and a 4px translate. Animate height only with `grid-template-rows: 0fr → 1fr`, which doesn't require measuring and stays on the compositor-friendly path. On reduced motion, open instantly. |
-| **Echo me something / Today's Echo swap** | Keep the container's minimum height. The old quote fades out (120ms, `ease-in-soft`), then the new one fades in with a 4px rise (320ms, `ease-out-soft`). Announce it with `aria-live="polite"` on the quote region. If the next Echo is still loading, keep the old one visible at reduced opacity rather than showing a skeleton for a short wait. |
+| **Echo me something / Today's Echo swap** | Keep the container's minimum height. The old quote fades out (150ms, `ease-in-soft`), then the new one fades in with a 4px rise (250ms, `ease-out-soft`), while the container eases its height so a long passage never makes the page jump. Announce it with `aria-live="polite"` on the quote region. If the next Echo is still loading, keep the old one visible at reduced opacity rather than showing a skeleton for a short wait. |
 | **Optimistic save/delete** | Apply the change immediately. If it fails, revert with the same transition, then show an error toast. Never animate a failure as a success. |
 | **Skeleton** | `animate-skeleton` (an opacity pulse of 1→0.55 every 1.6s). Don't use a moving shimmer gradient, which is busier and harder on battery. |
 | **Loading button** | The spinner fades in after 150ms. Fast saves then never flash a spinner. |
-| **Copy-to-clipboard** | Swap the icon to a check for 1.5s with a 120ms cross-fade, and set the label to "Copied" in a live region. |
+| **Copy-to-clipboard** | Swap the icon to a check for 1.5s with a 150ms cross-fade, and set the label to "Copied" in a live region. |
 
 ## Page and route transitions
 

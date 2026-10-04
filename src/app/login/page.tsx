@@ -29,17 +29,17 @@ export default async function LoginPage() {
   if (await getSessionUser()) redirect("/app");
 
   return (
-    <div className="flex min-h-dvh flex-col bg-surface-soft text-ink">
+    <div className="flex min-h-dvh flex-col bg-paper text-ink">
       <SkipLink />
       <main
         id="main"
         tabIndex={-1}
         className="flex flex-1 items-center justify-center px-4 py-12 focus-visible:outline-none"
       >
-        <section className="w-full max-w-sm rounded-md border border-hairline-soft bg-canvas px-6 py-12 text-center">
+        <section className="w-full max-w-sm rounded-lg border border-hairline-soft bg-canvas px-6 py-12 text-center">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 rounded-sm text-ink"
+            className="inline-flex items-center gap-2 rounded-md text-ink"
             aria-label="Echo home"
           >
             <LogoMark className="h-12 w-12" />

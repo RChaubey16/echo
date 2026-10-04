@@ -122,10 +122,7 @@ function DeleteCollectionDialog({
         Its Echoes are kept in your library. Only the collection goes.
       </p>
       {failure && (
-        <p
-          role="alert"
-          className="mt-4 flex items-start gap-1.5 text-body-sm text-primary-error-text"
-        >
+        <p role="alert" className="mt-4 flex items-start gap-1.5 text-body-sm text-error">
           <AlertIcon className="mt-0.5 h-3.5 w-3.5 shrink-0" />
           {failure}
         </p>

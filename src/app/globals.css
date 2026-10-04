@@ -9,116 +9,130 @@
   --radius-*: initial;
   --breakpoint-*: initial;
 
-  --color-primary: #0e7c6b;
-  --color-primary-active: #0a5f52;
-  --color-primary-disabled: #c5e8e1;
-  --color-primary-error-text: #c13515;
-  --color-primary-error-text-hover: #b32505;
-  --color-luxe: #8a5a12;
-  --color-plus: #6b2a5e;
-  --color-ink: #222222;
-  --color-body: #3f3f3f;
-  --color-muted: #6a6a6a;
-  --color-muted-soft: #929292;
-  --color-hairline: #dddddd;
-  --color-hairline-soft: #ebebeb;
-  --color-border-strong: #c1c1c1;
-  --color-border-input: #858585;
-  --color-canvas: #ffffff;
-  --color-surface-soft: #f7f7f7;
-  --color-surface-card: #ffffff;
-  --color-surface-strong: #f2f2f2;
-  --color-tint-lagoon: #ecf5f3;
-  --color-tint-bronze: #f6f2ec;
-  --color-tint-plum: #f3eef2;
-  --color-on-primary: #ffffff;
-  --color-on-primary-disabled: #0a5f52;
-  --color-on-dark: #ffffff;
-  --color-legal-link: #428bff;
-  --color-star-rating: #222222;
-  --color-scrim: #000000;
+  /* Inkwell: cream paper, warm ink, one iron-gall blue accent. */
+  --color-primary: #2d4a72;
+  --color-primary-hover: #253f62;
+  --color-primary-active: #1c3150;
+  --color-primary-disabled: #d5dce6;
+  --color-on-primary: #fbf8f2;
+  --color-error: #a8301c;
+  --color-error-hover: #8f2716;
+  --color-on-error: #fbf8f2;
+  --color-error-tint: #f7e4dd;
+  --color-ink: #2b2622;
+  --color-body: #463f39;
+  --color-muted: #675e55;
+  --color-muted-soft: #9a9085;
+  --color-hairline: #ddd4c4;
+  --color-hairline-soft: #e8e1d3;
+  --color-border-input: #8a7f72;
+  --color-canvas: #fbf8f2;
+  --color-surface-soft: #f3eee4;
+  --color-surface-strong: #e9e2d4;
+  /* Collection slots: stored lagoon | bronze | plum | neutral, shown as moss | ochre | heather | neutral. */
+  --color-tint-moss: #ecefe0;
+  --color-tint-ochre: #f5ecda;
+  --color-tint-heather: #f2e7ec;
+  --color-tint-neutral: #efe9df;
+  --color-mark-moss: #56703a;
+  --color-mark-ochre: #8a5a12;
+  --color-mark-heather: #74405f;
+  --color-mark-neutral: #675e55;
+  --color-scrim: rgb(43 38 34 / 0.5);
 
-  --font-sans:
-    var(--font-inter), "Airbnb Cereal VF", Circular, -apple-system, system-ui, Roboto,
-    "Helvetica Neue", sans-serif;
-  --font-quote: var(--font-newsreader), Georgia, "Times New Roman", serif;
-  --text-quote-hero: 28px;
-  --text-quote-hero--line-height: 1.36;
-  --text-quote-hero--letter-spacing: -0.2px;
+  --font-sans: var(--font-hanken), system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-quote: var(--font-garamond), Georgia, "Times New Roman", serif;
+
+  /* Quote sizes: the -sm steps are the mobile (<744px) sizes. */
+  --text-quote-display: 56px;
+  --text-quote-display--line-height: 1.1;
+  --text-quote-display--font-weight: 400;
+  --text-quote-display-sm: 40px;
+  --text-quote-display-sm--line-height: 1.1;
+  --text-quote-display-sm--font-weight: 400;
+  --text-quote-today: 44px;
+  --text-quote-today--line-height: 1.24;
+  --text-quote-today--letter-spacing: -0.005em;
+  --text-quote-today--font-weight: 400;
+  --text-quote-hero: 38px;
+  --text-quote-hero--line-height: 1.28;
   --text-quote-hero--font-weight: 400;
-  --text-quote-card: 20px;
-  --text-quote-card--line-height: 1.45;
+  --text-quote-hero-sm: 26px;
+  --text-quote-hero-sm--line-height: 1.32;
+  --text-quote-hero-sm--font-weight: 400;
+  --text-quote-card: 23px;
+  --text-quote-card--line-height: 1.42;
   --text-quote-card--font-weight: 400;
-  --text-quote-compact: 17px;
-  --text-quote-compact--line-height: 1.45;
+  --text-quote-card-sm: 21px;
+  --text-quote-card-sm--line-height: 1.42;
+  --text-quote-card-sm--font-weight: 400;
+  --text-quote-compact: 19px;
+  --text-quote-compact--line-height: 1.42;
   --text-quote-compact--font-weight: 400;
 
-  --text-display-xl: 28px;
-  --text-display-xl--line-height: 1.43;
-  --text-display-xl--letter-spacing: 0;
-  --text-display-xl--font-weight: 700;
-  --text-display-lg: 22px;
-  --text-display-lg--line-height: 1.18;
-  --text-display-lg--letter-spacing: -0.44px;
-  --text-display-lg--font-weight: 500;
-  --text-display-md: 21px;
-  --text-display-md--line-height: 1.43;
-  --text-display-md--letter-spacing: 0;
-  --text-display-md--font-weight: 700;
+  --text-display-xl: 36px;
+  --text-display-xl--line-height: 1.15;
+  --text-display-xl--letter-spacing: -0.02em;
+  --text-display-xl--font-weight: 600;
+  --text-display-lg: 28px;
+  --text-display-lg--line-height: 1.2;
+  --text-display-lg--letter-spacing: -0.01em;
+  --text-display-lg--font-weight: 600;
   --text-display-sm: 20px;
-  --text-display-sm--line-height: 1.2;
-  --text-display-sm--letter-spacing: -0.18px;
+  --text-display-sm--line-height: 1.3;
   --text-display-sm--font-weight: 600;
   --text-title-md: 16px;
-  --text-title-md--line-height: 1.25;
+  --text-title-md--line-height: 1.35;
   --text-title-md--font-weight: 600;
   --text-title-sm: 16px;
-  --text-title-sm--line-height: 1.25;
+  --text-title-sm--line-height: 1.35;
   --text-title-sm--font-weight: 500;
   --text-body-md: 16px;
-  --text-body-md--line-height: 1.5;
+  --text-body-md--line-height: 1.55;
   --text-body-md--font-weight: 400;
   --text-body-sm: 14px;
-  --text-body-sm--line-height: 1.43;
+  --text-body-sm--line-height: 1.5;
   --text-body-sm--font-weight: 400;
   --text-caption: 14px;
-  --text-caption--line-height: 1.29;
+  --text-caption--line-height: 1.4;
   --text-caption--font-weight: 500;
   --text-caption-sm: 13px;
-  --text-caption-sm--line-height: 1.23;
+  --text-caption-sm--line-height: 1.4;
   --text-caption-sm--font-weight: 400;
-  --text-badge: 11px;
-  --text-badge--line-height: 1.18;
-  --text-badge--font-weight: 600;
-  --text-button-md: 16px;
+  --text-label: 12px;
+  --text-label--line-height: 1.2;
+  --text-label--letter-spacing: 0.06em;
+  --text-label--font-weight: 600;
+  --text-badge: 12px;
+  --text-badge--line-height: 1.2;
+  --text-badge--font-weight: 500;
+  --text-button-md: 15px;
   --text-button-md--line-height: 1.25;
-  --text-button-md--font-weight: 500;
+  --text-button-md--font-weight: 600;
   --text-button-sm: 14px;
-  --text-button-sm--line-height: 1.29;
-  --text-button-sm--font-weight: 500;
-  --text-nav-link: 16px;
+  --text-button-sm--line-height: 1.25;
+  --text-button-sm--font-weight: 600;
+  --text-nav-link: 15px;
   --text-nav-link--line-height: 1.25;
   --text-nav-link--font-weight: 600;
 
-  --radius-xs: 4px;
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-xl: 32px;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
 
-  --shadow-float:
-    rgba(0, 0, 0, 0.02) 0 0 0 1px, rgba(0, 0, 0, 0.04) 0 2px 6px 0, rgba(0, 0, 0, 0.1) 0 4px 8px 0;
+  --shadow-float: 0 1px 2px rgb(43 38 34 / 0.06), 0 8px 24px rgb(43 38 34 / 0.1);
 
   --breakpoint-tablet: 744px;
   --breakpoint-desktop: 1128px;
   --breakpoint-wide: 1440px;
 
-  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-soft: cubic-bezier(0.2, 0, 0, 1);
   --ease-in-soft: cubic-bezier(0.4, 0, 1, 1);
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --animate-fade-in: fade-in 200ms var(--ease-out-soft) both; /* audit-ignore: token definition; usages pair it with motion-reduce: */
-  --animate-rise-in: rise-in 320ms var(--ease-out-soft) both; /* audit-ignore: token definition; usages pair it with motion-reduce: */
-  --animate-heart-pop: heart-pop 320ms var(--ease-out-soft); /* audit-ignore: token definition; usages pair it with motion-reduce: */
+  --animate-rise-in: rise-in 250ms var(--ease-out-soft) both; /* audit-ignore: token definition; usages pair it with motion-reduce: */
+  --animate-heart-pop: heart-pop 250ms var(--ease-out-soft); /* audit-ignore: token definition; usages pair it with motion-reduce: */
   --animate-menu-in: menu-in 200ms var(--ease-out-soft) both; /* audit-ignore: token definition; usages pair it with motion-reduce: */
   --animate-skeleton: skeleton 1.6s ease-in-out infinite; /* audit-ignore: token definition; usages pair it with motion-reduce: */
 
@@ -173,70 +187,77 @@
 }
 
 :root {
-  --duration-fast: 120ms;
+  --duration-fast: 150ms;
   --duration-base: 200ms;
-  --duration-slow: 320ms;
+  --duration-slow: 250ms;
+  --grain: rgb(60 40 20 / 0.035);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --color-primary: #3cbaa5;
-    --color-primary-active: #5fcbb8;
-    --color-primary-disabled: #1f3b36;
-    --color-primary-error-text: #ff8f7a;
-    --color-primary-error-text-hover: #ffa898;
-    --color-luxe: #d9a55a;
-    --color-plus: #d68cc4;
-    --color-ink: #ecefee;
-    --color-body: #c8cecc;
-    --color-muted: #9ba4a2;
-    --color-muted-soft: #6c7573;
-    --color-hairline: #323837;
-    --color-hairline-soft: #272c2b;
-    --color-border-strong: #454c4b;
-    --color-border-input: #7d8786;
-    --color-canvas: #1b1f1e;
-    --color-surface-soft: #121514;
-    --color-surface-card: #1b1f1e;
-    --color-surface-strong: #262b2a;
-    --color-tint-lagoon: #15302b;
-    --color-tint-bronze: #2e2619;
-    --color-tint-plum: #2c2029;
-    --color-on-primary: #06201b;
-    --color-on-primary-disabled: #5fcbb8;
-    --color-on-dark: #121514;
-    --color-legal-link: #7fb0ff;
-    --color-star-rating: #ecefee;
+    --color-primary: #a3bce3;
+    --color-primary-hover: #b6cbea;
+    --color-primary-active: #c9d8ef;
+    --color-primary-disabled: #2b3442;
+    --color-on-primary: #14202f;
+    --color-error: #f09a86;
+    --color-error-hover: #f4ae9d;
+    --color-on-error: #2a120c;
+    --color-error-tint: #3a221c;
+    --color-ink: #f0e9de;
+    --color-body: #d3c9bb;
+    --color-muted: #a39888;
+    --color-muted-soft: #6f665b;
+    --color-hairline: #3a332c;
+    --color-hairline-soft: #2d2823;
+    --color-border-input: #857a6c;
+    --color-canvas: #221e1a;
+    --color-surface-soft: #1a1714;
+    --color-surface-strong: #2d2823;
+    --color-tint-moss: #262b1d;
+    --color-tint-ochre: #2e2619;
+    --color-tint-heather: #2e2129;
+    --color-tint-neutral: #2a2520;
+    --color-mark-moss: #a8bf86;
+    --color-mark-ochre: #d9a55a;
+    --color-mark-heather: #d39cbd;
+    --color-mark-neutral: #a39888;
+    --color-scrim: rgb(0 0 0 / 0.6);
+    --shadow-float: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.45);
+    --grain: rgb(255 240 220 / 0.025);
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --color-primary: #3cbaa5;
-  --color-primary-active: #5fcbb8;
-  --color-primary-disabled: #1f3b36;
-  --color-primary-error-text: #ff8f7a;
-  --color-primary-error-text-hover: #ffa898;
-  --color-luxe: #d9a55a;
-  --color-plus: #d68cc4;
-  --color-ink: #ecefee;
-  --color-body: #c8cecc;
-  --color-muted: #9ba4a2;
-  --color-muted-soft: #6c7573;
-  --color-hairline: #323837;
-  --color-hairline-soft: #272c2b;
-  --color-border-strong: #454c4b;
-  --color-border-input: #7d8786;
-  --color-canvas: #1b1f1e;
-  --color-surface-soft: #121514;
-  --color-surface-card: #1b1f1e;
-  --color-surface-strong: #262b2a;
-  --color-tint-lagoon: #15302b;
-  --color-tint-bronze: #2e2619;
-  --color-tint-plum: #2c2029;
-  --color-on-primary: #06201b;
-  --color-on-primary-disabled: #5fcbb8;
-  --color-on-dark: #121514;
-  --color-legal-link: #7fb0ff;
-  --color-star-rating: #ecefee;
+  --color-primary: #a3bce3;
+  --color-primary-hover: #b6cbea;
+  --color-primary-active: #c9d8ef;
+  --color-primary-disabled: #2b3442;
+  --color-on-primary: #14202f;
+  --color-error: #f09a86;
+  --color-error-hover: #f4ae9d;
+  --color-on-error: #2a120c;
+  --color-error-tint: #3a221c;
+  --color-ink: #f0e9de;
+  --color-body: #d3c9bb;
+  --color-muted: #a39888;
+  --color-muted-soft: #6f665b;
+  --color-hairline: #3a332c;
+  --color-hairline-soft: #2d2823;
+  --color-border-input: #857a6c;
+  --color-canvas: #221e1a;
+  --color-surface-soft: #1a1714;
+  --color-surface-strong: #2d2823;
+  --color-tint-moss: #262b1d;
+  --color-tint-ochre: #2e2619;
+  --color-tint-heather: #2e2129;
+  --color-tint-neutral: #2a2520;
+  --color-mark-moss: #a8bf86;
+  --color-mark-ochre: #d9a55a;
+  --color-mark-heather: #d39cbd;
+  --color-mark-neutral: #a39888;
+  --color-scrim: rgb(0 0 0 / 0.6);
+  --shadow-float: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.45);
+  --grain: rgb(255 240 220 / 0.025);
   color-scheme: dark;
 }
 @utility duration-fast {
@@ -247,6 +268,17 @@
 }
 @utility duration-slow {
   transition-duration: var(--duration-slow);
+}
+/* The app page: surface-soft with a 3px dot grain (one gradient, no image). */
+@utility bg-paper {
+  background-color: var(--color-surface-soft);
+  background-image: radial-gradient(var(--grain) 1px, transparent 1px);
+  background-size: 3px 3px;
+}
+/* User-written text: keep line breaks and wrap long words and URLs. Never HTML. */
+@utility user-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 @layer base {
@@ -263,7 +295,7 @@
     line-height: 1.5;
   }
   :focus-visible {
-    outline: 2px solid var(--color-ink);
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
   @media (prefers-reduced-motion: reduce) {

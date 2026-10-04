@@ -109,14 +109,14 @@ test.describe("dark theme", () => {
 
   test("with the system set to dark, the shell renders the dark palette", async ({ page }) => {
     await page.goto("/app");
-    // surface-soft (dark) = #121514, canvas (dark) = #1b1f1e
+    // surface-soft (dark) = #1a1714, canvas (dark) = #221e1a
     const surfaceSoft = await page.evaluate(() =>
       getComputedStyle(document.documentElement).getPropertyValue("--color-surface-soft").trim(),
     );
-    expect(surfaceSoft).toBe("#121514");
+    expect(surfaceSoft).toBe("#1a1714");
     await expect(page.getByRole("complementary", { name: "Sidebar" })).toHaveCSS(
       "background-color",
-      "rgb(27, 31, 30)",
+      "rgb(34, 30, 26)",
     );
   });
 });

@@ -39,7 +39,7 @@ export default async function EchoDetailPage({ params }: PageProps<"/app/echoes/
     <article className="mx-auto flex w-full max-w-3xl flex-col py-8 tablet:py-12">
       <Link
         href="/app/echoes"
-        className="-ml-1 inline-flex h-11 items-center gap-1.5 self-start rounded-sm px-1 text-body-sm text-muted transition-colors duration-fast ease-standard hover:text-ink"
+        className="-ml-1 inline-flex h-11 items-center gap-1.5 self-start rounded-md px-1 text-body-sm text-muted transition-colors duration-fast ease-standard hover:text-ink"
       >
         <ArrowLeftIcon className="h-4 w-4" />
         Library
@@ -54,16 +54,11 @@ export default async function EchoDetailPage({ params }: PageProps<"/app/echoes/
       {promptReflection && <FirstReflectionPrompt echoId={echo.id} />}
 
       {echo.reflection && (
-        <section
-          aria-labelledby="reflection-heading"
-          className="mt-8 rounded-md bg-tint-lagoon p-6"
-        >
+        <section aria-labelledby="reflection-heading" className="mt-8 rounded-lg bg-tint-moss p-6">
           <h2 id="reflection-heading" className="text-caption text-muted">
             Your reflection
           </h2>
-          <p className="mt-2 text-body-md [overflow-wrap:anywhere] whitespace-pre-wrap text-body">
-            {echo.reflection}
-          </p>
+          <p className="mt-2 text-body-md user-text text-body">{echo.reflection}</p>
         </section>
       )}
 
@@ -98,7 +93,7 @@ export default async function EchoDetailPage({ params }: PageProps<"/app/echoes/
                   <li key={collection.id} className="min-w-0">
                     <Link
                       href={`/app/collections/${collection.id}`}
-                      className="inline-flex max-w-full items-center gap-2 rounded-xs text-ink underline-offset-4 hover:underline"
+                      className="inline-flex max-w-full items-center gap-2 rounded-sm text-ink underline-offset-4 hover:underline"
                     >
                       <AccentDot accent={collection.accent} />
                       <span className="truncate" title={collection.name}>

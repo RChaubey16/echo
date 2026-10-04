@@ -9,7 +9,7 @@ export default function CollectionsLoading() {
     >
       <div className="flex items-end justify-between gap-4">
         <Skeleton className="h-7 w-40" />
-        <Skeleton className="h-12 w-44 rounded-sm" />
+        <Skeleton className="h-12 w-44 rounded-md" />
       </div>
       <div className="grid grid-cols-1 items-start gap-4 tablet:grid-cols-2 desktop:grid-cols-3">
         {Array.from({ length: 6 }, (_, index) => (

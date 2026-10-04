@@ -41,7 +41,7 @@ export function QuoteCard({
       <figure className="min-w-0">
         <Link
           href={`/app/echoes/${echo.id}`}
-          className="block rounded-xs after:absolute after:inset-0 after:rounded-md"
+          className="block rounded-sm after:absolute after:inset-0 after:rounded-lg"
         >
           <QuoteText size="card" className={cn("pr-8", compact ? "line-clamp-3" : "line-clamp-6")}>
             {echo.quote}
@@ -54,7 +54,7 @@ export function QuoteCard({
         )}
       </figure>
       {showReflection && !compact && echo.reflection && (
-        <p className="mt-4 line-clamp-3 border-t border-hairline-soft pt-4 text-body-sm [overflow-wrap:anywhere] whitespace-pre-wrap text-body">
+        <p className="mt-4 line-clamp-3 border-t border-hairline-soft pt-4 text-body-sm user-text text-body">
           <span className="sr-only">Your reflection: </span>
           {echo.reflection}
         </p>
@@ -101,7 +101,7 @@ export function QuoteCard({
 /** The QuoteCard skeleton: three quote bars and a meta bar inside the same Card padding. */
 export function QuoteCardSkeleton() {
   return (
-    <div aria-hidden className="rounded-md border border-hairline bg-surface-card p-6">
+    <div aria-hidden className="rounded-lg border border-hairline bg-canvas p-6">
       <div className="flex flex-col gap-2">
         <Skeleton className="h-4 w-full" />
         <Skeleton className="h-4 w-[85%]" />{" "}

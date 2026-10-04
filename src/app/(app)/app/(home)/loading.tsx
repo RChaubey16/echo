@@ -14,8 +14,8 @@ export default function HomeLoading() {
           <RecentSkeleton className="min-h-0 flex-1 overflow-hidden" />
         </div>
         <div className="flex min-h-0 min-w-0 flex-col gap-8">
-          <SidePanelSkeleton tint="bg-tint-bronze" />
-          <SidePanelSkeleton tint="bg-tint-plum" />
+          <SidePanelSkeleton tint="bg-tint-ochre" />
+          <SidePanelSkeleton tint="bg-tint-heather" />
           <SidePanelSkeleton
             tint="border border-hairline-soft bg-canvas"
             className="min-h-0 flex-1 overflow-hidden"

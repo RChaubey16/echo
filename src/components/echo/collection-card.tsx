@@ -22,7 +22,7 @@ export function CollectionCard({ collection }: { collection: CollectionDto }) {
         <AccentDot accent={collection.accent} />
         <Link
           href={`/app/collections/${collection.id}`}
-          className="truncate rounded-xs after:absolute after:inset-0 after:rounded-md"
+          className="truncate rounded-sm after:absolute after:inset-0 after:rounded-lg"
           title={collection.name}
         >
           {collection.name}
@@ -41,7 +41,7 @@ export function CollectionCard({ collection }: { collection: CollectionDto }) {
 /** The CollectionCard skeleton: a name bar, a count bar and two description bars. */
 export function CollectionCardSkeleton() {
   return (
-    <div aria-hidden className="rounded-md border border-hairline bg-surface-card p-6">
+    <div aria-hidden className="rounded-lg border border-hairline bg-canvas p-6">
       <Skeleton className="h-5 w-1/2" />
       <Skeleton className="mt-2 h-4 w-1/4" />
       <Skeleton className="mt-4 h-4 w-full" />

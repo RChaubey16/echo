@@ -63,7 +63,7 @@ export function FavoriteButton({
         aria-pressed={isFavorite}
         onClick={toggle}
         className={cn(
-          "inline-flex h-12 items-center gap-2 rounded-sm border border-ink bg-canvas px-5 text-button-md text-ink transition-[background-color,transform] duration-fast ease-standard hover:bg-surface-soft active:scale-98 active:bg-surface-strong motion-reduce:active:scale-100",
+          "inline-flex h-12 items-center gap-2 rounded-md border border-ink bg-canvas px-5 text-button-md text-ink transition-[background-color,transform] duration-fast ease-standard hover:bg-surface-soft active:scale-98 active:bg-surface-strong motion-reduce:active:scale-100",
           className,
         )}
       >

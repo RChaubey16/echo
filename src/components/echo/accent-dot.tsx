@@ -2,10 +2,11 @@ import { cn } from "@/lib/cn";
 import type { CollectionAccent } from "@/server/validation/collection";
 
 const DOT: Record<CollectionAccent, string> = {
-  lagoon: "bg-primary",
-  bronze: "bg-luxe",
-  plum: "bg-plus",
-  neutral: "bg-muted-soft",
+  lagoon: "bg-mark-moss",
+  bronze: "bg-mark-ochre",
+  plum: "bg-mark-heather",
+  // The neutral slot is a ring, so it never reads as a fourth color.
+  neutral: "border-2 border-mark-neutral",
 };
 
 /**

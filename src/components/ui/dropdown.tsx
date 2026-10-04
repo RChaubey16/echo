@@ -114,7 +114,7 @@ export function Dropdown({
           aria-label={label}
           onKeyDown={onMenuKeyDown}
           className={cn(
-            "absolute top-full z-40 mt-2 min-w-48 animate-menu-in rounded-md bg-canvas py-2 shadow-float motion-reduce:animate-fade-in",
+            "absolute top-full z-40 mt-2 min-w-48 animate-menu-in rounded-lg bg-canvas py-2 shadow-float motion-reduce:animate-fade-in",
             align === "end" ? "right-0 origin-top-right" : "left-0 origin-top-left",
           )}
         >
@@ -126,7 +126,7 @@ export function Dropdown({
                 type="button"
                 role="menuitem"
                 tabIndex={-1}
-                className={cn(ITEM, item.danger ? "text-primary-error-text" : "text-ink")}
+                className={cn(ITEM, item.danger ? "text-error" : "text-ink")}
                 onClick={() => {
                   // Focus goes back to the trigger first, so a dialog opened by the item returns
                   // focus there when it closes.

@@ -97,7 +97,7 @@ export default async function SettingsPage() {
                 {shortcut.keys.map((key) => (
                   <kbd
                     key={key}
-                    className="inline-flex h-7 min-w-7 items-center justify-center rounded-xs border border-hairline bg-surface-soft px-2 font-sans text-caption text-ink"
+                    className="inline-flex h-7 min-w-7 items-center justify-center rounded-sm border border-hairline bg-surface-soft px-2 font-sans text-caption text-ink"
                   >
                     {key}
                   </kbd>

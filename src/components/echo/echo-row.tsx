@@ -21,10 +21,10 @@ type EchoRowProps = {
 
 /** Monogram colors per collection accent: the accent mark on its matching tint. */
 const MONOGRAM: Record<CollectionAccent, string> = {
-  lagoon: "bg-tint-lagoon text-primary",
-  bronze: "bg-tint-bronze text-luxe",
-  plum: "bg-tint-plum text-plus",
-  neutral: "bg-surface-strong text-ink",
+  lagoon: "bg-tint-moss text-mark-moss",
+  bronze: "bg-tint-ochre text-mark-ochre",
+  plum: "bg-tint-heather text-mark-heather",
+  neutral: "bg-tint-neutral text-mark-neutral",
 };
 
 /** A dense Echo row for dashboard panels: a two-line serif quote, a meta line and the heart. */
@@ -35,7 +35,7 @@ export function EchoRow({ echo, monogram = false, surface = "panel", action, met
   return (
     <article
       className={cn(
-        "relative -mx-3 flex items-start gap-4 rounded-sm px-3 py-4 transition-colors duration-fast ease-standard",
+        "relative -mx-3 flex items-start gap-4 rounded-md px-3 py-4 transition-colors duration-fast ease-standard",
         surface === "panel" ? "hover:bg-surface-soft" : "hover:bg-canvas/60",
       )}
     >
@@ -53,7 +53,7 @@ export function EchoRow({ echo, monogram = false, surface = "panel", action, met
       <figure className="min-w-0 flex-1">
         <Link
           href={`/app/echoes/${echo.id}`}
-          className="block rounded-xs after:absolute after:inset-0 after:rounded-sm"
+          className="block rounded-sm after:absolute after:inset-0 after:rounded-md"
         >
           <QuoteText size="compact" className="line-clamp-2">
             {echo.quote}

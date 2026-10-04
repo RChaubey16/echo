@@ -84,7 +84,7 @@ export async function TodaySection({ data }: { data: Promise<Settled<TodaysEchoD
   const result = await data;
   if (!result.ok) {
     return (
-      <section aria-labelledby="today-heading" className="rounded-md bg-tint-lagoon p-6 tablet:p-8">
+      <section aria-labelledby="today-heading" className="rounded-lg bg-tint-moss p-6 tablet:p-8">
         <h2 id="today-heading" className="text-caption text-primary">
           Today&apos;s Echo
         </h2>
@@ -99,7 +99,7 @@ export async function TodaySection({ data }: { data: Promise<Settled<TodaysEchoD
 
 export function TodaySkeleton() {
   return (
-    <div aria-hidden className="rounded-md bg-tint-lagoon p-6 tablet:p-8">
+    <div aria-hidden className="rounded-lg bg-tint-moss p-6 tablet:p-8">
       <Skeleton className="h-4 w-48" />
       <div className="mt-6 grid gap-3">
         <Skeleton className="h-7 w-11/12" />
@@ -116,7 +116,7 @@ export async function RecentSection({ data }: { data: Promise<Settled<EchoListDt
   return (
     <section
       aria-labelledby="recent-heading"
-      className="rounded-md border border-hairline-soft bg-canvas p-6"
+      className="rounded-lg border border-hairline-soft bg-canvas p-6"
     >
       <div className="flex items-baseline justify-between gap-4">
         <h2 id="recent-heading" className="text-display-sm text-ink">
@@ -159,7 +159,7 @@ export function RecentSkeleton({ className }: { className?: string }) {
   return (
     <div
       aria-hidden
-      className={cn("rounded-md border border-hairline-soft bg-canvas p-6", className)}
+      className={cn("rounded-lg border border-hairline-soft bg-canvas p-6", className)}
     >
       <Skeleton className="h-5 w-36" />
       <SkeletonRows />
@@ -177,12 +177,12 @@ export async function RevisitsDueSection({
   const result = await data;
   if (result.ok && result.value.length === 0) return null;
   return (
-    <section aria-labelledby="revisits-heading" className="rounded-md bg-tint-bronze p-6">
+    <section aria-labelledby="revisits-heading" className="rounded-lg bg-tint-ochre p-6">
       <PanelHeader
         id="revisits-heading"
         title="Revisits due"
         icon={CalendarIcon}
-        iconClass="text-luxe"
+        iconClass="text-mark-ochre"
         link={
           <Link href="/app/revisits" className={LINK}>
             View all
@@ -218,8 +218,13 @@ export async function FromThePastSection({
   const result = await data;
   if (result.ok && !result.value) return null;
   return (
-    <section aria-labelledby="past-heading" className="rounded-md bg-tint-plum p-6">
-      <PanelHeader id="past-heading" title="From the past" icon={ClockIcon} iconClass="text-plus" />
+    <section aria-labelledby="past-heading" className="rounded-lg bg-tint-heather p-6">
+      <PanelHeader
+        id="past-heading"
+        title="From the past"
+        icon={ClockIcon}
+        iconClass="text-mark-heather"
+      />
       {result.ok && result.value ? (
         <>
           <p className="mt-3 text-body-sm text-muted">
@@ -238,7 +243,7 @@ export async function FromThePastSection({
 
 export function SidePanelSkeleton({ tint, className }: { tint: string; className?: string }) {
   return (
-    <div aria-hidden className={cn("rounded-md p-6", tint, className)}>
+    <div aria-hidden className={cn("rounded-lg p-6", tint, className)}>
       <Skeleton className="h-5 w-32" />
       <Skeleton className="mt-4 h-4 w-full" />
       <Skeleton className="mt-2 h-4 w-8/12" />
@@ -258,21 +263,21 @@ const STATS: Array<{
     label: "Echoes",
     href: "/app/echoes",
     icon: LibraryIcon,
-    chip: "bg-tint-lagoon text-primary",
+    chip: "bg-tint-moss text-mark-moss",
   },
   {
     key: "favorites",
     label: "Favorites",
     href: "/app/favorites",
     icon: HeartIcon,
-    chip: "bg-tint-plum text-plus",
+    chip: "bg-tint-heather text-mark-heather",
   },
   {
     key: "collections",
     label: "Collections",
     href: "/app/collections",
     icon: FolderIcon,
-    chip: "bg-tint-bronze text-luxe",
+    chip: "bg-tint-ochre text-mark-ochre",
   },
   {
     key: "revisitsDue",
@@ -288,7 +293,7 @@ export function LibrarySection({ counts }: { counts: LibraryCounts }) {
   return (
     <section
       aria-labelledby="library-heading"
-      className="rounded-md border border-hairline-soft bg-canvas p-6"
+      className="rounded-lg border border-hairline-soft bg-canvas p-6"
     >
       <h2 id="library-heading" className="text-display-sm text-ink">
         Your library

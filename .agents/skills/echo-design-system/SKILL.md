@@ -25,20 +25,20 @@ This skill makes UI work in Echo consistent. It tells you where the design decis
 
 Product behavior (routes, features, copy, flows) comes from `docs/echo-techincal-prod-spec.md` and the phase files in `docs/development/`. DESIGN.md decides how things look. The spec decides what exists.
 
-### DESIGN.md was written from an Airbnb analysis
+### Inkwell and the Claude Design export
 
-Its component names are about a marketplace: property cards, reservation cards, search orbs, product tabs. Echo has no listings, photos or prices. **Don't build marketplace UI.** Reuse the *treatment* (shape, type, color and elevation rules) for Echo's own components. `references/components.md` maps each DESIGN.md component to its Echo equivalent.
+DESIGN.md describes **Inkwell**: cream paper, warm ink, one iron-gall blue accent, EB Garamond for quotes and Hanken Grotesk for the interface. It was designed in Claude Design. The export in `docs/design/claude-design/export/` has every screen at 390, 900 and 1440px, with a light/dark switch on each file, plus the component sheet with every state (`Echo Design System.dc.html`). Use it as the visual reference for a screen or component. `docs/design/claude-design/implementation-plan.md` records the decisions and the structural changes. Ignore `export/_ds/modernist-*`: it is the seed theme Claude Design started from, not part of Echo.
 
 ## Echo's design principles
 
 These come from the product spec. Use them to decide anything the tokens don't cover.
 
 - **The words are the hero.** On any screen showing an Echo, the quote has the strongest typographic presence. Chrome (nav, metadata, buttons) is quieter: ink and muted grays, small type, plenty of whitespace.
-- **One or two Lagoon moments per view.** `primary` (#0e7c6b) marks the main action and the saved/favorite state. Spread Lagoon across many elements and it stops meaning anything. App screens sit on `surface-soft` with white panels; one featured panel may use a pale tint (see `tokens.md`).
+- **One or two accent moments per view.** `primary` (iron-gall blue) marks the main action, links, the favorite-on state and the focus ring. Spread it across many elements and it stops meaning anything. App screens sit on `bg-paper` with canvas panels; Revisits and From the past use their pale tints (see `tokens.md`).
 - **Calm, not a feed.** Home and list screens are capped, sectioned and finite. Don't add infinite scroll, auto-playing content, badges that nag, streaks or attention bait.
 - **Saving takes seconds.** Every extra field, step or confirmation in the capture flow has a cost. Only the quote is required; everything else goes behind progressive disclosure.
 - **Private and quiet.** No social metaphors (likes, followers, share counts). Sharing, when it exists, is a deliberate action.
-- **Soft, not playful.** Corners are rounded (8/14/full), there is one soft shadow tier, and weights stay modest (500–700 for display, 400 for body). Avoid gradients, glassmorphism, neon and decorative illustration noise.
+- **Paper, not app.** Corners are like cut card stock (4/6/10; circles only for icon buttons and dots), surfaces are separated by hairlines and tone, and the single shadow is reserved for things that float. Weights stay modest (600 for display, 400 for body). Avoid gradients, glassmorphism, neon and decorative illustration noise.
 
 ## Workflow
 
@@ -70,7 +70,7 @@ Avoid one-off styling inside a page: `<div className="rounded-[14px] shadow-[...
 
 ### 3. Implement
 
-- Style only with token-backed utilities (`bg-primary`, `text-ink`, `text-muted`, `rounded-md`, `shadow-float`, `text-body-sm`, the spacing scale). If a value isn't in the tokens, see "Changing the design system" below.
+- Style only with token-backed utilities (`bg-primary`, `text-ink`, `text-muted`, `rounded-lg`, `shadow-float`, `text-body-sm`, the spacing scale). If a value isn't in the tokens, see "Changing the design system" below.
 - Use semantic HTML first (`button`, `a`, `nav`, `main`, `h1–h3`, `label`, `dialog` patterns). Add ARIA only where native semantics are missing.
 - Render user content as text, never as HTML. Quotes and reflections use `whitespace-pre-wrap` and `[overflow-wrap:anywhere]`.
 - Build mobile-first (from 320px), then add `tablet:`, `desktop:` and `wide:` overrides (see `references/responsive-a11y.md`).
@@ -124,14 +124,14 @@ python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<concern>" --stack html-
 
 ## Motion in one paragraph
 
-Motion in Echo is feedback and continuity, never decoration. Use only the motion tokens: `fast` (120ms) for press and color changes, `base` (200ms) for hover, fades and small moves, and `slow` (320ms) for dialogs, sheets and the Today's Echo swap. Enter with `ease-out-soft`, exit faster with `ease-in-soft`. Animate only `opacity` and `transform`. Every animation has a `motion-reduce:` fallback that removes movement but keeps meaning, for example an instant swap or a plain opacity change. Full recipes are in `references/motion.md`.
+Motion in Echo is feedback and continuity, never decoration. Use only the motion tokens: `fast` (150ms) for hover, press and color changes, `base` (200ms) for dialogs, menus, toasts and fades, and `slow` (250ms) for the Echo me something swap and the mobile sheet. Enter with `ease-out-soft`, exit faster with `ease-in-soft`. Animate only `opacity` and `transform`. Every animation has a `motion-reduce:` fallback that removes movement but keeps meaning, for example an instant swap or a plain opacity change. Full recipes are in `references/motion.md`.
 
 ## Mistakes that come up in Echo work
 
-- **Building from DESIGN.md's marketplace vocabulary** (price rows, photo carousels, star ratings) instead of mapping it to Echo components.
-- **Lagoon everywhere**: colored headings, tag chips, borders and icons all in primary. Keep it for the main action, the saved/favorite state and inline links.
-- **Raw values**: `#0e7c6b`, `text-[15px]`, `rounded-[12px]`, `shadow-lg`. Use tokens; Tailwind's default shadows and colors are not part of Echo.
-- **A second shadow tier, or shadows on everything.** There is one shadow, `shadow-float`, used on hover-floated cards, dropdowns and popovers. Everything else is flat, separated by hairlines.
+- **Copying the export's inline styles verbatim.** The export is plain HTML with inline styles and its own variable names (`--canvas`, `--quote`). Rebuild it with Echo's components and token utilities.
+- **The accent everywhere**: colored headings, tag chips, nav state, borders and icons all in primary. Keep it for the main action, the saved/favorite state and inline links.
+- **Raw values**: `#2d4a72`, `text-[15px]`, `rounded-[12px]`, `shadow-lg`. Use tokens; Tailwind's default shadows and colors are not part of Echo.
+- **A second shadow tier, or shadows on everything.** There is one shadow, `shadow-float`, used on dialogs, menus, toasts and the raised Add button. Cards never get a shadow, not even on hover (their border darkens instead). Everything else is flat, separated by hairlines.
 - **Truncating the user's words where they matter.** Clamping on list cards is fine (with a clear way to open the full Echo). The detail page and Today's Echo always show the full quote.
 - **Placeholder-only labels, errors only as toasts, `outline-none` without a replacement focus style, icon-only buttons without `aria-label`.**
 - **Spinners for page content.** Use skeletons shaped like the content (see `components.md`), and keep spinners inside buttons only.
@@ -155,8 +155,9 @@ Never add a token only in code.
 These used to be open questions. They are settled in DESIGN.md; follow them and don't reopen them unless the user asks.
 
 - **Dark mode:** Light, Dark and System are supported through `colors-dark` in DESIGN.md, a pure token swap (see `tokens.md`). Never write `dark:` variants with literal colors.
-- **Quote typeface:** Newsreader (serif) for quote text only, through `QuoteText`. Everything else stays in the sans family.
-- **Disabled primary button:** `on-primary-disabled` text on `primary-disabled` (5.8:1).
-- **Input borders:** `border-input` (#858585, 3.7:1).
+- **Quote typeface:** EB Garamond for quote text only, through `QuoteText` (`today`, `hero`, `card`, `compact`). The landing tagline is the one exception. Everything else uses Hanken Grotesk.
+- **Disabled primary button:** `muted-soft` text on `primary-disabled`. Disabled controls are exempt from contrast minimums.
+- **Input borders:** `border-input` (#8a7f72, 3.7:1).
 - **App navigation:** a left sidebar at desktop, a labelled rail at tablet, and a bottom tab bar on mobile (see `components.md` › Navigation). The top nav is for marketing pages only.
-- **`legal-link` blue (#428bff)** is 3.3:1 on white and unused. In-app links use `primary`.
+- **Collection slots:** stored as `lagoon | bronze | plum | neutral`, and shown as moss, ochre, heather and a neutral ring through `mark-*` and `tint-*`. The database keys aren't renamed.
+- **Theme switch:** `data-theme` is absent for System. The export's `data-theme="system"` is not adopted.

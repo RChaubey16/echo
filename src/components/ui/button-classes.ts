@@ -8,14 +8,14 @@ const BASE =
 
 const VARIANTS: Record<ButtonVariant, string> = {
   primary:
-    "h-12 rounded-sm bg-primary px-6 text-button-md text-on-primary hover:bg-primary-active active:scale-98 active:bg-primary-active disabled:bg-primary-disabled disabled:text-on-primary-disabled",
+    "h-12 rounded-md bg-primary px-6 text-button-md text-on-primary hover:bg-primary-active active:scale-98 active:bg-primary-active disabled:bg-primary-disabled disabled:text-muted-soft",
   secondary:
-    "h-12 rounded-sm border border-ink bg-canvas px-6 text-button-md text-ink hover:bg-surface-soft active:bg-surface-strong disabled:border-hairline disabled:text-muted-soft",
-  // DESIGN.md button-pill-lagoon: a featured-panel CTA (Echo me something). 44px keeps the touch target.
-  pill: "h-11 rounded-full bg-primary px-5 text-button-sm text-on-primary hover:bg-primary-active active:scale-98 active:bg-primary-active disabled:bg-primary-disabled disabled:text-on-primary-disabled",
+    "h-12 rounded-md border border-ink bg-canvas px-6 text-button-md text-ink hover:bg-surface-soft active:bg-surface-strong disabled:border-hairline disabled:text-muted-soft",
+  // Featured-panel CTA (Echo me something). 44px keeps the touch target.
+  pill: "h-11 rounded-full bg-primary px-5 text-button-sm text-on-primary hover:bg-primary-active active:scale-98 active:bg-primary-active disabled:bg-primary-disabled disabled:text-muted-soft",
   tertiary: "h-auto px-0 text-button-md text-ink underline-offset-4 hover:underline",
   danger:
-    "h-12 rounded-sm bg-primary-error-text px-6 text-button-md text-on-primary hover:bg-primary-error-text-hover active:scale-98 active:bg-primary-error-text-hover disabled:bg-primary-disabled disabled:text-on-primary-disabled",
+    "h-12 rounded-md bg-error px-6 text-button-md text-on-error hover:bg-error-hover active:scale-98 active:bg-error-hover disabled:bg-primary-disabled disabled:text-muted-soft",
 };
 
 // The dense size only changes height, padding and type; tertiary has no box to shrink.

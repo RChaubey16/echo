@@ -1,15 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Newsreader } from "next/font/google";
+import { EB_Garamond, Hanken_Grotesk } from "next/font/google";
 import { cookies } from "next/headers";
 import type { ReactNode } from "react";
 import { SITE_DESCRIPTION, SITE_NAME, siteUrl } from "@/lib/site";
 import { THEME_COOKIE, parseTheme } from "@/lib/theme";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
-const newsreader = Newsreader({
+const sans = Hanken_Grotesk({ subsets: ["latin"], variable: "--font-hanken", display: "swap" });
+// Quotes only.
+const quote = EB_Garamond({
   subsets: ["latin"],
-  variable: "--font-newsreader",
+  variable: "--font-garamond",
   display: "swap",
   style: ["normal", "italic"],
 });
@@ -24,8 +25,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" }, // audit-ignore: mirrors canvas
-    { media: "(prefers-color-scheme: dark)", color: "#1b1f1e" }, // audit-ignore: mirrors dark canvas
+    { media: "(prefers-color-scheme: light)", color: "#fbf8f2" }, // audit-ignore: mirrors canvas
+    { media: "(prefers-color-scheme: dark)", color: "#221e1a" }, // audit-ignore: mirrors dark canvas
   ],
 };
 
@@ -34,7 +35,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   // No cookie means System: the prefers-color-scheme tokens apply.
   const theme = parseTheme((await cookies()).get(THEME_COOKIE)?.value);
   return (
-    <html lang="en" data-theme={theme} className={`${inter.variable} ${newsreader.variable}`}>
+    <html lang="en" data-theme={theme} className={`${sans.variable} ${quote.variable}`}>
       <body>{children}</body>
     </html>
   );
