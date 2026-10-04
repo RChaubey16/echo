@@ -15,6 +15,7 @@ import { useEffect } from "react";
 export function useReportError(error: Error & { digest?: string }): void {
   useEffect(() => {
     if (error.digest || !process.env.NEXT_PUBLIC_SENTRY_DSN) return;
+    if (process.env.NODE_ENV !== "production") return;
     void import("@sentry/nextjs").then((Sentry) => Sentry.captureException(error));
   }, [error]);
 }
