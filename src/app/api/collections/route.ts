@@ -1,3 +1,4 @@
+import { track } from "@/server/analytics";
 import { requireUser } from "@/server/auth";
 import { apiHandler, readJson } from "@/server/http";
 import { createCollection, listCollections } from "@/server/services/collections";
@@ -13,5 +14,7 @@ export const GET = apiHandler(async () => {
 export const POST = apiHandler(async (request) => {
   const user = await requireUser();
   const input = collectionCreateSchema.parse(await readJson(request));
-  return Response.json(await createCollection(user.id, input), { status: 201 });
+  const collection = await createCollection(user.id, input);
+  track(user.id, "collection_created");
+  return Response.json(collection, { status: 201 });
 });

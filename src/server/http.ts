@@ -1,5 +1,8 @@
+import * as Sentry from "@sentry/nextjs";
 import { ZodError } from "zod";
 import { logger } from "@/lib/logger";
+import type { RateLimitPolicy } from "@/server/rate-limit";
+import { runInRequestScope } from "@/server/request-scope";
 
 export const ERROR_CODES = [
   "UNAUTHORIZED",
@@ -10,6 +13,7 @@ export const ERROR_CODES = [
   "COLLECTION_NOT_FOUND",
   "TAG_NOT_FOUND",
   "REVISIT_NOT_FOUND",
+  "UNSUPPORTED_MEDIA_TYPE",
   "RATE_LIMITED",
   "INTERNAL_ERROR",
 ] as const;
@@ -25,6 +29,7 @@ const DEFAULTS: Record<ErrorCode, { status: number; message: string }> = {
   COLLECTION_NOT_FOUND: { status: 404, message: "Collection not found." },
   TAG_NOT_FOUND: { status: 404, message: "Tag not found." },
   REVISIT_NOT_FOUND: { status: 404, message: "Revisit not found." },
+  UNSUPPORTED_MEDIA_TYPE: { status: 415, message: "Send the request body as JSON." },
   RATE_LIMITED: { status: 429, message: "Too many requests. Try again shortly." },
   INTERNAL_ERROR: { status: 500, message: "Something went wrong." },
 };
@@ -113,6 +118,8 @@ export function toErrorResponse(error: unknown, requestId: string, route?: strin
   }
   const errorId = crypto.randomUUID();
   logger.error("unhandled error", { requestId, errorId, route, code: "INTERNAL_ERROR" });
+  // A no-op unless Sentry is configured; the event is scrubbed by beforeSend.
+  Sentry.captureException(error, { tags: { errorId, requestId, ...(route ? { route } : {}) } });
   return errorResponse(
     500,
     { error: { code: "INTERNAL_ERROR", message: DEFAULTS.INTERNAL_ERROR.message, errorId } },
@@ -123,11 +130,19 @@ export function toErrorResponse(error: unknown, requestId: string, route?: strin
 /**
  * Reads a request body as JSON, treating a malformed body as a validation error.
  *
+ * Only `application/json` is accepted: an HTML form can't send it cross-site without a CORS
+ * preflight, which closes the classic form-post CSRF hole.
+ *
  * @param request - The incoming request.
  * @returns The parsed JSON value.
+ * @throws AppError UNSUPPORTED_MEDIA_TYPE when the content type isn't JSON.
  * @throws AppError VALIDATION_ERROR when the body is not valid JSON.
  */
 export async function readJson(request: Request): Promise<unknown> {
+  const contentType = request.headers.get("content-type") ?? "";
+  if (contentType.split(";")[0]?.trim().toLowerCase() !== "application/json") {
+    throw new AppError("UNSUPPORTED_MEDIA_TYPE");
+  }
   try {
     return await request.json();
   } catch {
@@ -135,22 +150,76 @@ export async function readJson(request: Request): Promise<unknown> {
   }
 }
 
+const SAFE_METHODS = new Set(["GET", "HEAD", "OPTIONS"]);
+
 /**
- * Wraps a route handler with a request ID, timing logs and spec §39 error mapping.
+ * Rejects a state-changing request that a browser sent from another site.
+ *
+ * Browsers mark every request with `Sec-Fetch-Site` and send `Origin` on non-GET requests, so a
+ * cross-site form or fetch is caught by either. Clients that send neither (curl, a future mobile
+ * app) carry no ambient cookies to abuse and are let through.
+ *
+ * @param request - The incoming request.
+ * @returns Nothing.
+ * @throws AppError FORBIDDEN when the request came from another origin.
+ */
+export function assertSameOrigin(request: Request): void {
+  if (SAFE_METHODS.has(request.method)) return;
+  const fetchSite = request.headers.get("sec-fetch-site");
+  if (fetchSite && fetchSite !== "same-origin" && fetchSite !== "none") {
+    throw new AppError("FORBIDDEN");
+  }
+  const origin = request.headers.get("origin");
+  if (!origin) return;
+  const host =
+    request.headers.get("x-forwarded-host") ??
+    request.headers.get("host") ??
+    new URL(request.url).host;
+  let originHost: string;
+  try {
+    originHost = new URL(origin).host;
+  } catch {
+    throw new AppError("FORBIDDEN");
+  }
+  if (originHost !== host) throw new AppError("FORBIDDEN");
+}
+
+export type ApiHandlerOptions = {
+  /**
+   * The rate limit counted against the signed-in user once requireUser() resolves them. Defaults
+   * to `mutation` for POST, PATCH, PUT and DELETE, and to no limit for reads.
+   */
+  rateLimit?: RateLimitPolicy | null;
+};
+
+/**
+ * Wraps a route handler with a request ID, timing logs, CSRF and rate-limit checks and spec §39
+ * error mapping.
  *
  * @param fn - The route handler to wrap.
+ * @param options - Per-route settings such as the rate-limit policy.
  * @returns A route handler that never throws.
  */
 export function apiHandler<Ctx = unknown>(
   fn: (request: Request, context: Ctx & { requestId: string }) => Promise<Response> | Response,
+  options: ApiHandlerOptions = {},
 ): (request: Request, context: Ctx) => Promise<Response> {
   return async (request, context) => {
     const requestId = crypto.randomUUID();
     const started = performance.now();
     const route = new URL(request.url).pathname;
+    const rateLimit =
+      options.rateLimit !== undefined
+        ? options.rateLimit
+        : SAFE_METHODS.has(request.method)
+          ? null
+          : "mutation";
     let response: Response;
     try {
-      response = await fn(request, { ...(context as Ctx), requestId });
+      assertSameOrigin(request);
+      response = await runInRequestScope({ rateLimit }, () =>
+        fn(request, { ...(context as Ctx), requestId }),
+      );
     } catch (error) {
       response = toErrorResponse(error, requestId, route);
     }

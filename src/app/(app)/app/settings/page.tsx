@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import type { ReactNode } from "react";
 import { AccountNameForm } from "@/components/echo/account-name-form";
 import { AppearancePicker } from "@/components/echo/appearance-picker";
-import { Button } from "@/components/ui/button";
+import { DeleteAccountDialog } from "@/components/echo/delete-account-dialog";
+import { ExportData } from "@/components/echo/export-data";
 import { UserIcon } from "@/components/ui/icons";
 import { requireUserPage } from "@/server/auth";
 
@@ -120,7 +122,19 @@ export default async function SettingsPage() {
             Your Echoes are never public. Only you can see them, and nothing you save is shared or
             published.
           </p>
-          <p>Usage analytics never include the text of your quotes or reflections.</p>
+          <p>
+            Echo counts how features are used, such as &ldquo;an Echo was saved&rdquo; or how many
+            results a search found, to learn what helps. These counts never include the text of your
+            quotes, reflections or searches, and error reports are scrubbed of it too.
+          </p>
+          <p>
+            <Link
+              href="/privacy"
+              className="text-primary underline underline-offset-4 hover:decoration-2"
+            >
+              Read the privacy policy
+            </Link>
+          </p>
         </div>
       </Section>
 
@@ -131,30 +145,27 @@ export default async function SettingsPage() {
       </Section>
 
       <Section id="data-heading" title="Your data">
-        <ul className="grid grid-cols-1 gap-4">
-          <li className="flex flex-col gap-3 tablet:flex-row tablet:items-center tablet:justify-between">
+        <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-4">
             <div className="min-w-0">
-              <p className="text-body-md text-ink">Export your Echoes</p>
+              <h3 className="text-body-md text-ink">Export your Echoes</h3>
               <p className="text-body-sm text-muted">
-                Download everything you&apos;ve saved. Coming soon.
+                Download everything you&apos;ve saved, with tags, collections, reflections and
+                Revisits. JSON keeps it all; CSV opens in a spreadsheet.
               </p>
             </div>
-            <Button variant="secondary" disabled className="shrink-0">
-              Export
-            </Button>
-          </li>
-          <li className="flex flex-col gap-3 tablet:flex-row tablet:items-center tablet:justify-between">
+            <ExportData />
+          </div>
+          <div className="flex flex-col gap-3 border-t border-hairline-soft pt-8 tablet:flex-row tablet:items-center tablet:justify-between">
             <div className="min-w-0">
-              <p className="text-body-md text-ink">Delete your account</p>
+              <h3 className="text-body-md text-ink">Delete your account</h3>
               <p className="text-body-sm text-muted">
-                Remove your account and every Echo for good. Coming soon.
+                Permanently remove your account and every Echo. This can&apos;t be undone.
               </p>
             </div>
-            <Button variant="secondary" disabled className="shrink-0">
-              Delete account
-            </Button>
-          </li>
-        </ul>
+            <DeleteAccountDialog email={user.email} />
+          </div>
+        </div>
       </Section>
     </div>
   );

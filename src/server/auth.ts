@@ -6,7 +6,10 @@ import { redirect } from "next/navigation";
 import { cache } from "react";
 import { parseTheme, type Theme } from "@/lib/theme";
 import { db } from "@/server/db";
+import { track } from "@/server/analytics";
 import { AppError } from "@/server/http";
+import { enforceRateLimit } from "@/server/rate-limit";
+import { currentRequestScope } from "@/server/request-scope";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   // The adapter is typed against @prisma/client; our client is generated to a custom path
@@ -15,6 +18,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [Google],
   session: { strategy: "database" },
   pages: { signIn: "/login" },
+  events: {
+    createUser({ user }) {
+      if (user.id) track(user.id, "signup_completed");
+    },
+  },
   callbacks: {
     session({ session, user }) {
       // The database adapter hands over the whole users row, including our own columns.
@@ -71,11 +79,17 @@ export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
 /**
  * Returns the signed-in user for a route handler, or throws UNAUTHORIZED.
  *
+ * Inside apiHandler this also counts the request against the route's rate limit for this user, so
+ * every authenticated mutation is limited without each handler remembering to do it.
+ *
  * @returns The signed-in user.
+ * @throws AppError UNAUTHORIZED without a session, or RATE_LIMITED over the route's limit.
  */
 export async function requireUser(): Promise<SessionUser> {
   const user = await getSessionUser();
   if (!user) throw new AppError("UNAUTHORIZED");
+  const policy = currentRequestScope()?.rateLimit;
+  if (policy) await enforceRateLimit(policy, user.id);
   return user;
 }
 

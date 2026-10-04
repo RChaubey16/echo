@@ -11,7 +11,7 @@ Each phase ends with something that can be deployed and is complete in itself. F
 | 3 | [phase-3-organization.md](phase-3-organization.md) | Tags, Collections, Favorites page, Search. |
 | 4 | [phase-4-discovery.md](phase-4-discovery.md) | Home dashboard, Today's Echo, Echo Me Something, Revisits, onboarding. |
 | 5 | [phase-5-polish.md](phase-5-polish.md) | Responsive, empty/loading/error states, a11y, performance, settings and appearance. |
-| 6 | [phase-6-production-readiness.md](phase-6-production-readiness.md) | Security review, authz test suite, backups, analytics, monitoring, export, account deletion. |
+| 6 | [phase-6-production-readiness.md](phase-6-production-readiness.md) | Security review, authz test suite, analytics, monitoring, export, account deletion. (Backups dropped: see Phase 6 §3.) |
 
 ---
 
@@ -66,7 +66,7 @@ These are deliberate. Update the spec if they stick.
     - migrations run **only** from `main`, never from a Preview build;
     - every migration must be **backward-compatible**, adding things before removing them (expand → contract), so that older and newer deployments both work against the same schema;
     - no seed, reset or test scripts are ever run against `echo-prod`.
-- **Backups.** Daily backups require a paid plan, and point-in-time recovery (PITR) is an add-on. See Phase 6.
+- **Backups.** None. `echo-prod` stays on the free plan, which has no backups; the owner accepted that a database loss is unrecoverable (Phase 6 §3). Users are told so in `/privacy` and can export their data.
 
 ---
 

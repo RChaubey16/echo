@@ -1,6 +1,7 @@
 "use client";
 
 import { ErrorState } from "@/components/ui/error-state";
+import { useReportError } from "@/lib/use-report-error";
 import "./globals.css";
 
 /** The last-resort boundary when the root layout itself fails; it renders its own document. */
@@ -11,6 +12,7 @@ export default function GlobalError({
   error: Error & { digest?: string };
   retry: () => void;
 }) {
+  useReportError(error);
   return (
     <html lang="en">
       <body>

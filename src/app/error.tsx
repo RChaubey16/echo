@@ -1,6 +1,7 @@
 "use client";
 
 import { ErrorState } from "@/components/ui/error-state";
+import { useReportError } from "@/lib/use-report-error";
 
 /** The error boundary for pages outside the app shell: the landing page and sign-in. */
 export default function RootError({
@@ -10,6 +11,7 @@ export default function RootError({
   error: Error & { digest?: string };
   retry: () => void;
 }) {
+  useReportError(error);
   return (
     <main
       id="main"

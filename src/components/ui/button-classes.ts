@@ -15,7 +15,7 @@ const VARIANTS: Record<ButtonVariant, string> = {
   pill: "h-11 rounded-full bg-primary px-5 text-button-sm text-on-primary hover:bg-primary-active active:scale-98 active:bg-primary-active disabled:bg-primary-disabled disabled:text-on-primary-disabled",
   tertiary: "h-auto px-0 text-button-md text-ink underline-offset-4 hover:underline",
   danger:
-    "h-12 rounded-sm bg-primary-error-text px-6 text-button-md text-on-primary hover:bg-primary-error-text-hover active:scale-98 active:bg-primary-error-text-hover",
+    "h-12 rounded-sm bg-primary-error-text px-6 text-button-md text-on-primary hover:bg-primary-error-text-hover active:scale-98 active:bg-primary-error-text-hover disabled:bg-primary-disabled disabled:text-on-primary-disabled",
 };
 
 // The dense size only changes height, padding and type; tertiary has no box to shrink.

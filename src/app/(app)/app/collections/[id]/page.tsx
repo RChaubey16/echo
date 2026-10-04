@@ -13,6 +13,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { ArrowLeftIcon } from "@/components/ui/icons";
 import { Pagination } from "@/components/ui/pagination";
 import { hrefWith, parsePage } from "@/lib/search-params";
+import { track } from "@/server/analytics";
 import { requireUserPage } from "@/server/auth";
 import { getCollectionOrNotFound } from "@/server/organization-pages";
 
@@ -36,6 +37,7 @@ export default async function CollectionPage({
   const pageHref = (target: number) =>
     hrefWith(`/app/collections/${collection.id}`, { page: target > 1 ? target : undefined });
   if (echoes.total > 0 && page > pageCount) redirect(pageHref(pageCount));
+  if (page === 1) track(user.id, "collection_opened");
 
   return (
     <div className="flex flex-col py-8 tablet:py-12">

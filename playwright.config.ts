@@ -24,6 +24,8 @@ export default defineConfig({
       DIRECT_URL: databaseUrl,
       AUTH_URL: baseURL,
       AUTH_TRUST_HOST: "true",
+      // E2E runs never send events to PostHog, even when the local .env holds real keys.
+      ANALYTICS_DISABLED: "1",
     },
   },
 });

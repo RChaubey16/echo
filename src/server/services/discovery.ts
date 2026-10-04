@@ -24,6 +24,7 @@ const STABLE_ORDER: Prisma.EchoOrderByWithRelationInput[] = [{ savedAt: "asc" },
  * @returns The IANA time zone name.
  */
 export async function getUserTimeZone(userId: string): Promise<string> {
+  // eslint-disable-next-line no-restricted-syntax -- the user's own row, by their own ID.
   const user = await db.user.findUnique({ where: { id: userId }, select: { timezone: true } });
   return user?.timezone ?? "UTC";
 }
@@ -59,6 +60,7 @@ export async function getTodaysEcho(
   const day = localDate(options.timeZone ?? (await getUserTimeZone(userId)), now);
   const date = new Date(`${day}T00:00:00Z`);
 
+  // eslint-disable-next-line no-restricted-syntax -- the unique key starts with userId.
   const pinned = await db.dailyEcho.findUnique({
     where: { userId_date: { userId, date } },
     select: { echo: { include: ECHO_INCLUDE } },

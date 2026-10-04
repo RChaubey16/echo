@@ -40,6 +40,9 @@ test("the theme applies at once, survives a reload without a flash, and System c
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await expect(page.getByRole("radio", { name: /Dark/ })).toBeChecked();
+  // Let the reloaded page finish hydrating, so its own ThemeSync can't rewrite the cookie after
+  // the next step clears it.
+  await page.locator("html[data-hydrated]").waitFor({ state: "attached" });
 
   // A new browser on the same account picks the saved theme up from the session.
   await context.clearCookies({ name: "echo-theme" });
