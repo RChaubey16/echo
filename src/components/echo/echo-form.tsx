@@ -11,7 +11,7 @@ import { ApiError, api } from "@/lib/api";
 import { useHydrated } from "@/lib/use-hydrated";
 import type { EchoDto } from "@/types/echo";
 import { EchoFields } from "./echo-fields";
-import { isDirty, valuesFromEcho } from "./echo-values";
+import { isDirty, linksFromEcho, valuesFromEcho } from "./echo-values";
 import { useEchoDraft } from "./use-echo-draft";
 
 type EchoFormProps = {
@@ -38,8 +38,9 @@ export function EchoForm({ echo, cancelHref }: EchoFormProps) {
   const router = useRouter();
   const toast = useToast();
   const initial = valuesFromEcho(echo);
+  const initialLinks = linksFromEcho(echo);
   const formRef = useRef<HTMLFormElement>(null);
-  const draft = useEchoDraft(initial, Boolean(echo), formRef);
+  const draft = useEchoDraft(initial, initialLinks, Boolean(echo), formRef);
   const [saving, setSaving] = useState(false);
   const [summary, setSummary] = useState<string | null>(null);
   const summaryRef = useRef<HTMLDivElement>(null);
@@ -51,7 +52,7 @@ export function EchoForm({ echo, cancelHref }: EchoFormProps) {
   useEffect(() => {
     if (hydrated) quoteRef.current?.focus();
   }, [hydrated]);
-  const dirty = isDirty(draft.values, initial) && !saving;
+  const dirty = isDirty(draft.values, initial, draft.links, initialLinks) && !saving;
 
   // Warn before leaving the page with unsaved text, so a draft quote is never lost.
   useEffect(() => {
@@ -110,6 +111,8 @@ export function EchoForm({ echo, cancelHref }: EchoFormProps) {
         values={draft.values}
         errors={draft.errors}
         onChange={draft.setField}
+        links={draft.links}
+        onLinkChange={draft.setLink}
         onBlur={draft.blurField}
         detailsOpen={draft.detailsOpen}
         onDetailsOpenChange={draft.setDetailsOpen}

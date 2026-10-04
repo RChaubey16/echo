@@ -7,6 +7,8 @@ import {
   validateEcho,
   type EchoErrors,
   type EchoField,
+  type EchoLink,
+  type EchoLinks,
   type EchoValues,
 } from "./echo-values";
 
@@ -15,16 +17,19 @@ import {
  * matches the API.
  *
  * @param initial - The values the form starts from.
+ * @param initialLinks - The tags and collections the form starts from.
  * @param detailsOpenInitially - Whether "More details" starts expanded (edit) or collapsed (create).
  * @param formRef - The form element, used to focus the first invalid field.
  * @returns The draft state and its handlers.
  */
 export function useEchoDraft(
   initial: EchoValues,
+  initialLinks: EchoLinks,
   detailsOpenInitially: boolean,
   formRef: RefObject<HTMLFormElement | null>,
 ) {
   const [values, setValues] = useState(initial);
+  const [links, setLinks] = useState(initialLinks);
   const [errors, setErrors] = useState<EchoErrors>({});
   const [detailsOpen, setDetailsOpen] = useState(detailsOpenInitially);
 
@@ -46,15 +51,20 @@ export function useEchoDraft(
     setErrors((current) => (current[name] ? { ...current, [name]: undefined } : current));
   }, []);
 
+  const setLink = useCallback((name: EchoLink, value: string[]) => {
+    setLinks((current) => ({ ...current, [name]: value }));
+    setErrors((current) => (current[name] ? { ...current, [name]: undefined } : current));
+  }, []);
+
   const blurField = useCallback(
     (name: EchoField) => {
       // An empty quote is only an error on submit, so leaving the field empty isn't scolded.
       if (name === "quote" && values.quote.trim() === "") return;
-      const result = validateEcho(values);
+      const result = validateEcho(values, links);
       const message = "errors" in result ? result.errors[name] : undefined;
       setErrors((current) => ({ ...current, [name]: message }));
     },
-    [values],
+    [values, links],
   );
 
   /**
@@ -63,13 +73,13 @@ export function useEchoDraft(
    * @returns The parsed Echo, or null when the draft is invalid.
    */
   const validate = useCallback((): EchoCreate | null => {
-    const result = validateEcho(values);
+    const result = validateEcho(values, links);
     if ("errors" in result) {
       showErrors(result.errors);
       return null;
     }
     return result.data;
-  }, [values, showErrors]);
+  }, [values, links, showErrors]);
 
   /**
    * Shows the API's per-field messages next to their fields.
@@ -88,8 +98,9 @@ export function useEchoDraft(
   );
 
   const reset = useCallback(
-    (next: EchoValues) => {
+    (next: EchoValues, nextLinks: EchoLinks) => {
       setValues(next);
+      setLinks(nextLinks);
       setErrors({});
       setDetailsOpen(detailsOpenInitially);
     },
@@ -98,6 +109,8 @@ export function useEchoDraft(
 
   return {
     values,
+    links,
+    setLink,
     errors,
     detailsOpen,
     setDetailsOpen,

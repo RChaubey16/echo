@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { COLLECTIONS_PER_ECHO_MAX } from "@/server/validation/collection";
+import { TAGS_PER_ECHO_MAX, tagNameSchema } from "@/server/validation/tag";
 
 // Shared by the route handlers and the client forms, so this module must stay free of server-only
 // imports.
@@ -9,11 +11,18 @@ export const SOURCE_MAX = 1_000;
 export const REFLECTION_MAX = 10_000;
 export const MOOD_MAX = 100;
 
-export const ECHO_SORTS = ["newest", "oldest", "recently_updated", "author"] as const;
+export const ECHO_SORTS = [
+  "newest",
+  "oldest",
+  "recently_updated",
+  "recently_favorited",
+  "author",
+] as const;
 export type EchoSort = (typeof ECHO_SORTS)[number];
 
 export const LIST_LIMIT_DEFAULT = 20;
 export const LIST_LIMIT_MAX = 100;
+export const SEARCH_MAX = 200;
 
 /**
  * Builds an optional free-text field that trims input and stores empty strings as null.
@@ -43,6 +52,22 @@ const echoFields = {
   reflection: optionalText(REFLECTION_MAX, "Reflection"),
   mood: optionalText(MOOD_MAX, "Mood"),
   isFavorite: z.boolean().optional(),
+  tagIds: z
+    .array(z.uuid({ error: "Unknown tag." }))
+    .max(TAGS_PER_ECHO_MAX, `An Echo can have up to ${TAGS_PER_ECHO_MAX} tags.`)
+    .optional(),
+  /** Tags to create (or reuse) by name, so the form can add new tags inline. */
+  tagNames: z
+    .array(tagNameSchema)
+    .max(TAGS_PER_ECHO_MAX, `An Echo can have up to ${TAGS_PER_ECHO_MAX} tags.`)
+    .optional(),
+  collectionIds: z
+    .array(z.uuid({ error: "Unknown collection." }))
+    .max(
+      COLLECTIONS_PER_ECHO_MAX,
+      `An Echo can be in up to ${COLLECTIONS_PER_ECHO_MAX} collections.`,
+    )
+    .optional(),
 };
 
 export const echoCreateSchema = z.object(echoFields);
@@ -63,6 +88,24 @@ export const echoListQuerySchema = z.object({
     .transform((limit) => Math.min(limit, LIST_LIMIT_MAX)),
   sort: z.enum(ECHO_SORTS).default("newest"),
   favorite: z.stringbool().optional(),
+  tag: z.uuid().optional(),
+  collection: z.uuid().optional(),
+  search: z
+    .string()
+    .trim()
+    .max(SEARCH_MAX)
+    .transform((value) => (value === "" ? undefined : value))
+    .optional(),
+});
+
+export const searchQuerySchema = z.object({
+  q: z
+    .string()
+    .trim()
+    .max(SEARCH_MAX, `Search must be ${SEARCH_MAX} characters or fewer.`)
+    .default(""),
+  page: echoListQuerySchema.shape.page,
+  limit: echoListQuerySchema.shape.limit,
 });
 
 export const echoIdSchema = z.uuid();
@@ -72,3 +115,4 @@ export type EchoCreateInput = z.input<typeof echoCreateSchema>;
 export type EchoCreate = z.output<typeof echoCreateSchema>;
 export type EchoUpdate = z.output<typeof echoUpdateSchema>;
 export type EchoListQuery = z.output<typeof echoListQuerySchema>;
+export type SearchQuery = z.output<typeof searchQuerySchema>;

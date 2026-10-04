@@ -16,9 +16,11 @@ model User {
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
 
-  accounts Account[]
-  sessions Session[]
-  echoes   Echo[]
+  accounts    Account[]
+  sessions    Session[]
+  echoes      Echo[]
+  collections Collection[]
+  tags        Tag[]
 
   @@map("users")
 }
@@ -62,24 +64,98 @@ model VerificationToken {
 }
 
 model Echo {
-  id             String    @id @default(uuid()) @db.Uuid
-  userId         String    @map("user_id") @db.Uuid
-  quote          String    @db.Text
-  author         String?   @db.VarChar(500)
-  source         String?   @db.VarChar(1000)
-  reflection     String?   @db.Text
-  mood           String?   @db.VarChar(100)
-  isFavorite     Boolean   @default(false) @map("is_favorite")
-  favoritedAt    DateTime? @map("favorited_at")
-  lastSurfacedAt DateTime? @map("last_surfaced_at")
-  savedAt        DateTime  @default(now()) @map("saved_at")
-  updatedAt      DateTime  @updatedAt @map("updated_at")
-  deletedAt      DateTime? @map("deleted_at")
+  id             String                   @id @default(uuid()) @db.Uuid
+  userId         String                   @map("user_id") @db.Uuid
+  quote          String                   @db.Text
+  author         String?                  @db.VarChar(500)
+  source         String?                  @db.VarChar(1000)
+  reflection     String?                  @db.Text
+  mood           String?                  @db.VarChar(100)
+  isFavorite     Boolean                  @default(false) @map("is_favorite")
+  favoritedAt    DateTime?                @map("favorited_at")
+  lastSurfacedAt DateTime?                @map("last_surfaced_at")
+  savedAt        DateTime                 @default(now()) @map("saved_at")
+  updatedAt      DateTime                 @updatedAt @map("updated_at")
+  deletedAt      DateTime?                @map("deleted_at")
+  // Generated column (quote A, author B, reflection B, source C) maintained by Postgres; see the
+  // add_search migration. Prisma never reads or writes it.
+  searchVector   Unsupported("tsvector")? @map("search_vector")
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tags        EchoTag[]
+  collections EchoCollection[]
 
   @@index([userId, deletedAt, savedAt])
   @@index([userId, deletedAt, updatedAt])
   @@index([userId, isFavorite])
+  @@index([searchVector], map: "echoes_search_idx", type: Gin)
   @@map("echoes")
+}
+
+enum CollectionAccent {
+  lagoon
+  bronze
+  plum
+  neutral
+}
+
+/// Names keep the user's casing; uniqueness per user is case-insensitive through the
+/// `collections_user_id_lower_name_key` index on (user_id, lower(name)) in the migration SQL.
+model Collection {
+  id          String           @id @default(uuid()) @db.Uuid
+  userId      String           @map("user_id") @db.Uuid
+  name        String           @db.VarChar(100)
+  description String?          @db.Text
+  accent      CollectionAccent @default(neutral)
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+
+  user   User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  echoes EchoCollection[]
+
+  @@index([userId])
+  @@index([name(ops: raw("gin_trgm_ops"))], map: "collections_name_trgm_idx", type: Gin)
+  @@map("collections")
+}
+
+model EchoCollection {
+  echoId       String   @map("echo_id") @db.Uuid
+  collectionId String   @map("collection_id") @db.Uuid
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  echo       Echo       @relation(fields: [echoId], references: [id], onDelete: Cascade)
+  collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+
+  @@id([echoId, collectionId])
+  @@index([collectionId])
+  @@map("echo_collections")
+}
+
+/// Names are stored normalized (trimmed, lowercased), so "Courage" and "courage" are one tag.
+model Tag {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  name      String   @db.VarChar(50)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user   User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  echoes EchoTag[]
+
+  @@unique([userId, name])
+  @@index([userId])
+  @@index([name(ops: raw("gin_trgm_ops"))], map: "tags_name_trgm_idx", type: Gin)
+  @@map("tags")
+}
+
+model EchoTag {
+  echoId    String   @map("echo_id") @db.Uuid
+  tagId     String   @map("tag_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  echo Echo @relation(fields: [echoId], references: [id], onDelete: Cascade)
+  tag  Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([echoId, tagId])
+  @@index([tagId])
+  @@map("echo_tags")
 }

@@ -1,19 +1,32 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useRef } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { Suspense, use, useRef } from "react";
+import { AccentDot } from "@/components/echo/accent-dot";
 import { LogoMark } from "@/components/echo/logo";
+import { NewCollectionButton } from "@/components/echo/new-collection-button";
 import { AddEchoLink } from "@/components/echo/quick-capture";
 import { buttonClasses } from "@/components/ui/button-classes";
-import { CollapseIcon, ExpandIcon, PlusIcon, SearchIcon, UserIcon } from "@/components/ui/icons";
+import {
+  ArrowRightIcon,
+  CollapseIcon,
+  ExpandIcon,
+  PlusIcon,
+  SearchIcon,
+  UserIcon,
+} from "@/components/ui/icons";
+import type { SidebarCollectionsDto } from "@/types/echo";
 import { AccountMenu } from "./account-menu";
 import { NAV, SIDEBAR_NAV, activeNavId, type NavId } from "./nav-items";
+import { SIDEBAR_SEARCH_ID } from "./search-ids";
 
 type AppSidebarProps = {
   collapsed: boolean;
   onCollapsedChange: (collapsed: boolean) => void;
   user: { name: string | null; email: string };
+  /** Streams in; null when it failed to load. */
+  collections: Promise<SidebarCollectionsDto | null>;
 };
 
 /*
@@ -50,8 +63,119 @@ function SidebarLink({ id, active }: { id: NavId; active: boolean }) {
   );
 }
 
-export function AppSidebar({ collapsed, onCollapsedChange, user }: AppSidebarProps) {
+/**
+ * The expanded sidebar's Collections section: a heading with "New collection", then the list,
+ * which streams in behind its own Suspense boundary.
+ *
+ * @param props - The streaming collections and the current path.
+ * @returns The section.
+ */
+function SidebarCollections({
+  collections,
+  pathname,
+}: {
+  collections: Promise<SidebarCollectionsDto | null>;
+  pathname: string;
+}) {
+  return (
+    <section aria-labelledby="sidebar-collections" className={SHOW_EXPANDED}>
+      <div className="flex items-center justify-between pr-1 pl-3">
+        <h2 id="sidebar-collections" className="text-caption text-muted">
+          Collections
+        </h2>
+        <NewCollectionButton
+          aria-label="New collection"
+          className="relative flex h-8 w-8 items-center justify-center rounded-full text-muted transition-colors duration-fast ease-standard before:absolute before:-inset-1.5 hover:bg-surface-soft hover:text-ink"
+        >
+          <PlusIcon className="h-4 w-4" />
+        </NewCollectionButton>
+      </div>
+      <Suspense fallback={<SidebarCollectionsSkeleton />}>
+        <SidebarCollectionList collections={collections} pathname={pathname} />
+      </Suspense>
+    </section>
+  );
+}
+
+/**
+ * Three placeholder rows shaped like collection rows, shown while the list streams in.
+ *
+ * @returns The skeleton.
+ */
+function SidebarCollectionsSkeleton() {
+  return (
+    <div aria-hidden className="mt-1 flex flex-col">
+      {[0, 1, 2].map((row) => (
+        <div key={row} className="flex h-10 items-center gap-3 px-3">
+          <div className="h-2 w-2 rounded-full bg-surface-strong" />
+          <div className="h-3 flex-1 animate-skeleton rounded-xs bg-surface-strong motion-reduce:animate-none" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * The first few collections (accent dot, name, count), then "All collections". It is a
+ * one-column grid, so long names truncate instead of widening the sidebar.
+ *
+ * @param props - The streaming collections and the current path.
+ * @returns The list.
+ */
+function SidebarCollectionList({
+  collections: promise,
+  pathname,
+}: {
+  collections: Promise<SidebarCollectionsDto | null>;
+  pathname: string;
+}) {
+  const collections = use(promise);
+  if (!collections) {
+    return <p className="mt-1 px-3 text-body-sm text-muted">Couldn&apos;t load collections.</p>;
+  }
+  if (collections.total === 0) {
+    return <p className="mt-1 px-3 text-body-sm text-muted">No collections yet.</p>;
+  }
+  return (
+    <>
+      <ul className="mt-1 grid grid-cols-1 gap-0.5">
+        {collections.items.map((collection) => {
+          const href = `/app/collections/${collection.id}`;
+          return (
+            <li key={collection.id} className="min-w-0">
+              <Link
+                href={href}
+                aria-current={pathname === href ? "page" : undefined}
+                className="flex h-10 min-w-0 items-center gap-3 rounded-sm px-3 text-body-sm text-body transition-colors duration-fast ease-standard hover:bg-surface-soft hover:text-ink aria-[current=page]:bg-surface-soft aria-[current=page]:font-semibold aria-[current=page]:text-ink"
+              >
+                <AccentDot accent={collection.accent} />
+                <span className="min-w-0 flex-1 truncate" title={collection.name}>
+                  {collection.name}
+                </span>
+                <span className="shrink-0 text-muted tabular-nums">
+                  <span className="sr-only">, </span>
+                  {collection.echoCount}
+                  <span className="sr-only"> {collection.echoCount === 1 ? "Echo" : "Echoes"}</span>
+                </span>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+      <Link
+        href="/app/collections"
+        className="mt-0.5 flex h-10 items-center gap-1.5 rounded-sm px-3 text-body-sm text-muted transition-colors duration-fast ease-standard hover:bg-surface-soft hover:text-ink"
+      >
+        All collections
+        <ArrowRightIcon className="h-4 w-4" />
+      </Link>
+    </>
+  );
+}
+
+export function AppSidebar({ collapsed, onCollapsedChange, user, collections }: AppSidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const active = activeNavId(pathname);
   const collapseRef = useRef<HTMLButtonElement>(null);
   const expandRef = useRef<HTMLButtonElement>(null);
@@ -108,16 +232,33 @@ export function AppSidebar({ collapsed, onCollapsedChange, user }: AppSidebarPro
           <PlusIcon className="h-5 w-5 shrink-0" />
         </AddEchoLink>
 
-        <form role="search" action={NAV.search.href} className={SHOW_EXPANDED}>
-          <label htmlFor="sidebar-search" className="sr-only">
+        <form
+          role="search"
+          action={NAV.search.href}
+          className={SHOW_EXPANDED}
+          onSubmit={(event) => {
+            // Navigate in place; the plain GET action is the fallback before hydration.
+            event.preventDefault();
+            const q = new FormData(event.currentTarget).get("q")?.toString().trim() ?? "";
+            router.push(q ? `${NAV.search.href}?q=${encodeURIComponent(q)}` : NAV.search.href);
+          }}
+        >
+          <label htmlFor={SIDEBAR_SEARCH_ID} className="sr-only">
             Search your Echoes
           </label>
           <div className="flex h-10 items-center gap-2 rounded-full border border-border-input bg-canvas pr-2 pl-3 focus-within:border-ink focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ink">
             <SearchIcon className="h-4 w-4 shrink-0 text-muted" />
             <input
-              id="sidebar-search"
+              id={SIDEBAR_SEARCH_ID}
               name="q"
               type="search"
+              onKeyDown={(event) => {
+                // Esc clears and leaves the field.
+                if (event.key === "Escape") {
+                  event.currentTarget.value = "";
+                  event.currentTarget.blur();
+                }
+              }}
               placeholder="Search"
               aria-keyshortcuts="/"
               className="min-w-0 flex-1 bg-transparent text-body-sm text-ink placeholder:text-muted focus-visible:outline-none"
@@ -154,6 +295,8 @@ export function AppSidebar({ collapsed, onCollapsedChange, user }: AppSidebarPro
             <ExpandIcon className="h-4 w-4" />
           </button>
         </nav>
+
+        <SidebarCollections collections={collections} pathname={pathname} />
       </div>
 
       <div className="border-t border-hairline p-3">
