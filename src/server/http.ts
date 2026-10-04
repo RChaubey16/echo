@@ -58,6 +58,9 @@ export class AppError extends Error {
   }
 }
 
+/** Every API response is private to its user and never stored by a cache. */
+export const NO_STORE = "private, no-store";
+
 export type ErrorBody = {
   error: { code: ErrorCode; message: string; fields?: Record<string, string[]>; errorId?: string };
 };
@@ -148,13 +151,15 @@ export function apiHandler<Ctx = unknown>(
     let response: Response;
     try {
       response = await fn(request, { ...(context as Ctx), requestId });
-      try {
-        response.headers.set("x-request-id", requestId);
-      } catch {
-        // Some responses (e.g. Response.redirect) have immutable headers.
-      }
     } catch (error) {
       response = toErrorResponse(error, requestId, route);
+    }
+    try {
+      response.headers.set("x-request-id", requestId);
+      // User content must never sit in a CDN or shared cache (spec §44).
+      response.headers.set("cache-control", NO_STORE);
+    } catch {
+      // Some responses (e.g. Response.redirect) have immutable headers.
     }
     logger.info("request", {
       requestId,

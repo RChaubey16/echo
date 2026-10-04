@@ -17,6 +17,8 @@ model User {
   timezone      String?   @db.VarChar(64)
   /// Set once the first-Echo reflection prompt has been answered or skipped.
   onboardedAt   DateTime? @map("onboarded_at")
+  /// "light" or "dark"; null follows the system setting. Mirrored in the echo-theme cookie.
+  theme         String?   @db.VarChar(8)
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
 

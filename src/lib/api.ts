@@ -1,6 +1,7 @@
 import type { CollectionCreateInput } from "@/server/validation/collection";
 import type { EchoCreateInput } from "@/server/validation/echo";
 import type { RevisitStatus } from "@/server/validation/revisit";
+import type { ThemeChoice } from "@/server/validation/user";
 import type {
   CollectionDto,
   EchoDto,
@@ -9,6 +10,7 @@ import type {
   RevisitWithEchoDto,
   TagDto,
 } from "@/types/echo";
+import type { MeDto } from "@/types/user";
 
 /** A failed API call, carrying the spec §39 error code and any per-field messages. */
 export class ApiError extends Error {
@@ -40,6 +42,35 @@ export class ApiError extends Error {
 }
 
 /**
+ * Turns a failed call into friendly copy: what failed, then what to do next. The code decides the
+ * second half; technical details never reach the screen.
+ *
+ * @param error - The thrown value, usually an ApiError.
+ * @param what - What failed, as a full sentence, e.g. "Couldn't update favorites.".
+ * @returns The sentence to show in a toast or inline message.
+ */
+export function failureMessage(error: unknown, what: string): string {
+  const code = error instanceof ApiError ? error.code : undefined;
+  switch (code) {
+    case "NETWORK_ERROR":
+      return `${what} Check your connection and try again.`;
+    case "RATE_LIMITED":
+      return `${what} Wait a moment and try again.`;
+    case "UNAUTHORIZED":
+      return `${what} Your session has ended. Sign in again to continue.`;
+    case "FORBIDDEN":
+    case "NOT_FOUND":
+    case "ECHO_NOT_FOUND":
+    case "COLLECTION_NOT_FOUND":
+    case "TAG_NOT_FOUND":
+    case "REVISIT_NOT_FOUND":
+      return `${what} It may have been deleted. Refresh the page and try again.`;
+    default:
+      return `${what} Try again.`;
+  }
+}
+
+/**
  * Calls one of the app's route handlers and returns its JSON, throwing ApiError on failure.
  *
  * @param path - The API path, e.g. "/api/echoes".
@@ -64,6 +95,13 @@ async function request<T>(path: string, init: RequestInit & { json?: unknown } =
   } | null;
   if (!response.ok) {
     const error = body?.error;
+    // Technical details go to the console only: method, path, status and code, never the body.
+    console.error("api call failed", {
+      method: rest.method ?? "GET",
+      path: path.split("?")[0],
+      status: response.status,
+      code: error?.code,
+    });
     throw new ApiError(
       response.status,
       error?.code ?? "INTERNAL_ERROR",
@@ -236,13 +274,13 @@ export const api = {
     request<void>(`/api/revisits/${encodeURIComponent(id)}`, { method: "DELETE" }),
 
   /**
-   * Updates the signed-in user's time zone or finishes onboarding.
+   * Updates the signed-in user's own settings.
    *
-   * @param patch - `timezone` (IANA name) and/or `onboarded: true`.
-   * @returns The stored time zone and onboarding time.
+   * @param patch - Any of `name`, `theme`, `timezone` (IANA name) and `onboarded: true`.
+   * @returns The stored name, time zone, onboarding time and theme.
    */
-  updateMe: (patch: { timezone?: string; onboarded?: true }) =>
-    request<{ timezone: string | null; onboardedAt: string | null }>("/api/me", {
+  updateMe: (patch: { name?: string; theme?: ThemeChoice; timezone?: string; onboarded?: true }) =>
+    request<MeDto>("/api/me", {
       method: "PATCH",
       json: patch,
     }),

@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Card } from "@/components/ui/card";
 import { ChipLink } from "@/components/ui/chip";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/cn";
 import type { EchoDto } from "@/types/echo";
 import { FavoriteButton } from "./favorite-button";
@@ -102,14 +103,25 @@ export function QuoteCardSkeleton() {
   return (
     <div aria-hidden className="rounded-md border border-hairline bg-surface-card p-6">
       <div className="flex flex-col gap-2">
-        {["w-full", "w-[85%]", "w-[60%]"].map((width) => (
-          <div
-            key={width}
-            className={`h-4 ${width} animate-skeleton rounded-xs bg-surface-strong motion-reduce:animate-none`} // audit-ignore: skeleton widths from components.md
-          />
-        ))}
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-[85%]" />{" "}
+        {/* audit-ignore: skeleton widths from components.md */}
+        <Skeleton className="h-4 w-[60%]" />{" "}
+        {/* audit-ignore: skeleton widths from components.md */}
       </div>
-      <div className="mt-4 h-4 w-[30%] animate-skeleton rounded-xs bg-surface-strong motion-reduce:animate-none" />
+      <Skeleton className="mt-4 h-4 w-[30%]" />{" "}
+      {/* audit-ignore: skeleton widths from components.md */}
+    </div>
+  );
+}
+
+/** The QuoteCard grid in gray: as many cards as a page usually shows, in the same columns. */
+export function QuoteCardGridSkeleton({ count = 6 }: { count?: number }) {
+  return (
+    <div className="grid grid-cols-1 items-start gap-4 tablet:grid-cols-2 desktop:grid-cols-3">
+      {Array.from({ length: count }, (_, index) => (
+        <QuoteCardSkeleton key={index} />
+      ))}
     </div>
   );
 }

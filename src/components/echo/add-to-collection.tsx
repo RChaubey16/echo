@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { FolderIcon } from "@/components/ui/icons";
 import { useToast } from "@/components/ui/toast";
-import { api } from "@/lib/api";
+import { api, failureMessage } from "@/lib/api";
 import { cn } from "@/lib/cn";
 import type { CollectionDto } from "@/types/echo";
 import { CollectionChecklist } from "./collection-checklist";
@@ -54,11 +54,11 @@ export function AddToCollection({ echoId, collectionIds, className }: AddToColle
     inflight.current.add(call);
     try {
       options.addCollection(await call);
-    } catch {
+    } catch (error) {
       setSelected((current) =>
         checked ? current.filter((id) => id !== collection.id) : [...current, collection.id],
       );
-      toast({ message: `Couldn't update ${collection.name}. Try again.` });
+      toast({ message: failureMessage(error, `Couldn't update ${collection.name}.`) });
     } finally {
       inflight.current.delete(call);
       setBusy((current) => {

@@ -1,20 +1,14 @@
-import { QuoteCardSkeleton } from "@/components/echo/quote-card";
+import { QuoteCardGridSkeleton } from "@/components/echo/quote-card";
+import { LoadingState, Skeleton } from "@/components/ui/skeleton";
 
 export default function LibraryLoading() {
   return (
-    <div className="flex flex-col gap-8 py-8 tablet:py-12" aria-busy="true">
-      <p className="sr-only" role="status">
-        Loading your library
-      </p>
+    <LoadingState label="Loading your library" className="flex flex-col gap-8 py-8 tablet:py-12">
       <div className="flex items-end justify-between gap-4">
-        <div className="h-7 w-32 animate-skeleton rounded-xs bg-surface-strong motion-reduce:animate-none" />
-        <div className="h-10 w-48 animate-skeleton rounded-sm bg-surface-strong motion-reduce:animate-none" />
+        <Skeleton className="h-7 w-32" />
+        <Skeleton className="h-10 w-48 rounded-sm" />
       </div>
-      <div className="grid grid-cols-1 items-start gap-4 tablet:grid-cols-2 desktop:grid-cols-3">
-        {Array.from({ length: 6 }, (_, index) => (
-          <QuoteCardSkeleton key={index} />
-        ))}
-      </div>
-    </div>
+      <QuoteCardGridSkeleton />
+    </LoadingState>
   );
 }

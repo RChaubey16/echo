@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { AlertIcon } from "@/components/ui/icons";
 import { useToast } from "@/components/ui/toast";
-import { ApiError, api } from "@/lib/api";
+import { ApiError, api, failureMessage } from "@/lib/api";
 import { EchoFields } from "./echo-fields";
 import { submitOnModEnter } from "./echo-form";
 import { EMPTY_LINKS, EMPTY_VALUES, isDirty } from "./echo-values";
@@ -139,7 +139,7 @@ function QuickCapture({
       router.refresh();
     } catch (error) {
       if (!(error instanceof ApiError && draft.applyServerErrors(error.fields))) {
-        setFailure("Couldn't save your Echo. Check your connection and try again.");
+        setFailure(failureMessage(error, "Couldn't save your Echo."));
       }
     } finally {
       setSaving(false);

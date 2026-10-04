@@ -1,43 +1,45 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { Spinner } from "@/components/ui/spinner";
+import { useOptimistic, useTransition } from "react";
+import { CheckIcon } from "@/components/ui/icons";
 import { useToast } from "@/components/ui/toast";
-import { api } from "@/lib/api";
+import { api, failureMessage } from "@/lib/api";
 
 /**
- * "Mark as reflected" on a due Revisit: completes it, confirms with a toast and refreshes the page
- * so the row leaves its list.
+ * "Mark as reflected" on a due Revisit. It shows "Reflected" at once (optimistic) and keeps it
+ * until the refreshed list drops the row; a failure reverts it and explains with a toast.
  */
 export function MarkReflectedButton({ revisitId }: { revisitId: string }) {
   const router = useRouter();
   const toast = useToast();
-  const [busy, setBusy] = useState(false);
+  const [done, setDone] = useOptimistic(false);
+  const [, startTransition] = useTransition();
 
-  const onClick = async () => {
-    if (busy) return;
-    setBusy(true);
-    try {
-      await api.completeRevisit(revisitId);
-      toast({ message: "Marked as reflected" });
-      router.refresh();
-    } catch {
-      setBusy(false);
-      toast({ message: "Couldn't update the Revisit. Try again." });
-    }
+  const onClick = () => {
+    if (done) return;
+    startTransition(async () => {
+      setDone(true);
+      try {
+        await api.completeRevisit(revisitId);
+        toast({ message: "Marked as reflected" });
+        // Inside the transition, so the optimistic state holds until the new list arrives.
+        router.refresh();
+      } catch (error) {
+        toast({ message: failureMessage(error, "Couldn't update the Revisit.") });
+      }
+    });
   };
 
   return (
     <button
       type="button"
-      onClick={() => void onClick()}
-      disabled={busy}
-      aria-busy={busy || undefined}
-      className="inline-flex h-11 items-center gap-2 text-button-sm whitespace-nowrap text-ink underline-offset-4 hover:underline disabled:cursor-not-allowed disabled:text-muted-soft"
+      onClick={onClick}
+      aria-disabled={done || undefined}
+      className="inline-flex h-11 items-center gap-2 text-button-sm whitespace-nowrap text-ink underline-offset-4 hover:underline aria-disabled:cursor-default aria-disabled:no-underline"
     >
-      {busy && <Spinner className="h-4 w-4" />}
-      Mark as reflected
+      {done && <CheckIcon className="h-4 w-4 text-primary" />}
+      {done ? "Reflected" : "Mark as reflected"}
     </button>
   );
 }

@@ -1,17 +1,13 @@
+import { LoadingState, Skeleton } from "@/components/ui/skeleton";
 import { RecentSkeleton, SidePanelSkeleton, TodaySkeleton } from "./home-sections";
-
-const SKELETON = "animate-skeleton rounded-xs bg-surface-strong motion-reduce:animate-none";
 
 /** The home page's shape in gray: it fills the screen, and the last panel in each column stretches. */
 export default function HomeLoading() {
   return (
-    <div className="flex flex-1 flex-col pt-8 tablet:pt-12" aria-busy="true">
+    <LoadingState label="Loading your Echoes" className="flex flex-1 flex-col pt-8 tablet:pt-12">
       <h1 className="sr-only">Home</h1>
-      <p className="sr-only" role="status">
-        Loading your Echoes
-      </p>
-      <div aria-hidden className={`h-7 w-56 max-w-full ${SKELETON}`} />
-      <div aria-hidden className={`mt-2 h-4 w-64 max-w-full ${SKELETON}`} />
+      <Skeleton className="h-7 w-56 max-w-full" />
+      <Skeleton className="mt-2 h-4 w-64 max-w-full" />
       <div className="mt-8 grid min-h-0 flex-1 gap-8 desktop:grid-cols-3">
         <div className="flex min-h-0 min-w-0 flex-col gap-8 desktop:col-span-2">
           <TodaySkeleton />
@@ -26,6 +22,6 @@ export default function HomeLoading() {
           />
         </div>
       </div>
-    </div>
+    </LoadingState>
   );
 }

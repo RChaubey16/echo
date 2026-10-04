@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useToast } from "@/components/ui/toast";
-import { ApiError, api } from "@/lib/api";
+import { ApiError, api, failureMessage } from "@/lib/api";
 import { shortRevisitDate } from "@/lib/revisit-dates";
 import { RevisitPicker } from "./revisit-picker";
 
@@ -44,7 +44,7 @@ export function EchoRevisit({ echoId, revisit, timeZone, labelledBy }: EchoRevis
       setError(
         failure instanceof ApiError && failure.fields.scheduledFor?.[0]
           ? failure.fields.scheduledFor[0]
-          : "Couldn't update the Revisit. Try again.",
+          : failureMessage(failure, "Couldn't update the Revisit."),
       );
     } finally {
       setSaving(false);

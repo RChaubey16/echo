@@ -7,3 +7,4 @@ prisma/migrations/
 playwright-report/
 test-results/
 pnpm-lock.yaml
+.lighthouseci/

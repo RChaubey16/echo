@@ -5,7 +5,7 @@ import { useId, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CharacterCount, FieldError, Textarea } from "@/components/ui/field";
 import { useToast } from "@/components/ui/toast";
-import { api } from "@/lib/api";
+import { api, failureMessage } from "@/lib/api";
 import { REFLECTION_MAX } from "@/server/validation/echo";
 
 /**
@@ -41,11 +41,12 @@ export function FirstReflectionPrompt({ echoId }: { echoId: string }) {
       setHidden(true);
       if (mode === "save") toast({ message: "Reflection saved" });
       router.refresh();
-    } catch {
+    } catch (failure) {
       setError(
-        mode === "save"
-          ? "Couldn't save your reflection. Check your connection and try again."
-          : "Couldn't skip right now. Try again.",
+        failureMessage(
+          failure,
+          mode === "save" ? "Couldn't save your reflection." : "Couldn't skip right now.",
+        ),
       );
     } finally {
       setBusy(null);

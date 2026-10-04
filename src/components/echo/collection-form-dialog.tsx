@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { CharacterCount, FieldError, Input, Label, Textarea } from "@/components/ui/field";
 import { AlertIcon } from "@/components/ui/icons";
-import { ApiError, api } from "@/lib/api";
+import { ApiError, api, failureMessage } from "@/lib/api";
 import {
   COLLECTION_DESCRIPTION_MAX,
   COLLECTION_NAME_MAX,
@@ -88,7 +88,7 @@ function CollectionForm({
         requestAnimationFrame(() => nameRef.current?.focus());
         return;
       }
-      setFailure("Couldn't save this collection. Check your connection and try again.");
+      setFailure(failureMessage(error, "Couldn't save this collection."));
     }
   };
 

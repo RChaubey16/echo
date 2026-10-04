@@ -1,21 +1,21 @@
 import "server-only";
+import { parseTheme } from "@/lib/theme";
 import { db } from "@/server/db";
 import { liveEchoes } from "@/server/services/echoes";
 import type { UserUpdate } from "@/server/validation/user";
+import type { MeDto } from "@/types/user";
 
 /**
- * Updates the signed-in user's own settings: their time zone and whether onboarding is done.
+ * Updates the signed-in user's own settings: name, theme, time zone and onboarding.
  *
- * Onboarding keeps its first timestamp; sending it again changes nothing.
+ * Onboarding keeps its first timestamp; sending it again changes nothing. A theme of "system" is
+ * stored as null.
  *
  * @param userId - The user's ID.
  * @param patch - The validated fields to change.
- * @returns The stored time zone and onboarding time.
+ * @returns The stored name, time zone, onboarding time and theme.
  */
-export async function updateMe(
-  userId: string,
-  patch: UserUpdate,
-): Promise<{ timezone: string | null; onboardedAt: string | null }> {
+export async function updateMe(userId: string, patch: UserUpdate): Promise<MeDto> {
   if (patch.onboarded) {
     await db.user.updateMany({
       where: { id: userId, onboardedAt: null },
@@ -24,10 +24,19 @@ export async function updateMe(
   }
   const user = await db.user.update({
     where: { id: userId },
-    data: patch.timezone === undefined ? {} : { timezone: patch.timezone },
-    select: { timezone: true, onboardedAt: true },
+    data: {
+      ...(patch.timezone === undefined ? {} : { timezone: patch.timezone }),
+      ...(patch.name === undefined ? {} : { name: patch.name }),
+      ...(patch.theme === undefined ? {} : { theme: parseTheme(patch.theme) ?? null }),
+    },
+    select: { name: true, timezone: true, onboardedAt: true, theme: true },
   });
-  return { timezone: user.timezone, onboardedAt: user.onboardedAt?.toISOString() ?? null };
+  return {
+    name: user.name,
+    timezone: user.timezone,
+    onboardedAt: user.onboardedAt?.toISOString() ?? null,
+    theme: parseTheme(user.theme) ?? null,
+  };
 }
 
 /**

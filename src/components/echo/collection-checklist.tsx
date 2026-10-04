@@ -2,6 +2,7 @@
 
 import { useId, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { AlertIcon, PlusIcon } from "@/components/ui/icons";
 import { ApiError, api } from "@/lib/api";
 import { cn } from "@/lib/cn";
@@ -80,10 +81,7 @@ export function CollectionChecklist({
             Loading your collections
           </p>
           {[0, 1, 2].map((row) => (
-            <div
-              key={row}
-              className="h-6 animate-skeleton rounded-xs bg-surface-strong motion-reduce:animate-none"
-            />
+            <Skeleton key={row} className="h-6" />
           ))}
         </div>
       ) : status === "error" ? (
