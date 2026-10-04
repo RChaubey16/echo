@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { buttonClasses } from "@/components/ui/button-classes";
 import { AlertIcon } from "@/components/ui/icons";
@@ -11,12 +11,17 @@ import { ApiError, api } from "@/lib/api";
 import { useHydrated } from "@/lib/use-hydrated";
 import type { EchoDto } from "@/types/echo";
 import { EchoFields } from "./echo-fields";
+import { RevisitPicker } from "./revisit-picker";
 import { isDirty, linksFromEcho, valuesFromEcho } from "./echo-values";
 import { useEchoDraft } from "./use-echo-draft";
 
 type EchoFormProps = {
   /** The Echo being edited; omit to create a new one. */
   echo?: EchoDto;
+  /** The Echo's pending Revisit date (ISO), when editing an Echo that has one. */
+  revisitAt?: string | null;
+  /** The user's time zone, so the Revisit date reads the same on the server and the client. */
+  timeZone?: string;
   cancelHref: string;
 };
 
@@ -34,7 +39,12 @@ export function submitOnModEnter(event: KeyboardEvent<HTMLFormElement>): void {
 }
 
 /** The full Echo form, for /app/echoes/new and /app/echoes/:id/edit. */
-export function EchoForm({ echo, cancelHref }: EchoFormProps) {
+export function EchoForm({
+  echo,
+  revisitAt: initialRevisitAt = null,
+  timeZone,
+  cancelHref,
+}: EchoFormProps) {
   const router = useRouter();
   const toast = useToast();
   const initial = valuesFromEcho(echo);
@@ -43,6 +53,10 @@ export function EchoForm({ echo, cancelHref }: EchoFormProps) {
   const draft = useEchoDraft(initial, initialLinks, Boolean(echo), formRef);
   const [saving, setSaving] = useState(false);
   const [summary, setSummary] = useState<string | null>(null);
+  const [revisitAt, setRevisitAt] = useState<string | null>(initialRevisitAt);
+  const [revisitError, setRevisitError] = useState<string | undefined>();
+  const revisitLabelId = useId();
+  const revisitChanged = revisitAt !== initialRevisitAt;
   const summaryRef = useRef<HTMLDivElement>(null);
   const quoteRef = useRef<HTMLTextAreaElement>(null);
   // Typing into a controlled field before hydration can be lost or garbled, so the fields stay
@@ -52,7 +66,8 @@ export function EchoForm({ echo, cancelHref }: EchoFormProps) {
   useEffect(() => {
     if (hydrated) quoteRef.current?.focus();
   }, [hydrated]);
-  const dirty = isDirty(draft.values, initial, draft.links, initialLinks) && !saving;
+  const dirty =
+    (isDirty(draft.values, initial, draft.links, initialLinks) || revisitChanged) && !saving;
 
   // Warn before leaving the page with unsaved text, so a draft quote is never lost.
   useEffect(() => {
@@ -65,8 +80,11 @@ export function EchoForm({ echo, cancelHref }: EchoFormProps) {
   const onSubmit = async () => {
     if (saving) return;
     setSummary(null);
-    const data = draft.validate();
-    if (!data) return;
+    setRevisitError(undefined);
+    const fields = draft.validate();
+    if (!fields) return;
+    // Only send the Revisit when it changed, so an edit never re-validates an untouched date.
+    const data = revisitChanged ? { ...fields, revisitAt } : fields;
     setSaving(true);
     try {
       const saved = echo ? await api.updateEcho(echo.id, data) : await api.createEcho(data);
@@ -75,7 +93,10 @@ export function EchoForm({ echo, cancelHref }: EchoFormProps) {
       router.refresh();
     } catch (error) {
       setSaving(false);
+      const revisitMessage = error instanceof ApiError ? error.fields.revisitAt?.[0] : undefined;
+      if (revisitMessage) setRevisitError(revisitMessage);
       if (error instanceof ApiError && draft.applyServerErrors(error.fields)) return;
+      if (revisitMessage) return;
       setSummary(
         error instanceof ApiError && error.status === 404
           ? "This Echo no longer exists."
@@ -119,6 +140,22 @@ export function EchoForm({ echo, cancelHref }: EchoFormProps) {
         quoteRef={quoteRef}
         readOnly={!hydrated}
       />
+      <div className="flex flex-col gap-1.5">
+        <span id={revisitLabelId} className="text-caption text-muted">
+          Revisit <span className="sr-only">(optional)</span>
+        </span>
+        <RevisitPicker
+          value={revisitAt}
+          onChange={(next) => {
+            setRevisitError(undefined);
+            setRevisitAt(next);
+          }}
+          timeZone={timeZone}
+          disabled={!hydrated || saving}
+          labelledBy={revisitLabelId}
+          error={revisitError}
+        />
+      </div>
       <div className="sticky bottom-16 -mx-4 flex gap-3 border-t border-hairline bg-canvas p-4 tablet:static tablet:mx-0 tablet:justify-end tablet:border-0 tablet:bg-transparent tablet:p-0">
         <Link href={cancelHref} className={buttonClasses("secondary", "flex-1 tablet:flex-none")}>
           Cancel

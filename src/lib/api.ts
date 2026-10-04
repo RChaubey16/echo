@@ -1,6 +1,14 @@
 import type { CollectionCreateInput } from "@/server/validation/collection";
 import type { EchoCreateInput } from "@/server/validation/echo";
-import type { CollectionDto, EchoDto, EchoListDto, TagDto } from "@/types/echo";
+import type { RevisitStatus } from "@/server/validation/revisit";
+import type {
+  CollectionDto,
+  EchoDto,
+  EchoListDto,
+  RevisitDto,
+  RevisitWithEchoDto,
+  TagDto,
+} from "@/types/echo";
 
 /** A failed API call, carrying the spec §39 error code and any per-field messages. */
 export class ApiError extends Error {
@@ -174,4 +182,68 @@ export const api = {
       `/api/collections/${encodeURIComponent(collectionId)}/echoes/${encodeURIComponent(echoId)}`,
       { method: "DELETE" },
     ),
+
+  /**
+   * Picks a random Echo for Echo Me Something.
+   *
+   * @param exclude - IDs shown recently, most recent last; the server keeps the last five.
+   * @returns The Echo, or null when the library is empty.
+   */
+  randomEcho: (exclude: readonly string[]) =>
+    request<{ echo: EchoDto | null }>(
+      `/api/echoes/random?${new URLSearchParams({ exclude: exclude.join(",") }).toString()}`,
+      { cache: "no-store" },
+    ),
+
+  /**
+   * Schedules a Revisit, replacing the Echo's pending one.
+   *
+   * @param echoId - The Echo ID.
+   * @param scheduledFor - The date as an ISO string.
+   * @returns The new Revisit.
+   */
+  createRevisit: (echoId: string, scheduledFor: string) =>
+    request<RevisitDto>("/api/revisits", { method: "POST", json: { echoId, scheduledFor } }),
+
+  /**
+   * Lists one status of Revisits.
+   *
+   * @param status - "due", "upcoming" or "completed".
+   * @returns The Revisits with their Echoes.
+   */
+  listRevisits: (status: RevisitStatus) =>
+    request<{ items: RevisitWithEchoDto[] }>(`/api/revisits?status=${status}`),
+
+  /**
+   * Marks a Revisit as reflected on.
+   *
+   * @param id - The Revisit ID.
+   * @returns The completed Revisit.
+   */
+  completeRevisit: (id: string) =>
+    request<RevisitDto>(`/api/revisits/${encodeURIComponent(id)}`, {
+      method: "PATCH",
+      json: { completed: true },
+    }),
+
+  /**
+   * Cancels a Revisit.
+   *
+   * @param id - The Revisit ID.
+   * @returns Nothing.
+   */
+  deleteRevisit: (id: string) =>
+    request<void>(`/api/revisits/${encodeURIComponent(id)}`, { method: "DELETE" }),
+
+  /**
+   * Updates the signed-in user's time zone or finishes onboarding.
+   *
+   * @param patch - `timezone` (IANA name) and/or `onboarded: true`.
+   * @returns The stored time zone and onboarding time.
+   */
+  updateMe: (patch: { timezone?: string; onboarded?: true }) =>
+    request<{ timezone: string | null; onboardedAt: string | null }>("/api/me", {
+      method: "PATCH",
+      json: patch,
+    }),
 };

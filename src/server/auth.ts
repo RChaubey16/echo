@@ -16,7 +16,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   pages: { signIn: "/login" },
   callbacks: {
     session({ session, user }) {
+      // The database adapter hands over the whole users row, including our own columns.
+      const row = user as typeof user & { timezone?: string | null; onboardedAt?: Date | null };
       session.user.id = user.id;
+      session.user.timezone = row.timezone ?? null;
+      session.user.onboardedAt = row.onboardedAt ?? null;
       return session;
     },
   },
@@ -27,6 +31,10 @@ export type SessionUser = {
   email: string;
   name: string | null;
   image: string | null;
+  /** IANA time zone captured from the browser, or null before the first capture. */
+  timezone: string | null;
+  /** When the first-Echo reflection prompt was answered or skipped. */
+  onboardedAt: Date | null;
 };
 
 /**
@@ -41,7 +49,14 @@ export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
   const session = await auth();
   const user = session?.user;
   if (!user?.id || !user.email) return null;
-  return { id: user.id, email: user.email, name: user.name ?? null, image: user.image ?? null };
+  return {
+    id: user.id,
+    email: user.email,
+    name: user.name ?? null,
+    image: user.image ?? null,
+    timezone: user.timezone ?? null,
+    onboardedAt: user.onboardedAt ?? null,
+  };
 });
 
 /**

@@ -64,3 +64,18 @@ export type SidebarCollectionsDto = {
   items: Array<Pick<CollectionDto, "id" | "name" | "accent" | "echoCount">>;
   total: number;
 };
+
+/** A scheduled Revisit (spec §33). `completedAt` is null while it is pending. */
+export type RevisitDto = {
+  id: string;
+  echoId: string;
+  scheduledFor: string;
+  completedAt: string | null;
+  createdAt: string;
+};
+
+/** A Revisit with the Echo it brings back, for the Revisits page and the home page. */
+export type RevisitWithEchoDto = RevisitDto & { echo: EchoDto };
+
+/** Today's Echo (spec §32): the same Echo all day, with the "Saved 11 months ago" line. */
+export type TodaysEchoDto = { echo: EchoDto; savedAgo: string; date: string };

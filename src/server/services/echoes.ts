@@ -3,6 +3,7 @@ import type { Prisma } from "@/generated/prisma/client";
 import { compareNames } from "@/lib/sort";
 import { db } from "@/server/db";
 import { AppError } from "@/server/http";
+import { setPendingRevisit } from "@/server/services/revisit-schedule";
 import { definedFields, diffIds, nextFavoritedAt } from "@/server/services/echo-rules";
 import { assertUuid, type DbClient } from "@/server/services/service-utils";
 import { upsertTagsByName } from "@/server/services/tags";
@@ -165,14 +166,17 @@ async function resolveLinks(
  * Saves a new Echo for the user.
  *
  * @param userId - The owner's user ID.
- * @param input - The validated Echo fields.
+ * @param input - The validated Echo fields, optionally with a Revisit date.
  * @returns The created Echo.
+ * @throws AppError FORBIDDEN when a tag or collection ID is not the user's.
+ * @throws AppError VALIDATION_ERROR when the Revisit date is in the past or too far away.
  */
 export async function createEcho(userId: string, input: EchoCreate): Promise<EchoDto> {
   const isFavorite = input.isFavorite ?? false;
+  const now = new Date();
   const echo = await db.$transaction(async (tx) => {
     const { tagIds = [], collectionIds = [] } = await resolveLinks(tx, userId, input);
-    return tx.echo.create({
+    const created = await tx.echo.create({
       data: {
         userId,
         quote: input.quote,
@@ -181,7 +185,7 @@ export async function createEcho(userId: string, input: EchoCreate): Promise<Ech
         reflection: input.reflection ?? null,
         mood: input.mood ?? null,
         isFavorite,
-        favoritedAt: isFavorite ? new Date() : null,
+        favoritedAt: isFavorite ? now : null,
         tags: { createMany: { data: tagIds.map((tagId) => ({ tagId })) } },
         collections: {
           createMany: { data: collectionIds.map((collectionId) => ({ collectionId })) },
@@ -189,6 +193,10 @@ export async function createEcho(userId: string, input: EchoCreate): Promise<Ech
       },
       include: ECHO_INCLUDE,
     });
+    if (input.revisitAt) {
+      await setPendingRevisit(tx, userId, created.id, new Date(input.revisitAt), now);
+    }
+    return created;
   });
   return serializeEcho(echo);
 }
@@ -271,7 +279,8 @@ export async function listEchoes(userId: string, query: EchoListQuery): Promise<
  *
  * @param userId - The owner's user ID.
  * @param id - The Echo ID.
- * @param patch - The validated fields to change.
+ * @param patch - The validated fields to change; `revisitAt` replaces or (when null) cancels the
+ * pending Revisit.
  * @returns The updated Echo.
  * @throws AppError ECHO_NOT_FOUND when the Echo is missing, deleted or owned by someone else.
  */
@@ -313,6 +322,10 @@ export async function updateEcho(userId: string, id: string, patch: EchoUpdate):
         data: toAdd.map((tagId) => ({ echoId: current.id, tagId })),
         skipDuplicates: true,
       });
+    }
+    if (patch.revisitAt !== undefined) {
+      const revisitAt = patch.revisitAt === null ? null : new Date(patch.revisitAt);
+      await setPendingRevisit(tx, userId, current.id, revisitAt, new Date());
     }
     if (links.collectionIds) {
       const { toAdd, toRemove } = diffIds(

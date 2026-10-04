@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { RANDOM_EXCLUDE_MAX } from "@/server/services/discovery-rules";
 import { COLLECTIONS_PER_ECHO_MAX } from "@/server/validation/collection";
 import { TAGS_PER_ECHO_MAX, tagNameSchema } from "@/server/validation/tag";
 
@@ -68,6 +69,11 @@ const echoFields = {
       `An Echo can be in up to ${COLLECTIONS_PER_ECHO_MAX} collections.`,
     )
     .optional(),
+  /**
+   * Schedules (or, on update, replaces) the Echo's Revisit as an ISO date-time; null on update
+   * cancels it. Kept as a string so the client forms can send the parsed values as JSON.
+   */
+  revisitAt: z.iso.datetime({ offset: true, error: "Pick a valid date." }).nullable().optional(),
 };
 
 export const echoCreateSchema = z.object(echoFields);
@@ -109,6 +115,21 @@ export const searchQuerySchema = z.object({
 });
 
 export const echoIdSchema = z.uuid();
+
+/** `?exclude=` for Echo Me Something: comma-separated IDs; anything that isn't a UUID is ignored. */
+export const randomQuerySchema = z.object({
+  exclude: z
+    .string()
+    .max(1_000)
+    .optional()
+    .transform((value) =>
+      (value ?? "")
+        .split(",")
+        .map((id) => id.trim())
+        .filter((id) => echoIdSchema.safeParse(id).success)
+        .slice(-RANDOM_EXCLUDE_MAX),
+    ),
+});
 
 /** Raw form values, before parsing. */
 export type EchoCreateInput = z.input<typeof echoCreateSchema>;

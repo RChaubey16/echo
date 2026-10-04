@@ -3,7 +3,9 @@ import Link from "next/link";
 import { AccentDot } from "@/components/echo/accent-dot";
 import { AddToCollection } from "@/components/echo/add-to-collection";
 import { DeleteEchoDialog } from "@/components/echo/delete-echo-dialog";
+import { EchoRevisit } from "@/components/echo/echo-revisit";
 import { FavoriteButton } from "@/components/echo/favorite-button";
+import { FirstReflectionPrompt } from "@/components/echo/first-reflection-prompt";
 import { QuoteText, attribution } from "@/components/echo/quote-text";
 import { SavedDate } from "@/components/echo/saved-date";
 import { buttonClasses } from "@/components/ui/button-classes";
@@ -12,12 +14,18 @@ import { ArrowLeftIcon, EditIcon } from "@/components/ui/icons";
 import { fullDate } from "@/lib/dates";
 import { requireUserPage } from "@/server/auth";
 import { getEchoOrNotFound } from "@/server/echo-pages";
+import { getPendingRevisit } from "@/server/services/revisits";
+import { shouldPromptFirstReflection } from "@/server/services/users";
 
 export const metadata: Metadata = { title: "Echo" };
 
 export default async function EchoDetailPage({ params }: PageProps<"/app/echoes/[id]">) {
   const [user, { id }] = await Promise.all([requireUserPage(), params]);
-  const echo = await getEchoOrNotFound(user.id, id);
+  const [echo, revisit] = await Promise.all([
+    getEchoOrNotFound(user.id, id),
+    getPendingRevisit(user.id, id),
+  ]);
+  const promptReflection = await shouldPromptFirstReflection(user.id, echo, user.onboardedAt);
   const credit = attribution(echo);
   const meta = [
     { label: "Author", value: echo.author },
@@ -40,6 +48,8 @@ export default async function EchoDetailPage({ params }: PageProps<"/app/echoes/
         <QuoteText size="hero">{echo.quote}</QuoteText>
         {credit && <figcaption className="mt-4 text-body-md text-muted">— {credit}</figcaption>}
       </figure>
+
+      {promptReflection && <FirstReflectionPrompt echoId={echo.id} />}
 
       {echo.reflection && (
         <section
@@ -100,6 +110,20 @@ export default async function EchoDetailPage({ params }: PageProps<"/app/echoes/
             <AddToCollection
               echoId={echo.id}
               collectionIds={echo.collections.map((collection) => collection.id)}
+            />
+          </dd>
+        </div>
+        {/* Stacked on phones so the calendar gets the full width. */}
+        <div className="grid grid-cols-1 gap-2 border-b border-hairline-soft py-3 text-body-md tablet:grid-cols-[8rem_1fr] tablet:gap-4">
+          <dt id="revisit-label" className="text-muted">
+            Revisit
+          </dt>
+          <dd className="min-w-0">
+            <EchoRevisit
+              echoId={echo.id}
+              revisit={revisit}
+              timeZone={user.timezone ?? undefined}
+              labelledBy="revisit-label"
             />
           </dd>
         </div>

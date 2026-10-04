@@ -13,6 +13,10 @@ model User {
   emailVerified DateTime? @map("email_verified")
   name          String?
   image         String?   @map("avatar_url")
+  /// IANA time zone name from the browser (e.g. "Asia/Kolkata"); decides which date "today" is.
+  timezone      String?   @db.VarChar(64)
+  /// Set once the first-Echo reflection prompt has been answered or skipped.
+  onboardedAt   DateTime? @map("onboarded_at")
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
 
@@ -21,6 +25,8 @@ model User {
   echoes      Echo[]
   collections Collection[]
   tags        Tag[]
+  revisits    Revisit[]
+  dailyEchoes DailyEcho[]
 
   @@map("users")
 }
@@ -84,6 +90,8 @@ model Echo {
   user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   tags        EchoTag[]
   collections EchoCollection[]
+  revisits    Revisit[]
+  dailyEchoes DailyEcho[]
 
   @@index([userId, deletedAt, savedAt])
   @@index([userId, deletedAt, updatedAt])
@@ -158,4 +166,34 @@ model EchoTag {
   @@id([echoId, tagId])
   @@index([tagId])
   @@map("echo_tags")
+}
+
+model Revisit {
+  id           String    @id @default(uuid()) @db.Uuid
+  echoId       String    @map("echo_id") @db.Uuid
+  userId       String    @map("user_id") @db.Uuid
+  scheduledFor DateTime  @map("scheduled_for")
+  completedAt  DateTime? @map("completed_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  echo Echo @relation(fields: [echoId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, completedAt, scheduledFor])
+  @@index([echoId])
+  @@map("revisits")
+}
+
+/// Pins Today's Echo for a user's local date, so adding or deleting Echoes mid-day doesn't change it.
+model DailyEcho {
+  userId String   @map("user_id") @db.Uuid
+  date   DateTime @db.Date
+  echoId String   @map("echo_id") @db.Uuid
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  echo Echo @relation(fields: [echoId], references: [id], onDelete: Cascade)
+
+  @@id([userId, date])
+  @@index([echoId])
+  @@map("daily_echoes")
 }

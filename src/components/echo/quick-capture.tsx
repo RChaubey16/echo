@@ -25,14 +25,18 @@ import { useEchoDraft } from "./use-echo-draft";
 
 export const NEW_ECHO_HREF = "/app/echoes/new";
 
-const QuickCaptureContext = createContext<(() => void) | null>(null);
+/** How QuickCapture was opened; `firstRun` opens the new Echo afterwards for onboarding. */
+export type QuickCaptureOptions = { firstRun?: boolean };
+type OpenQuickCapture = (options?: QuickCaptureOptions) => void;
+
+const QuickCaptureContext = createContext<OpenQuickCapture | null>(null);
 
 /**
  * Returns the function that opens the Add Echo dialog.
  *
- * @returns A function that opens QuickCapture.
+ * @returns A function that opens QuickCapture, optionally as the first-run flow.
  */
-export function useQuickCapture(): () => void {
+export function useQuickCapture(): OpenQuickCapture {
   const open = useContext(QuickCaptureContext);
   if (!open) throw new Error("useQuickCapture must be used inside <QuickCaptureProvider>");
   return open;
@@ -52,7 +56,11 @@ export function isTypingTarget(target: EventTarget | null): boolean {
 /** Owns the Add Echo dialog and the `n` shortcut for the whole signed-in app. */
 export function QuickCaptureProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
-  const show = useCallback(() => setOpen(true), []);
+  const [firstRun, setFirstRun] = useState(false);
+  const show = useCallback<OpenQuickCapture>((options) => {
+    setFirstRun(Boolean(options?.firstRun));
+    setOpen(true);
+  }, []);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -60,6 +68,7 @@ export function QuickCaptureProvider({ children }: { children: ReactNode }) {
       if (event.defaultPrevented || isTypingTarget(event.target)) return;
       if (document.querySelector("dialog[open]")) return;
       event.preventDefault();
+      setFirstRun(false);
       setOpen(true);
     };
     document.addEventListener("keydown", onKeyDown);
@@ -69,7 +78,7 @@ export function QuickCaptureProvider({ children }: { children: ReactNode }) {
   return (
     <QuickCaptureContext.Provider value={show}>
       {children}
-      <QuickCapture open={open} onClose={() => setOpen(false)} />
+      <QuickCapture open={open} firstRun={firstRun} onClose={() => setOpen(false)} />
     </QuickCaptureContext.Provider>
   );
 }
@@ -78,7 +87,15 @@ export function QuickCaptureProvider({ children }: { children: ReactNode }) {
  * The Add Echo dialog: the quote is the only field, saving is one shortcut away, and a typed draft
  * is never discarded without asking.
  */
-function QuickCapture({ open, onClose }: { open: boolean; onClose: () => void }) {
+function QuickCapture({
+  open,
+  firstRun,
+  onClose,
+}: {
+  open: boolean;
+  firstRun: boolean;
+  onClose: () => void;
+}) {
   const router = useRouter();
   const toast = useToast();
   const titleId = useId();
@@ -112,6 +129,12 @@ function QuickCapture({ open, onClose }: { open: boolean; onClose: () => void })
     try {
       const saved = await api.createEcho(data);
       close();
+      if (firstRun) {
+        // Onboarding continues on the new Echo with the "Why did this speak to you?" prompt.
+        toast({ message: "Echo saved" });
+        router.push(`/app/echoes/${saved.id}`);
+        return;
+      }
       toast({ message: "Echo saved", action: { label: "View", href: `/app/echoes/${saved.id}` } });
       router.refresh();
     } catch (error) {
@@ -231,6 +254,8 @@ function QuickCapture({ open, onClose }: { open: boolean; onClose: () => void })
 
 type AddEchoLinkProps = {
   className: string;
+  /** Opens the new Echo after saving, to continue onboarding. */
+  firstRun?: boolean;
   children: ReactNode;
   "aria-label"?: string;
 };
@@ -239,13 +264,13 @@ type AddEchoLinkProps = {
  * A link to the full Add Echo page that opens QuickCapture instead on a plain click. Modified
  * clicks (new tab, new window) still follow the link.
  */
-export function AddEchoLink({ className, children, ...rest }: AddEchoLinkProps) {
+export function AddEchoLink({ className, firstRun, children, ...rest }: AddEchoLinkProps) {
   const openQuickCapture = useQuickCapture();
   const onClick = (event: MouseEvent<HTMLAnchorElement>) => {
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0)
       return;
     event.preventDefault();
-    openQuickCapture();
+    openQuickCapture({ firstRun });
   };
   return (
     <Link
