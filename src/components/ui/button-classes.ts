@@ -1,6 +1,6 @@
 import { cn } from "@/lib/cn";
 
-export type ButtonVariant = "primary" | "secondary" | "tertiary" | "danger";
+export type ButtonVariant = "primary" | "secondary" | "tertiary" | "danger" | "pill";
 export type ButtonSize = "md" | "sm";
 
 const BASE =
@@ -11,6 +11,8 @@ const VARIANTS: Record<ButtonVariant, string> = {
     "h-12 rounded-sm bg-primary px-6 text-button-md text-on-primary hover:bg-primary-active active:scale-98 active:bg-primary-active disabled:bg-primary-disabled disabled:text-on-primary-disabled",
   secondary:
     "h-12 rounded-sm border border-ink bg-canvas px-6 text-button-md text-ink hover:bg-surface-soft active:bg-surface-strong disabled:border-hairline disabled:text-muted-soft",
+  // DESIGN.md button-pill-lagoon: a featured-panel CTA (Echo me something). 44px keeps the touch target.
+  pill: "h-11 rounded-full bg-primary px-5 text-button-sm text-on-primary hover:bg-primary-active active:scale-98 active:bg-primary-active disabled:bg-primary-disabled disabled:text-on-primary-disabled",
   tertiary: "h-auto px-0 text-button-md text-ink underline-offset-4 hover:underline",
   danger:
     "h-12 rounded-sm bg-primary-error-text px-6 text-button-md text-on-primary hover:bg-primary-error-text-hover active:scale-98 active:bg-primary-error-text-hover",
@@ -21,6 +23,7 @@ const SMALL: Record<ButtonVariant, string> = {
   primary: "h-10 px-4 text-button-sm",
   secondary: "h-10 px-4 text-button-sm",
   tertiary: "text-button-sm",
+  pill: "",
   danger: "h-10 px-4 text-button-sm",
 };
 

@@ -20,16 +20,21 @@ export function nextFavoritedAt(
   return next ? now : null;
 }
 
-const RELATION_FIELDS = new Set(["tagIds", "tagNames", "collectionIds"]);
+const RELATION_FIELDS = new Set(["tagIds", "tagNames", "collectionIds", "revisitAt"]);
 
-/** The Echo's own columns that a patch can change; tags and collections are written separately. */
-export type EchoColumnPatch = Partial<Omit<EchoUpdate, "tagIds" | "tagNames" | "collectionIds">>;
+/**
+ * The Echo's own columns that a patch can change; tags, collections and the Revisit are written
+ * separately.
+ */
+export type EchoColumnPatch = Partial<
+  Omit<EchoUpdate, "tagIds" | "tagNames" | "collectionIds" | "revisitAt">
+>;
 
 /**
  * Picks the Echo columns a patch actually set, so Prisma only writes those.
  *
- * Undefined values and the tag and collection fields are left out; those relations are replaced
- * through their join tables.
+ * Undefined values and the tag, collection and Revisit fields are left out; those relations are
+ * written through their own tables.
  *
  * @param patch - The parsed update patch.
  * @returns The column values to write.

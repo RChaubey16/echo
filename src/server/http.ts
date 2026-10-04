@@ -9,6 +9,7 @@ export const ERROR_CODES = [
   "ECHO_NOT_FOUND",
   "COLLECTION_NOT_FOUND",
   "TAG_NOT_FOUND",
+  "REVISIT_NOT_FOUND",
   "RATE_LIMITED",
   "INTERNAL_ERROR",
 ] as const;
@@ -23,6 +24,7 @@ const DEFAULTS: Record<ErrorCode, { status: number; message: string }> = {
   ECHO_NOT_FOUND: { status: 404, message: "Echo not found." },
   COLLECTION_NOT_FOUND: { status: 404, message: "Collection not found." },
   TAG_NOT_FOUND: { status: 404, message: "Tag not found." },
+  REVISIT_NOT_FOUND: { status: 404, message: "Revisit not found." },
   RATE_LIMITED: { status: 429, message: "Too many requests. Try again shortly." },
   INTERNAL_ERROR: { status: 500, message: "Something went wrong." },
 };

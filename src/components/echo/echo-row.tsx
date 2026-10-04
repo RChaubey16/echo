@@ -1,5 +1,7 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
+import type { CollectionAccent } from "@/server/validation/collection";
 import type { EchoDto } from "@/types/echo";
 import { FavoriteButton } from "./favorite-button";
 import { QuoteText, attribution } from "./quote-text";
@@ -11,11 +13,24 @@ type EchoRowProps = {
   monogram?: boolean;
   /** "panel" for white panels, "tint" for tinted ones; sets the hover fill. */
   surface?: "panel" | "tint";
+  /** A row-level action under the meta line, e.g. "Mark as reflected". */
+  action?: ReactNode;
+  /** Replaces the saved date in the meta line, e.g. "Revisit on Apr 1, 2027". */
+  meta?: ReactNode;
+};
+
+/** Monogram colors per collection accent: the accent mark on its matching tint. */
+const MONOGRAM: Record<CollectionAccent, string> = {
+  lagoon: "bg-tint-lagoon text-primary",
+  bronze: "bg-tint-bronze text-luxe",
+  plum: "bg-tint-plum text-plus",
+  neutral: "bg-surface-strong text-ink",
 };
 
 /** A dense Echo row for dashboard panels: a two-line serif quote, a meta line and the heart. */
-export function EchoRow({ echo, monogram = false, surface = "panel" }: EchoRowProps) {
+export function EchoRow({ echo, monogram = false, surface = "panel", action, meta }: EchoRowProps) {
   const credit = attribution(echo);
+  const accent = echo.collections[0]?.accent ?? "lagoon";
   const initial = echo.author?.trim().charAt(0).toUpperCase() || "“";
   return (
     <article
@@ -27,7 +42,10 @@ export function EchoRow({ echo, monogram = false, surface = "panel" }: EchoRowPr
       {monogram && (
         <span
           aria-hidden
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-tint-lagoon font-quote text-quote-compact text-primary"
+          className={cn(
+            "flex h-10 w-10 shrink-0 items-center justify-center rounded-full font-quote text-quote-compact",
+            MONOGRAM[accent],
+          )}
         >
           {initial}
         </span>
@@ -50,8 +68,10 @@ export function EchoRow({ echo, monogram = false, surface = "panel" }: EchoRowPr
               <span aria-hidden>·</span>
             </>
           )}
-          <SavedDate savedAt={echo.savedAt} className="shrink-0 whitespace-nowrap" />
+          {meta ?? <SavedDate savedAt={echo.savedAt} className="shrink-0 whitespace-nowrap" />}
         </figcaption>
+        {/* The action keeps its 44px target; negative margins stop it from padding out the row. */}
+        {action && <div className="relative z-10 -mt-1 -mb-3">{action}</div>}
       </figure>
       <FavoriteButton
         echoId={echo.id}

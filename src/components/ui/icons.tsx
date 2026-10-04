@@ -240,3 +240,36 @@ export function MinusIcon(props: IconProps) {
     </svg>
   );
 }
+
+export function ShuffleIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22" />
+      <path d="m18 2 4 4-4 4" />
+      <path d="M2 6h1.9c1.5 0 2.9.9 3.6 2.2" />
+      <path d="M22 18h-5.9c-1.3 0-2.6-.7-3.3-1.8l-.5-.8" />
+      <path d="m18 14 4 4-4 4" />
+    </svg>
+  );
+}
+
+export function ClockIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
+    </svg>
+  );
+}
+
+/** The large opening quote mark above Today's Echo; decorative and filled. */
+export function OpenQuoteIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 48 48" aria-hidden {...props}>
+      <path
+        fill="currentColor"
+        d="M20 10C11 13 6 20 6 29v9h14V24h-7c0-5 3-8 8-10zm22 0c-9 3-14 10-14 19v9h14V24h-7c0-5 3-8 8-10z"
+      />
+    </svg>
+  );
+}
