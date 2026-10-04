@@ -66,18 +66,26 @@ These are the only durations. If something seems to need 500ms or more, it is pr
 
 ## Reduced motion
 
-`prefers-reduced-motion: reduce` means *remove movement*, not *remove feedback*.
+`prefers-reduced-motion: reduce` means *remove movement*, not *remove feedback*. Every change
+becomes a 150ms opacity or colour change.
+
+`globals.css` does most of it:
+- `--duration-fast`, `--duration-base` and `--duration-slow` all become 150ms.
+- `--animate-rise-in`, `--animate-menu-in` and `--animate-fade-in` all become a 150ms fade.
+- `--animate-heart-pop` and `--animate-skeleton` become `none`.
+- Transitions may only change opacity and colours: `transition-property` is limited to them, so
+  transforms, heights and grid rows snap.
+
+Still write the `motion-reduce:` end state on a component when it differs:
 
 | Normal | Reduced |
 |---|---|
-| Rise in, slide up | Opacity fade only (`motion-reduce:animate-fade-in`), or instant |
-| Heart pop | Color fill only |
-| Today's Echo swap | Instant swap; the live region still announces it |
-| Skeleton pulse | Static block (`motion-reduce:animate-none`) |
-| Press scale | No scale (`motion-reduce:active:scale-100`); the color change remains |
-| Disclosure height | Instant open |
-
-The global safety net in `tokens.md` clamps durations, but write explicit `motion-reduce:` variants for anything that moves. Some states need a different end state, not just a faster one.
+| Rise in, slide up, menu scale-in | 150ms fade (`motion-reduce:animate-fade-in`) |
+| Heart pop | Colour fill only |
+| Today's Echo swap | The old quote dims while loading, then the new one fades in over 150ms; the live region still announces it |
+| Skeleton pulse | A static block (`motion-reduce:animate-none`) |
+| Press scale | No scale (`motion-reduce:active:scale-100`); the colour change remains |
+| "More details" disclosure | Opens at once, and the fields fade in (`motion-reduce:transition-opacity`) |
 
 ## What not to animate
 

@@ -298,14 +298,30 @@
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
+  /* Reduced motion removes movement, not feedback: only colour and opacity may change, over 150ms. */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
     *::after {
-      animation-duration: 1ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 1ms !important;
+      transition-property:
+        opacity, color, background-color, border-color, outline-color, text-decoration-color, fill,
+        stroke !important;
       scroll-behavior: auto !important;
     }
+  }
+}
+
+/* Every entrance becomes a 150ms cross-fade; the heart pop and the skeleton pulse stop. Components
+   still state their own `motion-reduce:` end state where it differs (see motion.md). */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 150ms;
+    --duration-base: 150ms;
+    --duration-slow: 150ms;
+    --animate-fade-in: fade-in 150ms var(--ease-out-soft) both; /* audit-ignore: reduced-motion token override */
+    --animate-rise-in: fade-in 150ms var(--ease-out-soft) both; /* audit-ignore: reduced-motion token override */
+    --animate-menu-in: fade-in 150ms var(--ease-out-soft) both; /* audit-ignore: reduced-motion token override */
+    --animate-heart-pop: none; /* audit-ignore: reduced-motion token override */
+    --animate-skeleton: none; /* audit-ignore: reduced-motion token override */
   }
 }

@@ -38,7 +38,8 @@ values.
    - `bg-paper` (surface-soft plus the 3px dot grain);
    - `user-text` (`white-space: pre-wrap; overflow-wrap: anywhere`).
 5. **`@layer base`** holds the html colors, the body font, the focus ring (2px `primary`, offset
-   2px) and the reduced-motion safety net.
+   2px) and the reduced-motion transition limit. A `prefers-reduced-motion` block on `:root` turns
+   every duration and entrance animation into a 150ms fade (see motion.md).
 
 **Theme:** `data-theme` on `<html>` is rendered on the server from the theme cookie, which mirrors
 `User.theme`. It is absent for System, so the page never flashes the wrong theme. The export's

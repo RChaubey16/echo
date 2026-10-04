@@ -56,7 +56,7 @@ export function FirstReflectionPrompt({ echoId }: { echoId: string }) {
   return (
     <section
       aria-labelledby={`${id}-title`}
-      className="flex animate-rise-in flex-col gap-4 rounded-lg border border-hairline bg-canvas p-6 motion-reduce:animate-none tablet:p-8"
+      className="flex animate-rise-in flex-col gap-4 rounded-lg border border-hairline bg-canvas p-6 motion-reduce:animate-fade-in tablet:p-8"
     >
       <div className="flex flex-col gap-1.5">
         <h2 id={`${id}-title`} className="text-display-sm text-ink">

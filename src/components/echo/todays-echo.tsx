@@ -87,7 +87,7 @@ export function TodaysEcho({ echo: initial, date, dateLabel }: TodaysEchoProps) 
     "min-w-0 transition-opacity",
     phase === "loading" && "opacity-60 duration-base ease-standard",
     phase === "out" && "opacity-0 duration-fast ease-in-soft",
-    swaps > 0 && phase === "idle" && "animate-rise-in motion-reduce:animate-none",
+    swaps > 0 && phase === "idle" && "animate-rise-in motion-reduce:animate-fade-in",
   );
 
   return (

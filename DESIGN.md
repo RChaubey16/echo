@@ -279,8 +279,8 @@ point size. Quote text and the quote textarea come only from `QuoteText` / `quot
 | `ease-in-soft` | `cubic-bezier(0.4, 0, 1, 1)` | Leaving. |
 
 The swap is a short fade and rise with a height ease, so a long passage never makes the page
-jump. With reduced motion, movement is removed and state changes stay visible (see the skill's
-`motion.md`).
+jump. With reduced motion there is no movement: every transition and entrance becomes a 150ms
+opacity or colour change, so state changes stay visible (see the skill's `motion.md`).
 
 ## Layout and navigation
 

@@ -77,7 +77,9 @@ Design started from, not part of Echo.
 
 - PR 1 (tokens and docs): merged as #21.
 - PR 2 (primitives and shell): merged as #22.
-- PR 3 (Echo components and screens): this branch.
+- PR 3 (Echo components and screens): merged as #23.
+- Follow-up (polish): Home's full-width Recently added, the reduced-motion cross-fade, and the
+  phone "More" menu on Echo detail.
 
 ## Decisions made during PR 3
 

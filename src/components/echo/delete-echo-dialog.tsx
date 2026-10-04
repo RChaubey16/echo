@@ -15,15 +15,29 @@ type DeleteEchoDialogProps = {
   className?: string;
   /** "button" shows the labelled secondary button; "icon" a 44px trash icon in the error color. */
   trigger?: "button" | "icon";
+  /** Opens the dialog from outside (e.g. a menu); pair with onOpenChange. */
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  /** Classes for a wrapper around the trigger only, e.g. to hide it on phones. */
+  triggerWrapperClassName?: string;
 };
 
 /** The Delete action and its confirmation (spec §25). Cancel gets initial focus. */
-export function DeleteEchoDialog({ echoId, className, trigger = "button" }: DeleteEchoDialogProps) {
+export function DeleteEchoDialog({
+  echoId,
+  className,
+  trigger = "button",
+  open: openProp,
+  onOpenChange,
+  triggerWrapperClassName,
+}: DeleteEchoDialogProps) {
   const router = useRouter();
   const toast = useToast();
   const titleId = useId();
   const cancelRef = useRef<HTMLButtonElement>(null);
-  const [open, setOpen] = useState(false);
+  const [innerOpen, setInnerOpen] = useState(false);
+  const open = openProp ?? innerOpen;
+  const setOpen = (next: boolean) => (onOpenChange ? onOpenChange(next) : setInnerOpen(next));
   const [deleting, setDeleting] = useState(false);
   const [failure, setFailure] = useState<string | null>(null);
 
@@ -53,29 +67,31 @@ export function DeleteEchoDialog({ echoId, className, trigger = "button" }: Dele
 
   return (
     <>
-      {trigger === "icon" ? (
-        <button
-          type="button"
-          aria-label="Delete"
-          title="Delete"
-          onClick={() => setOpen(true)}
-          className={cn(
-            "flex h-11 w-11 items-center justify-center rounded-full text-error transition-colors duration-fast ease-standard hover:bg-error-tint focus-visible:outline-error",
-            className,
-          )}
-        >
-          <TrashIcon className="h-5 w-5 shrink-0" />
-        </button>
-      ) : (
-        <Button
-          variant="secondary"
-          className={cn("gap-2", className)}
-          onClick={() => setOpen(true)}
-        >
-          <TrashIcon className="h-5 w-5 shrink-0" />
-          Delete
-        </Button>
-      )}
+      <span className={triggerWrapperClassName}>
+        {trigger === "icon" ? (
+          <button
+            type="button"
+            aria-label="Delete"
+            title="Delete"
+            onClick={() => setOpen(true)}
+            className={cn(
+              "flex h-11 w-11 items-center justify-center rounded-full text-error transition-colors duration-fast ease-standard hover:bg-error-tint focus-visible:outline-error",
+              className,
+            )}
+          >
+            <TrashIcon className="h-5 w-5 shrink-0" />
+          </button>
+        ) : (
+          <Button
+            variant="secondary"
+            className={cn("gap-2", className)}
+            onClick={() => setOpen(true)}
+          >
+            <TrashIcon className="h-5 w-5 shrink-0" />
+            Delete
+          </Button>
+        )}
+      </span>
       <Dialog open={open} onRequestClose={close} labelledBy={titleId} initialFocusRef={cancelRef}>
         <h2 id={titleId} className="text-display-sm text-ink">
           Delete this Echo?

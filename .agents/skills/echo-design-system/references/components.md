@@ -313,9 +313,9 @@ Other behavior:
 
 | Screen | Structure |
 |---|---|
-| `/app` Home | The greeting ("Good evening, Ana" in `text-display-lg`, plus one quiet line). Below it: TodaysEcho at full width; then Recently added (≤5 EchoRows) beside the side column (Revisits due on `tint-ochre`, From the past on `tint-heather`), in a `7fr / 5fr` grid; then Your library (four counts in one bordered row); then Favorites (≤3 QuoteCards). Finite, with no "load more". The first run replaces it all with a centered welcome card. |
+| `/app` Home | The greeting ("Good evening, Ana" in `text-display-lg`, plus one quiet line). Below it: TodaysEcho at full width; then Recently added (≤5 EchoRows) beside the side column (Revisits due on `tint-ochre`, From the past on `tint-heather`), in a `7fr / 5fr` grid, or at full width when neither panel has anything to show; then Your library (four counts in one bordered row); then Favorites (≤3 QuoteCards). Finite, with no "load more". The first run replaces it all with a centered welcome card. |
 | `/app/echoes` Library | The title and count, the sort Select, a tag strip ("All" plus the most-used tags with counts; three on phones, then "More tags"), the QuoteCard masonry, and numbered pagination. |
-| `/app/echoes/:id` Detail | A toolbar row (back to Library; heart, Revisit, Add to collection, Edit, Delete; icons only on phones). Then a 760px reading column: QuoteText `hero`, the attribution after a short rule, the reflection card, and a `dl` of Tags, Collections, Mood, Saved and Revisit. |
+| `/app/echoes/:id` Detail | A toolbar row: back to Library, then `EchoDetailActions` (the heart, Revisit, Add to collection, Edit and Delete; on phones the heart, Edit and a "More" menu with Revisit, collections and Delete, each dialog shared by both). Then a 760px reading column: QuoteText `hero`, the attribution after a short rule, the reflection card, and a `dl` of Tags, Collections, Mood, Saved and Revisit. |
 | `/app/echoes/new`, `/edit` | `max-w-3xl` EchoForm. |
 | `/app/collections` | The title, a "New collection" secondary button, and the CollectionCard grid. The dialog has Name, Description and a Color radio group. |
 | `/app/collections/:id` | A back link, then a header panel on the collection's tint (name, description, count, Add Echoes and the More menu), then the QuoteCard masonry. |
