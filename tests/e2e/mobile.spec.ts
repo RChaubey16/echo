@@ -27,13 +27,10 @@ test("quick capture opens as a bottom sheet from the tab bar and saves", async (
   await expect(page.getByRole("status").filter({ hasText: "Echo saved" })).toBeVisible();
 });
 
-test("the Echo detail keeps its actions in a sticky bar above the tab bar", async ({
-  page,
-  context,
-}) => {
+test("the Echo detail keeps its actions in reach above the tab bar", async ({ page, context }) => {
   const { echoId } = await seededLibrary(context.request);
   await openHydrated(page, `/app/echoes/${echoId}`);
-  const favorite = page.getByRole("button", { name: /Favorited|Favorite/ });
+  const favorite = page.getByRole("button", { name: /favorites/ });
   await expect(favorite).toBeInViewport();
   const tabBar = (await page.getByRole("navigation", { name: "Main" }).boundingBox())!;
   const action = (await favorite.boundingBox())!;

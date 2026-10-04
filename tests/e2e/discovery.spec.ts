@@ -32,7 +32,7 @@ test("a new user goes from the welcome screen to their first Echo, a reflection,
   page,
 }) => {
   await open(page, "/app");
-  await expect(page.getByRole("heading", { level: 1, name: "Welcome to Echo." })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: /^Welcome to Echo/ })).toBeVisible();
   await page.getByRole("link", { name: "Add your first Echo" }).click();
 
   const dialog = page.getByRole("dialog", { name: "Add Echo" });
@@ -46,7 +46,7 @@ test("a new user goes from the welcome screen to their first Echo, a reflection,
   await prompt.getByRole("textbox").fill("It made me slow down.");
   await prompt.getByRole("button", { name: "Save reflection" }).click();
   await expect(prompt).toBeHidden();
-  await expect(page.getByRole("region", { name: "Your reflection" })).toContainText(
+  await expect(page.getByRole("region", { name: "Reflection" })).toContainText(
     "It made me slow down.",
   );
 
@@ -57,7 +57,7 @@ test("a new user goes from the welcome screen to their first Echo, a reflection,
   await open(page, "/app");
   const today = page.getByRole("region", { name: /Today's Echo/ });
   await expect(today).toContainText("The first words worth keeping.");
-  await expect(today).toContainText("You wrote:");
+  await expect(today).toContainText("You wrote");
   await expect(today).toContainText("It made me slow down.");
 });
 
@@ -93,7 +93,7 @@ test("a Revisit scheduled from the Add form appears under Upcoming", async ({ pa
   await open(page, "/app/revisits");
   const upcoming = page.getByRole("region", { name: /Upcoming/ });
   await expect(upcoming).toContainText("See me again in a month.");
-  await expect(upcoming).toContainText("Revisit on");
+  await expect(upcoming.getByRole("button", { name: "Change" })).toBeVisible();
 });
 
 test("the calendar picks a date with the keyboard", async ({ page, context }) => {

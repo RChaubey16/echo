@@ -3,13 +3,14 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import type { CollectionAccent } from "@/server/validation/collection";
 import type { EchoDto } from "@/types/echo";
+import { OpenQuoteIcon } from "@/components/ui/icons";
 import { FavoriteButton } from "./favorite-button";
 import { QuoteText, attribution } from "./quote-text";
 import { SavedDate } from "./saved-date";
 
 type EchoRowProps = {
   echo: EchoDto;
-  /** Shows the author's initial (or a quote mark) in a 40px tinted circle. */
+  /** Shows the author's initial (or a quote mark) in a 40px square on the collection's tint. */
   monogram?: boolean;
   /** "panel" for white panels, "tint" for tinted ones; sets the hover fill. */
   surface?: "panel" | "tint";
@@ -31,23 +32,23 @@ const MONOGRAM: Record<CollectionAccent, string> = {
 export function EchoRow({ echo, monogram = false, surface = "panel", action, meta }: EchoRowProps) {
   const credit = attribution(echo);
   const accent = echo.collections[0]?.accent ?? "lagoon";
-  const initial = echo.author?.trim().charAt(0).toUpperCase() || "“";
+  const initial = echo.author?.trim().charAt(0).toUpperCase();
   return (
     <article
       className={cn(
-        "relative -mx-3 flex items-start gap-4 rounded-md px-3 py-4 transition-colors duration-fast ease-standard",
-        surface === "panel" ? "hover:bg-surface-soft" : "hover:bg-canvas/60",
+        "relative flex items-start gap-3.5 rounded-md p-3 transition-colors duration-fast ease-standard",
+        surface === "panel" ? "hover:bg-surface-strong" : "hover:bg-canvas/60",
       )}
     >
       {monogram && (
         <span
           aria-hidden
           className={cn(
-            "flex h-10 w-10 shrink-0 items-center justify-center rounded-full font-quote text-quote-compact",
-            MONOGRAM[accent],
+            "flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-button-md",
+            initial ? MONOGRAM[accent] : "bg-tint-neutral text-muted",
           )}
         >
-          {initial}
+          {initial ?? <OpenQuoteIcon className="h-4.5 w-4.5" />}
         </span>
       )}
       <figure className="min-w-0 flex-1">
@@ -59,7 +60,7 @@ export function EchoRow({ echo, monogram = false, surface = "panel", action, met
             {echo.quote}
           </QuoteText>
         </Link>
-        <figcaption className="mt-1 flex min-w-0 gap-1 text-body-sm text-muted">
+        <figcaption className="mt-1 flex min-w-0 gap-1 text-caption-sm text-muted">
           {credit && (
             <>
               <span className="truncate" title={credit}>
@@ -76,7 +77,7 @@ export function EchoRow({ echo, monogram = false, surface = "panel", action, met
       <FavoriteButton
         echoId={echo.id}
         isFavorite={echo.isFavorite}
-        className="relative z-10 -my-2 shrink-0"
+        className="relative z-10 -my-1.5 -mr-1.5 shrink-0"
       />
     </article>
   );

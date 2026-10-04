@@ -193,9 +193,9 @@ export function TagInput({
           }
         }}
         className={cn(
-          "flex min-h-14 w-full flex-wrap items-center gap-1.5 rounded-md border bg-canvas px-3 py-2 focus-within:border-ink focus-within:outline-1 focus-within:-outline-offset-2 focus-within:outline-ink",
-          invalid || notice ? "border-error" : "border-border-input",
-          disabled && "bg-surface-soft",
+          "flex min-h-13 w-full flex-wrap items-center gap-1.5 rounded-md border bg-canvas px-2 py-1.5 transition-colors duration-fast ease-standard focus-within:border-ink focus-within:ring-1 focus-within:ring-ink focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary focus-within:ring-inset hover:border-ink",
+          invalid || notice ? "border-error ring-1 ring-error ring-inset" : "border-border-input",
+          disabled && "border-hairline bg-surface-soft",
         )}
       >
         {value.length > 0 && (
@@ -270,7 +270,7 @@ export function TagInput({
             setActive(-1);
             setArmedRemove(false);
           }}
-          className="h-10 min-w-24 flex-1 bg-transparent text-body-md text-ink placeholder:text-muted focus-visible:outline-none" // audit-ignore: the wrapper draws the focus outline (focus-within)
+          className="h-10 min-w-24 flex-1 bg-transparent px-1 text-body-md text-ink placeholder:text-muted focus-visible:outline-none" // audit-ignore: the wrapper draws the focus outline (focus-within)
         />
       </div>
 
@@ -279,7 +279,7 @@ export function TagInput({
           id={listId}
           role="listbox"
           aria-label="Tag suggestions"
-          className="absolute inset-x-0 top-full z-40 mt-2 max-h-72 origin-top animate-menu-in overflow-y-auto rounded-lg bg-canvas py-2 shadow-float motion-reduce:animate-fade-in" // audit-ignore: 72 caps the list at about seven rows
+          className="absolute inset-x-0 top-full z-40 mt-1 max-h-72 origin-top animate-menu-in overflow-y-auto rounded-lg bg-canvas p-1.5 shadow-float motion-reduce:animate-fade-in" // audit-ignore: 72 caps the list at about seven rows
         >
           {options.map((option, index) => (
             <li
@@ -291,8 +291,8 @@ export function TagInput({
               onPointerDown={(event) => event.preventDefault()}
               onClick={() => add([option.name])}
               className={cn(
-                "flex h-10 cursor-pointer items-center gap-2 px-4 text-body-md text-ink",
-                index === active ? "bg-surface-soft" : "hover:bg-surface-soft",
+                "flex h-11 cursor-pointer items-center gap-2 rounded-md px-3 text-body-md text-ink",
+                index === active ? "bg-surface-strong" : "hover:bg-surface-strong",
               )}
             >
               {option.isNew ? (

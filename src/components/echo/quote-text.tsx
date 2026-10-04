@@ -1,12 +1,14 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-export type QuoteSize = "today" | "hero" | "card" | "compact";
+export type QuoteSize = "today" | "hero" | "memory" | "card" | "compact";
 
 const SIZES: Record<QuoteSize, string> = {
   // Today's Echo is the one place quote type reaches 44px.
   today: "font-quote text-quote-hero-sm tablet:text-quote-hero desktop:text-quote-today",
   hero: "font-quote text-quote-hero-sm tablet:text-quote-hero",
+  // From the past: a step above a card, the same at every width.
+  memory: "font-quote text-quote-hero-sm",
   card: "font-quote text-quote-card-sm tablet:text-quote-card",
   compact: "font-quote text-quote-compact",
 };
@@ -33,6 +35,27 @@ type QuoteTextProps = {
 /** A quote in EB Garamond. Wrap it in a `<figure>` with the attribution in a `<figcaption>`. */
 export function QuoteText({ size, children, className }: QuoteTextProps) {
   return <blockquote className={cn(quoteClasses(size), className)}>{children}</blockquote>;
+}
+
+/**
+ * The attribution as shown under a quote: the author in weight 600, then " · " and the source.
+ * Renders nothing when both are missing.
+ */
+export function Attribution({
+  echo,
+  className,
+}: {
+  echo: { author: string | null; source: string | null };
+  className?: string;
+}) {
+  if (!echo.author && !echo.source) return null;
+  return (
+    <span className={cn("[overflow-wrap:anywhere] text-body", className)}>
+      {echo.author && <span className="font-semibold text-ink">{echo.author}</span>}
+      {echo.author && echo.source && " · "}
+      {echo.source}
+    </span>
+  );
 }
 
 /**

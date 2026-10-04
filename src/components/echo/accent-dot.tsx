@@ -1,6 +1,22 @@
 import { cn } from "@/lib/cn";
 import type { CollectionAccent } from "@/server/validation/collection";
 
+/** The names the four stored accent slots go by in the interface. */
+export const ACCENT_LABEL: Record<CollectionAccent, string> = {
+  lagoon: "Moss",
+  bronze: "Ochre",
+  plum: "Heather",
+  neutral: "Neutral",
+};
+
+/** Each slot's pale panel colour, e.g. behind a collection page's header. */
+export const ACCENT_TINT: Record<CollectionAccent, string> = {
+  lagoon: "bg-tint-moss",
+  bronze: "bg-tint-ochre",
+  plum: "bg-tint-heather",
+  neutral: "bg-tint-neutral",
+};
+
 const DOT: Record<CollectionAccent, string> = {
   lagoon: "bg-mark-moss",
   bronze: "bg-mark-ochre",
@@ -10,14 +26,27 @@ const DOT: Record<CollectionAccent, string> = {
 };
 
 /**
- * A collection's 8px accent dot. Decorative: the collection's name always sits next to it, so
- * color is never the only signal.
+ * A collection's accent dot (8px, or 10px beside a card title). Decorative: the collection's name
+ * always sits next to it, so color is never the only signal.
  */
-export function AccentDot({ accent, className }: { accent: CollectionAccent; className?: string }) {
+export function AccentDot({
+  accent,
+  size = "sm",
+  className,
+}: {
+  accent: CollectionAccent;
+  size?: "sm" | "md";
+  className?: string;
+}) {
   return (
     <span
       aria-hidden
-      className={cn("inline-block h-2 w-2 shrink-0 rounded-full", DOT[accent], className)}
+      className={cn(
+        "inline-block shrink-0 rounded-full",
+        size === "md" ? "h-2.5 w-2.5" : "h-2 w-2",
+        DOT[accent],
+        className,
+      )}
     />
   );
 }

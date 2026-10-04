@@ -13,20 +13,31 @@ export function avatarInitial(name: string | null, email: string): string {
 }
 
 /** The account's initial on a heather disc. Decorative: the button around it carries the name. */
+const SIZES = {
+  sm: "h-8 w-8 text-caption-sm",
+  md: "h-9 w-9 text-caption-sm",
+  lg: "h-14 w-14 text-display-sm",
+} as const;
+
 export function AccountAvatar({
   name,
   email,
+  size = "sm",
   className,
 }: {
   name: string | null;
   email: string;
+  /** 32px (header, sidebar), 36px (rail) or 56px (Settings). */
+  size?: keyof typeof SIZES;
+  /** Layout only. */
   className?: string;
 }) {
   return (
     <span
       aria-hidden
       className={cn(
-        "flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-tint-heather text-caption-sm font-semibold text-ink",
+        "flex shrink-0 items-center justify-center rounded-full bg-tint-heather font-semibold text-ink",
+        SIZES[size],
         className,
       )}
     >

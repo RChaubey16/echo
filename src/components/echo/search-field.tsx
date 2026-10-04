@@ -3,7 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useId, useRef, useState, useTransition } from "react";
 import { PAGE_SEARCH_ID } from "@/components/shell/search-ids";
-import { SearchIcon } from "@/components/ui/icons";
+import { CloseIcon, SearchIcon } from "@/components/ui/icons";
 import { Spinner } from "@/components/ui/spinner";
 import { SEARCH_MAX } from "@/server/validation/echo";
 
@@ -58,16 +58,20 @@ export function SearchField({ initialQuery }: { initialQuery: string }) {
     <form
       role="search"
       aria-labelledby={labelId}
+      className="flex max-w-190 flex-col gap-3"
       onSubmit={(event) => {
         event.preventDefault();
         window.clearTimeout(timer.current);
         navigate(value);
       }}
     >
-      <label id={labelId} htmlFor={PAGE_SEARCH_ID} className="sr-only">
-        Search your Echoes
+      <label id={labelId} htmlFor={PAGE_SEARCH_ID} className="text-caption text-body">
+        Search your library
       </label>
-      <div className="flex h-12 items-center gap-2 rounded-full border border-hairline bg-canvas pr-1.5 pl-6 shadow-float focus-within:border-ink focus-within:outline-1 focus-within:-outline-offset-2 focus-within:outline-ink desktop:h-16 desktop:pr-2">
+      <div className="flex h-13 items-center gap-3 rounded-md border border-border-input bg-canvas pr-1.5 pl-4 transition-colors duration-fast ease-standard focus-within:border-ink focus-within:ring-1 focus-within:ring-ink focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary focus-within:ring-inset hover:border-ink tablet:h-15 tablet:pl-4.5">
+        <span aria-hidden className="flex shrink-0 text-muted">
+          {pending ? <Spinner className="h-5 w-5" /> : <SearchIcon className="h-5 w-5" />}
+        </span>
         <input
           ref={inputRef}
           id={PAGE_SEARCH_ID}
@@ -93,16 +97,26 @@ export function SearchField({ initialQuery }: { initialQuery: string }) {
             }
           }}
           placeholder="Words, authors, reflections, tags…"
-          className="min-w-0 flex-1 bg-transparent text-body-md text-ink placeholder:text-muted focus-visible:outline-none [&::-webkit-search-cancel-button]:hidden" // audit-ignore: the pill draws the focus outline (focus-within)
+          className="min-w-0 flex-1 bg-transparent text-body-md text-ink placeholder:text-muted focus-visible:outline-none tablet:text-display-sm tablet:font-normal [&::-webkit-search-cancel-button]:hidden" // audit-ignore: the pill draws the focus outline (focus-within)
         />
-        <button
-          type="submit"
-          aria-label="Search"
-          aria-busy={pending || undefined}
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary transition-[background-color,transform] duration-fast ease-standard hover:bg-primary-active active:scale-95 motion-reduce:active:scale-100 desktop:h-12 desktop:w-12"
-        >
-          {pending ? <Spinner className="h-4 w-4" /> : <SearchIcon className="h-5 w-5" />}
-        </button>
+        {value && (
+          <button
+            type="button"
+            aria-label="Clear search"
+            onClick={() => {
+              window.clearTimeout(timer.current);
+              setValue("");
+              navigate("");
+              inputRef.current?.focus();
+            }}
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-muted transition-colors duration-fast ease-standard hover:bg-surface-strong hover:text-ink"
+          >
+            <CloseIcon className="h-5 w-5" />
+          </button>
+        )}
+        <span aria-live="polite" className="sr-only">
+          {pending ? "Searching…" : ""}
+        </span>
       </div>
     </form>
   );

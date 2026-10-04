@@ -56,17 +56,17 @@ export function FirstReflectionPrompt({ echoId }: { echoId: string }) {
   return (
     <section
       aria-labelledby={`${id}-title`}
-      className="mt-8 animate-rise-in rounded-lg bg-tint-moss p-6 motion-reduce:animate-none"
+      className="flex animate-rise-in flex-col gap-4 rounded-lg border border-hairline bg-canvas p-6 motion-reduce:animate-none tablet:p-8"
     >
-      <h2 id={`${id}-title`} className="text-display-sm text-ink">
-        Why did this speak to you?
-      </h2>
-      <p className="mt-2 text-body-sm text-body">
-        A line or two is enough. Future you will be glad to read it.
-      </p>
+      <div className="flex flex-col gap-1.5">
+        <h2 id={`${id}-title`} className="text-display-sm text-ink">
+          Why did this speak to you?
+        </h2>
+        <p className="text-body-md text-body">A sentence is plenty. Only you will ever read it.</p>
+      </div>
       <form
         noValidate
-        className="mt-4 flex flex-col gap-1.5"
+        className="flex flex-col gap-1.5"
         onSubmit={(event) => {
           event.preventDefault();
           void finish("save");
@@ -95,7 +95,7 @@ export function FirstReflectionPrompt({ echoId }: { echoId: string }) {
             Save reflection
           </Button>
           <Button
-            variant="secondary"
+            variant="tertiary"
             loading={busy === "skip"}
             disabled={busy === "save"}
             onClick={() => void finish("skip")}

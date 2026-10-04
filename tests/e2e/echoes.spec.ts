@@ -64,7 +64,7 @@ test("a favorite survives a reload", async ({ page, context }) => {
   await expect(favorite).toHaveAttribute("aria-pressed", "true");
   expect((await saved).status()).toBe(200);
   await page.reload();
-  await expect(page.getByRole("button", { name: /Favorited/ })).toHaveAttribute(
+  await expect(page.getByRole("button", { name: "Remove from favorites" })).toHaveAttribute(
     "aria-pressed",
     "true",
   );

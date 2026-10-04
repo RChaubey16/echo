@@ -28,7 +28,7 @@ test.describe("signed in", () => {
       "page",
     );
     await expect(sidebar.getByRole("link", { name: "Add Echo" }).first()).toBeVisible();
-    await expect(page.getByRole("heading", { level: 1, name: "Welcome to Echo." })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: /^Welcome to Echo/ })).toBeVisible();
     await expect(page.getByRole("link", { name: "Add your first Echo" })).toBeVisible();
   });
 

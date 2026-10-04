@@ -53,7 +53,7 @@ export function CollectionPicker({
         aria-controls={open ? panelId : undefined}
         aria-labelledby={`${labelId} ${panelId}-summary`}
         onClick={() => setOpen((current) => !current)}
-        className="flex min-h-14 w-full items-center gap-2 rounded-md border border-border-input bg-canvas px-3 py-2 text-left text-body-md text-ink focus-visible:border-ink focus-visible:outline-1 focus-visible:-outline-offset-2 focus-visible:outline-ink disabled:bg-surface-soft disabled:text-muted-soft"
+        className="flex min-h-13 w-full items-center gap-2 rounded-md border border-border-input bg-canvas px-4 py-2 text-left text-body-md text-ink transition-colors duration-fast ease-standard hover:border-ink focus-visible:border-ink focus-visible:ring-1 focus-visible:ring-ink focus-visible:ring-inset disabled:border-hairline disabled:bg-surface-soft disabled:text-muted"
       >
         <span id={`${panelId}-summary`} className="flex min-w-0 flex-1 flex-wrap gap-x-4 gap-y-1">
           {chosen.length === 0 ? (
@@ -73,7 +73,7 @@ export function CollectionPicker({
         </span>
         <ChevronDownIcon
           className={cn(
-            "h-4 w-4 shrink-0 text-muted transition-transform duration-base ease-standard motion-reduce:transition-none",
+            "h-5 w-5 shrink-0 text-muted transition-transform duration-base ease-standard motion-reduce:transition-none",
             open && "rotate-180",
           )}
         />
@@ -84,7 +84,7 @@ export function CollectionPicker({
           id={panelId}
           role="group"
           aria-labelledby={labelId}
-          className="absolute inset-x-0 top-full z-40 mt-2 max-h-80 origin-top animate-menu-in overflow-y-auto rounded-lg bg-canvas py-2 shadow-float motion-reduce:animate-fade-in" // audit-ignore: 80 caps the panel at about six rows
+          className="absolute inset-x-0 top-full z-40 mt-1 max-h-80 origin-top animate-menu-in overflow-y-auto rounded-lg bg-canvas p-1.5 shadow-float motion-reduce:animate-fade-in" // audit-ignore: 80 caps the panel at about six rows
         >
           <CollectionChecklist
             collections={options.collections}

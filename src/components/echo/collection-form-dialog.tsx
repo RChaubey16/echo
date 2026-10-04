@@ -4,27 +4,31 @@ import { useId, useRef, useState, type RefObject } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { CharacterCount, FieldError, Input, Label, Textarea } from "@/components/ui/field";
-import { AlertIcon } from "@/components/ui/icons";
+import { AlertIcon, CheckIcon } from "@/components/ui/icons";
 import { ApiError, api, failureMessage } from "@/lib/api";
+import { cn } from "@/lib/cn";
 import {
   COLLECTION_DESCRIPTION_MAX,
+  COLLECTION_ACCENTS,
   COLLECTION_NAME_MAX,
   collectionCreateSchema,
+  type CollectionAccent,
 } from "@/server/validation/collection";
 import type { CollectionDto } from "@/types/echo";
+import { ACCENT_LABEL, AccentDot } from "./accent-dot";
 
 type CollectionFormDialogProps = {
   open: boolean;
   onClose: () => void;
   /** The collection being renamed; omit to create a new one. */
-  collection?: Pick<CollectionDto, "id" | "name" | "description">;
+  collection?: Pick<CollectionDto, "id" | "name" | "description" | "accent">;
   /** Called with the saved collection before the dialog closes. */
   onSaved: (collection: CollectionDto) => void;
 };
 
 type Errors = { name?: string; description?: string };
 
-/** New collection / Rename collection: a name and an optional description. */
+/** New collection / Edit collection: a name, an optional description and its colour. */
 export function CollectionFormDialog({ open, onClose, ...rest }: CollectionFormDialogProps) {
   const titleId = useId();
   const nameRef = useRef<HTMLInputElement>(null);
@@ -56,6 +60,8 @@ function CollectionForm({
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const [name, setName] = useState(collection?.name ?? "");
   const [description, setDescription] = useState(collection?.description ?? "");
+  // Unset for a new collection, so the server picks the next colour in the cycle.
+  const [accent, setAccent] = useState<CollectionAccent | undefined>(collection?.accent);
   const [errors, setErrors] = useState<Errors>({});
   const [failure, setFailure] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -63,7 +69,7 @@ function CollectionForm({
   const onSubmit = async () => {
     if (saving) return;
     setFailure(null);
-    const parsed = collectionCreateSchema.safeParse({ name, description });
+    const parsed = collectionCreateSchema.safeParse({ name, description, accent });
     if (!parsed.success) {
       const next: Errors = {};
       for (const issue of parsed.error.issues) {
@@ -104,7 +110,7 @@ function CollectionForm({
       className="flex flex-col gap-6"
     >
       <h2 id={titleId} className="text-display-sm text-ink">
-        {collection ? "Rename collection" : "New collection"}
+        {collection ? "Edit collection" : "New collection"}
       </h2>
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
@@ -143,6 +149,39 @@ function CollectionForm({
           <FieldError id={`${id}-description-error`}>{errors.description}</FieldError>
           <CharacterCount length={description.trim().length} max={COLLECTION_DESCRIPTION_MAX} />
         </div>
+        <fieldset className="flex min-w-0 flex-col gap-2">
+          <legend className="mb-2 text-caption text-ink">
+            Color {!collection && <span className="font-normal text-muted">(optional)</span>}
+          </legend>
+          <div className="grid grid-cols-2 gap-2">
+            {COLLECTION_ACCENTS.map((option) => {
+              const checked = accent === option;
+              return (
+                <label
+                  key={option}
+                  className={cn(
+                    "flex h-12 cursor-pointer items-center gap-2.5 rounded-md border px-3.5 text-body-md transition-colors duration-fast ease-standard has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-primary",
+                    checked
+                      ? "border-2 border-ink bg-surface-strong px-3.25 font-semibold text-ink"
+                      : "border-border-input text-ink hover:border-ink hover:bg-surface-strong",
+                  )}
+                >
+                  <input
+                    type="radio"
+                    name={`${id}-accent`}
+                    value={option}
+                    checked={checked}
+                    onChange={() => setAccent(option)}
+                    className="sr-only"
+                  />
+                  <AccentDot accent={option} size="md" />
+                  <span className="flex-1">{ACCENT_LABEL[option]}</span>
+                  {checked && <CheckIcon className="h-4 w-4 shrink-0" />}
+                </label>
+              );
+            })}
+          </div>
+        </fieldset>
       </div>
       {failure && (
         <p role="alert" className="flex items-start gap-1.5 text-body-sm text-error">

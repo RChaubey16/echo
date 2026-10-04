@@ -66,10 +66,14 @@ export function DeleteAccountDialog({ email }: { email: string }) {
 
   return (
     <>
-      <Button variant="secondary" className="shrink-0 gap-2" onClick={() => setOpen(true)}>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-md border border-error px-5 text-button-md text-error transition-colors duration-fast ease-standard hover:bg-error-tint focus-visible:outline-error"
+      >
         <TrashIcon className="h-5 w-5 shrink-0" />
         Delete account
-      </Button>
+      </button>
       <Dialog open={open} onRequestClose={close} labelledBy={titleId} initialFocusRef={cancelRef}>
         <h2 id={titleId} className="text-display-sm text-ink">
           Delete your account?

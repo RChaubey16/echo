@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/cn";
+import type { CollectionAccent } from "@/server/validation/collection";
 import type { CollectionDto } from "@/types/echo";
 import { AccentDot } from "./accent-dot";
 
@@ -14,12 +16,27 @@ export function echoCount(count: number): string {
   return count === 1 ? "1 Echo" : `${count.toLocaleString("en-US")} Echoes`;
 }
 
-/** A collection as a card: name with its accent dot, Echo count and description. */
+/** The 4px bar along a collection card's top edge; the neutral slot uses a hairline. */
+const TOP_BAR: Record<CollectionAccent, string> = {
+  lagoon: "border-t-mark-moss",
+  bronze: "border-t-mark-ochre",
+  plum: "border-t-mark-heather",
+  neutral: "border-t-hairline",
+};
+
+/**
+ * A collection as a card: a 4px accent bar along the top, the name beside its dot (so colour is
+ * never the only signal), the description and the Echo count.
+ */
 export function CollectionCard({ collection }: { collection: CollectionDto }) {
   return (
-    <Card as="article" interactive className="flex min-w-0 flex-col">
-      <h2 className="flex min-w-0 items-center gap-2 text-title-md text-ink">
-        <AccentDot accent={collection.accent} />
+    <Card
+      as="article"
+      interactive
+      className={cn("flex min-h-45 min-w-0 flex-col gap-3 border-t-4", TOP_BAR[collection.accent])}
+    >
+      <h2 className="flex min-w-0 items-center gap-2.5 text-title-md text-ink">
+        <AccentDot accent={collection.accent} size="md" />
         <Link
           href={`/app/collections/${collection.id}`}
           className="truncate rounded-sm after:absolute after:inset-0 after:rounded-lg"
@@ -28,12 +45,14 @@ export function CollectionCard({ collection }: { collection: CollectionDto }) {
           {collection.name}
         </Link>
       </h2>
-      <p className="mt-1 text-body-sm text-muted tabular-nums">{echoCount(collection.echoCount)}</p>
       {collection.description && (
-        <p className="mt-3 line-clamp-2 text-body-sm [overflow-wrap:anywhere] text-body">
+        <p className="line-clamp-3 text-body-md text-pretty [overflow-wrap:anywhere] text-body">
           {collection.description}
         </p>
       )}
+      <p className="mt-auto text-body-sm text-muted tabular-nums">
+        {echoCount(collection.echoCount)}
+      </p>
     </Card>
   );
 }
@@ -41,7 +60,10 @@ export function CollectionCard({ collection }: { collection: CollectionDto }) {
 /** The CollectionCard skeleton: a name bar, a count bar and two description bars. */
 export function CollectionCardSkeleton() {
   return (
-    <div aria-hidden className="rounded-lg border border-hairline bg-canvas p-6">
+    <div
+      aria-hidden
+      className="min-h-45 rounded-lg border border-t-4 border-hairline bg-canvas p-6"
+    >
       <Skeleton className="h-5 w-1/2" />
       <Skeleton className="mt-2 h-4 w-1/4" />
       <Skeleton className="mt-4 h-4 w-full" />

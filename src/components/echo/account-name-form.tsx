@@ -76,7 +76,7 @@ export function AccountNameForm({ name: initial }: { name: string | null }) {
           loading={saving}
           loadingLabel="Saving…"
           disabled={unchanged && !error}
-          className="tablet:h-14"
+          className="tablet:h-13"
         >
           Save name
         </Button>

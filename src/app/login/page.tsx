@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { LogoMark } from "@/components/echo/logo";
-import { buttonClasses } from "@/components/ui/button-classes";
-import { GoogleIcon } from "@/components/ui/icons";
+import { GoogleButton } from "@/components/echo/google-button";
 import { SkipLink } from "@/components/ui/skip-link";
 import { publicPageMetadata } from "@/lib/site";
-import { getSessionUser, signIn } from "@/server/auth";
+import { getSessionUser } from "@/server/auth";
 
 export const metadata: Metadata = publicPageMetadata({
   title: "Sign in",
@@ -14,16 +12,6 @@ export const metadata: Metadata = publicPageMetadata({
     "Sign in to Echo with Google to open your private library of quotes and reflections.",
   path: "/login",
 });
-
-/**
- * Starts the Google OAuth flow and lands the user on /app afterwards.
- *
- * @returns Nothing; redirects to Google.
- */
-async function signInWithGoogle(): Promise<void> {
-  "use server";
-  await signIn("google", { redirectTo: "/app" });
-}
 
 export default async function LoginPage() {
   if (await getSessionUser()) redirect("/app");
@@ -36,39 +24,29 @@ export default async function LoginPage() {
         tabIndex={-1}
         className="flex flex-1 items-center justify-center px-4 py-12 focus-visible:outline-none"
       >
-        <section className="w-full max-w-sm rounded-lg border border-hairline-soft bg-canvas px-6 py-12 text-center">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 rounded-md text-ink"
-            aria-label="Echo home"
-          >
-            <LogoMark className="h-12 w-12" />
-          </Link>
-          <h1 className="mt-6 text-display-lg text-ink">Sign in to Echo</h1>
-          <p className="mt-2 text-body-md text-body">Words worth coming back to.</p>
-          <form action={signInWithGoogle} className="mt-8">
-            <button type="submit" className={buttonClasses("secondary", "w-full")}>
-              <GoogleIcon className="h-5 w-5 shrink-0" />
-              Continue with Google
-            </button>
-          </form>
-          <p className="mt-6 text-body-sm text-muted">
+        <section className="flex w-full max-w-105 flex-col items-center gap-5 rounded-lg border border-hairline bg-canvas px-6 py-10 text-center tablet:gap-6 tablet:px-10 tablet:py-12">
+          <h1 className="text-display-lg tracking-tight text-ink">
+            <span className="sr-only">Sign in to </span>
+            <Link href="/" className="rounded-md" aria-label="Echo home">
+              Echo
+            </Link>
+          </h1>
+          <p className="text-body-md text-body">Welcome back. Your words are waiting.</p>
+          <GoogleButton className="w-full" />
+          <p className="text-body-sm text-muted">
             New here? Your account is created the first time you sign in.{" "}
-            <Link
-              href="/#privacy"
-              className="text-primary underline underline-offset-4 hover:decoration-2"
-            >
+            <Link href="/#privacy" className="text-primary underline underline-offset-4">
               How Echo keeps your library private
             </Link>
           </p>
-          <p className="mt-4 text-caption text-muted">
+          <p className="text-caption-sm text-muted">
             By continuing you agree to the{" "}
-            <Link href="/terms" className="underline underline-offset-4 hover:text-ink">
-              terms
+            <Link href="/terms" className="text-primary underline underline-offset-4">
+              Terms
             </Link>{" "}
             and{" "}
-            <Link href="/privacy" className="underline underline-offset-4 hover:text-ink">
-              privacy policy
+            <Link href="/privacy" className="text-primary underline underline-offset-4">
+              Privacy policy
             </Link>
             .
           </p>

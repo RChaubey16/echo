@@ -1,13 +1,15 @@
 import Link from "next/link";
 import type { ComponentType, ReactNode, SVGProps } from "react";
 import { EchoRow } from "@/components/echo/echo-row";
+import { Attribution, QuoteText, attribution } from "@/components/echo/quote-text";
 import { MarkReflectedButton } from "@/components/echo/mark-reflected-button";
 import { QuoteCard } from "@/components/echo/quote-card";
 import { TodaysEcho } from "@/components/echo/todays-echo";
 import { SectionError } from "@/components/ui/error-state";
-import { CalendarIcon, ClockIcon, LayersIcon, HeartIcon, LibraryIcon } from "@/components/ui/icons";
+import { CalendarIcon, ClockIcon } from "@/components/ui/icons";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/cn";
+import { relativeDate } from "@/lib/dates";
 import type { LibraryCounts } from "@/server/services/discovery";
 import type { EchoDto, EchoListDto, RevisitWithEchoDto, TodaysEchoDto } from "@/types/echo";
 
@@ -30,7 +32,7 @@ export function settle<T>(promise: Promise<T>): Promise<Settled<T>> {
 
 const LINK = "text-body-sm font-medium text-ink underline-offset-4 hover:underline";
 
-/** A tinted side panel's header: a round icon chip and the heading, with an optional link. */
+/** A tinted side panel's header: the icon in its accent mark and the heading, with an optional link. */
 function PanelHeader({
   id,
   title,
@@ -46,16 +48,8 @@ function PanelHeader({
 }) {
   return (
     <div className="flex items-center justify-between gap-4">
-      <div className="flex min-w-0 items-center gap-3">
-        <span
-          aria-hidden
-          className={cn(
-            "flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-canvas",
-            iconClass,
-          )}
-        >
-          <Icon className="h-4 w-4" />
-        </span>
+      <div className="flex min-w-0 items-center gap-2.5">
+        <Icon aria-hidden className={cn("h-5 w-5 shrink-0", iconClass)} />
         <h2 id={id} className="text-display-sm text-ink">
           {title}
         </h2>
@@ -84,8 +78,11 @@ export async function TodaySection({ data }: { data: Promise<Settled<TodaysEchoD
   const result = await data;
   if (!result.ok) {
     return (
-      <section aria-labelledby="today-heading" className="rounded-lg bg-tint-moss p-6 tablet:p-8">
-        <h2 id="today-heading" className="text-caption text-primary">
+      <section
+        aria-labelledby="today-heading"
+        className="rounded-lg border border-hairline bg-canvas p-6 tablet:p-10"
+      >
+        <h2 id="today-heading" className="text-body-sm font-semibold text-ink">
           Today&apos;s Echo
         </h2>
         <SectionError what="today's Echo" retryHref="/app" />
@@ -99,14 +96,17 @@ export async function TodaySection({ data }: { data: Promise<Settled<TodaysEchoD
 
 export function TodaySkeleton() {
   return (
-    <div aria-hidden className="rounded-lg bg-tint-moss p-6 tablet:p-8">
+    <div
+      aria-hidden
+      className="rounded-lg border border-hairline bg-canvas p-6 tablet:p-10 desktop:p-14"
+    >
       <Skeleton className="h-4 w-48" />
-      <div className="mt-6 grid gap-3">
-        <Skeleton className="h-7 w-11/12" />
-        <Skeleton className="h-7 w-8/12" />
+      <div className="mt-7 grid gap-3">
+        <Skeleton className="h-9 w-11/12" />
+        <Skeleton className="h-9 w-8/12" />
       </div>
-      <Skeleton className="mt-6 h-4 w-40" />
-      <Skeleton className="mt-8 h-11 w-48 rounded-full" />
+      <Skeleton className="mt-7 h-4 w-40" />
+      <Skeleton className="mt-8 h-12 w-48" />
     </div>
   );
 }
@@ -114,10 +114,7 @@ export function TodaySkeleton() {
 export async function RecentSection({ data }: { data: Promise<Settled<EchoListDto>> }) {
   const result = await data;
   return (
-    <section
-      aria-labelledby="recent-heading"
-      className="rounded-lg border border-hairline-soft bg-canvas p-6"
-    >
+    <section aria-labelledby="recent-heading" className="flex min-w-0 flex-col gap-3.5">
       <div className="flex items-baseline justify-between gap-4">
         <h2 id="recent-heading" className="text-display-sm text-ink">
           Recently added
@@ -127,7 +124,7 @@ export async function RecentSection({ data }: { data: Promise<Settled<EchoListDt
         </Link>
       </div>
       {result.ok ? (
-        <ul className="mt-2 grid grid-cols-1">
+        <ul className="grid grid-cols-1 rounded-lg border border-hairline bg-canvas p-1.5">
           {result.value.items.map((echo) => (
             <li key={echo.id} className="min-w-0">
               <EchoRow echo={echo} monogram />
@@ -144,11 +141,14 @@ export async function RecentSection({ data }: { data: Promise<Settled<EchoListDt
 /** Placeholder rows for a panel list; three suggest the list without overflowing the screen. */
 function SkeletonRows() {
   return (
-    <ul aria-hidden className="mt-4 grid grid-cols-1">
+    <ul aria-hidden className="grid grid-cols-1 rounded-lg border border-hairline bg-canvas p-1.5">
       {[0, 1, 2].map((row) => (
-        <li key={row} className={cn("py-4", row > 0 && "border-t border-hairline-soft")}>
-          <Skeleton className="h-4 w-10/12" />
-          <Skeleton className="mt-2 h-3 w-4/12" />
+        <li key={row} className="flex gap-3.5 p-3">
+          <div className="h-10 w-10 shrink-0 rounded-md bg-surface-strong" />
+          <div className="flex-1">
+            <Skeleton className="h-4 w-10/12" />
+            <Skeleton className="mt-2 h-3 w-4/12" />
+          </div>
         </li>
       ))}
     </ul>
@@ -157,10 +157,7 @@ function SkeletonRows() {
 
 export function RecentSkeleton({ className }: { className?: string }) {
   return (
-    <div
-      aria-hidden
-      className={cn("rounded-lg border border-hairline-soft bg-canvas p-6", className)}
-    >
+    <div aria-hidden className={cn("flex flex-col gap-3.5", className)}>
       <Skeleton className="h-5 w-36" />
       <SkeletonRows />
     </div>
@@ -177,7 +174,10 @@ export async function RevisitsDueSection({
   const result = await data;
   if (result.ok && result.value.length === 0) return null;
   return (
-    <section aria-labelledby="revisits-heading" className="rounded-lg bg-tint-ochre p-6">
+    <section
+      aria-labelledby="revisits-heading"
+      className="flex flex-col gap-3.5 rounded-lg bg-tint-ochre p-5 tablet:p-6"
+    >
       <PanelHeader
         id="revisits-heading"
         title="Revisits due"
@@ -190,16 +190,12 @@ export async function RevisitsDueSection({
           </Link>
         }
       />
-      <p className="mt-3 text-body-sm text-muted">You asked to see these again around now.</p>
+      <p className="text-body-sm text-body">You asked to see these again around now.</p>
       {result.ok ? (
-        <ul className="mt-2 grid grid-cols-1">
+        <ul className="grid grid-cols-1 gap-3">
           {result.value.map((revisit) => (
             <li key={revisit.id} className="min-w-0">
-              <EchoRow
-                echo={revisit.echo}
-                surface="tint"
-                action={<MarkReflectedButton revisitId={revisit.id} />}
-              />
+              <DueRevisit revisit={revisit} />
             </li>
           ))}
         </ul>
@@ -218,22 +214,23 @@ export async function FromThePastSection({
   const result = await data;
   if (result.ok && !result.value) return null;
   return (
-    <section aria-labelledby="past-heading" className="rounded-lg bg-tint-heather p-6">
+    <section
+      aria-labelledby="past-heading"
+      className="flex flex-col gap-3 rounded-lg bg-tint-heather p-5 tablet:p-6"
+    >
       <PanelHeader
         id="past-heading"
         title="From the past"
         icon={ClockIcon}
         iconClass="text-mark-heather"
+        link={
+          result.ok && result.value ? (
+            <span className="shrink-0 text-caption-sm text-body">{result.value.label}</span>
+          ) : undefined
+        }
       />
       {result.ok && result.value ? (
-        <>
-          <p className="mt-3 text-body-sm text-muted">
-            You saved this {result.value.label} this week.
-          </p>
-          <div className="mt-2">
-            <EchoRow echo={result.value.echo} surface="tint" />
-          </div>
-        </>
+        <PastEcho echo={result.value.echo} label={result.value.label} />
       ) : (
         <SectionError what="this memory" retryHref="/app" />
       )}
@@ -243,7 +240,7 @@ export async function FromThePastSection({
 
 export function SidePanelSkeleton({ tint, className }: { tint: string; className?: string }) {
   return (
-    <div aria-hidden className={cn("rounded-lg p-6", tint, className)}>
+    <div aria-hidden className={cn("rounded-lg p-5 tablet:p-6", tint, className)}>
       <Skeleton className="h-5 w-32" />
       <Skeleton className="mt-4 h-4 w-full" />
       <Skeleton className="mt-2 h-4 w-8/12" />
@@ -251,78 +248,40 @@ export function SidePanelSkeleton({ tint, className }: { tint: string; className
   );
 }
 
-const STATS: Array<{
-  key: keyof LibraryCounts;
-  label: string;
-  href: string;
-  icon: ComponentType<SVGProps<SVGSVGElement>>;
-  chip: string;
-}> = [
-  {
-    key: "echoes",
-    label: "Echoes",
-    href: "/app/echoes",
-    icon: LibraryIcon,
-    chip: "bg-tint-moss text-mark-moss",
-  },
-  {
-    key: "favorites",
-    label: "Favorites",
-    href: "/app/favorites",
-    icon: HeartIcon,
-    chip: "bg-tint-heather text-mark-heather",
-  },
-  {
-    key: "collections",
-    label: "Collections",
-    href: "/app/collections",
-    icon: LayersIcon,
-    chip: "bg-tint-ochre text-mark-ochre",
-  },
-  {
-    key: "revisitsDue",
-    label: "Revisits due",
-    href: "/app/revisits",
-    icon: CalendarIcon,
-    chip: "bg-surface-strong text-ink",
-  },
+const STATS: Array<{ key: keyof LibraryCounts; label: string; href: string }> = [
+  { key: "echoes", label: "Echoes", href: "/app/echoes" },
+  { key: "favorites", label: "Favorites", href: "/app/favorites" },
+  { key: "collections", label: "Collections", href: "/app/collections" },
+  { key: "revisitsDue", label: "Revisits due", href: "/app/revisits" },
 ];
 
-/** "Your library": four plain counts, each linking to its view. No goals or streaks. */
+/** "Your library": four plain counts in one row, each linking to its view. No goals or streaks. */
 export function LibrarySection({ counts }: { counts: LibraryCounts }) {
   return (
-    <section
-      aria-labelledby="library-heading"
-      className="rounded-lg border border-hairline-soft bg-canvas p-6"
-    >
+    <section aria-labelledby="library-heading" className="flex min-w-0 flex-col gap-3.5">
       <h2 id="library-heading" className="text-display-sm text-ink">
         Your library
       </h2>
-      <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-6">
-        {STATS.map(({ key, label, href, icon: Icon, chip }) => (
-          <li key={key} className="flex min-w-0 items-center gap-2 tablet:gap-3">
-            {/* Smaller on phones so labels like "Collections" fit two-up at 320px. */}
-            <span
-              aria-hidden
-              className={cn(
-                "flex h-8 w-8 shrink-0 items-center justify-center rounded-full tablet:h-10 tablet:w-10",
-                chip,
-              )}
+      <ul className="grid grid-cols-2 overflow-hidden rounded-lg border border-hairline bg-canvas tablet:grid-cols-4">
+        {STATS.map(({ key, label, href }, index) => (
+          <li
+            key={key}
+            className={cn(
+              "min-w-0 border-hairline-soft",
+              index % 2 === 1 && "border-l",
+              index >= 2 && "border-t tablet:border-t-0",
+              index === 2 && "tablet:border-l",
+            )}
+          >
+            <Link
+              href={href}
+              className="flex h-full flex-col gap-0.5 px-5 py-4 transition-colors duration-fast ease-standard hover:bg-surface-soft tablet:px-6 tablet:py-5"
             >
-              <Icon className="h-4 w-4 tablet:h-5 tablet:w-5" />
-            </span>
-            <div className="min-w-0">
-              <span aria-hidden className="block truncate text-body-sm text-muted">
-                {label}
-              </span>
-              <Link
-                href={href}
-                aria-label={`${counts[key]} ${label.toLowerCase()}`}
-                className="block text-display-sm text-ink tabular-nums underline-offset-4 hover:underline"
-              >
+              <span className="text-display-lg text-ink tabular-nums">
                 {counts[key].toLocaleString("en-US")}
-              </Link>
-            </div>
+              </span>
+              <span className="truncate text-body-sm text-muted">{label}</span>
+            </Link>
           </li>
         ))}
       </ul>
@@ -330,11 +289,75 @@ export function LibrarySection({ counts }: { counts: LibraryCounts }) {
   );
 }
 
+/**
+ * One due Revisit in the home panel: the quote on a canvas slip, when it was due, and "Mark as
+ * reflected".
+ *
+ * @param props - The due Revisit with its Echo.
+ * @returns The slip.
+ */
+function DueRevisit({ revisit }: { revisit: RevisitWithEchoDto }) {
+  const credit = attribution(revisit.echo);
+  return (
+    <article className="relative flex flex-col gap-3 rounded-md bg-canvas p-4">
+      <Link
+        href={`/app/echoes/${revisit.echo.id}`}
+        className="block rounded-sm after:absolute after:inset-0 after:rounded-md"
+      >
+        <QuoteText size="compact" className="line-clamp-3">
+          {revisit.echo.quote}
+        </QuoteText>
+      </Link>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <span className="min-w-0 text-caption-sm text-muted">
+          {credit && <span className="[overflow-wrap:anywhere]">{credit} · </span>}
+          due {relativeDate(new Date(revisit.scheduledFor))}
+        </span>
+        <div className="relative z-10 w-full tablet:w-auto">
+          <MarkReflectedButton revisitId={revisit.id} className="w-full tablet:w-auto" />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+/**
+ * The From the past memory: the quote a size up, the author, and the old reflection.
+ *
+ * @param props - The Echo and how long ago it was saved.
+ * @returns The memory.
+ */
+function PastEcho({ echo, label }: { echo: EchoDto; label: string }) {
+  return (
+    <figure className="relative flex flex-col gap-2">
+      <Link
+        href={`/app/echoes/${echo.id}`}
+        aria-label={`Open the Echo you saved ${label}`}
+        className="block rounded-sm after:absolute after:inset-0 after:rounded-md"
+      >
+        <QuoteText size="memory" className="line-clamp-4">
+          {echo.quote}
+        </QuoteText>
+      </Link>
+      {(echo.author || echo.source) && (
+        <figcaption className="text-body-sm">
+          <Attribution echo={echo} />
+        </figcaption>
+      )}
+      {echo.reflection && (
+        <p className="line-clamp-3 text-body-sm user-text text-body">
+          You wrote: {echo.reflection}
+        </p>
+      )}
+    </figure>
+  );
+}
+
 export async function FavoritesSection({ data }: { data: Promise<Settled<EchoListDto>> }) {
   const result = await data;
   if (result.ok && result.value.items.length === 0) return null;
   return (
-    <section aria-labelledby="favorites-heading" className="min-w-0 desktop:col-span-3">
+    <section aria-labelledby="favorites-heading" className="flex min-w-0 flex-col gap-3.5">
       <div className="flex items-baseline justify-between gap-4">
         <h2 id="favorites-heading" className="text-display-sm text-ink">
           Favorites
@@ -344,7 +367,7 @@ export async function FavoritesSection({ data }: { data: Promise<Settled<EchoLis
         </Link>
       </div>
       {result.ok ? (
-        <ul className="mt-6 grid grid-cols-1 items-start gap-4 tablet:grid-cols-2 desktop:grid-cols-3">
+        <ul className="grid grid-cols-1 items-start gap-4 tablet:grid-cols-2 desktop:grid-cols-3">
           {result.value.items.map((echo) => (
             <li key={echo.id} className="min-w-0">
               <QuoteCard echo={echo} showReflection showTags />

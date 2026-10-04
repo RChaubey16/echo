@@ -1,8 +1,7 @@
 # Echo components
 
-> **Inkwell migration in progress.** Tokens (PR 1), primitives and the shell (PR 2) are on
-> Inkwell. Echo components and screens move in PR 3; until then their entries below describe the
-> code as built. When this file and the export's
+> Everything below is on Inkwell, as built in PRs 1–3. The export's component sheet and screens
+> (`docs/design/claude-design/export/`) are the visual reference. When this file and the export's
 > component sheet (`docs/design/claude-design/export/Echo Design System.dc.html`) differ, the
 > export is the target, and `docs/design/claude-design/implementation-plan.md` lists the
 > structural changes.
@@ -179,129 +178,151 @@ All variants share `relative inline-flex items-center justify-center gap-2 round
 
 ### QuoteText: the one place quote typography is defined
 
-Quotes are set in EB Garamond (`font-quote`) with the DESIGN.md `quote-*` styles. Keep them in this single component, so the classes aren't repeated across screens and the quote typeface can change in one place.
+Quotes are set in EB Garamond (`font-quote`). Keep the sizes in this single component, so the classes aren't repeated across screens.
 
-| `size` | Classes | Where |
+| `size` | Mobile → tablet → desktop | Where |
 |---|---|---|
-| `hero` | `font-quote text-quote-card tablet:text-quote-hero` | Today's Echo, Echo detail |
-| `card` | `font-quote text-quote-card` | QuoteCard |
-| `compact` | `font-quote text-quote-compact` | EchoRow, compact cards, pickers, search rows |
+| `today` | 26 → 38 → 44 | Today's Echo only |
+| `hero` | 26 → 38 | Echo detail |
+| `memory` | 26 | From the past |
+| `card` | 21 → 23 | QuoteCard, search results, due Revisits |
+| `compact` | 19 | EchoRow, upcoming Revisits, pickers |
 
-All sizes use `whitespace-pre-wrap [overflow-wrap:anywhere] text-ink text-pretty`. Render a `<blockquote>`, with attribution in a `<figcaption>` inside a `<figure>`.
+- All sizes add `user-text text-pretty text-ink`.
+- Render a `<blockquote>`, with the attribution in a `<figcaption>` inside a `<figure>`.
+- `Attribution` renders the author in weight 600, then " · " and the source. `attribution()` returns the plain "Author, Source" string, for meta lines and titles.
 
-### QuoteCard / EchoCard (DESIGN.md `property-card` treatment, without the photo)
+### QuoteCard
 
-Built on Card, in this order:
+Built on an interactive Card (`flex flex-col gap-3.5`, border darkens on hover), in this order:
 
-1. **Top-right:** a FavoriteButton (`absolute right-4 top-4 z-10`).
-2. **QuoteText `card`,** clamped with `line-clamp-6` (`line-clamp-3` when `compact`). Leave room on the right (`pr-8`) so the text clears the heart.
-3. **Attribution:** `— Author, Source` in `text-body-sm text-muted`, `mt-3`. If both are missing, leave the line out entirely. Never write "Unknown".
-4. **Reflection** (`showReflection`): `mt-4 border-t border-hairline-soft pt-4 text-body-sm text-body line-clamp-3`, prefixed with the visually hidden text "Your reflection:".
-5. **Tags** (`showTags`): a row of chips at `mt-4 flex flex-wrap gap-1`, showing at most 4 with a "+N" overflow chip.
-6. **Footer:** "Saved 11 months ago" in `text-body-sm text-muted` (`showSavedDate`), with a `<time dateTime>` element.
+1. **QuoteText `card`**, clamped with `line-clamp-6` (`line-clamp-3` when `compact`).
+2. **Attribution** in `text-body-sm`. Leave it out when both fields are missing; never write "Unknown".
+3. **Reflection** (`showReflection`): `border-l-2 border-hairline pl-3 text-body-sm text-body line-clamp-3`, prefixed with the visually hidden text "Your reflection:".
+4. **Tags** (`showTags`): small chips (`ChipLink size="sm"`), at most 4, then a "+N" chip.
+5. **Footer row:** `border-t border-hairline-soft pt-3 text-caption-sm text-muted`.
+   - Left: the first collection (accent dot and name), or else the saved date.
+   - Right: an optional action (e.g. "Remove" on a collection page), then the heart.
 
-- Compact variant: `p-4`, with no reflection and no tags.
-- The whole card opens `/app/echoes/:id` through the stretched link on the quote.
-- The heart and the tag chips stay independently clickable.
+Other behavior:
+- The quote's stretched link opens `/app/echoes/:id`. The heart, chips and action sit above it (`relative z-10`).
+- `highlightQuery` marks the query's words in the quote and reflection (see Search).
+- Lists of QuoteCards use the masonry: `MASONRY` (`columns-1 tablet:columns-2 desktop:columns-3 gap-x-4`) on the `<ul>`, and `MASONRY_ITEM` (`mb-4 break-inside-avoid`) on each `<li>`. The visual order runs down each column; the DOM order stays sorted.
 
-### FavoriteButton (DESIGN.md heart save state)
+### FavoriteButton
 
-- A 24px heart inside a 44px hit area.
-- **Saved:** filled `text-primary`, the favorite-on state. **Unsaved:** a `text-muted` outline, turning `hover:text-ink`.
-- Use `aria-pressed`, with the label "Add to favorites" or "Remove from favorites".
-- **Optimistic:** flip the state immediately and play `animate-heart-pop` (only when it becomes saved). If the request fails, revert and show a toast: "Couldn't update favorites. Try again."
+- A 20px heart.
+- **Variants:**
+  - `icon`: a 44px circle with a `surface-strong` hover (cards, rows, the detail toolbar).
+  - `filled`: a 48px `surface-strong` disc (Today's Echo).
+  - `labelled`: heart plus text.
+- **States:** saved is filled `text-primary`; unsaved is a `text-muted` outline turning `hover:text-ink`.
+- `aria-pressed`, with the label "Add to favorites" or "Remove from favorites".
+- **Optimistic:** it flips at once and pops (`animate-heart-pop`, only when it becomes saved). On failure it reverts and shows a toast.
 
-### AddEchoButton (DESIGN.md `search-orb` treatment)
+### TodaysEcho: the one bold moment
 
-- A 48px circle, `rounded-full bg-primary text-on-primary hover:bg-primary-active active:scale-95`, with a plus icon and `aria-label="Add Echo"`.
-- It sits in the desktop header (left of the avatar) and in the center of the mobile tab bar.
-- It is Echo's most frequent primary action, so it gets the orb. Keyboard shortcut: `n`, ignored while typing in a field.
+- **Panel:** `rounded-lg border border-hairline bg-canvas`, with padding `p-6`, `tablet:p-10` and `desktop:p-14`.
+- **Desktop layout:** a grid of `minmax(0,1fr) 17.5rem`.
+  - Left column: the heading ("Today's Echo" in 600 ink, plus "Something you once wanted to remember." in muted), the quote figure, then the actions.
+  - Right column: "You wrote" as a margin note (`bg-surface-soft rounded-md p-5`, with a `text-label uppercase` kicker).
+  - Smaller screens stack it all, with the note under the quote.
+- **Quote figure:** QuoteText `today`, the attribution, then the context line ("From Courage · saved 2 years ago", with the accent dot, or "From your library · …").
+- **Actions:**
+  - **Echo me something** is the screen's only filled button.
+  - **Open** is secondary.
+  - The heart is the `filled` variant.
+  - On phones, Echo me something is full width, with Open and the heart on the next row.
+- **The swap:**
+  - Only the quote block and the note re-key and rise in; the buttons stay mounted, so focus stays put.
+  - The grid keeps its height during the swap.
+  - A polite `role="status"` region announces the new Echo.
 
-### SearchField (DESIGN.md `search-bar-pill`, a single segment)
+### CollectionCard
 
-- `h-12 desktop:h-16 rounded-full border border-hairline bg-canvas shadow-float pl-6 pr-2`, with the input `text-body-md`.
-- A 40/48px orb button at the end: `bg-primary`, with a search icon and `aria-label="Search"`.
-- It lives inside a `role="search"` landmark. Pressing `/` focuses it, and Esc clears and blurs it.
-- **Mobile:** shown in a collapsed form, as a tappable pill or icon that opens the full search page.
+- **Card:** an interactive Card with `border-t-4` in the slot's mark (`border-t-mark-*`, or `border-t-hairline` for neutral), at `min-h-45`.
+- **Contents:** the name beside a 10px AccentDot, the description (`text-body-md text-body`, 3 lines), and the count at the bottom (`mt-auto text-body-sm text-muted`).
+- The stretched link opens the collection.
 
-### EchoForm (DESIGN.md `text-input` family)
+### Collection accents in code
 
-- **Quote:** a Textarea with `autoFocus`, using QuoteText `card` styling inside the input so that what you type looks like a saved Echo. Its label is "Quote". Required.
-- **"More details"** is a disclosure button (`aria-expanded`). It is collapsed on create and expanded on edit, and holds author, source, reflection, mood, tags, collections and revisit.
-- **Actions:** Save (primary) and Cancel (secondary). On mobile they sit in a sticky bottom bar (`sticky bottom-0 bg-canvas border-t border-hairline p-4` plus safe-area padding).
-- `Cmd/Ctrl+Enter` submits. Saving shows "Saving…", then navigates to the new Echo's detail page.
-- Errors show inline per field. If the server rejects the form, show a summary above it with links to the fields, then move focus to the summary.
+`accent-dot.tsx` holds the slot maps:
 
-### TodaysEcho (DESIGN.md `rating-display-card`, Echo's "single loud moment")
+- `AccentDot`, with `size` "sm" (8px) or "md" (10px). The neutral slot is a ring.
+- `ACCENT_LABEL` (Moss, Ochre, Heather, Neutral).
+- `ACCENT_TINT` (the `bg-tint-*` panel class).
 
-- No card chrome: just generous space, `py-12 tablet:py-16`, with a centered or left-aligned column at `max-w-3xl`.
-- It contains:
-  - an eyebrow, "Today's Echo", in `text-caption text-muted`;
-  - QuoteText `hero`;
-  - the attribution;
-  - "Saved 11 months ago";
-  - the old reflection in `text-body-md text-body` with the label "You wrote:".
-- Actions: **Echo me something** (`pill`) and a tertiary "Open".
-- Swapping to a new Echo uses the cross-fade described in `motion.md`. The container keeps its minimum height while it swaps, so the page doesn't jump.
-- Under the quote, a context line names where it came from: "From Courage · saved 2 years ago", with the collection's accent dot. Without a collection it reads "From your library · saved …".
-- **Mobile action row:** Echo me something is full width; Open Echo and the heart share the next row, spaced apart.
+`collection-card.tsx` has the top-bar map, and `echo-row.tsx` the monogram map.
 
-### CollectionCard (DESIGN.md `host-card` treatment)
+### TagInput, CollectionPicker, RevisitPicker
 
-Built on Card (`p-6`):
-- the name in `text-title-md text-ink`;
-- the count ("24 Echoes") in `text-body-sm text-muted`, using `tabular-nums`;
-- the description clamped to 2 lines in `text-body-sm text-body`.
-
-The stretched link opens the collection.
-
-### MetaList (DESIGN.md `amenity-row`)
-
-Used on the Echo detail page for Author, Source, Saved, Collections and Revisit. It's a `<dl>` with rows `py-3 grid grid-cols-[8rem_1fr] gap-4 text-body-md`. Labels (`<dt>`) are `text-muted`, values (`<dd>`) are `text-ink`. Groups are separated by `border-t border-hairline`.
-
-### TagInput, CollectionPicker
-
-- **TagInput:** an ARIA combobox (`role="combobox"`, `aria-expanded`, `aria-controls`, `aria-activedescendant`). Chips sit inline before the input. Enter or comma creates a tag, and Backspace on an empty input selects the last chip, then removes it. Suggestions appear in the Menu styling.
-- **CollectionPicker:** a Popover holding a checkbox list plus a "New collection" row at the bottom.
-
-### RevisitPicker (DESIGN.md `date-picker-day*`)
-
-- **Presets** as chips: "In 1 month", "In 6 months", "In 1 year", "Pick a date".
-- **Calendar cells:** 40px `rounded-full text-body-sm tabular-nums`. The selected day is `bg-ink text-canvas`. Today is `ring-1 ring-hairline`. Past days are disabled, in `text-muted-soft line-through`.
-- The calendar is a grid (`role="grid"`) navigated with the arrow keys, and each cell's label is the full date ("Thursday, April 1, 2027").
-- Once a date is chosen, show the result as text: "Revisit on Apr 1, 2027" plus a "Change" tertiary button.
+- **TagInput:** an ARIA combobox inside a 52px `CONTROL`-style box (`min-h-13 px-2 py-1.5`), with the same 2px ink focus border plus the primary ring.
+  - Chips sit inline before the input.
+  - Enter or comma creates a tag. Backspace on an empty input arms the last chip, then removes it.
+  - Suggestions use the menu styling (`p-1.5`, 44px rounded rows).
+- **CollectionPicker:** a 52px trigger that opens a popover checklist.
+  - Rows are 44px with `surface-strong` hover and a primary-accent checkbox.
+  - "New collection" is the last row, in `text-primary`.
+- **RevisitPicker:**
+  - **Presets:** bordered 44px boxes ("In 1 month", "In 6 months", "In 1 year", "Pick a date"). "Pick a date" open is `border-2 border-ink bg-surface-strong` with a check.
+  - **Calendar:** 40px `rounded-md` cells. The selected day is `bg-primary text-on-primary`; past days are disabled.
+  - **Once chosen:** "Revisit on **Apr 1, 2027**" with an ochre calendar icon, plus tertiary **Change** and **Cancel revisit**.
 
 ### EchoRow (dense lists inside panels)
 
-- `relative flex gap-4 py-4 -mx-3 px-3 rounded-md`, with a hover fill: `hover:bg-surface-soft` on white panels, `hover:bg-canvas/60` on tinted ones.
-- Optional 40px **monogram**: the author's initial (or a quote mark) on the Echo's collection tint (`bg-tint-*` with matching text). It is decorative, so `aria-hidden`.
-- The quote uses QuoteText `compact`, clamped to 2 lines. Below it, a `text-body-sm text-muted` meta line: attribution `·` saved date, joined by a middle dot.
-- A FavoriteButton on the right. An optional action ("Mark as reflected") sits under the meta line.
-- The whole row opens the Echo (stretched link). Its children stay independently clickable.
+- **Row:** `relative flex gap-3.5 rounded-md p-3`, inside a `rounded-lg border bg-canvas p-1.5` list, with `hover:bg-surface-strong` (or `hover:bg-canvas/60` on tints).
+- **Monogram:** an optional 40px `rounded-md` square, decorative, holding:
+  - the author's initial in 15/600, on the first collection's tint;
+  - or, without an author, a quote mark on `tint-neutral`.
+- **Contents:** the quote in QuoteText `compact` (2 lines), then a `text-caption-sm text-muted` meta line ("Author, Source · Saved 3 days ago"), then the heart.
 
-### QuickCapture dialog (DESIGN.md `quick-capture-dialog`)
+### QuickCapture dialog
 
-Add Echo opens a dialog instead of a page, so saving takes seconds. `n` opens it from anywhere.
+- Native `<dialog>`, `max-w-lg`; a bottom sheet below 744px. `n` opens it from anywhere.
+- **Quote:** autofocused and typed in QuoteText `card`. "Only the words are needed." sits under it.
+- **"More details" / "Fewer details":** a chevron disclosure holding:
+  - Author | Source in two columns;
+  - Reflection;
+  - Mood | Tags (1fr / 2fr);
+  - Collections.
+- **Footer:** a top hairline, then tertiary **Cancel** and primary **Save Echo**. Save is disabled until the quote has words.
+- `Cmd/Ctrl+Enter` saves; closing with a draft asks "Discard this quote?" inline.
 
-- A native `<dialog>` with `showModal()`, which traps focus and makes the page inert. `rounded-lg bg-canvas p-6 shadow-float w-full max-w-lg`; a bottom sheet below 744px.
-- **Fields:** Quote (Textarea, autofocused, the only required field, typed text shown in QuoteText `card`). A "More details" disclosure holds Author, Source, Reflection and Collection.
-- **Actions:** Save Echo (primary) and Cancel (secondary). `Cmd/Ctrl+Enter` saves, and Esc cancels.
-- **Validation:** an empty quote shows the inline error "Add the quote you want to save." under the field and moves focus to it.
-- **Saving:** the button shows "Saving…" and is disabled, then the dialog closes, the toast "Echo saved" appears, and the new Echo shows up at the top of Recently added. Focus returns to the control that opened the dialog.
-- **Closing with typed text:** Cancel asks "Discard this quote?" inline (Discard / Keep editing), so a draft is never lost silently.
-- "Open full form" links to `/app/echoes/new` for the rare long entry.
+### Search results
+
+- **SearchField:** a visible label ("Search your library"), and a 52/60px field with a leading search icon (a spinner while pending) and a 44px clear button. `/` focuses it.
+- **Results:** one `rounded-lg border bg-canvas` list with hairline dividers. Each row shows:
+  - the quote (QuoteText `card`, 4 lines);
+  - the attribution;
+  - a matching reflection under a "You wrote" kicker;
+  - "In {collection}";
+  - the heart.
+- **Highlighting:** `highlight(text, query)` (`src/lib/highlight.tsx`) wraps each query word in a `<mark>` (`bg-tint-ochre text-ink` plus an ochre underline, so it isn't colour alone). It never builds HTML.
+
+### Revisits
+
+- **Due now:** cards with a 4px ochre top bar, holding:
+  - "Due {date}" with an ochre calendar icon;
+  - the quote (QuoteText `card`) and attribution;
+  - a footer with **Mark as reflected** (secondary, 48px) and a tertiary **Open**.
+- **Upcoming:** one bordered list. Each row shows the date (600) with "in 3 weeks" under it, the quote on one line, and **Change** / **Cancel** (`UpcomingRevisitActions`).
+  - Change opens a dialog with the RevisitPicker.
+  - Cancel removes the Revisit at once.
 
 ## Screen recipes
 
 | Screen | Structure |
 |---|---|
-| `/app` Home (dashboard) | A greeting header ("Good evening" in `text-display-lg`, plus one quiet line such as "2 Echoes are due for a revisit."). Then a 3-column grid at desktop. Main column (span 2): TodaysEcho in a `bg-tint-moss` panel, then Recently added (≤5 EchoRows with monograms) in a white panel. Side column: Revisits due (`bg-tint-ochre`), From the past (`bg-tint-heather`), then Your library (four counts with icon chips). Full width below: Favorites (≤3 QuoteCards at content height, `items-start`). The page is finite, with no "load more". |
-| `/app/echoes` Library | Page title `text-display-lg`, a sort Select and filter chips in one row (wrapping on mobile), the QuoteCard grid, and pagination (Previous/Next with "Page 2 of 7"), not infinite scroll. |
-| `/app/echoes/:id` Detail | `max-w-3xl`: a back link, QuoteText `hero` with the full quote, the attribution, the reflection block, tags, MetaList, and an action row (Favorite, Edit, Revisit, Delete). On mobile, the action row becomes IconButtons with labels in a sticky bottom bar. |
+| `/app` Home | The greeting ("Good evening, Ana" in `text-display-lg`, plus one quiet line). Below it: TodaysEcho at full width; then Recently added (≤5 EchoRows) beside the side column (Revisits due on `tint-ochre`, From the past on `tint-heather`), in a `7fr / 5fr` grid; then Your library (four counts in one bordered row); then Favorites (≤3 QuoteCards). Finite, with no "load more". The first run replaces it all with a centered welcome card. |
+| `/app/echoes` Library | The title and count, the sort Select, a tag strip ("All" plus the most-used tags with counts; three on phones, then "More tags"), the QuoteCard masonry, and numbered pagination. |
+| `/app/echoes/:id` Detail | A toolbar row (back to Library; heart, Revisit, Add to collection, Edit, Delete; icons only on phones). Then a 760px reading column: QuoteText `hero`, the attribution after a short rule, the reflection card, and a `dl` of Tags, Collections, Mood, Saved and Revisit. |
 | `/app/echoes/new`, `/edit` | `max-w-3xl` EchoForm. |
-| `/app/collections` | Title, a "+ New collection" secondary button, and the CollectionCard grid. |
-| `/app/search` | SearchField at the top of the page, the result count in `text-body-sm text-muted` (an `aria-live` region), and QuoteCards with `showReflection`. |
-| `/app/settings` | `max-w-3xl` sections, each with a `text-display-sm` heading and `py-8` spacing, divided by hairlines. |
+| `/app/collections` | The title, a "New collection" secondary button, and the CollectionCard grid. The dialog has Name, Description and a Color radio group. |
+| `/app/collections/:id` | A back link, then a header panel on the collection's tint (name, description, count, Add Echoes and the More menu), then the QuoteCard masonry. |
+| `/app/revisits` | Due now cards, then the Upcoming list. |
+| `/app/search` | The SearchField, the result count (`role="status"`), and the results list. With no results: a neutral search disc, "Nothing matches "{q}" yet.", and "Add an Echo". |
+| `/app/settings` | On desktop, a sticky section list beside a 680px column of section cards (Account, Appearance, Shortcuts, Privacy, Notifications, Data). |
+| `/`, `/login` | Landing: the serif tagline (`quote-display`), Continue with Google, an example Today's Echo, four feature columns under ink rules, and a Private by design panel on `tint-moss`. Sign in: one centered card with the wordmark and Continue with Google. |
 
 ## Empty, loading and error states
 
@@ -310,9 +331,9 @@ Add Echo opens a dialog instead of a page, so saving takes seconds. `n` opens it
 - **First run and route-level Error:** `flex flex-1 items-center justify-center py-12`, so the card sits in the exact center. The page greeting is hidden in these states (it would describe data that isn't there), so the state's title becomes the `h1`.
 - Section-level errors and empty sections stay inline in their panel. Only whole-page states fill the screen.
 
-**Empty-state layout:** `py-16 text-center max-w-sm mx-auto`, containing:
-- an optional 48px line icon in `text-muted`;
-- a title in `text-title-md text-ink`;
+**Empty-state layout** (`EmptyState`): a left-aligned card, `max-w-xl p-6 tablet:p-8`, containing:
+- an optional icon on a 44px `tint-moss` disc;
+- a title in `text-display-sm text-ink`;
 - a line of body text in `text-body-md text-body`;
 - one call to action.
 
@@ -325,9 +346,9 @@ Copy, taken verbatim from the spec where it exists:
 | Collections | No collections yet. | Collections help you gather Echoes around ideas, moments, and themes. | + Create a collection (secondary) |
 | Collection detail | This collection is empty. | Add Echoes from your library to start gathering them here. | Add Echoes (secondary) |
 | Library, filters match nothing | No Echoes match these filters. | Try removing a filter, or clear them all to see your whole library. | Clear filters (secondary) |
-| Search, no results | No Echoes match "{q}". | Try a different word, an author, or a tag. | — |
+| Search, no results | Nothing matches "{q}" yet. | Search looks through quotes, authors, sources, your reflections, tags and collections. Try fewer words, or save it if it's something you want to keep. | Add an Echo (secondary) |
 | Revisits | Nothing scheduled. | Pick an Echo and choose a day to see it again. | — |
-| First run (`/app`, 0 Echoes) | Welcome to Echo. | Save the words you don't want to forget. | Add your first Echo (primary) |
+| First run (`/app`, 0 Echoes) | Welcome to Echo, {first name} | Your library is waiting. Save the first words that stayed with you: a line from a book, something a friend said, a lyric you can't shake. | Add your first Echo (primary), with "Only the words are needed. Everything else can wait." |
 
 **Loading skeletons** match the content's shape:
 - **QuoteCard skeleton:** three bars at 100%, 85% and 60% width (`h-4`, `gap-2`), then a 30%-width meta bar `mt-4`, all inside the same Card padding.

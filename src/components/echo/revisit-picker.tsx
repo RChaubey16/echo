@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
-import { ArrowLeftIcon, ArrowRightIcon, CalendarIcon } from "@/components/ui/icons";
-import { chipClasses } from "@/components/ui/chip";
+import { buttonClasses } from "@/components/ui/button-classes";
+import { CalendarIcon, CheckIcon, ChevronLeftIcon, ChevronRightIcon } from "@/components/ui/icons";
 import { cn } from "@/lib/cn";
 import {
   REVISIT_PRESETS,
@@ -37,7 +37,7 @@ const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 /**
  * Chooses a day to see an Echo again: three presets, or a calendar for any day from tomorrow up to
- * ten years away. Once chosen, the date reads as text with Change and Remove.
+ * ten years away. Once chosen, the date reads as text with Change and Cancel revisit.
  */
 export function RevisitPicker({
   value,
@@ -79,14 +79,14 @@ export function RevisitPicker({
     >
       {!showChoices && value && (
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          <p className="inline-flex items-center gap-2 text-body-md text-ink">
-            <CalendarIcon aria-hidden className="h-5 w-5 shrink-0 text-muted" />
+          <p className="inline-flex items-center gap-2 text-body-md font-medium text-ink">
+            <CalendarIcon aria-hidden className="h-4.5 w-4.5 shrink-0 text-mark-ochre" />
             Revisit on{" "}
             <time dateTime={value} className="tabular-nums">
               {shortRevisitDate(value, timeZone)}
             </time>
           </p>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1">
             <button
               ref={changeRef}
               type="button"
@@ -95,7 +95,7 @@ export function RevisitPicker({
                 setEditing(true);
                 requestAnimationFrame(() => firstChipRef.current?.focus());
               }}
-              className="inline-flex h-11 items-center text-button-sm text-ink underline-offset-4 hover:underline disabled:cursor-not-allowed disabled:text-muted-soft"
+              className={buttonClasses("tertiary", "px-2.5")}
             >
               Change
             </button>
@@ -103,9 +103,9 @@ export function RevisitPicker({
               type="button"
               disabled={disabled}
               onClick={() => onChange(null)}
-              className="inline-flex h-11 items-center text-button-sm text-ink underline-offset-4 hover:underline disabled:cursor-not-allowed disabled:text-muted-soft"
+              className={buttonClasses("tertiary", "px-2.5 font-medium")}
             >
-              Remove
+              Cancel revisit
             </button>
           </div>
         </div>
@@ -120,7 +120,10 @@ export function RevisitPicker({
               type="button"
               disabled={disabled}
               onClick={() => choose(presetDay(preset.months, new Date()))}
-              className={chipClasses(false, "disabled:cursor-not-allowed disabled:text-muted-soft")}
+              className={cn(
+                "inline-flex h-11 items-center gap-1.5 rounded-md border px-3.5 text-body-md transition-colors duration-fast ease-standard disabled:cursor-not-allowed disabled:border-hairline disabled:text-muted-soft",
+                "border-border-input font-medium text-ink hover:border-ink hover:bg-surface-strong",
+              )}
             >
               {preset.label}
             </button>
@@ -130,12 +133,18 @@ export function RevisitPicker({
             disabled={disabled}
             aria-expanded={calendarOpen}
             onClick={() => setCalendarOpen((open) => !open)}
-            className={chipClasses(
-              calendarOpen,
-              "disabled:cursor-not-allowed disabled:text-muted-soft",
+            className={cn(
+              "inline-flex h-11 items-center gap-1.5 rounded-md border px-3.5 text-body-md transition-colors duration-fast ease-standard disabled:cursor-not-allowed disabled:border-hairline disabled:text-muted-soft",
+              calendarOpen
+                ? "border-2 border-ink bg-surface-strong px-3.25 font-semibold text-ink"
+                : "border-border-input font-medium text-ink hover:border-ink hover:bg-surface-strong",
             )}
           >
-            <CalendarIcon aria-hidden className="h-4 w-4" />
+            {calendarOpen ? (
+              <CheckIcon aria-hidden className="h-4 w-4" />
+            ) : (
+              <CalendarIcon aria-hidden className="h-4 w-4" />
+            )}
             Pick a date
           </button>
           {editing && (
@@ -146,7 +155,7 @@ export function RevisitPicker({
                 setCalendarOpen(false);
                 requestAnimationFrame(() => changeRef.current?.focus());
               }}
-              className="inline-flex h-8 items-center px-1 text-button-sm text-ink underline-offset-4 hover:underline"
+              className={buttonClasses("tertiary", "px-2.5")}
             >
               Keep current date
             </button>
@@ -226,7 +235,7 @@ function RevisitCalendar({ selected, onSelect, disabled }: RevisitCalendarProps)
   const canGoBack = dayKey(new Date(year, month, 0)) >= min;
   const canGoForward = dayKey(new Date(year, month + 1, 1)) <= max;
   const navButton =
-    "flex h-11 w-11 items-center justify-center rounded-full text-ink transition-colors duration-fast ease-standard hover:bg-surface-soft disabled:cursor-not-allowed disabled:text-muted-soft disabled:hover:bg-transparent";
+    "flex h-11 w-11 items-center justify-center rounded-full text-ink transition-colors duration-fast ease-standard hover:bg-surface-strong disabled:cursor-not-allowed disabled:text-muted-soft disabled:hover:bg-transparent";
 
   return (
     <div className="w-full max-w-sm rounded-lg border border-hairline bg-canvas p-3 tablet:p-4">
@@ -238,7 +247,7 @@ function RevisitCalendar({ selected, onSelect, disabled }: RevisitCalendarProps)
           onClick={() => move(addMonths(focusedDate, -1))}
           className={navButton}
         >
-          <ArrowLeftIcon aria-hidden className="h-5 w-5" />
+          <ChevronLeftIcon aria-hidden className="h-5 w-5" />
         </button>
         <h3 id={titleId} aria-live="polite" className="text-title-md text-ink">
           {monthLabel}
@@ -250,7 +259,7 @@ function RevisitCalendar({ selected, onSelect, disabled }: RevisitCalendarProps)
           onClick={() => move(addMonths(focusedDate, 1))}
           className={navButton}
         >
-          <ArrowRightIcon aria-hidden className="h-5 w-5" />
+          <ChevronRightIcon aria-hidden className="h-5 w-5" />
         </button>
       </div>
       <table
@@ -299,10 +308,10 @@ function RevisitCalendar({ selected, onSelect, disabled }: RevisitCalendarProps)
                       })}
                       onClick={() => onSelect(key)}
                       className={cn(
-                        "mx-auto flex aspect-square w-full max-w-10 items-center justify-center rounded-full text-body-sm tabular-nums transition-colors duration-fast ease-standard",
+                        "mx-auto flex h-10 w-full max-w-11 items-center justify-center rounded-md text-body-sm tabular-nums transition-colors duration-fast ease-standard",
                         isSelected
-                          ? "bg-ink text-canvas"
-                          : "text-ink hover:bg-surface-soft disabled:hover:bg-transparent",
+                          ? "bg-primary font-semibold text-on-primary"
+                          : "text-ink hover:bg-surface-strong disabled:hover:bg-transparent",
                         key === today && !isSelected && "ring-1 ring-hairline",
                         out && "cursor-not-allowed text-muted-soft line-through",
                       )}

@@ -46,3 +46,20 @@ export function fullDate(date: Date): string {
 export function savedLabel(date: Date, now: Date = new Date()): string {
   return `Saved ${relativeDate(date, now)}`;
 }
+
+/**
+ * Describes how far away a future date is.
+ *
+ * @param date - The upcoming date.
+ * @param now - The current time.
+ * @returns Text such as "in 3 days", "in 2 weeks" or "in 5 months".
+ */
+export function inFromNow(date: Date, now: Date = new Date()): string {
+  const days = Math.max(0, Math.ceil((date.getTime() - now.getTime()) / DAY));
+  if (days <= 1) return "tomorrow";
+  if (days < 14) return `in ${days} days`;
+  if (days < 60) return `in ${Math.round(days / 7)} weeks`;
+  if (days < 365) return `in ${Math.round(days / 30.44)} months`;
+  const years = Math.round(days / 365.25);
+  return years === 1 ? "in 1 year" : `in ${years} years`;
+}

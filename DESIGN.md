@@ -95,7 +95,7 @@ rounded:
 
 spacing:
   base: 4px
-  steps: [2, 4, 8, 12, 16, 24, 32, 48, 64, 96]
+  steps: [2, 4, 8, 12, 16, 24, 28, 32, 40, 48, 56, 64, 80, 96]
   reading-column: 680px
   app-content: 1120px
   gutter: 32px
@@ -257,7 +257,10 @@ point size. Quote text and the quote textarea come only from `QuoteText` / `quot
   - `rounded-md` 6px: buttons, inputs.
   - `rounded-lg` 10px: panels, cards, dialogs, menus, the mobile sheet top.
   - `rounded-full`: icon buttons and dots only.
-- **Spacing** has a 4px base, with steps 2 · 4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 · 96.
+- **Spacing** has a 4px base, with steps 2 · 4 · 8 · 12 · 16 · 24 · 28 · 32 · 40 · 48 · 56 · 64 · 80 · 96.
+  - 28 is card and dialog padding, 40 the gap between Home's sections, 56 Today's Echo's padding,
+    and 80 the public pages' desktop gutter. 10, 14 and 18 (Tailwind 2.5, 3.5 and 4.5) are for fine
+    alignment inside components.
   - The reading column is 680px, and the app content area is 1120px.
   - Gutters are 32px, or 20px on mobile.
 - **Elevation** has one tier, `shadow-float`, warm-tinted, with a darker value in dark mode. Use

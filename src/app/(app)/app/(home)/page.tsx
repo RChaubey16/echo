@@ -3,8 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { AddEchoLink } from "@/components/echo/quick-capture";
 import { buttonClasses } from "@/components/ui/button-classes";
-import { EmptyState } from "@/components/ui/empty-state";
-import { QuoteMarksIcon } from "@/components/ui/icons";
+import { PlusIcon, QuoteMarksIcon } from "@/components/ui/icons";
 import { greetingFor, localHour } from "@/lib/daily";
 import { requireUserPage } from "@/server/auth";
 import { getFromThePast, getLibraryCounts, getTodaysEcho } from "@/server/services/discovery";
@@ -51,30 +50,47 @@ export default async function HomePage() {
   );
   // The counts decide between first run and the dashboard, and feed the greeting line.
   const counts = await getLibraryCounts(user.id, now);
+  const firstName = user.name?.trim().split(/\s+/)[0];
 
   if (counts.echoes === 0) {
     return (
-      <div className="flex flex-1 items-center justify-center py-12">
-        <EmptyState
-          headingLevel="h1"
-          icon={<QuoteMarksIcon className="h-5 w-5" />}
-          title="Welcome to Echo."
-          body="Save the words you don't want to forget."
-          action={
-            <AddEchoLink firstRun className={buttonClasses("primary")}>
+      <div className="flex flex-1 items-center justify-center py-6 tablet:py-12">
+        <section className="flex w-full max-w-xl flex-col items-start gap-5 rounded-lg border border-hairline bg-canvas p-7 tablet:p-14">
+          <span
+            aria-hidden
+            className="flex h-12 w-12 items-center justify-center rounded-full bg-tint-moss text-mark-moss"
+          >
+            <QuoteMarksIcon className="h-5 w-5" />
+          </span>
+          <h1 className="text-display-lg text-ink">
+            {firstName ? `Welcome to Echo, ${firstName}` : "Welcome to Echo."}
+          </h1>
+          <p className="text-body-md text-pretty text-body">
+            Your library is waiting. Save the first words that stayed with you: a line from a book,
+            something a friend said, a lyric you can&apos;t shake.
+          </p>
+          <div className="flex flex-col gap-3 pt-1">
+            <AddEchoLink firstRun className={buttonClasses("primary", "self-start")}>
+              <PlusIcon className="h-4.5 w-4.5" />
               Add your first Echo
             </AddEchoLink>
-          }
-        />
+            <p className="text-body-sm text-muted">
+              Only the words are needed. Everything else can wait.
+            </p>
+          </div>
+        </section>
       </div>
     );
   }
 
   return (
     <div className="flex flex-col pb-8">
-      <header className="pt-8 tablet:pt-12">
-        <h1 className="text-display-lg text-ink">{greetingFor(localHour(timeZone, now))}</h1>
-        <p className="mt-1 text-body-md text-body">
+      <header className="flex flex-col gap-1.5 pt-6 tablet:pt-12">
+        <h1 className="text-display-lg text-ink">
+          {greetingFor(localHour(timeZone, now))}
+          {firstName && `, ${firstName}`}
+        </h1>
+        <p className="text-body-md text-body">
           {counts.revisitsDue > 0 ? (
             <Link
               href="/app/revisits"
@@ -90,26 +106,26 @@ export default async function HomePage() {
         </p>
       </header>
 
-      <div className="mt-8 grid grid-cols-1 gap-8 desktop:grid-cols-3">
-        <div className="grid min-w-0 grid-cols-1 content-start gap-8 desktop:col-span-2">
-          <Suspense fallback={<TodaySkeleton />}>
-            <TodaySection data={today} />
-          </Suspense>
+      <div className="mt-7 flex flex-col gap-8 tablet:mt-10 tablet:gap-10">
+        <Suspense fallback={<TodaySkeleton />}>
+          <TodaySection data={today} />
+        </Suspense>
+        <div className="grid grid-cols-1 items-start gap-8 desktop:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
           <Suspense fallback={<RecentSkeleton />}>
             <RecentSection data={recent} />
           </Suspense>
-        </div>
-        <div className="grid min-w-0 grid-cols-1 content-start gap-8">
-          {counts.revisitsDue > 0 && (
-            <Suspense fallback={<SidePanelSkeleton tint="bg-tint-ochre" />}>
-              <RevisitsDueSection data={due} total={counts.revisitsDue} />
+          <div className="grid min-w-0 grid-cols-1 content-start gap-6">
+            {counts.revisitsDue > 0 && (
+              <Suspense fallback={<SidePanelSkeleton tint="bg-tint-ochre" />}>
+                <RevisitsDueSection data={due} total={counts.revisitsDue} />
+              </Suspense>
+            )}
+            <Suspense fallback={<SidePanelSkeleton tint="bg-tint-heather" />}>
+              <FromThePastSection data={past} />
             </Suspense>
-          )}
-          <Suspense fallback={<SidePanelSkeleton tint="bg-tint-heather" />}>
-            <FromThePastSection data={past} />
-          </Suspense>
-          <LibrarySection counts={counts} />
+          </div>
         </div>
+        <LibrarySection counts={counts} />
         {counts.favorites > 0 && (
           <Suspense fallback={null}>
             <FavoritesSection data={favorites} />

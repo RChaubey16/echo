@@ -103,7 +103,7 @@ export function CollectionChecklist({
                 <li key={collection.id} className="min-w-0">
                   <label
                     className={cn(
-                      "flex h-11 cursor-pointer items-center gap-3 px-4 text-body-md text-ink transition-colors duration-fast ease-standard hover:bg-surface-soft",
+                      "flex h-11 cursor-pointer items-center gap-3 rounded-md px-3 text-body-md text-ink transition-colors duration-fast ease-standard hover:bg-surface-strong",
                       busy?.has(collection.id) && "opacity-60",
                     )}
                   >
@@ -112,7 +112,7 @@ export function CollectionChecklist({
                       checked={checked}
                       disabled={busy?.has(collection.id)}
                       onChange={(event) => onToggle(collection, event.target.checked)}
-                      className="h-4 w-4 shrink-0 accent-ink"
+                      className="h-5 w-5 shrink-0 accent-primary"
                     />
                     <AccentDot accent={collection.accent} />
                     <span className="min-w-0 flex-1 truncate" title={collection.name}>
@@ -162,8 +162,8 @@ export function CollectionChecklist({
                 }}
                 placeholder="e.g. Morning pages"
                 className={cn(
-                  "h-10 min-w-0 flex-1 rounded-md border bg-canvas px-3 text-body-md text-ink placeholder:text-muted focus:border-ink focus:outline-1 focus:-outline-offset-2 focus:outline-ink",
-                  error ? "border-error" : "border-border-input",
+                  "h-11 min-w-0 flex-1 rounded-md border bg-canvas px-3 text-body-md text-ink placeholder:text-muted focus:border-ink focus:ring-1 focus:ring-ink focus:ring-inset",
+                  error ? "border-error ring-1 ring-error ring-inset" : "border-border-input",
                 )}
               />
               <Button size="sm" variant="secondary" loading={saving} onClick={() => void create()}>
@@ -185,9 +185,9 @@ export function CollectionChecklist({
             ref={newButtonRef}
             type="button"
             onClick={() => setCreating(true)}
-            className="flex h-11 w-full items-center gap-3 rounded-md px-2 text-left text-body-md text-ink transition-colors duration-fast ease-standard hover:bg-surface-soft"
+            className="flex h-11 w-full items-center gap-3 rounded-md px-2 text-left text-body-md font-medium text-primary transition-colors duration-fast ease-standard hover:bg-surface-strong"
           >
-            <PlusIcon className="h-4 w-4 shrink-0 text-muted" />
+            <PlusIcon className="h-4.5 w-4.5 shrink-0" />
             New collection
           </button>
         )}
