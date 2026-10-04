@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="src/app/icon.svg" alt="" width="72" height="72">
+
 # Echo
 
 **Words worth coming back to.**
