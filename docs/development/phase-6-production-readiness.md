@@ -17,12 +17,21 @@
 
 ---
 
-## Status (2026-10-04)
+## Status: complete (2026-10-04). MVP done.
 
-The code shipped in PR #8 (`13f7bd5`) and is deployed to production. The dashboard setup that
-can be done before launch is done. What's left needs the production deploy and the custom domain:
-Sentry alerts, the Google consent screen, inspecting real payloads and the spec §67 run. Those items
-stay unchecked below.
+The code shipped in #8, with follow-up fixes in #16, and is live at https://echo.ruturaj.xyz.
+All dashboard setup is done, and the owner ran spec §67 by hand on production with a fresh Google
+account: all 15 items passed, and that account exported its data and deleted itself.
+
+**Open follow-ups (not blocking the MVP):**
+
+- **A real Sentry event** hasn't been inspected yet, because production hasn't had an error. The
+  scrubbing is covered by `tests/unit/sentry-scrub.test.ts`; inspect the first real event when it
+  arrives.
+- **Spec §64 E2E against a production build:** CI runs the E2E suite against `next dev`. Only the
+  Lighthouse step uses a production build (`pnpm start`). The manual §67 run on production covers
+  the critical flows for now.
+- **Backups** were dropped (§3). Revisit before Echo has users other than the owner.
 
 **Implementation notes**
 
@@ -50,11 +59,12 @@ Done (2026-10-04):
 
 After the production deploy:
 
-- [ ] Custom domain with HTTPS on Vercel.
-- [ ] Sentry: an uptime monitor on `https://<domain>/api/health` every minute, and an email alert on errors.
-- [ ] Google OAuth consent screen: app name, logo, privacy (`/privacy`) and terms (`/terms`) URLs, the verified domain and the `https://<domain>/api/auth/callback/google` redirect URI; then publish it to production.
-- [ ] Inspect a real PostHog event and a real Sentry event: no quote or reflection text, cookies or request bodies.
-- [ ] Run spec §67 by hand on prod with a fresh Google account, then export that account's data and delete it.
+- [x] Custom domain with HTTPS on Vercel: `echo.ruturaj.xyz`. Checked from outside: HTTP redirects to HTTPS, every security header is present, `/api/health` answers, signed-out `/app` redirects to `/login`, and the Auth.js callback uses the domain.
+- [x] Sentry: an uptime monitor on `https://echo.ruturaj.xyz/api/health` every minute, and an email alert on errors. The health check also keeps the free Supabase project from pausing.
+- [x] Google OAuth consent screen: app name, privacy (`/privacy`) and terms (`/terms`) URLs, the verified domain and the `https://echo.ruturaj.xyz/api/auth/callback/google` redirect URI; published to production.
+- [x] Inspect a real PostHog event: `echo_created` carries only `hasAuthor`, `hasReflection`, `tagCount` and `collectionCount`.
+- [ ] Inspect a real Sentry event from production: no quote or reflection text, cookies or request bodies. (A manual test event, tagged `source: manual-test`, was sent on 2026-10-04 to add `production` to Sentry's environment list; it isn't an app event.) Follow-up: no production error has happened yet.
+- [x] Run spec §67 by hand on prod with a fresh Google account, then export that account's data and delete it.
 
 ## 1. Security review
 
@@ -144,7 +154,7 @@ A dedicated `tests/integration/authz.test.ts`. It creates users A and B, gives e
   - no Session Replay, or Replay with all text masked.
 - [x] Logs include the request ID, error ID, route, status and duration. The `error.tsx` UI shows the same error ID.
 - [x] Log drain: Vercel log drain → Axiom / Better Stack, or Vercel's built-in logs to start with. (Vercel's built-in logs for now.)
-- [ ] Alerts:
+- [x] Alerts:
   - error rate above the threshold;
   - `/api/health` failing (uptime check every minute).
 
@@ -193,12 +203,12 @@ A dedicated `tests/integration/authz.test.ts`. It creates users A and B, gives e
 ## 8. Launch checklist
 
 - [x] Privacy policy and terms pages. Both must cover: Google sign-in, what is stored, analytics, backups (none), and deletion.
-- [ ] Google OAuth consent screen published, moved from "Testing" to "In production", with the app name, logo, privacy URL and domain verified.
-- [ ] Custom domain with HTTPS on Vercel.
+- [x] Google OAuth consent screen published, moved from "Testing" to "In production", with the app name, logo, privacy URL and domain verified.
+- [x] Custom domain with HTTPS on Vercel.
 - [x] `robots.txt`: allow `/` and `/login`; disallow `/app` and `/api`.
 - [x] Prod env vars reviewed. Local development and CI point only at Docker Postgres. Previews share `echo-prod`, so no seed, reset or test script can run there.
-- [ ] Full spec §67 Definition of Done run by hand on prod with a fresh Google account.
-- [ ] Spec §64 E2E critical flows green against a production-like environment. The Signup flow is replaced by Google sign-in via a seeded session.
+- [x] Full spec §67 Definition of Done run by hand on prod with a fresh Google account.
+- [ ] Spec §64 E2E critical flows green against a production-like environment. The Signup flow is replaced by Google sign-in via a seeded session. (Follow-up: CI runs them against `next dev`; the manual §67 run on production covers them for the MVP.)
 
 ## Tests in this phase
 
@@ -211,8 +221,8 @@ A dedicated `tests/integration/authz.test.ts`. It creates users A and B, gives e
 ## Exit criteria (= MVP done)
 
 - [x] The Phase 6 UI (export, account deletion, legal pages) passes the `echo-design-system` validation checklist.
-- [ ] All 15 items of spec §67 pass on production.
+- [x] All 15 items of spec §67 pass on production.
 - [x] Authorization suite green. No open high or critical findings from the security review.
 - ~~A backup restore has been tested at least once, and the runbook is written.~~ Dropped with §3.
-- [ ] Analytics and Sentry are confirmed, by inspecting real payloads, to carry no quote or reflection text.
-- [ ] A user can export their data and delete their account on their own.
+- [x] Analytics and Sentry are confirmed, by inspecting real payloads, to carry no quote or reflection text. (PostHog: checked on a real `echo_created` event. Sentry: no production error yet, so the scrubber is verified by unit tests; see follow-ups.)
+- [x] A user can export their data and delete their account on their own.

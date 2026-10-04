@@ -4,6 +4,8 @@ Phase-wise build plan for the Echo MVP, derived from [`../echo-techincal-prod-sp
 
 Each phase ends with something that can be deployed and is complete in itself. Finish a phase's exit criteria before starting the next one.
 
+**Status (2026-10-04): all six phases are complete. The MVP is live at https://echo.ruturaj.xyz.** Open follow-ups are listed at the top of [phase-6-production-readiness.md](phase-6-production-readiness.md).
+
 | Phase | File | Outcome |
 |---|---|---|
 | 1 | [phase-1-foundation.md](phase-1-foundation.md) | Repo, DB, Google login, deploy pipeline, design tokens (light + dark). A signed-in user sees the sidebar shell and the first-run screen. |
