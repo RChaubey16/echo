@@ -57,7 +57,7 @@ Spend a minute getting oriented. It saves rework later.
 Decide in this order and stop at the first answer that fits:
 
 1. **Reuse.** An existing component already does it, maybe with different props. Use it as is.
-2. **Extend.** An existing component does about 80% of it. Add a variant or prop, such as `<Button variant="pill">` or `<QuoteCard compact>`. Keep the API small and named after intent (`variant="danger"`, not `red`). Extending is the default when the need is a visual variation of something that already exists.
+2. **Extend.** An existing component does about 80% of it. Add a variant or prop, such as `<FavoriteButton variant="filled">` or `<QuoteCard compact>`. Keep the API small and named after intent (`variant="danger"`, not `red`). Extending is the default when the need is a visual variation of something that already exists.
 3. **Create.** Only when no component fits by role. Put generic primitives (no Echo domain knowledge) in `src/components/ui/`, and anything that knows about Echoes, tags, collections or revisits in `src/components/echo/`. A new component must:
    - be built only from tokens (no raw hex, no arbitrary px values that aren't on the scale);
    - implement every state in the state matrix in `references/components.md`;

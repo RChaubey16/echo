@@ -10,7 +10,7 @@
     {
       "id": 2,
       "prompt": "the home page needs the Today's Echo section with an 'echo me something' button that swaps in a random quote. make it feel nice but not over the top",
-      "expected_output": "A TodaysEcho section as the screen's single loud moment. The swap is a cross-fade using motion tokens, keeps the container's minimum height, announces through aria-live, has a reduced-motion fallback and a pill button. It adds no feed patterns and no animation libraries.",
+      "expected_output": "A TodaysEcho section as the screen's single loud moment. The swap is a cross-fade using motion tokens, keeps the container's minimum height, announces through aria-live, has a reduced-motion fallback (a 150ms cross-fade) and Echo me something as the screen's only filled primary button. It adds no feed patterns and no animation libraries.",
       "files": []
     },
     {

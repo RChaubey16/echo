@@ -131,7 +131,7 @@ Tailwind's default `--spacing` is 4px, matching DESIGN.md's base unit.
 | 80 | `20` | the public pages' desktop gutter and section rhythm |
 | 96 | `24` | the largest section breaks |
 
-`2.5` (10), `3.5` (14), `4.5` (18) and `5` (20, the mobile gutter and button padding) are for fine
+`2.5` (10), `3.5` (14), `4.5` (18) and `5` (20, the public pages' mobile gutter and button padding) are for fine
 alignment inside components. Other steps (`9`, `11`, `18`, `22`, `28`) are flagged by
 `audit_ui.py`. Control heights the design specifies directly: buttons `h-12` (48), small buttons
 `h-10` (40) with a 44px hit area, inputs `h-13` (52), the search field `h-15` (60), the mobile tab

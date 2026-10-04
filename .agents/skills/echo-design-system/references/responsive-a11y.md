@@ -28,7 +28,7 @@ Tailwind's default `sm`, `md`, `lg` and `xl` prefixes are **reset and unavailabl
 - **Write the 320px layout first, unprefixed,** then layer `tablet:`, `desktop:` and `wide:` on top. Check 320px on every screen, because it is where layouts actually break.
 - **Reduce columns, never reflow rows into something new** (DESIGN.md › Collapsing Strategy).
 - **The mobile experience is designed, not compressed** (spec §45). Bottom navigation, sticky action bars, sheets instead of centered dialogs, and full-screen search are separate patterns, not squeezed desktop ones.
-- **Prevent horizontal scroll.** Any flex or grid child holding text gets `min-w-0`. Quotes get `[overflow-wrap:anywhere]`. Only tables and code may scroll sideways, each inside its own `overflow-x-auto` container.
+- **Prevent horizontal scroll.** Any flex or grid child holding text gets `min-w-0`. User text gets `user-text` (`pre-wrap` plus `overflow-wrap: anywhere`). Only tables and code may scroll sideways, each inside its own `overflow-x-auto` container.
 - **Use touch targets of at least 44×44px.** For visually smaller controls (32px icon circles, chips), extend the hit area with a pseudo-element or padding. WCAG 2.2 SC 2.5.8 sets a floor of 24px; Echo's standard is 44.
 - **Respect safe areas.** Fixed bottom bars add `pb-[env(safe-area-inset-bottom)]`, and sticky headers add the top inset.
 - **Mobile inputs use `text-body-md` (16px).** Below 16px, iOS Safari zooms in when an input gets focus.
@@ -38,15 +38,15 @@ Tailwind's default `sm`, `md`, `lg` and `xl` prefixes are **reset and unavailabl
 
 | Element | Mobile | Tablet | Desktop / Wide |
 |---|---|---|---|
-| Navigation | BottomTabBar, plus a 64px header with the logo and avatar | 96px sidebar rail with labelled icons | 256px sidebar (collapsible to the rail) |
+| Navigation | BottomTabBar (72px), plus a 64px header with the wordmark and avatar | 96px sidebar rail with labelled icons | 256px sidebar (collapsible to the rail) |
 | Gutter | 16px (`px-4`) | 24px (`px-6`) | 32px (`px-8`), content capped at `max-w-7xl` |
-| QuoteCard grid | 1 column | 2 columns | 3 columns |
+| QuoteCard masonry (CSS columns) | 1 column | 2 columns | 3 columns |
 | Section spacing | 48px | 64px | 64px |
 | Dialogs | Bottom sheet | Centered, `max-w-md` | Centered |
 | EchoForm actions | Sticky bottom bar | Inline, end-aligned | Inline |
-| Echo detail actions | Sticky bottom bar of labelled icon buttons | Inline row | Inline row |
+| Echo detail actions | Toolbar: heart, Edit and a "More" menu (Revisit, collections, Delete) | Toolbar with every action labelled | Toolbar with every action labelled |
 | Search | Full search page opened from the tab bar | Rail item | Field in the sidebar |
-| Today's Echo quote | `text-display-lg` (22px) | `text-display-xl` (28px) | `text-display-xl` |
+| Today's Echo quote | `quote-hero-sm` (26px) | `quote-hero` (38px) | `quote-today` (44px) |
 
 ## Accessibility rules for Echo
 
@@ -60,7 +60,7 @@ Tailwind's default `sm`, `md`, `lg` and `xl` prefixes are **reset and unavailabl
 ### Keyboard
 
 - Every interaction works by keyboard alone: tab order follows visual order, and there is no keyboard trap except inside open dialogs, which trap focus intentionally.
-- **Focus is always visible:** the global 2px ink outline with a 2px offset, or a component's documented focus style. Focus is never hidden under the sticky header or bottom bar (SC 2.4.11), so set `scroll-padding-top` and `scroll-padding-bottom` on `html` to match the bar heights.
+- **Focus is always visible:** the global 2px `primary` outline with a 2px offset, or a component's documented focus style (inputs add a 2px ink border). Focus is never hidden under the sticky header or bottom bar (SC 2.4.11), so set `scroll-padding-top` and `scroll-padding-bottom` on `html` to match the bar heights.
 - **Shortcuts** (`n` for a new Echo, `/` for search) are ignored while typing in a field, and are listed in the Settings help.
 - **Focus moves deliberately:**
   - opening a dialog focuses its first field, or Cancel for destructive dialogs;
@@ -86,7 +86,7 @@ Tailwind's default `sm`, `md`, `lg` and `xl` prefixes are **reset and unavailabl
 
 - Never communicate state with color alone. The heart is filled *and* has a pressed label. Errors have an icon *and* text.
 - Contrast must meet 4.5:1 for text and 3:1 for UI components and focus indicators. Pairs to watch are listed below.
-- Respect `prefers-reduced-motion` (see `motion.md`).
+- Respect `prefers-reduced-motion`: no movement, and every change becomes a 150ms fade (see `motion.md`).
 
 ## Contrast reference
 
