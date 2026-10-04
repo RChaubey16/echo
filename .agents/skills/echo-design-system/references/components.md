@@ -27,8 +27,8 @@ This file is the inventory of Echo's components. For each one it gives the DESIG
 | Reading width (detail, forms, settings) | `max-w-3xl` (768px, about 65–75 characters at body-md) |
 | Side gutter | `px-4 tablet:px-6 desktop:px-8` |
 | Section rhythm | `py-12 tablet:py-16` between major sections; `gap-8` between groups inside one |
-| Card grids | `grid gap-4 items-start`, with 1 column, then `tablet:grid-cols-2`, then `desktop:grid-cols-3`. Cards are as tall as their content: equal-height cards leave empty gaps under short quotes. Quotes need line length, so never use 4 columns, even though DESIGN.md's photo cards do. |
-| Surfaces | App background `bg-paper`. Panels and cards are `bg-canvas` with `border-hairline`. The featured panel uses `bg-tint-moss`; time and memory panels may use `bg-tint-ochre` / `bg-tint-heather`. |
+| Card lists | QuoteCards use the masonry (`MASONRY` / `MASONRY_ITEM`: CSS columns, 1 → 2 → 3), so short and long quotes pack without gaps. CollectionCards use a `grid gap-4` of 1 → 2 → 3 columns. Quotes need line length, so never use 4 columns. |
+| Surfaces | App background `bg-paper`. Panels and cards are `bg-canvas` with `border-hairline`. Today's Echo sits on canvas (it earns emphasis through type and padding, not a tint). Revisits and From the past use `bg-tint-ochre` / `bg-tint-heather`, and a collection's header uses its own tint. |
 | Separation | Separate with whitespace first, surfaces second, and a hairline third. |
 | Collection accents | Each collection gets an accent slot, stored as lagoon, bronze, plum or neutral and shown as moss, ochre, heather or a neutral ring. It appears as an 8px dot, an icon chip or a 4px card bar, always next to its name. |
 
@@ -46,7 +46,7 @@ A component isn't finished until it handles every state that applies to it.
 | Loading | Busy affordance inside the control, `aria-busy="true"`, width kept, double-submit prevented | Skeleton that matches the final layout |
 | Empty | — | Copy and the primary next action (see below) |
 | Error | Inline message next to the cause | Friendly message, retry and error ID |
-| Long content | Labels truncate with `truncate` and a `title` attribute | Quotes wrap (`[overflow-wrap:anywhere]`); cards clamp; detail shows everything |
+| Long content | Labels truncate with `truncate` and a `title` attribute | User text uses `user-text` (keeps line breaks, wraps long words); cards clamp; detail and Today's Echo show everything |
 | Success feedback | A toast or an inline state change (heart fills, card appears) | — |
 
 ## Primitives
@@ -157,7 +157,7 @@ All variants share `relative inline-flex items-center justify-center gap-2 round
 
 ## Navigation (`src/components/shell/`)
 
-- **Wordmark:** "Echo" set in `text-display-sm tracking-tight`, the interface sans. The logo mark stays on public pages and the favicon.
+- **Logo:** `LogoMark` (the primary disc with two sound waves, `size` sm 28 / md 32 / lg 48) beside the "Echo" wordmark in `text-display-sm tracking-tight`. The rail shows the mark alone; the mobile header, the marketing nav and the sign-in card show both. The link carries `group/logo`, so the waves ripple on hover and focus.
 - **Sidebar (≥1128px, `w-64`):**
   - **Add Echo:** a full-width primary button.
   - **Search:** a 44px `rounded-md` field with a `/` hint.
@@ -313,9 +313,9 @@ Other behavior:
 
 | Screen | Structure |
 |---|---|
-| `/app` Home | The greeting ("Good evening, Ana" in `text-display-lg`, plus one quiet line). Below it: TodaysEcho at full width; then Recently added (≤5 EchoRows) beside the side column (Revisits due on `tint-ochre`, From the past on `tint-heather`), in a `7fr / 5fr` grid; then Your library (four counts in one bordered row); then Favorites (≤3 QuoteCards). Finite, with no "load more". The first run replaces it all with a centered welcome card. |
+| `/app` Home | The greeting ("Good evening, Ana" in `text-display-lg`, plus one quiet line). Below it: TodaysEcho at full width; then Recently added (≤5 EchoRows) beside the side column (Revisits due on `tint-ochre`, From the past on `tint-heather`), in a `7fr / 5fr` grid, or at full width when neither panel has anything to show; then Your library (four counts in one bordered row); then Favorites (≤3 QuoteCards). Finite, with no "load more". The first run replaces it all with a centered welcome card. |
 | `/app/echoes` Library | The title and count, the sort Select, a tag strip ("All" plus the most-used tags with counts; three on phones, then "More tags"), the QuoteCard masonry, and numbered pagination. |
-| `/app/echoes/:id` Detail | A toolbar row (back to Library; heart, Revisit, Add to collection, Edit, Delete; icons only on phones). Then a 760px reading column: QuoteText `hero`, the attribution after a short rule, the reflection card, and a `dl` of Tags, Collections, Mood, Saved and Revisit. |
+| `/app/echoes/:id` Detail | A toolbar row: back to Library, then `EchoDetailActions` (the heart, Revisit, Add to collection, Edit and Delete; on phones the heart, Edit and a "More" menu with Revisit, collections and Delete, each dialog shared by both). Then a 760px reading column: QuoteText `hero`, the attribution after a short rule, the reflection card, and a `dl` of Tags, Collections, Mood, Saved and Revisit. |
 | `/app/echoes/new`, `/edit` | `max-w-3xl` EchoForm. |
 | `/app/collections` | The title, a "New collection" secondary button, and the CollectionCard grid. The dialog has Name, Description and a Color radio group. |
 | `/app/collections/:id` | A back link, then a header panel on the collection's tint (name, description, count, Add Echoes and the More menu), then the QuoteCard masonry. |
@@ -351,14 +351,15 @@ Copy, taken verbatim from the spec where it exists:
 | First run (`/app`, 0 Echoes) | Welcome to Echo, {first name} | Your library is waiting. Save the first words that stayed with you: a line from a book, something a friend said, a lyric you can't shake. | Add your first Echo (primary), with "Only the words are needed. Everything else can wait." |
 
 **Loading skeletons** match the content's shape:
-- **QuoteCard skeleton:** three bars at 100%, 85% and 60% width (`h-4`, `gap-2`), then a 30%-width meta bar `mt-4`, all inside the same Card padding.
-- **TodaysEcho skeleton:** two `h-7` bars (90% and 70%) and one meta bar.
+- **QuoteCard skeleton:** three bars at 100%, 85% and 60% width (`h-4`, `gap-3`), an attribution bar, a hairline, then the footer bar, all inside the same Card padding.
+- **TodaysEcho skeleton:** the heading bar, two `h-9` quote bars (90% and 70%), a meta bar and a button-sized bar, inside the same canvas panel and padding.
+- **Home:** the greeting, the Today's Echo skeleton, then Recently added rows (with monogram squares) beside the two tinted panel skeletons.
 - **Lists:** render the number of skeleton cards you expect (6 for the library), not 1.
 
 Use a spinner only inside buttons.
 
 **Errors:**
-- **Route level:** in `error.tsx`, show the title "Something went wrong.", the body "We couldn't load this page. Your Echoes are safe.", a **Try again** secondary button, and the line "Error ID: {id}" in `text-caption-sm text-muted` with a copy button.
+- **Route level:** in `error.tsx`, show the title "Something went wrong.", the body "We couldn't load this page. Your Echoes are safe.", a **Try again** primary button, and the line "Error ID: {id}" in `text-caption-sm text-muted` with a copy button.
 - **Section level:** show an inline message in the section's place with a retry action, so the rest of the page keeps working.
 - **404:** "This Echo doesn't exist or isn't yours." with a link back to the library. The same message covers both cases, so it reveals nothing about other users.
 

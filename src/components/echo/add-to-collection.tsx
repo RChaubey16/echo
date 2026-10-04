@@ -17,15 +17,29 @@ type AddToCollectionProps = {
   /** The collections the Echo is in now. */
   collectionIds: string[];
   className?: string;
+  /** Opens the dialog from outside (e.g. a menu); pair with onOpenChange. */
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  /** Classes for a wrapper around the trigger only, e.g. to hide it on phones. */
+  triggerWrapperClassName?: string;
 };
 
 /** "Add to collection" on the Echo detail page: each checkbox adds or removes the Echo at once. */
-export function AddToCollection({ echoId, collectionIds, className }: AddToCollectionProps) {
+export function AddToCollection({
+  echoId,
+  collectionIds,
+  className,
+  open: openProp,
+  onOpenChange,
+  triggerWrapperClassName,
+}: AddToCollectionProps) {
   const router = useRouter();
   const toast = useToast();
   const titleId = useId();
   const doneRef = useRef<HTMLButtonElement>(null);
-  const [open, setOpen] = useState(false);
+  const [innerOpen, setInnerOpen] = useState(false);
+  const open = openProp ?? innerOpen;
+  const setOpen = (next: boolean) => (onOpenChange ? onOpenChange(next) : setInnerOpen(next));
   const [selected, setSelected] = useState(collectionIds);
   const [busy, setBusy] = useState<ReadonlySet<string>>(new Set());
   const changed = useRef(false);
@@ -71,13 +85,12 @@ export function AddToCollection({ echoId, collectionIds, className }: AddToColle
 
   return (
     <>
-      <Button variant="tertiary" className={cn("gap-2", className)} onClick={() => setOpen(true)}>
-        <LayersIcon className="h-4.5 w-4.5 shrink-0" />
-        {/* The label is visually hidden on phones, where the toolbar shows icons only. */}
-        <span className="sr-only tablet:not-sr-only">
+      <span className={triggerWrapperClassName}>
+        <Button variant="tertiary" className={cn("gap-2", className)} onClick={() => setOpen(true)}>
+          <LayersIcon className="h-4.5 w-4.5 shrink-0" />
           {collectionIds.length > 0 ? "Change collections" : "Add to collection"}
-        </span>
-      </Button>
+        </Button>
+      </span>
       <Dialog open={open} onRequestClose={close} labelledBy={titleId} initialFocusRef={doneRef}>
         <h2 id={titleId} className="text-display-sm text-ink">
           Add to collection

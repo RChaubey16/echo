@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { GoogleButton } from "@/components/echo/google-button";
+import { LogoMark } from "@/components/echo/logo";
 import { SkipLink } from "@/components/ui/skip-link";
 import { publicPageMetadata } from "@/lib/site";
 import { getSessionUser } from "@/server/auth";
@@ -27,7 +28,12 @@ export default async function LoginPage() {
         <section className="flex w-full max-w-105 flex-col items-center gap-5 rounded-lg border border-hairline bg-canvas px-6 py-10 text-center tablet:gap-6 tablet:px-10 tablet:py-12">
           <h1 className="text-display-lg tracking-tight text-ink">
             <span className="sr-only">Sign in to </span>
-            <Link href="/" className="rounded-md" aria-label="Echo home">
+            <Link
+              href="/"
+              className="group/logo flex flex-col items-center gap-3 rounded-md"
+              aria-label="Echo home"
+            >
+              <LogoMark size="lg" />
               Echo
             </Link>
           </h1>

@@ -143,7 +143,7 @@ export function EchoFields({
           inert={!detailsOpen}
           className={cn(
             // grid-cols-1 is a minmax(0,1fr) track, so long content can't widen the form.
-            "grid grid-cols-1 transition-[grid-template-rows,opacity] duration-base ease-out-soft motion-reduce:transition-none",
+            "grid grid-cols-1 transition-[grid-template-rows,opacity] duration-base ease-out-soft motion-reduce:transition-opacity",
             detailsOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
           )}
         >

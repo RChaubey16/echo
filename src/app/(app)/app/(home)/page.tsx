@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { AddEchoLink } from "@/components/echo/quick-capture";
 import { buttonClasses } from "@/components/ui/button-classes";
 import { PlusIcon, QuoteMarksIcon } from "@/components/ui/icons";
+import { cn } from "@/lib/cn";
 import { greetingFor, localHour } from "@/lib/daily";
 import { requireUserPage } from "@/server/auth";
 import { getFromThePast, getLibraryCounts, getTodaysEcho } from "@/server/services/discovery";
@@ -48,8 +49,12 @@ export default async function HomePage() {
       favorite: true,
     }),
   );
-  // The counts decide between first run and the dashboard, and feed the greeting line.
-  const counts = await getLibraryCounts(user.id, now);
+  // The counts decide between first run and the dashboard, and feed the greeting line. From the past
+  // is awaited here too (one small query, already running): whether it has a memory decides if
+  // Recently added shares its row with the side panels.
+  const [counts, pastResult] = await Promise.all([getLibraryCounts(user.id, now), past]);
+  const showPast = !pastResult.ok || pastResult.value !== null;
+  const hasSidePanels = counts.revisitsDue > 0 || showPast;
   const firstName = user.name?.trim().split(/\s+/)[0];
 
   if (counts.echoes === 0) {
@@ -110,20 +115,26 @@ export default async function HomePage() {
         <Suspense fallback={<TodaySkeleton />}>
           <TodaySection data={today} />
         </Suspense>
-        <div className="grid grid-cols-1 items-start gap-8 desktop:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
+        {/* With nothing due and no memory, Recently added takes the full width. */}
+        <div
+          className={cn(
+            "grid grid-cols-1 items-start gap-8",
+            hasSidePanels && "desktop:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]",
+          )}
+        >
           <Suspense fallback={<RecentSkeleton />}>
             <RecentSection data={recent} />
           </Suspense>
-          <div className="grid min-w-0 grid-cols-1 content-start gap-6">
-            {counts.revisitsDue > 0 && (
-              <Suspense fallback={<SidePanelSkeleton tint="bg-tint-ochre" />}>
-                <RevisitsDueSection data={due} total={counts.revisitsDue} />
-              </Suspense>
-            )}
-            <Suspense fallback={<SidePanelSkeleton tint="bg-tint-heather" />}>
-              <FromThePastSection data={past} />
-            </Suspense>
-          </div>
+          {hasSidePanels && (
+            <div className="grid min-w-0 grid-cols-1 content-start gap-6">
+              {counts.revisitsDue > 0 && (
+                <Suspense fallback={<SidePanelSkeleton tint="bg-tint-ochre" />}>
+                  <RevisitsDueSection data={due} total={counts.revisitsDue} />
+                </Suspense>
+              )}
+              {showPast && <FromThePastSection data={past} />}
+            </div>
+          )}
         </div>
         <LibrarySection counts={counts} />
         {counts.favorites > 0 && (

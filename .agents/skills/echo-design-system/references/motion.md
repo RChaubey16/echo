@@ -57,6 +57,12 @@ These are the only durations. If something seems to need 500ms or more, it is pr
 | **Skeleton** | `animate-skeleton` (an opacity pulse of 1→0.55 every 1.6s). Don't use a moving shimmer gradient, which is busier and harder on battery. |
 | **Loading button** | The spinner fades in after 150ms. Fast saves then never flash a spinner. |
 | **Copy-to-clipboard** | Swap the icon to a check for 1.5s with a 150ms cross-fade, and set the label to "Copied" in a live region. |
+| **Logo (the one decorative moment)** | Inside a `group/logo` link, the mark's two waves ripple outward once on hover or keyboard focus: `animate-echo-wave` (opacity 0.1 → their own, 250ms), the outer wave 100ms after the inner. Off under reduced motion. |
+| **Home sections arriving** | Each streamed section rises in once (`animate-rise-in`), 40ms apart (`[animation-delay:40ms]` … `160ms`). Sections only, never the items inside them. |
+| **Echo me something icon** | The shuffle icon turns half a turn per press (`transition-transform duration-slow`), so the button answers before the new Echo lands. |
+| **Mobile tab bar** | The active tab's pill settles in (`animate-pill-in`: opacity plus `scaleX(0.6 → 1)`, 200ms) each time a tab becomes current. |
+| **Mark as reflected** | The check pops (`animate-heart-pop`) when it flips to "Reflected". |
+| **Dialog / toast exits** | Dialogs sink out (`animate-sink-out`, 150ms) and toasts fade out (`animate-fade-out`, 150ms) before they leave; focus returns once the dialog has gone. Reopening mid-exit cancels it. |
 
 ## Page and route transitions
 
@@ -66,18 +72,26 @@ These are the only durations. If something seems to need 500ms or more, it is pr
 
 ## Reduced motion
 
-`prefers-reduced-motion: reduce` means *remove movement*, not *remove feedback*.
+`prefers-reduced-motion: reduce` means *remove movement*, not *remove feedback*. Every change
+becomes a 150ms opacity or colour change.
+
+`globals.css` does most of it:
+- `--duration-fast`, `--duration-base` and `--duration-slow` all become 150ms.
+- `--animate-rise-in`, `--animate-menu-in` and `--animate-fade-in` all become a 150ms fade.
+- `--animate-heart-pop` and `--animate-skeleton` become `none`.
+- Transitions may only change opacity and colours: `transition-property` is limited to them, so
+  transforms, heights and grid rows snap.
+
+Still write the `motion-reduce:` end state on a component when it differs:
 
 | Normal | Reduced |
 |---|---|
-| Rise in, slide up | Opacity fade only (`motion-reduce:animate-fade-in`), or instant |
-| Heart pop | Color fill only |
-| Today's Echo swap | Instant swap; the live region still announces it |
-| Skeleton pulse | Static block (`motion-reduce:animate-none`) |
-| Press scale | No scale (`motion-reduce:active:scale-100`); the color change remains |
-| Disclosure height | Instant open |
-
-The global safety net in `tokens.md` clamps durations, but write explicit `motion-reduce:` variants for anything that moves. Some states need a different end state, not just a faster one.
+| Rise in, slide up, menu scale-in | 150ms fade (`motion-reduce:animate-fade-in`) |
+| Heart pop | Colour fill only |
+| Today's Echo swap | The old quote dims while loading, then the new one fades in over 150ms; the live region still announces it |
+| Skeleton pulse | A static block (`motion-reduce:animate-none`) |
+| Press scale | No scale (`motion-reduce:active:scale-100`); the colour change remains |
+| "More details" disclosure | Opens at once, and the fields fade in (`motion-reduce:transition-opacity`) |
 
 ## What not to animate
 

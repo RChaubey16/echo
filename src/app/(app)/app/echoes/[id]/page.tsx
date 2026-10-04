@@ -1,16 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AccentDot } from "@/components/echo/accent-dot";
-import { AddToCollection } from "@/components/echo/add-to-collection";
-import { DeleteEchoDialog } from "@/components/echo/delete-echo-dialog";
+import { EchoDetailActions } from "@/components/echo/echo-detail-actions";
 import { EchoRevisit } from "@/components/echo/echo-revisit";
-import { FavoriteButton } from "@/components/echo/favorite-button";
 import { FirstReflectionPrompt } from "@/components/echo/first-reflection-prompt";
 import { QuoteText } from "@/components/echo/quote-text";
 import { SavedDate } from "@/components/echo/saved-date";
-import { buttonClasses } from "@/components/ui/button-classes";
+
 import { ChipLink } from "@/components/ui/chip";
-import { ArrowLeftIcon, CalendarIcon, EditIcon } from "@/components/ui/icons";
+import { ArrowLeftIcon } from "@/components/ui/icons";
 import { fullDate, relativeDate } from "@/lib/dates";
 import { daysSince, track } from "@/server/analytics";
 import { requireUserPage } from "@/server/auth";
@@ -41,29 +39,11 @@ export default async function EchoDetailPage({ params }: PageProps<"/app/echoes/
           <ArrowLeftIcon className="h-5 w-5 shrink-0" />
           <span className="sr-only tablet:not-sr-only">Library</span>
         </Link>
-        <div className="flex items-center gap-0.5 tablet:gap-1">
-          <FavoriteButton echoId={echo.id} isFavorite={echo.isFavorite} />
-          {/* The wrapper owns visibility: `hidden` on the link itself loses to its inline-flex. */}
-          <span className="hidden tablet:contents">
-            <a href="#revisit" className={buttonClasses("tertiary", "gap-2")}>
-              <CalendarIcon className="h-4.5 w-4.5 shrink-0" />
-              Revisit
-            </a>
-          </span>
-          <AddToCollection
-            echoId={echo.id}
-            collectionIds={echo.collections.map((collection) => collection.id)}
-            className="min-w-11"
-          />
-          <Link
-            href={`/app/echoes/${echo.id}/edit`}
-            className={buttonClasses("tertiary", "min-w-11 gap-2")}
-          >
-            <EditIcon className="h-4.5 w-4.5 shrink-0" />
-            <span className="sr-only tablet:not-sr-only">Edit</span>
-          </Link>
-          <DeleteEchoDialog echoId={echo.id} trigger="icon" />
-        </div>
+        <EchoDetailActions
+          echoId={echo.id}
+          isFavorite={echo.isFavorite}
+          collectionIds={echo.collections.map((collection) => collection.id)}
+        />
       </div>
 
       <article className="mx-auto flex w-full max-w-190 flex-col gap-7 px-6 pt-10 pb-12 tablet:gap-10 tablet:px-8 tablet:pt-20 tablet:pb-16">
@@ -166,7 +146,7 @@ export default async function EchoDetailPage({ params }: PageProps<"/app/echoes/
               Revisit
             </span>
           </dt>
-          <dd className="col-span-2 min-w-0 tablet:col-span-1">
+          <dd id="revisit-controls" className="col-span-2 min-w-0 tablet:col-span-1">
             <EchoRevisit
               echoId={echo.id}
               revisit={revisit}

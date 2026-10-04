@@ -11,6 +11,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { cn } from "@/lib/cn";
 
 export type ToastInput = {
   message: string;
@@ -23,6 +24,7 @@ type Toast = ToastInput & { id: number };
 const ToastContext = createContext<((toast: ToastInput) => void) | null>(null);
 
 const DISMISS_MS = 4000;
+const EXIT_MS = 150;
 
 /**
  * Returns the function that shows a toast. Toasts confirm actions; form errors stay inline.
@@ -75,12 +77,20 @@ export function ToastProvider({ children }: { children: ReactNode }) {
  */
 function ToastItem({ toast, onDismiss }: { toast: Toast; onDismiss: () => void }) {
   const [paused, setPaused] = useState(false);
+  const [leaving, setLeaving] = useState(false);
 
   useEffect(() => {
-    if (paused) return;
-    const timer = window.setTimeout(onDismiss, DISMISS_MS);
+    if (paused || leaving) return;
+    // After 4s it fades out (150ms, faster than it arrived), then leaves the region.
+    const timer = window.setTimeout(() => setLeaving(true), DISMISS_MS);
     return () => window.clearTimeout(timer);
-  }, [paused, onDismiss]);
+  }, [paused, leaving]);
+
+  useEffect(() => {
+    if (!leaving) return;
+    const timer = window.setTimeout(onDismiss, EXIT_MS);
+    return () => window.clearTimeout(timer);
+  }, [leaving, onDismiss]);
 
   return (
     <div
@@ -89,7 +99,10 @@ function ToastItem({ toast, onDismiss }: { toast: Toast; onDismiss: () => void }
       onPointerLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
-      className="pointer-events-auto flex min-h-13 max-w-md animate-rise-in items-center gap-3 rounded-md bg-ink py-1 pr-2 pl-4 text-body-md text-canvas shadow-float motion-reduce:animate-fade-in"
+      className={cn(
+        "pointer-events-auto flex min-h-13 max-w-md items-center gap-3 rounded-md bg-ink py-1 pr-2 pl-4 text-body-md text-canvas shadow-float",
+        leaving ? "animate-fade-out" : "animate-rise-in motion-reduce:animate-fade-in",
+      )}
     >
       <span className="min-w-0 flex-1 py-2">{toast.message}</span>
       {toast.action && (

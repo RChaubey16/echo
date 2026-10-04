@@ -90,3 +90,25 @@ test("tap targets in the tab bar and header are at least 44px", async ({ page })
   }
   expect(small).toEqual([]);
 });
+
+test("on phones the Echo detail keeps Add to collection and Delete in the More menu", async ({
+  page,
+  context,
+}) => {
+  const { echoId } = await seededLibrary(context.request);
+  await openHydrated(page, `/app/echoes/${echoId}`);
+  // Only the menu offers them at this width.
+  await expect(page.getByRole("button", { name: "Delete", exact: true })).toBeHidden();
+  await page.getByRole("button", { name: "More actions for this Echo" }).click();
+  await page.getByRole("menuitem", { name: "Change collections" }).click();
+  const collections = page.getByRole("dialog", { name: "Add to collection" });
+  await expect(collections).toBeVisible();
+  await collections.getByRole("button", { name: "Done" }).click();
+
+  await page.getByRole("button", { name: "More actions for this Echo" }).click();
+  await page.getByRole("menuitem", { name: "Delete" }).click();
+  const confirm = page.getByRole("dialog", { name: "Delete this Echo?" });
+  await expect(confirm.getByRole("button", { name: "Cancel" })).toBeFocused();
+  await confirm.getByRole("button", { name: "Cancel" }).click();
+  await expect(page.getByRole("button", { name: "More actions for this Echo" })).toBeFocused();
+});

@@ -32,6 +32,18 @@ export function settle<T>(promise: Promise<T>): Promise<Settled<T>> {
 
 const LINK = "text-body-sm font-medium text-ink underline-offset-4 hover:underline";
 
+/**
+ * Home's sections rise in once as they stream in, 40ms apart (ui-ux-pro-max: stagger 30–50ms),
+ * so the page settles rather than popping in. Reduced motion makes it a plain fade.
+ */
+const ENTER = "animate-rise-in motion-reduce:animate-fade-in";
+const STAGGER = [
+  "[animation-delay:40ms]",
+  "[animation-delay:80ms]",
+  "[animation-delay:120ms]",
+  "[animation-delay:160ms]",
+] as const;
+
 /** A tinted side panel's header: the icon in its accent mark and the heading, with an optional link. */
 function PanelHeader({
   id,
@@ -114,7 +126,10 @@ export function TodaySkeleton() {
 export async function RecentSection({ data }: { data: Promise<Settled<EchoListDto>> }) {
   const result = await data;
   return (
-    <section aria-labelledby="recent-heading" className="flex min-w-0 flex-col gap-3.5">
+    <section
+      aria-labelledby="recent-heading"
+      className={cn(ENTER, STAGGER[0], "flex min-w-0 flex-col gap-3.5")}
+    >
       <div className="flex items-baseline justify-between gap-4">
         <h2 id="recent-heading" className="text-display-sm text-ink">
           Recently added
@@ -176,7 +191,11 @@ export async function RevisitsDueSection({
   return (
     <section
       aria-labelledby="revisits-heading"
-      className="flex flex-col gap-3.5 rounded-lg bg-tint-ochre p-5 tablet:p-6"
+      className={cn(
+        ENTER,
+        STAGGER[1],
+        "flex flex-col gap-3.5 rounded-lg bg-tint-ochre p-5 tablet:p-6",
+      )}
     >
       <PanelHeader
         id="revisits-heading"
@@ -216,7 +235,11 @@ export async function FromThePastSection({
   return (
     <section
       aria-labelledby="past-heading"
-      className="flex flex-col gap-3 rounded-lg bg-tint-heather p-5 tablet:p-6"
+      className={cn(
+        ENTER,
+        STAGGER[2],
+        "flex flex-col gap-3 rounded-lg bg-tint-heather p-5 tablet:p-6",
+      )}
     >
       <PanelHeader
         id="past-heading"
@@ -357,7 +380,10 @@ export async function FavoritesSection({ data }: { data: Promise<Settled<EchoLis
   const result = await data;
   if (result.ok && result.value.items.length === 0) return null;
   return (
-    <section aria-labelledby="favorites-heading" className="flex min-w-0 flex-col gap-3.5">
+    <section
+      aria-labelledby="favorites-heading"
+      className={cn(ENTER, STAGGER[3], "flex min-w-0 flex-col gap-3.5")}
+    >
       <div className="flex items-baseline justify-between gap-4">
         <h2 id="favorites-heading" className="text-display-sm text-ink">
           Favorites

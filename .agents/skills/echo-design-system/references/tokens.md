@@ -38,7 +38,8 @@ values.
    - `bg-paper` (surface-soft plus the 3px dot grain);
    - `user-text` (`white-space: pre-wrap; overflow-wrap: anywhere`).
 5. **`@layer base`** holds the html colors, the body font, the focus ring (2px `primary`, offset
-   2px) and the reduced-motion safety net.
+   2px) and the reduced-motion transition limit. A `prefers-reduced-motion` block on `:root` turns
+   every duration and entrance animation into a 150ms fade (see motion.md).
 
 **Theme:** `data-theme` on `<html>` is rendered on the server from the theme cookie, which mirrors
 `User.theme`. It is absent for System, so the page never flashes the wrong theme. The export's
@@ -130,7 +131,7 @@ Tailwind's default `--spacing` is 4px, matching DESIGN.md's base unit.
 | 80 | `20` | the public pages' desktop gutter and section rhythm |
 | 96 | `24` | the largest section breaks |
 
-`2.5` (10), `3.5` (14), `4.5` (18) and `5` (20, the mobile gutter and button padding) are for fine
+`2.5` (10), `3.5` (14), `4.5` (18) and `5` (20, the public pages' mobile gutter and button padding) are for fine
 alignment inside components. Other steps (`9`, `11`, `18`, `22`, `28`) are flagged by
 `audit_ui.py`. Control heights the design specifies directly: buttons `h-12` (48), small buttons
 `h-10` (40) with a 44px hit area, inputs `h-13` (52), the search field `h-15` (60), the mobile tab

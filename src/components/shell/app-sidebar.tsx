@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Suspense, use, useRef } from "react";
 import { AccentDot } from "@/components/echo/accent-dot";
 import { NewCollectionButton } from "@/components/echo/new-collection-button";
+import { LogoMark } from "@/components/echo/logo";
 import { AddEchoLink } from "@/components/echo/quick-capture";
 import { buttonClasses } from "@/components/ui/button-classes";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -196,10 +197,11 @@ export function AppSidebar({ collapsed, onCollapsedChange, user, collections }: 
         {/* The wordmark is set in the interface sans; the serif is kept for quotes. */}
         <Link
           href="/app"
-          className="flex h-11 min-w-11 items-center rounded-md text-display-sm tracking-tight text-ink"
+          className="group/logo flex h-11 min-w-11 items-center justify-center gap-2.5 rounded-md text-display-sm tracking-tight text-ink"
           aria-label="Echo home"
         >
-          Echo
+          <LogoMark />
+          <span className={SHOW_EXPANDED}>Echo</span>
         </Link>
         <button
           ref={collapseRef}

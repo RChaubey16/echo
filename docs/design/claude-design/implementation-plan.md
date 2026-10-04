@@ -77,7 +77,11 @@ Design started from, not part of Echo.
 
 - PR 1 (tokens and docs): merged as #21.
 - PR 2 (primitives and shell): merged as #22.
-- PR 3 (Echo components and screens): this branch.
+- PR 3 (Echo components and screens): merged as #23.
+- Follow-up (polish): Home's full-width Recently added, the reduced-motion cross-fade, the phone
+  "More" menu on Echo detail, the logo mark back in every navbar (the export used a text
+  wordmark only), and subtle motion: Home's staggered arrival, dialog and toast exits, the
+  shuffle icon turn, the tab pill, the reflected check and the logo's wave ripple.
 
 ## Decisions made during PR 3
 
@@ -96,5 +100,5 @@ Design started from, not part of Echo.
    used by Library and Favorites, so tags and the Remove action stay visible.
 5. **Spacing scale.** The export uses 28, 40, 56 and 80px throughout, so these were added to the
    scale (Tailwind `7`, `10`, `14`, `20`) in DESIGN.md, `tokens.md` and `audit_ui.py`.
-6. **Logo mark.** The export uses a text wordmark everywhere, so `LogoMark` was removed. The
-   recoloured mark remains as the favicon, apple-icon and OG image.
+6. **Logo mark.** The export uses a text wordmark everywhere, so `LogoMark` was removed in PR 3.
+   The follow-up brought it back beside the wordmark in every navbar, at your request.

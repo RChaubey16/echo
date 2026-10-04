@@ -135,6 +135,36 @@
   --animate-heart-pop: heart-pop 250ms var(--ease-out-soft); /* audit-ignore: token definition; usages pair it with motion-reduce: */
   --animate-menu-in: menu-in 200ms var(--ease-out-soft) both; /* audit-ignore: token definition; usages pair it with motion-reduce: */
   --animate-skeleton: skeleton 1.6s ease-in-out infinite; /* audit-ignore: token definition; usages pair it with motion-reduce: */
+  /* Exits run faster than entrances (150ms, ease-in-soft). */
+  --animate-fade-out: fade-out 150ms var(--ease-in-soft) both; /* audit-ignore: token definition; usages pair it with motion-reduce: */
+  --animate-sink-out: sink-out 150ms var(--ease-in-soft) both; /* audit-ignore: token definition; usages pair it with motion-reduce: */
+  /* The logo's waves ripple outward once on hover: the brand's one decorative moment. */
+  --animate-echo-wave: echo-wave 250ms var(--ease-out-soft) both; /* audit-ignore: token definition; usages pair it with motion-reduce: */
+  /* The mobile tab bar's active pill settles in under its icon. */
+  --animate-pill-in: pill-in 200ms var(--ease-out-soft) both; /* audit-ignore: token definition; usages pair it with motion-reduce: */
+
+  @keyframes fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes sink-out {
+    to {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+  @keyframes echo-wave {
+    from {
+      opacity: 0.1;
+    }
+  }
+  @keyframes pill-in {
+    from {
+      opacity: 0;
+      transform: scaleX(0.6);
+    }
+  }
 
   @keyframes fade-in {
     from {
@@ -298,14 +328,33 @@
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
+  /* Reduced motion removes movement, not feedback: only colour and opacity may change, over 150ms. */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
     *::after {
-      animation-duration: 1ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 1ms !important;
+      transition-property:
+        opacity, color, background-color, border-color, outline-color, text-decoration-color, fill,
+        stroke !important;
       scroll-behavior: auto !important;
     }
+  }
+}
+
+/* Every entrance becomes a 150ms cross-fade; the heart pop and the skeleton pulse stop. Components
+   still state their own `motion-reduce:` end state where it differs (see motion.md). */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 150ms;
+    --duration-base: 150ms;
+    --duration-slow: 150ms;
+    --animate-fade-in: fade-in 150ms var(--ease-out-soft) both; /* audit-ignore: reduced-motion token override */
+    --animate-rise-in: fade-in 150ms var(--ease-out-soft) both; /* audit-ignore: reduced-motion token override */
+    --animate-menu-in: fade-in 150ms var(--ease-out-soft) both; /* audit-ignore: reduced-motion token override */
+    --animate-heart-pop: none; /* audit-ignore: reduced-motion token override */
+    --animate-skeleton: none; /* audit-ignore: reduced-motion token override */
+    --animate-sink-out: fade-out 150ms var(--ease-in-soft) both; /* audit-ignore: reduced-motion token override */
+    --animate-echo-wave: none; /* audit-ignore: reduced-motion token override */
+    --animate-pill-in: none; /* audit-ignore: reduced-motion token override */
   }
 }

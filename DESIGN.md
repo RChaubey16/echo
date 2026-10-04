@@ -98,8 +98,8 @@ spacing:
   steps: [2, 4, 8, 12, 16, 24, 28, 32, 40, 48, 56, 64, 80, 96]
   reading-column: 680px
   app-content: 1120px
-  gutter: 32px
-  gutter-mobile: 20px
+  gutter-app: [16px, 24px, 32px]   # mobile, tablet, desktop
+  gutter-public: [20px, 40px, 80px]
 
 elevation:
   float: "0 1px 2px rgb(43 38 34 / 0.06), 0 8px 24px rgb(43 38 34 / 0.1)"
@@ -262,7 +262,8 @@ point size. Quote text and the quote textarea come only from `QuoteText` / `quot
     and 80 the public pages' desktop gutter. 10, 14 and 18 (Tailwind 2.5, 3.5 and 4.5) are for fine
     alignment inside components.
   - The reading column is 680px, and the app content area is 1120px.
-  - Gutters are 32px, or 20px on mobile.
+  - App gutters are 16, 24 and 32px (mobile, tablet, desktop); the public pages use 20, 40 and
+    80px.
 - **Elevation** has one tier, `shadow-float`, warm-tinted, with a darker value in dark mode. Use
   it for dialogs, menus, toasts and the raised Add button. Everything else is flat.
 - **Focus** is a 2px `primary` outline, offset 2px, on every interactive element. On inputs, the
@@ -279,8 +280,17 @@ point size. Quote text and the quote textarea come only from `QuoteText` / `quot
 | `ease-in-soft` | `cubic-bezier(0.4, 0, 1, 1)` | Leaving. |
 
 The swap is a short fade and rise with a height ease, so a long passage never makes the page
-jump. With reduced motion, movement is removed and state changes stay visible (see the skill's
-`motion.md`).
+jump. With reduced motion there is no movement: every transition and entrance becomes a 150ms
+opacity or colour change, so state changes stay visible (see the skill's `motion.md`).
+
+Small, meaningful touches (per ui-ux-pro-max: one or two key elements per view, exits faster than
+entrances, staggers of 30–50ms):
+- Home's sections rise in 40ms apart as they stream in.
+- The shuffle icon turns on each press.
+- The mobile tab pill settles in under the active icon.
+- "Reflected" checks pop.
+- Dialogs and toasts fade out faster than they arrived.
+- The logo's waves ripple once on hover, the brand's one decorative moment.
 
 ## Layout and navigation
 
@@ -294,7 +304,7 @@ Breakpoints are tablet 744px, desktop 1128px and wide 1440px.
 
 The desktop sidebar holds:
 
-- the wordmark and a collapse button;
+- the logo mark and wordmark, and a collapse button;
 - a full-width Add Echo button;
 - search, with the `/` shortcut;
 - the nav: Home, Library, Favorites, Collections, Revisits;
