@@ -8,6 +8,16 @@
 
 **UI work in this phase:** use the `echo-design-system` skill (`.claude/skills/echo-design-system/`) for every section that touches the interface: the §4 Revisits UI (RevisitPicker, `/app/revisits`), §5 (home page) and §6 (onboarding).
 
+**Status: implemented (2026-10-04)** in #5; not yet verified on a preview deploy.
+
+**Deviations from this plan** (all in place in the code):
+- **`User.timezone` is in place**, as is `User.onboardedAt`. `TimeZoneSync` sends the browser's zone after sign-in; anything `Intl` doesn't recognize falls back to UTC.
+- **Home data loading:** every panel's query starts at the same time and each panel waits on its own promise inside its own `Suspense` boundary, rather than one `Promise.all`. Only the library counts are awaited up front, because they decide between the first-run screen and the dashboard.
+- **Echo Me Something relaxes its rules in steps:** first it drops the 24 h rule, then the `?exclude=` IDs (`pickFromTiers`). `?exclude=` keeps at most 5 valid UUIDs and ignores anything else.
+- **There's no `GET /api/revisits/:id`,** so "A reads B's Revisit" is tested as "B's Revisits never show up in A's lists".
+- **Revisits of soft-deleted Echoes are hidden** from lists and counts, and they 404 on PATCH and DELETE.
+- **The Echo form schedules Revisits too** (`revisitAt`), using the same rule of one pending Revisit per Echo.
+
 ---
 
 ## 1. Schema
@@ -29,9 +39,9 @@ model Revisit {
 }
 ```
 
-- [ ] `DailyEcho { userId, date (DATE), echoId, @@id([userId, date]) }`, with cascade on both foreign keys. It pins Today's Echo for the day (see §2).
-- [ ] Optionally add `User.timezone String?` (IANA name), captured from the browser when the user first signs in. It is used to decide which date "today" is.
-- [ ] `Echo.lastSurfacedAt` already exists from Phase 2.
+- [x] `DailyEcho { userId, date (DATE), echoId, @@id([userId, date]) }`, with cascade on both foreign keys. It pins Today's Echo for the day (see §2).
+- [x] Optionally add `User.timezone String?` (IANA name), captured from the browser when the user first signs in. It is used to decide which date "today" is.
+- [x] `Echo.lastSurfacedAt` already exists from Phase 2.
 
 ## 2. Today's Echo — `GET /api/echoes/today`
 
@@ -48,32 +58,32 @@ const echo = await prisma.echo.findFirst({
 });
 ```
 
-- [ ] `src/lib/daily.ts` holds the pure helpers `fnv1a32` and `localDate`.
-- [ ] Known trade-off: adding or deleting an Echo during the day can change the pick. To avoid that, the result is **pinned**: once the day's Echo is first computed, store it in a `DailyEcho(userId, date, echoId)` row and return it for the rest of the day. This costs one small table, and is recommended.
-- [ ] Prefer older Echoes: if the user has more than 10 Echoes, pick from the ones saved more than 7 days ago. The point is rediscovery, not seeing what was just saved.
-- [ ] Response: the Echo DTO plus `savedAgo` metadata, used for the line "Saved 11 months ago".
+- [x] `src/lib/daily.ts` holds the pure helpers `fnv1a32` and `localDate`.
+- [x] Known trade-off: adding or deleting an Echo during the day can change the pick. To avoid that, the result is **pinned**: once the day's Echo is first computed, store it in a `DailyEcho(userId, date, echoId)` row and return it for the rest of the day. This costs one small table, and is recommended.
+- [x] Prefer older Echoes: if the user has more than 10 Echoes, pick from the ones saved more than 7 days ago. The point is rediscovery, not seeing what was just saved.
+- [x] Response: the Echo DTO plus `savedAgo` metadata, used for the line "Saved 11 months ago".
 
 ## 3. Echo Me Something — `GET /api/echoes/random`
 
-- [ ] Choose a random Echo from the non-deleted Echoes, excluding:
+- [x] Choose a random Echo from the non-deleted Echoes, excluding:
   - Echoes with `lastSurfacedAt` in the last 24 h, when enough others exist;
   - the IDs passed in `?exclude=` (the client sends the last 5 shown).
-- [ ] Implementation:
+- [x] Implementation:
   - `count` the candidates, then `findFirst({ skip: randomInt(count) })`;
   - avoid `ORDER BY random()` on large tables.
-- [ ] Set `lastSurfacedAt = now()` on the Echo that is returned.
-- [ ] If every Echo is excluded, drop the exclusions and pick again. With 0 Echoes, return `null`.
+- [x] Set `lastSurfacedAt = now()` on the Echo that is returned.
+- [x] If every Echo is excluded, drop the exclusions and pick again. With 0 Echoes, return `null`.
 
 ## 4. Revisits
 
 **Service** (`services/revisits.ts`)
 
-- [ ] `createRevisit(userId, { echoId, scheduledFor })`:
+- [x] `createRevisit(userId, { echoId, scheduledFor })`:
   - the Echo must be owned by the user and not deleted;
   - `scheduledFor` must be in the future and no more than 10 years away;
   - at most one pending Revisit per Echo: a new one replaces the existing pending one.
-- [ ] `listRevisits(userId, { status: "due" | "upcoming" | "completed" })`
-- [ ] `completeRevisit(userId, id)` and `deleteRevisit(userId, id)`.
+- [x] `listRevisits(userId, { status: "due" | "upcoming" | "completed" })`
+- [x] `completeRevisit(userId, id)` and `deleteRevisit(userId, id)`.
 
 **API**
 
@@ -86,16 +96,16 @@ const echo = await prisma.echo.findFirst({
 
 **UI** (build with the `echo-design-system` skill; RevisitPicker follows its date-picker spec)
 
-- [ ] `RevisitPicker` on the Add/Edit form and the detail page, with presets:
+- [x] `RevisitPicker` on the Add/Edit form and the detail page, with presets:
   - "In 1 month";
   - "In 6 months";
   - "In 1 year";
   - "Pick a date".
-- [ ] The Echo detail page shows "Revisit on Apr 1, 2027", with options to change or cancel it.
-- [ ] `/app/revisits` (turn on the sidebar's **Revisits** item):
+- [x] The Echo detail page shows "Revisit on Apr 1, 2027", with options to change or cancel it.
+- [x] `/app/revisits` (turn on the sidebar's **Revisits** item):
   - "Due now" (with a "Mark as reflected" button);
   - "Upcoming".
-- [ ] No notifications in this phase (spec §33). Due Revisits are surfaced on the home page.
+- [x] No notifications in this phase (spec §33). Due Revisits are surfaced on the home page.
 
 ## 5. Home page — `/app`
 
@@ -115,43 +125,43 @@ The home page is the **dashboard** from the approved mockup `docs/mockups/dashbo
 - Collections are reached from the sidebar's Collections list, so the home page has no Collections section.
 - **Loading:** the same layout as gray skeletons that fill the screen height (keep the skeleton's natural height under one screen). **Error:** the centered route-level error card.
 
-- [ ] Data is fetched in parallel in a Server Component (`Promise.all` over the services). Each section has its own `Suspense` boundary.
+- [x] Data is fetched in parallel in a Server Component (`Promise.all` over the services). Each section has its own `Suspense` boundary.
 
 ## 6. Onboarding (first run)
 
 > Build with the `echo-design-system` skill, using its first-run empty state and copy.
 
-- [ ] If the user has 0 Echoes, `/app` shows the welcome card from spec §60 (built in Phase 1), **centered** in the screen, instead of the dashboard. The greeting header is hidden, and the card's title is the page's `h1`. Its single CTA, "Add your first Echo", opens QuickCapture.
-- [ ] After the **first** Echo is saved, the detail page shows an inline prompt: "Why did this speak to you?"
+- [x] If the user has 0 Echoes, `/app` shows the welcome card from spec §60 (built in Phase 1), **centered** in the screen, instead of the dashboard. The greeting header is hidden, and the card's title is the page's `h1`. Its single CTA, "Add your first Echo", opens QuickCapture.
+- [x] After the **first** Echo is saved, the detail page shows an inline prompt: "Why did this speak to you?"
   - The prompt has a reflection textarea plus Save and Skip.
   - It is shown only once; track this with `User.onboardedAt DateTime?`.
-- [ ] No questionnaires, and no multi-step tour.
+- [x] No questionnaires, and no multi-step tour.
 
 ## Tests in this phase
 
 **Unit**
 
-- [ ] `fnv1a32` and the daily index are stable for a fixed `userId` and date, and differ across dates.
-- [ ] `localDate` handles timezone boundaries, e.g. 23:30 UTC versus `Asia/Kolkata`.
-- [ ] Random selection with exclusions, including the fallback when every Echo is excluded.
-- [ ] Revisit date validation.
+- [x] `fnv1a32` and the daily index are stable for a fixed `userId` and date, and differ across dates.
+- [x] `localDate` handles timezone boundaries, e.g. 23:30 UTC versus `Asia/Kolkata`.
+- [x] Random selection with exclusions, including the fallback when every Echo is excluded.
+- [x] Revisit date validation.
 
 **Integration**
 
-- [ ] `/today` returns the same Echo on repeated calls within a day (pinned), and a different seeded result on another date.
-- [ ] `/today` and `/random` never return deleted Echoes, or Echoes owned by another user.
-- [ ] Revisits: create → list as upcoming → move the clock forward (a fake `now` is injected into the service) → listed as due → complete.
-- [ ] **Authorization:** A creates a Revisit on B's Echo → 404. A reads, edits or deletes B's Revisit → 404.
+- [x] `/today` returns the same Echo on repeated calls within a day (pinned), and a different seeded result on another date.
+- [x] `/today` and `/random` never return deleted Echoes, or Echoes owned by another user.
+- [x] Revisits: create → list as upcoming → move the clock forward (a fake `now` is injected into the service) → listed as due → complete.
+- [x] **Authorization:** A creates a Revisit on B's Echo → 404. A reads, edits or deletes B's Revisit → 404.
 
 **E2E**
 
-- [ ] New user: welcome screen → add first Echo → reflection prompt → home shows Today's Echo.
-- [ ] Home: click "Echo Me Something" → the card changes.
-- [ ] Add Echo → schedule a Revisit → it appears under Upcoming.
+- [x] New user: welcome screen → add first Echo → reflection prompt → home shows Today's Echo.
+- [x] Home: click "Echo Me Something" → the card changes.
+- [x] Add Echo → schedule a Revisit → it appears under Upcoming.
 
 ## Exit criteria
 
-- [ ] All Phase 4 UI passes the `echo-design-system` validation checklist, including the motion check.
-- [ ] Spec §67 items 12 (return home), 13 (personal Today's Echo) and 14 (random) all work.
-- [ ] Today's Echo doesn't change when the page is reloaded.
-- [ ] The rediscovery flow from spec §70 can be shown end to end on the preview.
+- [x] All Phase 4 UI passes the `echo-design-system` validation checklist, including the motion check.
+- [x] Spec §67 items 12 (return home), 13 (personal Today's Echo) and 14 (random) all work.
+- [x] Today's Echo doesn't change when the page is reloaded.
+- [ ] The rediscovery flow from spec §70 can be shown end to end on the preview. (Not yet checked on a preview deploy.)
