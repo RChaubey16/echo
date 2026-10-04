@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/modernist-94cbaf16-5413-4121-ae7e-7b72c74e10e0/styles.css">
+<script src="_ds/modernist-94cbaf16-5413-4121-ae7e-7b72c74e10e0/_ds_bundle.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&amp;family=Hanken+Grotesk:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#f3eee4}
+h1,h2,h3,p,ul,li,table,td,th{font-family:inherit} h1,h2,h3{letter-spacing:inherit;color:inherit;text-transform:none}
+a{color:#2d4a72;text-underline-offset:3px} a:hover{color:#1c3150}
+</style>
+</helmet>
+
+<div style="background-color:#f3eee4;background-image:radial-gradient(rgba(60,40,20,.035) 1px,transparent 1px);background-size:3px 3px;color:#2b2622;font-family:'Hanken Grotesk',system-ui,sans-serif;min-height:100vh">
+<article style="max-width:760px;margin:0 auto;padding:72px 24px 120px;display:flex;flex-direction:column;gap:56px">
+
+  <header data-screen-label="Cover" style="display:flex;flex-direction:column;gap:12px">
+    <div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#675e55">Echo · Inkwell · Handoff</div>
+    <h1 style="margin:0;font-size:40px;font-weight:600;letter-spacing:-.02em;line-height:1.1">Rationale &amp; migration</h1>
+    <p style="margin:0;font-size:17px;line-height:1.6;color:#463f39">What's in this project:</p>
+    <ul style="margin:0;padding:0 0 0 20px;display:flex;flex-direction:column;gap:6px;font-size:16px;line-height:1.55;color:#463f39">
+      <li><a href="Echo Design System.dc.html">Echo Design System</a>: tokens (<code>:root</code>, dark, system, reduced motion), the Tailwind v4 <code>@theme</code> block, contrast table, component sheet</li>
+      <li><a href="Echo Screens - Home.dc.html">Home</a> · <a href="Echo Screens - Detail and Capture.dc.html">Detail &amp; Capture</a> · <a href="Echo Screens - Library and Collections.dc.html">Library &amp; Collections</a> · <a href="Echo Screens - Revisits and Search.dc.html">Revisits &amp; Search</a> · <a href="Echo Screens - Settings and Public.dc.html">Settings &amp; Public</a>, each with a light/dark tweak</li>
+      <li><a href="Echo Directions.dc.html">Echo Directions</a>: the three Step 1 options</li>
+    </ul>
+  </header>
+
+  <section data-screen-label="Rationale" style="display:flex;flex-direction:column;gap:28px">
+    <h2 style="margin:0;font-size:28px;font-weight:600;letter-spacing:-.01em;padding-top:24px;border-top:1px solid #ddd4c4">Rationale</h2>
+    <div style="display:flex;flex-direction:column;gap:8px"><h3 style="margin:0;font-size:18px;font-weight:600">Palette</h3><p style="margin:0;font-size:17px;line-height:1.65;color:#463f39;text-wrap:pretty">Cream paper and warm brown-black ink replace white and gray, so the app reads like a notebook instead of a dashboard. The one accent is iron-gall blue, the colour of a fountain pen. It's quiet enough to sit next to long passages, it's clearly different from the error red, and it never takes over the page. The collection colours (moss, ochre, heather and a ringed neutral) come from the same paper family. They show up as small marks and pale panels, never as large fills. Dark mode is the same desk at night: warm umber surfaces, not blue-gray. Every pair is computed in the contrast table and passes AA in both themes.</p></div>
+    <div style="display:flex;flex-direction:column;gap:8px"><h3 style="margin:0;font-size:18px;font-weight:600">Type</h3><p style="margin:0;font-size:17px;line-height:1.65;color:#463f39;text-wrap:pretty">EB Garamond carries every quote. It's an old-style book face with real warmth at 19px and genuine presence at 48px. Hanken Grotesk is a calm, slightly humanist sans with open apertures, and it handles everything else, including the wordmark. The pairing works because the two never compete: the serif is always the largest and only literary voice on the screen. The one place the serif appears without being a saved quote is the landing tagline, which the brief asks for.</p></div>
+    <div style="display:flex;flex-direction:column;gap:8px"><h3 style="margin:0;font-size:18px;font-weight:600">Shape</h3><p style="margin:0;font-size:17px;line-height:1.65;color:#463f39;text-wrap:pretty">The corners are softened like cut card stock: 6px for controls, 10px for panels, 4px for chips. Pills and the 14–32px radii are gone, so nothing looks like a mobile app's bubble UI. Panels are separated by one warm hairline and a change in surface tone, not by shadow. The single shadow tier is kept for things that genuinely float: dialogs, menus, toasts and the raised Add button. Cards respond to hover with a darker border, not a lift. A 3px CSS dot pattern (one gradient, no image) adds a trace of paper texture to the page background.</p></div>
+    <div style="display:flex;flex-direction:column;gap:8px"><h3 style="margin:0;font-size:18px;font-weight:600">Motion</h3><p style="margin:0;font-size:17px;line-height:1.65;color:#463f39;text-wrap:pretty">Three durations (150, 200 and 250ms) and two curves, used only where something changes meaning: the Echo swap, dialogs, toasts and hover. The swap is a short fade and rise with a height ease, so a long passage never makes the page jump. With reduced motion, everything becomes a 150ms opacity cross-fade: still a signal, no movement.</p></div>
+    <div style="display:flex;flex-direction:column;gap:8px"><h3 style="margin:0;font-size:18px;font-weight:600">Today's Echo as the bold moment</h3><p style="margin:0;font-size:17px;line-height:1.65;color:#463f39;text-wrap:pretty">It's the only place in the app where type reaches 44px, the only panel with 56px of padding, and the only block that splits into a quote column and a “You wrote” margin note on desktop, like a reader's annotation beside a printed page. It sits directly under a plain greeting and above a deliberately muted grid, so nothing competes with it. “Echo me something” is the screen's only filled button. Everything else on Home is smaller, quieter, and capped.</p></div>
+  </section>
+
+  <section data-screen-label="Migration tokens" style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:28px;font-weight:600;letter-spacing:-.01em;padding-top:24px;border-top:1px solid #ddd4c4">Migration · tokens</h2>
+    <div style="background:#fbf8f2;border:1px solid #ddd4c4;border-radius:10px;overflow:auto">
+      <div style="display:grid;grid-template-columns:minmax(150px,1fr) minmax(150px,1fr) minmax(200px,1.4fr);min-width:560px;font-size:14px;line-height:1.45">
+        <div style="padding:12px 16px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#675e55;border-bottom:1px solid #ddd4c4">Current</div><div style="padding:12px 16px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#675e55;border-bottom:1px solid #ddd4c4">New</div><div style="padding:12px 16px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#675e55;border-bottom:1px solid #ddd4c4">Note</div>
+        <sc-for list="{{ map }}" as="m" hint-placeholder-count="20">
+          <div style="padding:10px 16px;border-bottom:1px solid #e8e1d3"><code>{{ m.a }}</code></div><div style="padding:10px 16px;border-bottom:1px solid #e8e1d3"><code>{{ m.b }}</code></div><div style="padding:10px 16px;border-bottom:1px solid #e8e1d3;color:#463f39">{{ m.n }}</div>
+        </sc-for>
+      </div>
+    </div>
+    <p style="margin:0;font-size:15px;line-height:1.6;color:#463f39"><strong style="color:#2b2622">Data note:</strong> I'd keep storing <code>lagoon | bronze | plum | neutral</code> and map them to moss, ochre and heather in the UI. That avoids a database migration. Renaming the stored keys is a product decision, so I've left it to you.</p>
+  </section>
+
+  <section data-screen-label="Migration components" style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:28px;font-weight:600;letter-spacing:-.01em;padding-top:24px;border-top:1px solid #ddd4c4">Migration · components</h2>
+    <div style="display:flex;flex-direction:column;gap:8px"><h3 style="margin:0;font-size:18px;font-weight:600">Style only (swap tokens, same markup)</h3><p style="margin:0;font-size:16px;line-height:1.6;color:#463f39">Buttons (all five), text input, textarea, select, TagInput, CollectionPicker, RevisitPicker, Chip/Tag, AccentDot, FavoriteButton, Dialog, Dropdown, Pagination, Skeleton, Spinner, EmptyState, ErrorState, SkipLink, Sidebar, Rail, mobile header.</p></div>
+    <div style="display:flex;flex-direction:column;gap:10px"><h3 style="margin:0;font-size:18px;font-weight:600">Small structural changes</h3>
+      <ul style="margin:0;padding:0 0 0 20px;display:flex;flex-direction:column;gap:8px;font-size:16px;line-height:1.55;color:#463f39">
+        <li><strong style="color:#2b2622">Today's Echo:</strong> a two-column grid on desktop (≥1128px), with “You wrote” as a side note; it stacks below that.</li>
+        <li><strong style="color:#2b2622">QuoteCard:</strong> a footer row separated by a hairline holds the collection (dot and name) and the heart. Tags sit above it.</li>
+        <li><strong style="color:#2b2622">CollectionCard:</strong> a 4px accent bar along the top edge, with the name always visible beside it.</li>
+        <li><strong style="color:#2b2622">Library grid:</strong> CSS <code>columns</code> masonry instead of a fixed grid, so short and long quotes pack without gaps.</li>
+        <li><strong style="color:#2b2622">Toast:</strong> inverted (ink background, canvas text) instead of a white card.</li>
+        <li><strong style="color:#2b2622">Tabs:</strong> the active tab is marked with a 2px ink underline (inset shadow) instead of a filled background.</li>
+        <li><strong style="color:#2b2622">Bottom tab bar:</strong> the active item gets a neutral pill behind its icon.</li>
+        <li><strong style="color:#2b2622">Quote textarea:</strong> uses the quote serif (<code>font-quote</code>).</li>
+        <li><strong style="color:#2b2622">Search:</strong> matches are highlighted with a <code>&lt;mark&gt;</code> on the ochre tint, with an underline so the highlight isn't colour alone.</li>
+      </ul>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;padding:20px 24px;background:#f5ecda;border-radius:10px"><h3 style="margin:0;font-size:16px;font-weight:600">Please confirm (possible product changes)</h3>
+      <ul style="margin:0;padding:0 0 0 20px;display:flex;flex-direction:column;gap:6px;font-size:15px;line-height:1.55;color:#463f39">
+        <li>Upcoming Revisits rows show <em>Change</em> and <em>Cancel</em>, the same actions as on Echo detail.</li>
+        <li>The Library mobile filter shows 3 tags plus “More tags”, rather than every tag.</li>
+        <li>The Quick Capture footer shows a hint, “Only the words are needed.”, and Save stays disabled until there's a quote.</li>
+        <li>Settings uses an in-page section list (Account, Appearance, Privacy, Data) on desktop.</li>
+      </ul>
+    </div>
+  </section>
+</article>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const map = [
+      ['primary #0e7c6b','primary #2d4a72','Lagoon teal → iron-gall blue. On-primary text ≈8.5:1.'],
+      ['primary-active','primary-active · new primary-hover','Hover gets its own token.'],
+      ['primary-disabled','primary-disabled','Disabled text now muted-soft.'],
+      ['error','error · new error-hover, on-error, error-tint','Danger button and error panel now tokenized.'],
+      ['accent-bronze','mark-ochre',''],
+      ['accent-plum','mark-heather',''],
+      ['(primary used as lagoon mark)','mark-moss','Collection mark decoupled from brand accent.'],
+      ['—','mark-neutral','Neutral slot drawn as a ring.'],
+      ['tint-lagoon','tint-moss','No longer the Today\u2019s Echo fill; Today\u2019s Echo sits on canvas.'],
+      ['tint-bronze','tint-ochre','Revisits panel.'],
+      ['tint-plum','tint-heather','From the past panel.'],
+      ['—','tint-neutral','Neutral collection panel, monograms.'],
+      ['ink / body / muted / muted-soft','same names','Warm values; muted darkened for AA on surface-strong.'],
+      ['hairline / hairline-soft / border-input','same names','Warm values.'],
+      ['canvas / surface-soft / surface-strong','same names','Cream, not white; grain on surface-soft.'],
+      ['Inter','Hanken Grotesk','--font-sans'],
+      ['Newsreader','EB Garamond','--font-quote'],
+      ['radius 4 · 8 · 14 · 20 · 32 · full','2 · 4 · 6 · 10 · full','Buttons/inputs 8→6, cards/dialogs 14→10, chips pill→4.'],
+      ['shadow (single tier)','shadow-1','Warm-tinted; removed from hover cards.'],
+      ['quote-hero 28 / card 20 / compact 17','38 / 23 / 19 · +quote-display 56','Garamond sets smaller per pt, so sizes step up.'],
+      ['display-lg 22 · display-xl 28','28 · 36',''],
+      ['input height 56','52',''],
+      ['—','duration-fast/base/slow, ease-out/in','Motion is now tokenized.']
+    ].map(([a,b,n]) => ({ a, b, n }));
+    return { map };
+  }
+}
+</script>
+</body>
+</html>

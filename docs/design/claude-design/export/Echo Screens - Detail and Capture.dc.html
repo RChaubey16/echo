@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/modernist-94cbaf16-5413-4121-ae7e-7b72c74e10e0/styles.css">
+<script src="_ds/modernist-94cbaf16-5413-4121-ae7e-7b72c74e10e0/_ds_bundle.js"></script>
+<script src="echo-icons.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Hanken+Grotesk:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#d8d2c6}
+h1,h2,h3,h4,blockquote,p{font-family:inherit} h1,h2,h3,h4{letter-spacing:inherit;color:inherit;text-transform:none}
+a{color:var(--primary,#2d4a72);text-underline-offset:3px} a:hover{color:var(--primary-active,#1c3150)}
+[data-theme="dark"]{--primary:#a3bce3;--primary-hover:#b6cbea;--primary-active:#c9d8ef;--primary-disabled:#2b3442;--on-primary:#14202f;--ink:#f0e9de;--body:#d3c9bb;--muted:#a39888;--muted-soft:#6f665b;--hairline:#3a332c;--hairline-soft:#2d2823;--border-input:#857a6c;--canvas:#221e1a;--surface-soft:#1a1714;--surface-strong:#2d2823;--error:#f09a86;--error-hover:#f4ae9d;--on-error:#2a120c;--error-tint:#3a221c;--tint-moss:#262b1d;--tint-ochre:#2e2619;--tint-heather:#2e2129;--tint-neutral:#2a2520;--mark-moss:#a8bf86;--mark-ochre:#d9a55a;--mark-heather:#d39cbd;--mark-neutral:#a39888;--grain:rgba(255,240,220,.025);--shadow-1:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.45);--scrim:rgba(0,0,0,.6)}
+</style>
+</helmet>
+
+<div data-theme="{{ theme }}" style="--primary:#2d4a72;--primary-hover:#253f62;--primary-active:#1c3150;--primary-disabled:#d5dce6;--on-primary:#fbf8f2;--ink:#2b2622;--body:#463f39;--muted:#675e55;--muted-soft:#9a9085;--hairline:#ddd4c4;--hairline-soft:#e8e1d3;--border-input:#8a7f72;--canvas:#fbf8f2;--surface-soft:#f3eee4;--surface-strong:#e9e2d4;--error:#a8301c;--error-hover:#8f2716;--on-error:#fbf8f2;--error-tint:#f7e4dd;--tint-moss:#ecefe0;--tint-ochre:#f5ecda;--tint-heather:#f2e7ec;--tint-neutral:#efe9df;--mark-moss:#56703a;--mark-ochre:#8a5a12;--mark-heather:#74405f;--mark-neutral:#675e55;--grain:rgba(60,40,20,.035);--shadow-1:0 1px 2px rgba(43,38,34,.06),0 8px 24px rgba(43,38,34,.10);--scrim:rgba(43,38,34,.5);--sans:'Hanken Grotesk',system-ui,sans-serif;--quote:'EB Garamond',Georgia,serif;font-family:var(--sans);padding:64px;display:flex;flex-direction:column;gap:56px;background:#d8d2c6">
+
+  <header style="display:flex;flex-direction:column;gap:8px;max-width:900px;color:#2b2622">
+    <div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#5a5249">Echo · Step 3 · Screens 2 of 5</div>
+    <h1 style="margin:0;font-size:40px;font-weight:600;letter-spacing:-.02em">Echo detail &amp; Quick Capture</h1>
+    <p style="margin:0;font-size:16px;line-height:1.5;color:#463f39">Use the <strong>theme</strong> tweak for dark.</p>
+  </header>
+
+  <!-- ===== D1 Detail desktop ===== -->
+  <section id="detail-desktop" data-screen-label="Echo detail desktop" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">D1</span>Echo detail · desktop 1440 · all fields</div>
+    <div style="width:1440px;min-height:1100px;display:flex;background-color:var(--surface-soft);background-image:radial-gradient(var(--grain) 1px,transparent 1px);background-size:3px 3px;color:var(--ink);border-radius:10px;overflow:hidden">
+      <dc-import name="Echo Nav" variant="sidebar" active="library" hint-size="256px,100%" style="align-self:stretch"></dc-import>
+      <main style="flex:1;min-width:0;display:flex;flex-direction:column">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 48px;border-bottom:1px solid var(--hairline-soft)">
+          <span style="display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 12px 0 8px;margin-left:-8px;border-radius:6px;font-size:15px;font-weight:500;color:var(--body)">{{ ic.arrowLeftSm }}Library</span>
+          <div style="display:flex;align-items:center;gap:4px">
+            <span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center;border-radius:999px;color:var(--primary)" aria-label="Favorite, on">{{ ic.heartFill }}</span>
+            <span style="display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 12px;border-radius:6px;font-size:15px;font-weight:500">{{ ic.calSm }}Revisit</span>
+            <span style="display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 12px;border-radius:6px;font-size:15px;font-weight:500">{{ ic.layersSm }}Add to Collection</span>
+            <span style="display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 12px;border-radius:6px;font-size:15px;font-weight:500">{{ ic.editSm }}Edit</span>
+            <span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center;border-radius:999px;color:var(--error)" aria-label="Delete">{{ ic.trash }}</span>
+          </div>
+        </div>
+        <article style="width:100%;max-width:760px;margin:0 auto;padding:88px 32px 96px;box-sizing:border-box;display:flex;flex-direction:column;gap:40px">
+          <div style="display:flex;flex-direction:column;gap:28px">
+            <blockquote style="margin:0;font-family:var(--quote);font-size:48px;line-height:1.2;letter-spacing:-.005em;text-wrap:pretty;overflow-wrap:anywhere;white-space:pre-wrap">“It is never too late to be what you might have been.”</blockquote>
+            <div style="display:flex;align-items:center;gap:14px"><span style="width:32px;height:1px;background:var(--border-input)"></span><span style="font-size:17px;font-weight:600">George Eliot</span></div>
+          </div>
+          <section style="display:flex;flex-direction:column;gap:10px;padding:28px 32px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+            <div style="display:flex;align-items:center;justify-content:space-between"><h2 style="margin:0;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">Reflection</h2><span style="font-size:13px;color:var(--muted)">Mar 4, 2024</span></div>
+            <p style="margin:0;font-size:18px;line-height:1.6;color:var(--body);white-space:pre-wrap;overflow-wrap:anywhere">I was feeling like I'd already wasted too much time.</p>
+          </section>
+          <dl style="margin:0;display:grid;grid-template-columns:140px minmax(0,1fr);gap:18px 24px;font-size:15px">
+            <dt style="color:var(--muted)">Tags</dt><dd style="margin:0;display:flex;flex-wrap:wrap;gap:6px"><span style="font-size:13px;font-weight:500;padding:5px 10px;border-radius:4px;background:var(--surface-strong);color:var(--body)">change</span><span style="font-size:13px;font-weight:500;padding:5px 10px;border-radius:4px;background:var(--surface-strong);color:var(--body)">courage</span></dd>
+            <dt style="color:var(--muted)">Collections</dt><dd style="margin:0;display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:var(--mark-moss)"></span><a href="#" style="color:var(--ink);font-weight:500">Starting Over</a></dd>
+            <dt style="color:var(--muted)">Saved</dt><dd style="margin:0">Mar 4, 2024 <span style="color:var(--muted)">· updated Aug 2</span></dd>
+            <dt style="color:var(--muted)">Revisit</dt><dd style="margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px"><span style="display:inline-flex;align-items:center;gap:8px;font-weight:500"><span style="display:flex;color:var(--mark-ochre)">{{ ic.calSm }}</span>Revisit on Apr 1, 2027</span><span style="display:inline-flex;align-items:center;height:44px;padding:0 10px;border-radius:6px;font-weight:600">Change</span><span style="display:inline-flex;align-items:center;height:44px;padding:0 10px;border-radius:6px;font-weight:600;color:var(--body)">Cancel revisit</span></dd>
+          </dl>
+        </article>
+      </main>
+    </div>
+  </section>
+
+  <!-- ===== D2 First Echo prompt ===== -->
+  <section id="detail-first" data-screen-label="Echo detail first Echo prompt" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">D2</span>Echo detail · just saved the first Echo · quote only</div>
+    <div style="position:relative;width:1440px;height:960px;display:flex;background-color:var(--surface-soft);background-image:radial-gradient(var(--grain) 1px,transparent 1px);background-size:3px 3px;color:var(--ink);border-radius:10px;overflow:hidden">
+      <dc-import name="Echo Nav" variant="sidebar" active="library" hint-size="256px,100%" style="align-self:stretch"></dc-import>
+      <main style="flex:1;min-width:0;display:flex;flex-direction:column">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 48px;border-bottom:1px solid var(--hairline-soft)">
+          <span style="display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 12px 0 8px;margin-left:-8px;font-size:15px;font-weight:500;color:var(--body)">{{ ic.arrowLeftSm }}Library</span>
+          <div style="display:flex;align-items:center;gap:4px">
+            <span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center;color:var(--muted)">{{ ic.heart }}</span>
+            <span style="display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 12px;font-size:15px;font-weight:500">{{ ic.calSm }}Revisit</span>
+            <span style="display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 12px;font-size:15px;font-weight:500">{{ ic.layersSm }}Add to Collection</span>
+            <span style="display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 12px;font-size:15px;font-weight:500">{{ ic.editSm }}Edit</span>
+            <span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center;color:var(--error)">{{ ic.trash }}</span>
+          </div>
+        </div>
+        <article style="width:100%;max-width:760px;margin:0 auto;padding:88px 32px;box-sizing:border-box;display:flex;flex-direction:column;gap:40px">
+          <blockquote style="margin:0;font-family:var(--quote);font-size:48px;line-height:1.2;text-wrap:pretty">“You don't have to have it all figured out before you begin.”</blockquote>
+          <section style="display:flex;flex-direction:column;gap:16px;padding:32px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <h2 style="margin:0;font-size:22px;font-weight:600;letter-spacing:-.01em">Why did this speak to you?</h2>
+              <p style="margin:0;font-size:15px;line-height:1.55;color:var(--body)">A sentence is plenty. Only you will ever read it.</p>
+            </div>
+            <label style="position:absolute;width:1px;height:1px;overflow:hidden">Reflection</label>
+            <div style="min-height:112px;padding:14px 15px;border:2px solid var(--ink);border-radius:6px;font-size:17px;line-height:1.55;box-sizing:border-box;outline:2px solid var(--primary);outline-offset:2px;white-space:pre-wrap">I'm scared to start.<span style="display:inline-block;width:1px;height:20px;background:var(--ink);vertical-align:middle;margin-left:1px"></span></div>
+            <div style="display:flex;gap:12px;align-items:center">
+              <span style="display:inline-flex;align-items:center;height:48px;padding:0 20px;border-radius:6px;background:var(--primary);color:var(--on-primary);font-size:15px;font-weight:600">Save Reflection</span>
+              <span style="display:inline-flex;align-items:center;height:48px;padding:0 14px;border-radius:6px;font-size:15px;font-weight:600">Skip</span>
+            </div>
+          </section>
+          <dl style="margin:0;display:grid;grid-template-columns:140px minmax(0,1fr);gap:18px 24px;font-size:15px">
+            <dt style="color:var(--muted)">Saved</dt><dd style="margin:0">Just now</dd>
+          </dl>
+        </article>
+      </main>
+      <div style="position:absolute;left:50%;bottom:32px;transform:translateX(-50%);margin-left:128px;display:flex;align-items:center;gap:12px;min-height:52px;padding:0 20px;background:var(--ink);color:var(--canvas);border-radius:6px;box-shadow:var(--shadow-1);font-size:15px">Echo saved</div>
+    </div>
+  </section>
+
+  <!-- ===== C1 + C2 Quick Capture desktop ===== -->
+  <div style="display:flex;gap:48px;flex-wrap:wrap;align-items:flex-start">
+  <section id="capture-collapsed" data-screen-label="Quick Capture collapsed" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">C1</span>Quick Capture · collapsed</div>
+    <div style="position:relative;width:1120px;height:820px;background-color:var(--surface-soft);color:var(--ink);border-radius:10px;overflow:hidden;display:flex">
+      <div style="width:256px;flex:none;background:var(--canvas);border-right:1px solid var(--hairline)"></div>
+      <div style="flex:1;padding:48px;display:flex;flex-direction:column;gap:24px"><div style="height:28px;width:280px;border-radius:4px;background:var(--surface-strong)"></div><div style="height:320px;border-radius:10px;background:var(--canvas);border:1px solid var(--hairline)"></div><div style="height:200px;border-radius:10px;background:var(--canvas);border:1px solid var(--hairline)"></div></div>
+      <div style="position:absolute;inset:0;background:var(--scrim);display:flex;align-items:flex-start;justify-content:center;padding-top:120px">
+        <div role="dialog" aria-label="New Echo" style="width:640px;display:flex;flex-direction:column;background:var(--canvas);border-radius:10px;box-shadow:var(--shadow-1)">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 16px 0 28px"><h2 style="margin:0;font-size:20px;font-weight:600">New Echo</h2><span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center;border-radius:999px;color:var(--muted)" aria-label="Close">{{ ic.x }}</span></div>
+          <div style="padding:20px 28px 8px;display:flex;flex-direction:column;gap:6px">
+            <label style="font-size:14px;font-weight:500">Quote</label>
+            <div style="min-height:168px;padding:16px 17px;border:2px solid var(--ink);border-radius:6px;font-family:var(--quote);font-size:23px;line-height:1.42;box-sizing:border-box;outline:2px solid var(--primary);outline-offset:2px;white-space:pre-wrap">Tell me, what is it you plan to do with your one wild and precious life?<span style="display:inline-block;width:1px;height:24px;background:var(--ink);vertical-align:middle;margin-left:1px"></span></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 28px 24px">
+            <span style="display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 10px;margin-left:-10px;border-radius:6px;font-size:15px;font-weight:600">{{ ic.chevRightSm }}More details</span>
+            <div style="display:flex;gap:8px"><span style="display:inline-flex;align-items:center;height:48px;padding:0 16px;border-radius:6px;font-size:15px;font-weight:600">Cancel</span><span style="display:inline-flex;align-items:center;height:48px;padding:0 20px;border-radius:6px;background:var(--primary);color:var(--on-primary);font-size:15px;font-weight:600">Save Echo</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="capture-expanded" data-screen-label="Quick Capture expanded" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">C2</span>Quick Capture · More details open</div>
+    <div style="position:relative;width:1120px;height:1180px;background-color:var(--surface-soft);color:var(--ink);border-radius:10px;overflow:hidden;display:flex">
+      <div style="width:256px;flex:none;background:var(--canvas);border-right:1px solid var(--hairline)"></div>
+      <div style="flex:1"></div>
+      <div style="position:absolute;inset:0;background:var(--scrim);display:flex;align-items:flex-start;justify-content:center;padding-top:48px">
+        <div role="dialog" aria-label="New Echo" style="width:640px;display:flex;flex-direction:column;background:var(--canvas);border-radius:10px;box-shadow:var(--shadow-1)">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 16px 0 28px"><h2 style="margin:0;font-size:20px;font-weight:600">New Echo</h2><span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center;border-radius:999px;color:var(--muted)">{{ ic.x }}</span></div>
+          <div style="padding:20px 28px 0;display:flex;flex-direction:column;gap:20px">
+            <div style="display:flex;flex-direction:column;gap:6px"><label style="font-size:14px;font-weight:500">Quote</label><div style="min-height:120px;padding:16px;border:1px solid var(--border-input);border-radius:6px;font-family:var(--quote);font-size:23px;line-height:1.42;box-sizing:border-box">Tell me, what is it you plan to do with your one wild and precious life?</div></div>
+            <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 10px;margin:-8px 0 -8px -10px;font-size:15px;font-weight:600">{{ ic.chevDownSm }}Fewer details</span>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div style="display:flex;flex-direction:column;gap:6px"><label style="font-size:14px;font-weight:500">Author</label><div style="height:52px;display:flex;align-items:center;padding:0 16px;border:1px solid var(--border-input);border-radius:6px;font-size:16px;box-sizing:border-box">Mary Oliver</div></div>
+              <div style="display:flex;flex-direction:column;gap:6px"><label style="font-size:14px;font-weight:500">Source</label><div style="height:52px;display:flex;align-items:center;padding:0 16px;border:1px solid var(--border-input);border-radius:6px;font-size:16px;box-sizing:border-box">The Summer Day</div></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px"><label style="font-size:14px;font-weight:500">Reflection</label><div style="min-height:92px;padding:14px 16px;border:1px solid var(--border-input);border-radius:6px;font-size:16px;line-height:1.55;color:var(--muted);box-sizing:border-box">Why did this speak to you?</div></div>
+            <div style="display:grid;grid-template-columns:1fr 2fr;gap:16px">
+              <div style="display:flex;flex-direction:column;gap:6px"><label style="font-size:14px;font-weight:500">Mood</label><div style="height:52px;display:flex;align-items:center;padding:0 16px;border:1px solid var(--border-input);border-radius:6px;font-size:16px;color:var(--muted);box-sizing:border-box">e.g. hopeful</div></div>
+              <div style="display:flex;flex-direction:column;gap:6px"><label style="font-size:14px;font-weight:500">Tags</label><div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:52px;padding:8px;border:1px solid var(--border-input);border-radius:6px;box-sizing:border-box"><span style="display:inline-flex;align-items:center;gap:2px;height:32px;padding:0 4px 0 10px;border-radius:4px;background:var(--surface-strong);font-size:14px;font-weight:500;color:var(--body)">wonder<span style="display:flex;width:24px;height:24px;align-items:center;justify-content:center;color:var(--muted)">{{ ic.xSm }}</span></span><span style="font-size:15px;color:var(--muted);padding-left:4px">Add a tag</span></div></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px"><label style="font-size:14px;font-weight:500">Collections</label>
+              <div style="display:flex;flex-wrap:wrap;gap:8px">
+                <span style="display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 6px 0 12px;border-radius:6px;border:1px solid var(--border-input);font-size:14px;font-weight:500;box-sizing:border-box"><span style="width:8px;height:8px;border-radius:50%;background:var(--mark-moss)"></span>Things I Want to Remember<span style="display:flex;width:28px;height:28px;align-items:center;justify-content:center;color:var(--muted)">{{ ic.xSm }}</span></span>
+                <span style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 12px;border-radius:6px;font-size:14px;font-weight:600;color:var(--primary)">{{ ic.plusSm }}Add to Collection</span>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px"><label style="font-size:14px;font-weight:500">Revisit</label>
+              <div style="display:flex;flex-wrap:wrap;gap:8px">
+                <span style="display:inline-flex;align-items:center;height:44px;padding:0 14px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;font-weight:500;box-sizing:border-box">In 1 month</span>
+                <span style="display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 14px;border:2px solid var(--ink);background:var(--surface-strong);border-radius:6px;font-size:15px;font-weight:600;box-sizing:border-box">{{ ic.checkSm }}In 6 months</span>
+                <span style="display:inline-flex;align-items:center;height:44px;padding:0 14px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;font-weight:500;box-sizing:border-box">In 1 year</span>
+                <span style="display:inline-flex;align-items:center;height:44px;padding:0 14px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;font-weight:500;box-sizing:border-box">Pick a date</span>
+              </div>
+              <span style="font-size:13px;color:var(--muted)">We'll bring it back on Apr 4, 2027.</span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:20px 28px 24px;margin-top:24px;border-top:1px solid var(--hairline-soft)">
+            <span style="display:inline-flex;align-items:center;height:48px;padding:0 16px;border-radius:6px;font-size:15px;font-weight:600">Cancel</span><span style="display:inline-flex;align-items:center;height:48px;padding:0 20px;border-radius:6px;background:var(--primary);color:var(--on-primary);font-size:15px;font-weight:600">Save Echo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <!-- ===== Mobile ===== -->
+  <div style="display:flex;gap:48px;flex-wrap:wrap;align-items:flex-start">
+  <section id="detail-mobile" data-screen-label="Echo detail mobile Rilke" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">D3</span>Echo detail · mobile · long passage</div>
+    <div style="width:390px;display:flex;flex-direction:column;background-color:var(--surface-soft);background-image:radial-gradient(var(--grain) 1px,transparent 1px);background-size:3px 3px;color:var(--ink);border-radius:10px;overflow:hidden">
+      <div style="height:64px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 8px;background:var(--canvas);border-bottom:1px solid var(--hairline)">
+        <span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center" aria-label="Back">{{ ic.arrowLeft }}</span>
+        <div style="display:flex"><span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center;color:var(--muted)">{{ ic.heart }}</span><span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center">{{ ic.editSm }}</span><span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center" aria-label="More actions">{{ ic.more }}</span></div>
+      </div>
+      <article style="padding:40px 24px 48px;display:flex;flex-direction:column;gap:28px">
+        <blockquote style="margin:0;font-family:var(--quote);font-size:24px;line-height:1.38;white-space:pre-wrap;overflow-wrap:anywhere">{{ rilke }}</blockquote>
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="display:flex;align-items:center;gap:12px"><span style="width:24px;height:1px;background:var(--border-input)"></span><span style="font-size:16px;font-weight:600">Rainer Maria Rilke</span></div><span style="font-size:14px;color:var(--muted);padding-left:36px">Letters to a Young Poet</span></div>
+        <div style="display:flex;flex-direction:column;gap:12px;padding:20px;background:var(--tint-ochre);border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600"><span style="display:flex;color:var(--mark-ochre)">{{ ic.calSm }}</span>Revisit due today</div>
+          <span style="display:flex;align-items:center;justify-content:center;gap:6px;height:48px;border-radius:6px;background:var(--canvas);border:1px solid var(--border-input);font-size:15px;font-weight:600;box-sizing:border-box">{{ ic.checkSm }}Mark as reflected</span>
+        </div>
+        <dl style="margin:0;display:grid;grid-template-columns:96px minmax(0,1fr);gap:14px 16px;font-size:15px">
+          <dt style="color:var(--muted)">Saved</dt><dd style="margin:0">Apr 4, 2026</dd>
+          <dt style="color:var(--muted)">Collections</dt><dd style="margin:0;color:var(--body)">None yet · <a href="#">Add</a></dd>
+        </dl>
+      </article>
+    </div>
+  </section>
+
+  <section id="capture-sheet" data-screen-label="Quick Capture mobile sheet" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">C3</span>Quick Capture · mobile bottom sheet</div>
+    <div style="position:relative;width:390px;height:844px;background:var(--surface-soft);color:var(--ink);border-radius:10px;overflow:hidden">
+      <div style="height:64px;background:var(--canvas);border-bottom:1px solid var(--hairline)"></div>
+      <div style="position:absolute;inset:0;background:var(--scrim)"></div>
+      <div role="dialog" aria-label="New Echo" style="position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;background:var(--canvas);border-radius:10px 10px 0 0;box-shadow:var(--shadow-1)">
+        <div style="display:flex;justify-content:center;padding-top:8px"><span style="width:36px;height:4px;border-radius:2px;background:var(--hairline)"></span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 8px 0 20px"><h2 style="margin:0;font-size:18px;font-weight:600">New Echo</h2><span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center;color:var(--muted)">{{ ic.x }}</span></div>
+        <div style="padding:12px 20px 0;display:flex;flex-direction:column;gap:6px"><label style="font-size:14px;font-weight:500">Quote</label><div style="min-height:152px;padding:14px 15px;border:2px solid var(--ink);border-radius:6px;font-family:var(--quote);font-size:21px;line-height:1.42;box-sizing:border-box;color:var(--muted);outline:2px solid var(--primary);outline-offset:2px">Paste or type the words…</div></div>
+        <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 10px;margin:8px 10px 0;font-size:15px;font-weight:600">{{ ic.chevRightSm }}More details</span>
+        <div style="padding:12px 20px 28px;display:flex;flex-direction:column;gap:8px"><span style="display:flex;align-items:center;justify-content:center;height:48px;border-radius:6px;background:var(--primary-disabled);color:var(--muted-soft);font-size:15px;font-weight:600">Save Echo</span><span style="font-size:13px;color:var(--muted);text-align:center">Only the words are needed.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="capture-sheet-expanded" data-screen-label="Quick Capture mobile expanded" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">C4</span>Mobile sheet · More details (scrolls, footer pinned)</div>
+    <div style="position:relative;width:390px;height:844px;background:var(--surface-soft);color:var(--ink);border-radius:10px;overflow:hidden">
+      <div style="position:absolute;inset:0;background:var(--scrim)"></div>
+      <div role="dialog" aria-label="New Echo" style="position:absolute;left:0;right:0;bottom:0;top:40px;display:flex;flex-direction:column;background:var(--canvas);border-radius:10px 10px 0 0">
+        <div style="display:flex;justify-content:center;padding-top:8px"><span style="width:36px;height:4px;border-radius:2px;background:var(--hairline)"></span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 8px 8px 20px;border-bottom:1px solid var(--hairline-soft)"><h2 style="margin:0;font-size:18px;font-weight:600">New Echo</h2><span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center;color:var(--muted)">{{ ic.x }}</span></div>
+        <div style="flex:1;overflow:hidden;padding:16px 20px;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;flex-direction:column;gap:6px"><label style="font-size:14px;font-weight:500">Quote</label><div style="padding:14px 16px;border:1px solid var(--border-input);border-radius:6px;font-family:var(--quote);font-size:21px;line-height:1.42">Begin anywhere.</div></div>
+          <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;height:44px;margin:-8px 0 -8px -10px;padding:0 10px;font-size:15px;font-weight:600">{{ ic.chevDownSm }}Fewer details</span>
+          <div style="display:flex;flex-direction:column;gap:6px"><label style="font-size:14px;font-weight:500">Author</label><div style="height:52px;display:flex;align-items:center;padding:0 16px;border:1px solid var(--border-input);border-radius:6px;font-size:16px;box-sizing:border-box">John Cage</div></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><label style="font-size:14px;font-weight:500">Source</label><div style="height:52px;display:flex;align-items:center;padding:0 16px;border:1px solid var(--border-input);border-radius:6px;font-size:16px;color:var(--muted);box-sizing:border-box">Book, film, person…</div></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><label style="font-size:14px;font-weight:500">Reflection</label><div style="min-height:92px;padding:14px 16px;border:1px solid var(--border-input);border-radius:6px;font-size:16px;line-height:1.55;box-sizing:border-box">Maybe I should finally start.</div></div>
+          <div style="display:flex;flex-direction:column;gap:8px"><label style="font-size:14px;font-weight:500">Revisit</label><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><span style="display:flex;align-items:center;height:44px;padding:0 12px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;box-sizing:border-box">In 1 month</span><span style="display:flex;align-items:center;height:44px;padding:0 12px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;box-sizing:border-box">In 6 months</span></div></div>
+        </div>
+        <div style="padding:12px 20px 24px;border-top:1px solid var(--hairline-soft)"><span style="display:flex;align-items:center;justify-content:center;height:48px;border-radius:6px;background:var(--primary);color:var(--on-primary);font-size:15px;font-weight:600">Save Echo</span></div>
+      </div>
+    </div>
+  </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;'light' | 'dark'&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() { if (!window.EchoIcons) { this._l = () => this.forceUpdate(); window.addEventListener('echo-icons', this._l); } }
+  componentWillUnmount() { if (this._l) window.removeEventListener('echo-icons', this._l); }
+  renderVals() {
+    const ic = window.EchoIcons ? window.EchoIcons(React) : {};
+    const rilke = '“…I would like to beg you, dear Sir, as well as I can, to have patience with everything unresolved in your heart and to try to love the questions themselves as if they were locked rooms or books written in a very foreign language.\n\nDon\u2019t search for the answers, which could not be given to you now, because you would not be able to live them. And the point is, to live everything. Live the questions now. Perhaps then, someday far in the future, you will gradually, without even noticing it, live your way into the answer.”';
+    return { theme: this.props.theme === 'dark' ? 'dark' : 'light', ic, rilke };
+  }
+}
+</script>
+</body>
+</html>

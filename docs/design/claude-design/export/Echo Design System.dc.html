@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/modernist-94cbaf16-5413-4121-ae7e-7b72c74e10e0/styles.css">
+<script src="_ds/modernist-94cbaf16-5413-4121-ae7e-7b72c74e10e0/_ds_bundle.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Hanken+Grotesk:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#f3eee4}
+h1,h2,h3,h4,blockquote,p{font-family:inherit} h1,h2,h3,h4{letter-spacing:inherit;color:inherit;text-transform:none}
+a{color:#2d4a72;text-underline-offset:3px} a:hover{color:#1c3150}
+[data-theme="dark"]{--primary:#a3bce3;--primary-hover:#b6cbea;--primary-active:#c9d8ef;--primary-disabled:#2b3442;--on-primary:#14202f;--ink:#f0e9de;--body:#d3c9bb;--muted:#a39888;--muted-soft:#6f665b;--hairline:#3a332c;--hairline-soft:#2d2823;--border-input:#857a6c;--canvas:#221e1a;--surface-soft:#1a1714;--surface-strong:#2d2823;--error:#f09a86;--error-hover:#f4ae9d;--on-error:#2a120c;--error-tint:#3a221c;--tint-moss:#262b1d;--tint-ochre:#2e2619;--tint-heather:#2e2129;--tint-neutral:#2a2520;--mark-moss:#a8bf86;--mark-ochre:#d9a55a;--mark-heather:#d39cbd;--mark-neutral:#a39888;--grain:rgba(255,240,220,.025);--shadow-1:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.45);--scrim:rgba(0,0,0,.6)}
+[data-theme="dark"] a{color:#a3bce3}
+</style>
+</helmet>
+
+<div data-theme="{{ theme }}" style="--primary:#2d4a72;--primary-hover:#253f62;--primary-active:#1c3150;--primary-disabled:#d5dce6;--on-primary:#fbf8f2;--ink:#2b2622;--body:#463f39;--muted:#675e55;--muted-soft:#9a9085;--hairline:#ddd4c4;--hairline-soft:#e8e1d3;--border-input:#8a7f72;--canvas:#fbf8f2;--surface-soft:#f3eee4;--surface-strong:#e9e2d4;--error:#a8301c;--error-hover:#8f2716;--on-error:#fbf8f2;--error-tint:#f7e4dd;--tint-moss:#ecefe0;--tint-ochre:#f5ecda;--tint-heather:#f2e7ec;--tint-neutral:#efe9df;--mark-moss:#56703a;--mark-ochre:#8a5a12;--mark-heather:#74405f;--mark-neutral:#675e55;--grain:rgba(60,40,20,.035);--shadow-1:0 1px 2px rgba(43,38,34,.06),0 8px 24px rgba(43,38,34,.10);--scrim:rgba(43,38,34,.5);--sans:'Hanken Grotesk',system-ui,sans-serif;--quote:'EB Garamond',Georgia,serif;background-color:var(--surface-soft);background-image:radial-gradient(var(--grain) 1px,transparent 1px);background-size:3px 3px;color:var(--ink);font-family:var(--sans);min-height:100vh">
+<div style="max-width:1200px;margin:0 auto;padding:64px 32px 120px;display:flex;flex-direction:column;gap:72px">
+
+  <header data-screen-label="Cover" style="display:flex;flex-direction:column;gap:12px;max-width:760px">
+    <div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">Echo · Step 2 of 3 · Inkwell</div>
+    <h1 style="margin:0;font-size:44px;font-weight:600;letter-spacing:-.02em;line-height:1.1">Design system</h1>
+    <p style="margin:0;font-size:17px;line-height:1.55;color:var(--body);text-wrap:pretty">Tokens, type, shape, motion, contrast and every component state. Flip the whole sheet to dark with the <strong>theme</strong> tweak — the markup reads only semantic variables, exactly as it will in Tailwind.</p>
+    <nav style="display:flex;flex-wrap:wrap;gap:8px 20px;font-size:14px;padding-top:8px;white-space:nowrap">
+      <a href="#tokens">Tokens</a><a href="#type">Type</a><a href="#shape">Shape &amp; motion</a><a href="#contrast">Contrast</a><a href="#buttons">Buttons</a><a href="#forms">Forms</a><a href="#pickers">Pickers</a><a href="#echo">Echo views</a><a href="#overlays">Overlays &amp; nav</a><a href="#states">States</a><a href="#shell">App shell</a>
+    </nav>
+  </header>
+
+  <section id="tokens" data-screen-label="Tokens" style="display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--hairline);padding-top:24px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">01</div>
+      <h2 style="margin:0;font-size:28px;font-weight:600;letter-spacing:-.01em">Color tokens</h2>
+      <p style="margin:0;font-size:15px;line-height:1.55;color:var(--body);max-width:680px">Baseline names kept. Slots <code>lagoon / bronze / plum / neutral</code> become <code>moss / ochre / heather / neutral</code>. Swatches show the active theme.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px">
+      <sc-for list="{{ swatches }}" as="s" hint-placeholder-count="27">
+        <div style="display:flex;flex-direction:column;gap:8px;padding:10px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+          <div style="height:56px;border-radius:6px;border:1px solid var(--hairline-soft);background:{{ s.css }}"></div>
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <div style="font-size:13px;font-weight:600">{{ s.name }}</div>
+            <div style="font-size:12px;color:var(--muted)">{{ s.hex }}</div>
+            <div style="font-size:12px;line-height:1.4;color:var(--body)">{{ s.role }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:16px">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:13px;font-weight:600">tokens.css — :root + dark</div>
+        <pre style="margin:0;padding:20px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px;font:12px/1.6 ui-monospace,Menlo,monospace;color:var(--body);white-space:pre-wrap;overflow-wrap:anywhere;max-height:520px;overflow:auto">{{ cssRoot }}</pre>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:13px;font-weight:600">app.css — Tailwind v4</div>
+        <pre style="margin:0;padding:20px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px;font:12px/1.6 ui-monospace,Menlo,monospace;color:var(--body);white-space:pre-wrap;overflow-wrap:anywhere;max-height:520px;overflow:auto">{{ cssTheme }}</pre>
+      </div>
+    </div>
+  </section>
+
+  <section id="type" data-screen-label="Type" style="display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--hairline);padding-top:24px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">02</div>
+      <h2 style="margin:0;font-size:28px;font-weight:600;letter-spacing:-.01em">Type scale</h2>
+      <p style="margin:0;font-size:15px;line-height:1.55;color:var(--body);max-width:680px">EB Garamond for quotes only (the landing tagline counts as one). Hanken Grotesk for everything else, including the wordmark. Quote sizes step down below 744px.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+      <div style="display:grid;grid-template-columns:minmax(140px,180px) minmax(0,1fr);gap:24px;padding:24px;border-bottom:1px solid var(--hairline)"><div style="font-size:13px;line-height:1.5;color:var(--muted)"><strong style="color:var(--ink)">quote-display</strong><br>56/1.1 · mobile 40<br>Landing hero only</div><div style="font-family:var(--quote);font-size:56px;line-height:1.1">Words worth coming back to.</div></div>
+      <div style="display:grid;grid-template-columns:minmax(140px,180px) minmax(0,1fr);gap:24px;padding:24px;border-bottom:1px solid var(--hairline)"><div style="font-size:13px;line-height:1.5;color:var(--muted)"><strong style="color:var(--ink)">quote-hero</strong><br>38/1.28 · mobile 26/1.32<br>Today's Echo, detail</div><div style="font-family:var(--quote);font-size:38px;line-height:1.28">“It is never too late to be what you might have been.”</div></div>
+      <div style="display:grid;grid-template-columns:minmax(140px,180px) minmax(0,1fr);gap:24px;padding:24px;border-bottom:1px solid var(--hairline)"><div style="font-size:13px;line-height:1.5;color:var(--muted)"><strong style="color:var(--ink)">quote-card</strong><br>23/1.42 · mobile 21<br>QuoteCard</div><div style="font-family:var(--quote);font-size:23px;line-height:1.42">“Tell me, what is it you plan to do with your one wild and precious life?”</div></div>
+      <div style="display:grid;grid-template-columns:minmax(140px,180px) minmax(0,1fr);gap:24px;padding:24px;border-bottom:1px solid var(--hairline)"><div style="font-size:13px;line-height:1.5;color:var(--muted)"><strong style="color:var(--ink)">quote-compact</strong><br>19/1.42<br>Rows, pickers, search</div><div style="font-family:var(--quote);font-size:19px;line-height:1.42">“Begin anywhere.”</div></div>
+      <div style="display:grid;grid-template-columns:minmax(140px,180px) minmax(0,1fr);gap:24px;padding:18px 24px;border-bottom:1px solid var(--hairline-soft)"><div style="font-size:13px;color:var(--muted)"><strong style="color:var(--ink)">display-xl</strong> 36/1.15 · 600</div><div style="font-size:36px;line-height:1.15;font-weight:600;letter-spacing:-.02em">Private by design</div></div>
+      <div style="display:grid;grid-template-columns:minmax(140px,180px) minmax(0,1fr);gap:24px;padding:18px 24px;border-bottom:1px solid var(--hairline-soft)"><div style="font-size:13px;color:var(--muted)"><strong style="color:var(--ink)">display-lg</strong> 28/1.2 · 600</div><div style="font-size:28px;line-height:1.2;font-weight:600;letter-spacing:-.01em">Good evening, Ana</div></div>
+      <div style="display:grid;grid-template-columns:minmax(140px,180px) minmax(0,1fr);gap:24px;padding:18px 24px;border-bottom:1px solid var(--hairline-soft)"><div style="font-size:13px;color:var(--muted)"><strong style="color:var(--ink)">display-sm</strong> 20/1.3 · 600</div><div style="font-size:20px;line-height:1.3;font-weight:600">Recently added</div></div>
+      <div style="display:grid;grid-template-columns:minmax(140px,180px) minmax(0,1fr);gap:24px;padding:18px 24px;border-bottom:1px solid var(--hairline-soft)"><div style="font-size:13px;color:var(--muted)"><strong style="color:var(--ink)">title-md</strong> 16/1.35 · 600</div><div style="font-size:16px;line-height:1.35;font-weight:600">Starting Over</div></div>
+      <div style="display:grid;grid-template-columns:minmax(140px,180px) minmax(0,1fr);gap:24px;padding:18px 24px;border-bottom:1px solid var(--hairline-soft)"><div style="font-size:13px;color:var(--muted)"><strong style="color:var(--ink)">body-md</strong> 16/1.55 · 400</div><div style="font-size:16px;line-height:1.55;color:var(--body)">I was feeling like I'd already wasted too much time.</div></div>
+      <div style="display:grid;grid-template-columns:minmax(140px,180px) minmax(0,1fr);gap:24px;padding:18px 24px;border-bottom:1px solid var(--hairline-soft)"><div style="font-size:13px;color:var(--muted)"><strong style="color:var(--ink)">body-sm</strong> 14/1.5 · 400</div><div style="font-size:14px;line-height:1.5;color:var(--muted)">Saved Mar 4, 2024 · updated yesterday</div></div>
+      <div style="display:grid;grid-template-columns:minmax(140px,180px) minmax(0,1fr);gap:24px;padding:18px 24px;border-bottom:1px solid var(--hairline-soft)"><div style="font-size:13px;color:var(--muted)"><strong style="color:var(--ink)">caption</strong> 14/1.4 · 500</div><div style="font-size:14px;line-height:1.4;font-weight:500">Author</div></div>
+      <div style="display:grid;grid-template-columns:minmax(140px,180px) minmax(0,1fr);gap:24px;padding:18px 24px;border-bottom:1px solid var(--hairline-soft)"><div style="font-size:13px;color:var(--muted)"><strong style="color:var(--ink)">caption-sm</strong> 13/1.4 · 400</div><div style="font-size:13px;line-height:1.4;color:var(--muted)">9,940 / 10,000</div></div>
+      <div style="display:grid;grid-template-columns:minmax(140px,180px) minmax(0,1fr);gap:24px;padding:18px 24px"><div style="font-size:13px;line-height:1.5;color:var(--muted)"><strong style="color:var(--ink)">label</strong> 12 · 600 · caps +6%<br><strong style="color:var(--ink)">badge</strong> 12 · 500</div><div style="display:flex;gap:16px;align-items:center"><span style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">You wrote</span><span style="font-size:12px;font-weight:500;padding:4px 8px;border-radius:4px;background:var(--surface-strong);color:var(--body)">starting-over</span></div></div>
+    </div>
+  </section>
+
+  <section id="shape" data-screen-label="Shape and motion" style="display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--hairline);padding-top:24px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">03</div>
+      <h2 style="margin:0;font-size:28px;font-weight:600;letter-spacing:-.01em">Radius, spacing, elevation, motion</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px">
+      <div style="display:flex;flex-direction:column;gap:16px;padding:24px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+        <div style="font-size:16px;font-weight:600">Radius</div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;font-size:12px;line-height:1.4;color:var(--muted)">
+          <div style="display:grid;gap:6px"><div style="height:44px;background:var(--surface-strong);border-radius:2px"></div>xs 2<br>tags</div>
+          <div style="display:grid;gap:6px"><div style="height:44px;background:var(--surface-strong);border-radius:4px"></div>sm 4<br>chips</div>
+          <div style="display:grid;gap:6px"><div style="height:44px;background:var(--surface-strong);border-radius:6px"></div>md 6<br>controls</div>
+          <div style="display:grid;gap:6px"><div style="height:44px;background:var(--surface-strong);border-radius:10px"></div>lg 10<br>panels</div>
+          <div style="display:grid;gap:6px"><div style="height:44px;width:44px;background:var(--surface-strong);border-radius:999px"></div>full<br>icon btn</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;padding:24px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+        <div style="font-size:16px;font-weight:600">Spacing · 4px base</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--muted)">
+          <div style="display:flex;align-items:center;gap:10px"><span style="width:44px">1 · 4</span><span style="height:8px;width:4px;background:var(--mark-moss)"></span></div>
+          <div style="display:flex;align-items:center;gap:10px"><span style="width:44px">2 · 8</span><span style="height:8px;width:8px;background:var(--mark-moss)"></span></div>
+          <div style="display:flex;align-items:center;gap:10px"><span style="width:44px">3 · 12</span><span style="height:8px;width:12px;background:var(--mark-moss)"></span></div>
+          <div style="display:flex;align-items:center;gap:10px"><span style="width:44px">4 · 16</span><span style="height:8px;width:16px;background:var(--mark-moss)"></span></div>
+          <div style="display:flex;align-items:center;gap:10px"><span style="width:44px">6 · 24</span><span style="height:8px;width:24px;background:var(--mark-moss)"></span></div>
+          <div style="display:flex;align-items:center;gap:10px"><span style="width:44px">8 · 32</span><span style="height:8px;width:32px;background:var(--mark-moss)"></span></div>
+          <div style="display:flex;align-items:center;gap:10px"><span style="width:44px">12 · 48</span><span style="height:8px;width:48px;background:var(--mark-moss)"></span></div>
+          <div style="display:flex;align-items:center;gap:10px"><span style="width:44px">16 · 64</span><span style="height:8px;width:64px;background:var(--mark-moss)"></span></div>
+          <div style="display:flex;align-items:center;gap:10px"><span style="width:44px">24 · 96</span><span style="height:8px;width:96px;background:var(--mark-moss)"></span></div>
+        </div>
+        <div style="font-size:13px;line-height:1.5;color:var(--body)">Reading column 680 · app content 1120 · gutter 32, mobile 20.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;padding:24px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+        <div style="font-size:16px;font-weight:600">Elevation · one tier</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:12px;line-height:1.4;color:var(--muted)">
+          <div style="display:grid;gap:6px"><div style="height:64px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px"></div>Flat · panels, cards</div>
+          <div style="display:grid;gap:6px"><div style="height:64px;background:var(--canvas);border-radius:10px;box-shadow:var(--shadow-1)"></div>shadow-1 · dialog, menu, toast</div>
+        </div>
+        <div style="font-size:13px;line-height:1.5;color:var(--body)">Cards never lift on hover; their border darkens to <code>border-input</code>.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;padding:24px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+        <div style="font-size:16px;font-weight:600">Motion</div>
+        <div style="display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:13px;line-height:1.45;color:var(--body)">
+          <strong style="color:var(--ink)">fast 150</strong><span>hover, press, chip toggle</span>
+          <strong style="color:var(--ink)">base 200</strong><span>dialog, menu, toast in</span>
+          <strong style="color:var(--ink)">slow 250</strong><span>Echo me something swap</span>
+          <strong style="color:var(--ink)">ease-out</strong><span>(.2, 0, 0, 1) entering</span>
+          <strong style="color:var(--ink)">ease-in</strong><span>(.4, 0, 1, 1) leaving</span>
+        </div>
+        <div style="font-size:13px;line-height:1.5;color:var(--body);padding-top:8px;border-top:1px solid var(--hairline-soft)"><strong style="color:var(--ink)">Reduced motion:</strong> no movement; swap and dialogs become a 150ms opacity cross-fade.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contrast" data-screen-label="Contrast" style="display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--hairline);padding-top:24px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">04</div>
+      <h2 style="margin:0;font-size:28px;font-weight:600;letter-spacing:-.01em">Contrast checks · WCAG 2.2 AA</h2>
+      <p style="margin:0;font-size:15px;line-height:1.55;color:var(--body);max-width:680px">Computed live from the token values. Text needs 4.5:1; marks, input borders and focus rings need 3:1. <code>muted-soft</code> and <code>primary-disabled</code> are disabled-only and exempt.</p>
+    </div>
+    <div style="background:var(--canvas);border:1px solid var(--hairline);border-radius:10px;overflow:auto">
+      <div style="display:grid;grid-template-columns:minmax(240px,2fr) repeat(4,minmax(80px,1fr));min-width:640px">
+        <div style="padding:12px 20px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--hairline)">Text / background</div>
+        <div style="padding:12px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--hairline)">Need</div>
+        <div style="padding:12px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--hairline)">Light</div>
+        <div style="padding:12px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--hairline)">Dark</div>
+        <div style="padding:12px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--hairline)">Result</div>
+        <sc-for list="{{ contrast }}" as="c" hint-placeholder-count="35">
+          <div style="padding:9px 20px;font-size:14px;border-bottom:1px solid var(--hairline-soft)">{{ c.label }}</div>
+          <div style="padding:9px 12px;font-size:14px;color:var(--muted);border-bottom:1px solid var(--hairline-soft)">{{ c.min }}</div>
+          <div style="padding:9px 12px;font-size:14px;font-variant-numeric:tabular-nums;border-bottom:1px solid var(--hairline-soft)">{{ c.l }}</div>
+          <div style="padding:9px 12px;font-size:14px;font-variant-numeric:tabular-nums;border-bottom:1px solid var(--hairline-soft)">{{ c.d }}</div>
+          <div style="padding:9px 12px;font-size:14px;font-weight:600;border-bottom:1px solid var(--hairline-soft)">{{ c.ok }}</div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section id="buttons" data-screen-label="Buttons" style="display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--hairline);padding-top:24px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">05</div>
+      <h2 style="margin:0;font-size:28px;font-weight:600;letter-spacing:-.01em">Buttons</h2>
+      <p style="margin:0;font-size:15px;line-height:1.55;color:var(--body);max-width:680px">md 48px, sm 40px with a 44px hit area. Focus is always a 2px ring offset 2px. Buttons carry no error state; errors sit beside the form or in a toast.</p>
+    </div>
+    <div style="background:var(--canvas);border:1px solid var(--hairline);border-radius:10px;padding:24px;overflow:auto">
+      <div style="display:grid;grid-template-columns:100px repeat(6,minmax(140px,1fr));gap:20px 16px;align-items:center;min-width:1000px;font-size:12px;color:var(--muted)">
+        <div></div><div>Default</div><div>Hover</div><div>Focus-visible</div><div>Active</div><div>Disabled</div><div>Loading</div>
+
+        <div style="font-weight:600;color:var(--ink)">Primary</div>
+        <span style="display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 20px;justify-self:start;border-radius:6px;background:var(--primary);color:var(--on-primary);font-size:15px;font-weight:600">Save Echo</span>
+        <span style="display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 20px;justify-self:start;border-radius:6px;background:var(--primary-hover);color:var(--on-primary);font-size:15px;font-weight:600">Save Echo</span>
+        <span style="display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 20px;justify-self:start;border-radius:6px;background:var(--primary);color:var(--on-primary);font-size:15px;font-weight:600;outline:2px solid var(--primary);outline-offset:2px">Save Echo</span>
+        <span style="display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 20px;justify-self:start;border-radius:6px;background:var(--primary-active);color:var(--on-primary);font-size:15px;font-weight:600">Save Echo</span>
+        <span style="display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 20px;justify-self:start;border-radius:6px;background:var(--primary-disabled);color:var(--muted-soft);font-size:15px;font-weight:600">Save Echo</span>
+        <span style="display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 20px;justify-self:start;border-radius:6px;background:var(--primary);color:var(--on-primary);font-size:15px;font-weight:600"><span style="width:16px;height:16px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;box-sizing:border-box"></span>Saving…</span>
+
+        <div style="font-weight:600;color:var(--ink)">Secondary</div>
+        <span style="display:inline-flex;align-items:center;height:48px;padding:0 20px;justify-self:start;border-radius:6px;border:1px solid var(--border-input);color:var(--ink);font-size:15px;font-weight:600;box-sizing:border-box">Open</span>
+        <span style="display:inline-flex;align-items:center;height:48px;padding:0 20px;justify-self:start;border-radius:6px;border:1px solid var(--ink);background:var(--surface-strong);color:var(--ink);font-size:15px;font-weight:600;box-sizing:border-box">Open</span>
+        <span style="display:inline-flex;align-items:center;height:48px;padding:0 20px;justify-self:start;border-radius:6px;border:1px solid var(--border-input);color:var(--ink);font-size:15px;font-weight:600;box-sizing:border-box;outline:2px solid var(--primary);outline-offset:2px">Open</span>
+        <span style="display:inline-flex;align-items:center;height:48px;padding:0 20px;justify-self:start;border-radius:6px;border:1px solid var(--ink);background:var(--hairline);color:var(--ink);font-size:15px;font-weight:600;box-sizing:border-box">Open</span>
+        <span style="display:inline-flex;align-items:center;height:48px;padding:0 20px;justify-self:start;border-radius:6px;border:1px solid var(--hairline);color:var(--muted-soft);font-size:15px;font-weight:600;box-sizing:border-box">Open</span>
+        <span style="display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 20px;justify-self:start;border-radius:6px;border:1px solid var(--border-input);color:var(--ink);font-size:15px;font-weight:600;box-sizing:border-box"><span style="width:16px;height:16px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;box-sizing:border-box"></span>Exporting…</span>
+
+        <div style="font-weight:600;color:var(--ink)">Tertiary</div>
+        <span style="display:inline-flex;align-items:center;height:44px;padding:0 12px;justify-self:start;border-radius:6px;color:var(--ink);font-size:15px;font-weight:600">Skip</span>
+        <span style="display:inline-flex;align-items:center;height:44px;padding:0 12px;justify-self:start;border-radius:6px;background:var(--surface-strong);color:var(--ink);font-size:15px;font-weight:600">Skip</span>
+        <span style="display:inline-flex;align-items:center;height:44px;padding:0 12px;justify-self:start;border-radius:6px;color:var(--ink);font-size:15px;font-weight:600;outline:2px solid var(--primary);outline-offset:2px">Skip</span>
+        <span style="display:inline-flex;align-items:center;height:44px;padding:0 12px;justify-self:start;border-radius:6px;background:var(--hairline);color:var(--ink);font-size:15px;font-weight:600">Skip</span>
+        <span style="display:inline-flex;align-items:center;height:44px;padding:0 12px;justify-self:start;border-radius:6px;color:var(--muted-soft);font-size:15px;font-weight:600">Skip</span>
+        <span style="display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 12px;justify-self:start;border-radius:6px;color:var(--ink);font-size:15px;font-weight:600"><span style="width:16px;height:16px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;box-sizing:border-box"></span>Loading</span>
+
+        <div style="font-weight:600;color:var(--ink)">Danger</div>
+        <span style="display:inline-flex;align-items:center;height:48px;padding:0 20px;justify-self:start;border-radius:6px;background:var(--error);color:var(--on-error);font-size:15px;font-weight:600">Delete Echo</span>
+        <span style="display:inline-flex;align-items:center;height:48px;padding:0 20px;justify-self:start;border-radius:6px;background:var(--error-hover);color:var(--on-error);font-size:15px;font-weight:600">Delete Echo</span>
+        <span style="display:inline-flex;align-items:center;height:48px;padding:0 20px;justify-self:start;border-radius:6px;background:var(--error);color:var(--on-error);font-size:15px;font-weight:600;outline:2px solid var(--error);outline-offset:2px">Delete Echo</span>
+        <span style="display:inline-flex;align-items:center;height:48px;padding:0 20px;justify-self:start;border-radius:6px;background:var(--error-hover);color:var(--on-error);font-size:15px;font-weight:600;box-shadow:inset 0 2px 0 rgba(0,0,0,.18)">Delete Echo</span>
+        <span style="display:inline-flex;align-items:center;height:48px;padding:0 20px;justify-self:start;border-radius:6px;background:var(--error-tint);color:var(--muted-soft);font-size:15px;font-weight:600">Delete Echo</span>
+        <span style="display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 20px;justify-self:start;border-radius:6px;background:var(--error);color:var(--on-error);font-size:15px;font-weight:600"><span style="width:16px;height:16px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;box-sizing:border-box"></span>Deleting…</span>
+
+        <div style="font-weight:600;color:var(--ink)">Icon</div>
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;justify-self:start;border-radius:999px;background:var(--surface-strong);color:var(--ink)">{{ ic.more }}</span>
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;justify-self:start;border-radius:999px;background:var(--hairline);color:var(--ink)">{{ ic.more }}</span>
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;justify-self:start;border-radius:999px;background:var(--surface-strong);color:var(--ink);outline:2px solid var(--primary);outline-offset:2px">{{ ic.more }}</span>
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;justify-self:start;border-radius:999px;background:var(--border-input);color:var(--canvas)">{{ ic.more }}</span>
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;justify-self:start;border-radius:999px;background:var(--surface-strong);color:var(--muted-soft)">{{ ic.more }}</span>
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;justify-self:start;border-radius:999px;background:var(--surface-strong);color:var(--ink)"><span style="width:16px;height:16px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;box-sizing:border-box"></span></span>
+      </div>
+    </div>
+  </section>
+
+  <section id="forms" data-screen-label="Forms" style="display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--hairline);padding-top:24px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">06</div>
+      <h2 style="margin:0;font-size:28px;font-weight:600;letter-spacing:-.01em">Text input, textarea, select</h2>
+      <p style="margin:0;font-size:15px;line-height:1.55;color:var(--body);max-width:680px">52px fields on <code>canvas</code>. Focus: border becomes 2px <code>ink</code> plus the primary ring. The quote textarea types in the quote serif, because it holds a quote.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:24px;padding:24px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;color:var(--muted)">Default</div><label style="font-size:14px;font-weight:500">Author</label><div style="height:52px;display:flex;align-items:center;padding:0 16px;border:1px solid var(--border-input);border-radius:6px;font-size:16px;color:var(--muted);box-sizing:border-box">Who said it?</div></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;color:var(--muted)">Hover</div><label style="font-size:14px;font-weight:500">Author</label><div style="height:52px;display:flex;align-items:center;padding:0 16px;border:1px solid var(--ink);border-radius:6px;font-size:16px;color:var(--muted);box-sizing:border-box">Who said it?</div></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;color:var(--muted)">Focus-visible · filled</div><label style="font-size:14px;font-weight:500">Author</label><div style="height:52px;display:flex;align-items:center;padding:0 15px;border:2px solid var(--ink);border-radius:6px;font-size:16px;box-sizing:border-box;outline:2px solid var(--primary);outline-offset:2px">George Eliot<span style="width:1px;height:20px;background:var(--ink);margin-left:1px"></span></div></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;color:var(--muted)">Disabled (read-only)</div><label style="font-size:14px;font-weight:500">Email</label><div style="height:52px;display:flex;align-items:center;padding:0 16px;border:1px solid var(--hairline);background:var(--surface-soft);border-radius:6px;font-size:16px;color:var(--muted);box-sizing:border-box">ana.reyes@gmail.com</div><div style="font-size:13px;color:var(--muted)">From your Google account.</div></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;color:var(--muted)">Error</div><label style="font-size:14px;font-weight:500">Name</label><div style="height:52px;display:flex;align-items:center;padding:0 15px;border:2px solid var(--error);border-radius:6px;font-size:16px;box-sizing:border-box"></div><div style="display:flex;gap:6px;align-items:center;font-size:13px;color:var(--error)">{{ ic.alert }}Add a name so Echo knows what to call you.</div></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;color:var(--muted)">Select</div><label style="font-size:14px;font-weight:500">Sort</label><div style="height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 12px 0 16px;border:1px solid var(--border-input);border-radius:6px;font-size:16px;box-sizing:border-box">Newest<span style="color:var(--muted);display:flex">{{ ic.chevDown }}</span></div></div>
+      <div style="display:flex;flex-direction:column;gap:6px;grid-column:1 / -1;max-width:680px"><div style="font-size:12px;color:var(--muted)">Textarea · quote · focus, near limit (counter appears only past 9,500)</div><label style="font-size:14px;font-weight:500">Quote</label><div style="min-height:132px;padding:14px 15px;border:2px solid var(--ink);border-radius:6px;font-family:var(--quote);font-size:20px;line-height:1.42;box-sizing:border-box;outline:2px solid var(--primary);outline-offset:2px;white-space:pre-wrap;overflow-wrap:anywhere">Be patient toward all that is unsolved in your heart and try to love the questions themselves…</div><div style="align-self:flex-end;font-size:13px;color:var(--muted)">9,940 / 10,000</div></div>
+      <div style="display:flex;flex-direction:column;gap:6px;grid-column:1 / -1;max-width:680px"><div style="font-size:12px;color:var(--muted)">Textarea · reflection · default (auto-grows)</div><label style="font-size:14px;font-weight:500">Reflection</label><div style="min-height:104px;padding:14px 16px;border:1px solid var(--border-input);border-radius:6px;font-size:16px;line-height:1.55;color:var(--muted);box-sizing:border-box">Why did this speak to you?</div></div>
+    </div>
+  </section>
+
+  <section id="pickers" data-screen-label="Pickers" style="display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--hairline);padding-top:24px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">07</div>
+      <h2 style="margin:0;font-size:28px;font-weight:600;letter-spacing:-.01em">TagInput, CollectionPicker, RevisitPicker</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:6px;padding:24px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+        <div style="font-size:12px;color:var(--muted)">TagInput · typing, suggestions open</div>
+        <label style="font-size:14px;font-weight:500">Tags</label>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:52px;padding:7px 8px;border:2px solid var(--ink);border-radius:6px;box-sizing:border-box;outline:2px solid var(--primary);outline-offset:2px">
+          <span style="display:inline-flex;align-items:center;gap:2px;height:32px;padding:0 4px 0 10px;border-radius:4px;background:var(--surface-strong);font-size:14px;font-weight:500;color:var(--body)">courage<span style="display:flex;width:24px;height:24px;align-items:center;justify-content:center;color:var(--muted)">{{ ic.xSm }}</span></span>
+          <span style="display:inline-flex;align-items:center;gap:2px;height:32px;padding:0 4px 0 10px;border-radius:4px;background:var(--surface-strong);font-size:14px;font-weight:500;color:var(--body)">change<span style="display:flex;width:24px;height:24px;align-items:center;justify-content:center;color:var(--muted)">{{ ic.xSm }}</span></span>
+          <span style="display:inline-flex;align-items:center;font-size:16px;padding:0 4px;white-space:nowrap">starting-ov<span style="flex:none;width:1px;height:18px;background:var(--ink)"></span></span>
+        </div>
+        <div style="display:flex;flex-direction:column;padding:6px;background:var(--canvas);border-radius:10px;box-shadow:var(--shadow-1);margin-top:4px">
+          <div style="display:flex;align-items:center;height:44px;padding:0 12px;border-radius:6px;background:var(--surface-strong);font-size:15px">starting-over</div>
+          <div style="display:flex;align-items:center;gap:8px;height:44px;padding:0 12px;border-radius:6px;font-size:15px;color:var(--body)">{{ ic.plusSm }}Create “starting-ov”</div>
+        </div>
+        <div style="font-size:13px;color:var(--muted);padding-top:4px">Enter or comma adds. Lowercase, hyphens for spaces.</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;padding:24px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+        <div style="font-size:12px;color:var(--muted)">CollectionPicker · default · hover · focus-visible · neutral</div>
+        <div style="height:44px;display:flex;align-items:center;gap:8px;padding:0 12px;border:1px solid var(--border-input);border-radius:6px;color:var(--muted);font-size:15px">{{ ic.searchSm }}Find or create a Collection</div>
+        <div style="display:flex;flex-direction:column">
+          <div style="display:flex;align-items:center;gap:12px;min-height:44px;padding:0 8px;border-radius:6px"><span style="width:20px;height:20px;border-radius:4px;background:var(--primary);color:var(--on-primary);display:flex;align-items:center;justify-content:center">{{ ic.checkSm }}</span><span style="width:8px;height:8px;border-radius:50%;background:var(--mark-moss)"></span><span style="flex:1;font-size:15px">Starting Over</span><span style="font-size:13px;color:var(--muted)">18</span></div>
+          <div style="display:flex;align-items:center;gap:12px;min-height:44px;padding:0 8px;border-radius:6px;background:var(--surface-strong)"><span style="width:20px;height:20px;border-radius:4px;border:1.5px solid var(--border-input);box-sizing:border-box"></span><span style="width:8px;height:8px;border-radius:50%;background:var(--mark-ochre)"></span><span style="flex:1;font-size:15px">For Difficult Days</span><span style="font-size:13px;color:var(--body)">11</span></div>
+          <div style="display:flex;align-items:center;gap:12px;min-height:44px;padding:0 8px;border-radius:6px;outline:2px solid var(--primary);outline-offset:-2px"><span style="width:20px;height:20px;border-radius:4px;background:var(--primary);color:var(--on-primary);display:flex;align-items:center;justify-content:center">{{ ic.checkSm }}</span><span style="width:8px;height:8px;border-radius:50%;background:var(--mark-moss)"></span><span style="flex:1;font-size:15px">Things I Want to Remember</span><span style="font-size:13px;color:var(--muted)">24</span></div>
+          <div style="display:flex;align-items:center;gap:12px;min-height:44px;padding:0 8px;border-radius:6px"><span style="width:20px;height:20px;border-radius:4px;border:1.5px solid var(--border-input);box-sizing:border-box"></span><span style="width:8px;height:8px;border-radius:50%;border:1.5px solid var(--mark-neutral);box-sizing:border-box"></span><span style="flex:1;font-size:15px">Work</span><span style="font-size:13px;color:var(--muted)">7</span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;min-height:44px;padding:0 8px;border-top:1px solid var(--hairline-soft);font-size:15px;font-weight:500;color:var(--primary)">{{ ic.plusSm }}New Collection</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:14px;padding:24px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+        <div style="font-size:12px;color:var(--muted)">RevisitPicker · presets + calendar</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <span style="display:flex;align-items:center;height:44px;padding:0 14px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;font-weight:500;box-sizing:border-box">In 1 month</span>
+          <span style="display:flex;align-items:center;height:44px;padding:0 14px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;font-weight:500;box-sizing:border-box">In 6 months</span>
+          <span style="display:flex;align-items:center;height:44px;padding:0 14px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;font-weight:500;box-sizing:border-box">In 1 year</span>
+          <span style="display:flex;align-items:center;justify-content:space-between;height:44px;padding:0 14px;border:2px solid var(--ink);background:var(--surface-strong);border-radius:6px;font-size:15px;font-weight:600;box-sizing:border-box">Pick a date{{ ic.checkSm }}</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid var(--hairline);border-radius:10px">
+          <div style="display:flex;align-items:center;justify-content:space-between"><span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center;border-radius:999px">{{ ic.chevLeft }}</span><span style="font-size:15px;font-weight:600">April 2027</span><span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center;border-radius:999px">{{ ic.chevRight }}</span></div>
+          <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;font-size:12px;color:var(--muted)"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+          <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;font-size:14px">
+            <sc-for list="{{ calDays }}" as="d" hint-placeholder-count="33"><span style="height:40px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:{{ d.bg }};color:{{ d.fg }};font-weight:{{ d.w }}">{{ d.n }}</span></sc-for>
+          </div>
+        </div>
+        <div style="font-size:14px;color:var(--body)">Revisit on <strong style="color:var(--ink)">Apr 1, 2027</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="echo" data-screen-label="Echo views" style="display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--hairline);padding-top:24px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">08</div>
+      <h2 style="margin:0;font-size:28px;font-weight:600;letter-spacing:-.01em">QuoteCard, EchoRow, CollectionCard, chips, dots, heart</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:16px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;color:var(--muted)">QuoteCard · default, favorite on</div>
+        <div style="display:flex;flex-direction:column;gap:16px;padding:24px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+          <div style="font-family:var(--quote);font-size:23px;line-height:1.42;overflow-wrap:anywhere">“It is never too late to be what you might have been.”</div>
+          <div style="font-size:14px;font-weight:600">George Eliot</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px"><span style="font-size:12px;font-weight:500;padding:4px 8px;border-radius:4px;background:var(--surface-strong);color:var(--body)">change</span><span style="font-size:12px;font-weight:500;padding:4px 8px;border-radius:4px;background:var(--surface-strong);color:var(--body)">courage</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--hairline-soft);font-size:13px;color:var(--muted)"><span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:var(--mark-moss)"></span>Starting Over</span><span style="display:flex;width:44px;height:44px;margin:-12px -12px -12px 0;align-items:center;justify-content:center;color:var(--primary)">{{ ic.heartFill }}</span></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;color:var(--muted)">QuoteCard · hover (border darkens, no lift)</div>
+        <div style="display:flex;flex-direction:column;gap:16px;padding:24px;background:var(--canvas);border:1px solid var(--border-input);border-radius:10px">
+          <div style="font-family:var(--quote);font-size:23px;line-height:1.42">“Tell me, what is it you plan to do with your one wild and precious life?”</div>
+          <div style="font-size:14px;color:var(--body)"><span style="font-weight:600;color:var(--ink)">Mary Oliver</span> · The Summer Day</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--hairline-soft);font-size:13px;color:var(--muted)"><span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:var(--mark-moss)"></span>Things I Want to Remember</span><span style="display:flex;width:44px;height:44px;margin:-12px -12px -12px 0;align-items:center;justify-content:center">{{ ic.heart }}</span></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;color:var(--muted)">QuoteCard · quote only, focus-visible</div>
+        <div style="display:flex;flex-direction:column;gap:16px;padding:24px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px;outline:2px solid var(--primary);outline-offset:2px">
+          <div style="font-family:var(--quote);font-size:23px;line-height:1.42">“You don't have to have it all figured out before you begin.”</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--hairline-soft);font-size:13px;color:var(--muted)"><span>Saved Sep 12</span><span style="display:flex;width:44px;height:44px;margin:-12px -12px -12px 0;align-items:center;justify-content:center">{{ ic.heart }}</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:16px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;color:var(--muted)">EchoRow · default · hover · focus-visible · no author</div>
+        <div style="display:flex;flex-direction:column;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px;padding:6px">
+          <div style="display:flex;gap:14px;align-items:flex-start;padding:12px;border-radius:6px"><span style="flex:none;width:40px;height:40px;border-radius:6px;background:var(--tint-moss);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600">G</span><div style="min-width:0;display:flex;flex-direction:column;gap:4px"><div style="font-family:var(--quote);font-size:19px;line-height:1.42;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">“It is never too late to be what you might have been.”</div><div style="font-size:13px;color:var(--muted)">George Eliot · 2 days ago</div></div></div>
+          <div style="display:flex;gap:14px;align-items:flex-start;padding:12px;border-radius:6px;background:var(--surface-strong)"><span style="flex:none;width:40px;height:40px;border-radius:6px;background:var(--tint-ochre);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600">I</span><div style="min-width:0;display:flex;flex-direction:column;gap:4px"><div style="font-family:var(--quote);font-size:19px;line-height:1.42;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">“The cure for anything is salt water: sweat, tears, or the sea.”</div><div style="font-size:13px;color:var(--body)">Isak Dinesen · 5 days ago</div></div></div>
+          <div style="display:flex;gap:14px;align-items:flex-start;padding:12px;border-radius:6px;outline:2px solid var(--primary);outline-offset:-2px"><span style="flex:none;width:40px;height:40px;border-radius:6px;background:var(--tint-neutral);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600">R</span><div style="min-width:0;display:flex;flex-direction:column;gap:4px"><div style="font-family:var(--quote);font-size:19px;line-height:1.42;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">“…be patient toward all that is unsolved in your heart and try to love the questions themselves, like locked rooms and like books that are now written in a very foreign tongue.”</div><div style="font-size:13px;color:var(--muted)">Rainer Maria Rilke · Letters to a Young Poet</div></div></div>
+          <div style="display:flex;gap:14px;align-items:flex-start;padding:12px;border-radius:6px"><span style="flex:none;width:40px;height:40px;border-radius:6px;background:var(--tint-neutral);color:var(--muted);display:flex;align-items:center;justify-content:center">{{ ic.quoteSm }}</span><div style="min-width:0;display:flex;flex-direction:column;gap:4px"><div style="font-family:var(--quote);font-size:19px;line-height:1.42">“You don't have to have it all figured out before you begin.”</div><div style="font-size:13px;color:var(--muted)">Sep 12</div></div></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;color:var(--muted)">CollectionCard · default · hover · neutral</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">
+            <div style="display:flex;flex-direction:column;gap:10px;padding:18px;background:var(--canvas);border:1px solid var(--hairline);border-top:4px solid var(--mark-moss);border-radius:10px"><div style="display:flex;align-items:center;gap:8px;font-size:16px;font-weight:600">Starting Over</div><div style="font-size:14px;line-height:1.5;color:var(--body)">For the mornings I need a push.</div><div style="font-size:13px;color:var(--muted)">18 Echoes</div></div>
+            <div style="display:flex;flex-direction:column;gap:10px;padding:18px;background:var(--canvas);border:1px solid var(--border-input);border-top:4px solid var(--mark-ochre);border-radius:10px"><div style="font-size:16px;font-weight:600">For Difficult Days</div><div style="font-size:13px;color:var(--muted)">11 Echoes</div></div>
+            <div style="display:flex;flex-direction:column;gap:10px;padding:18px;background:var(--canvas);border:1px solid var(--hairline);border-top:4px solid var(--hairline);border-radius:10px"><div style="font-size:16px;font-weight:600">Work</div><div style="font-size:13px;color:var(--muted)">7 Echoes</div></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;padding:20px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+          <div style="font-size:12px;color:var(--muted)">Tag chip · default · hover · selected · focus · disabled (36px visual, 44px hit area)</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <span style="display:inline-flex;align-items:center;height:36px;padding:0 12px;border-radius:4px;background:var(--surface-strong);font-size:14px;font-weight:500;color:var(--body)">courage</span>
+            <span style="display:inline-flex;align-items:center;height:36px;padding:0 12px;border-radius:4px;background:var(--hairline);font-size:14px;font-weight:500;color:var(--ink)">courage</span>
+            <span style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 12px;border-radius:4px;background:var(--ink);font-size:14px;font-weight:500;color:var(--canvas)">{{ ic.checkSm }}courage</span>
+            <span style="display:inline-flex;align-items:center;height:36px;padding:0 12px;border-radius:4px;background:var(--surface-strong);font-size:14px;font-weight:500;color:var(--body);outline:2px solid var(--primary);outline-offset:2px">courage</span>
+            <span style="display:inline-flex;align-items:center;height:36px;padding:0 12px;border-radius:4px;background:var(--surface-soft);font-size:14px;font-weight:500;color:var(--muted-soft)">courage</span>
+          </div>
+          <div style="font-size:12px;color:var(--muted);padding-top:8px">Accent dot · always beside its name</div>
+          <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:14px">
+            <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:var(--mark-moss)"></span>Moss</span>
+            <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:var(--mark-ochre)"></span>Ochre</span>
+            <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:var(--mark-heather)"></span>Heather</span>
+            <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;border:1.5px solid var(--mark-neutral);box-sizing:border-box"></span>Neutral</span>
+          </div>
+          <div style="font-size:12px;color:var(--muted);padding-top:8px">Favorite · off · hover · on · focus · disabled</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center;border-radius:999px;color:var(--muted)">{{ ic.heart }}</span>
+            <span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center;border-radius:999px;background:var(--surface-strong);color:var(--ink)">{{ ic.heart }}</span>
+            <span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center;border-radius:999px;color:var(--primary)">{{ ic.heartFill }}</span>
+            <span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center;border-radius:999px;color:var(--primary);outline:2px solid var(--primary);outline-offset:2px">{{ ic.heartFill }}</span>
+            <span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center;border-radius:999px;color:var(--muted-soft)">{{ ic.heart }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="overlays" data-screen-label="Overlays and nav" style="display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--hairline);padding-top:24px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">09</div>
+      <h2 style="margin:0;font-size:28px;font-weight:600;letter-spacing:-.01em">Dialog, dropdown, toast, tabs, pagination</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:16px;align-items:start">
+      <div style="display:flex;align-items:center;justify-content:center;padding:40px 24px;border-radius:10px;background:var(--scrim);min-height:300px">
+        <div style="display:flex;flex-direction:column;gap:16px;width:100%;max-width:400px;padding:28px;background:var(--canvas);border-radius:10px;box-shadow:var(--shadow-1)">
+          <div style="font-size:20px;font-weight:600;line-height:1.3">Delete this Echo?</div>
+          <div style="font-size:15px;line-height:1.55;color:var(--body)">This can't be undone.</div>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-end;padding-top:8px">
+            <span style="display:inline-flex;align-items:center;height:48px;padding:0 20px;border-radius:6px;border:1px solid var(--border-input);font-size:15px;font-weight:600;box-sizing:border-box;outline:2px solid var(--primary);outline-offset:2px">Cancel</span>
+            <span style="display:inline-flex;align-items:center;height:48px;padding:0 20px;border-radius:6px;background:var(--error);color:var(--on-error);font-size:15px;font-weight:600">Delete Echo</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
+          <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;color:var(--muted)">Dropdown · item 2 hovered</div>
+            <div style="display:flex;flex-direction:column;width:220px;padding:6px;background:var(--canvas);border-radius:10px;box-shadow:var(--shadow-1)">
+              <div style="display:flex;align-items:center;gap:10px;height:44px;padding:0 12px;border-radius:6px;font-size:15px">{{ ic.editSm }}Edit</div>
+              <div style="display:flex;align-items:center;gap:10px;height:44px;padding:0 12px;border-radius:6px;font-size:15px;background:var(--surface-strong)">{{ ic.layersSm }}Add to Collection</div>
+              <div style="display:flex;align-items:center;gap:10px;height:44px;padding:0 12px;border-radius:6px;font-size:15px">{{ ic.calSm }}Revisit</div>
+              <div style="height:1px;background:var(--hairline-soft);margin:6px 0"></div>
+              <div style="display:flex;align-items:center;gap:10px;height:44px;padding:0 12px;border-radius:6px;font-size:15px;color:var(--error)">{{ ic.trashSm }}Delete</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;flex:1;min-width:240px"><div style="font-size:12px;color:var(--muted)">Toast · with Undo · plain · error</div>
+            <div style="display:flex;align-items:center;gap:12px;min-height:52px;padding:0 8px 0 16px;background:var(--ink);color:var(--canvas);border-radius:6px;box-shadow:var(--shadow-1);font-size:15px"><span style="flex:1">Removed from Starting Over</span><span style="display:inline-flex;align-items:center;height:44px;padding:0 12px;border-radius:6px;font-weight:600;text-decoration:underline;text-underline-offset:3px">Undo</span></div>
+            <div style="display:flex;align-items:center;gap:12px;min-height:52px;padding:0 16px;background:var(--ink);color:var(--canvas);border-radius:6px;box-shadow:var(--shadow-1);font-size:15px">Echo saved</div>
+            <div style="display:flex;align-items:center;gap:10px;min-height:52px;padding:0 8px 0 16px;background:var(--error-tint);border-radius:6px;box-shadow:var(--shadow-1);font-size:15px"><span style="display:flex;color:var(--error)">{{ ic.alert }}</span><span style="flex:1">Couldn't save. Your words are still here.</span><span style="display:inline-flex;align-items:center;height:44px;padding:0 12px;font-weight:600">Retry</span></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;color:var(--muted)">Tabs · active neutral · hover · focus</div>
+          <div style="display:flex;gap:4px;border-bottom:1px solid var(--hairline)">
+            <span style="display:flex;align-items:center;gap:8px;height:48px;padding:0 14px;font-size:15px;font-weight:600;box-shadow:inset 0 -2px 0 var(--ink)">Due now<span style="font-size:12px;font-weight:500;padding:2px 7px;border-radius:4px;background:var(--surface-strong)">2</span></span>
+            <span style="display:flex;align-items:center;height:48px;padding:0 14px;font-size:15px;font-weight:500;color:var(--body);background:var(--surface-strong);border-radius:6px 6px 0 0">Upcoming</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;color:var(--muted)">Pagination · current neutral · hover on 2 · previous disabled</div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center;font-size:15px">
+            <span style="display:inline-flex;align-items:center;gap:4px;height:44px;padding:0 12px;color:var(--muted-soft)">{{ ic.chevLeft }}Previous</span>
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:6px;background:var(--ink);color:var(--canvas);font-weight:600">1</span>
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:6px;background:var(--surface-strong)">2</span>
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:6px">3</span>
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:44px;color:var(--muted)">…</span>
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:6px">9</span>
+            <span style="display:inline-flex;align-items:center;gap:4px;height:44px;padding:0 12px;font-weight:500">Next{{ ic.chevRight }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="states" data-screen-label="States" style="display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--hairline);padding-top:24px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">10</div>
+      <h2 style="margin:0;font-size:28px;font-weight:600;letter-spacing:-.01em">Skeleton, empty, error</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px;align-items:stretch">
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;color:var(--muted)">Skeleton · QuoteCard (static under reduced motion)</div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:12px;padding:24px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+          <div style="height:18px;width:92%;border-radius:4px;background:var(--surface-strong)"></div>
+          <div style="height:18px;width:80%;border-radius:4px;background:var(--surface-strong)"></div>
+          <div style="height:18px;width:55%;border-radius:4px;background:var(--surface-strong)"></div>
+          <div style="height:12px;width:35%;border-radius:4px;background:var(--hairline-soft);margin-top:8px"></div>
+          <div style="height:1px;background:var(--hairline-soft);margin-top:8px"></div>
+          <div style="height:12px;width:45%;border-radius:4px;background:var(--hairline-soft)"></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;color:var(--muted)">Empty state · Library</div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:14px;align-items:flex-start;padding:32px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+          <span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center;border-radius:999px;background:var(--tint-moss);color:var(--mark-moss)">{{ ic.book }}</span>
+          <div style="font-size:20px;font-weight:600;line-height:1.3">Your library is waiting.</div>
+          <div style="font-size:15px;line-height:1.55;color:var(--body)">Save the first words that stayed with you.</div>
+          <span style="display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 20px;border-radius:6px;background:var(--primary);color:var(--on-primary);font-size:15px;font-weight:600">{{ ic.plusSm }}Add your first Echo</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px"><div style="font-size:12px;color:var(--muted)">Inline error · route-level error</div>
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 12px 12px 16px;background:var(--error-tint);border-radius:6px;font-size:15px"><span style="color:var(--error);display:flex">{{ ic.alert }}</span><span style="flex:1">Recently added didn't load.</span><span style="display:inline-flex;align-items:center;height:44px;padding:0 14px;border-radius:6px;border:1px solid var(--border-input);font-weight:600;box-sizing:border-box">Retry</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:12px;align-items:flex-start;padding:28px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+          <div style="font-size:20px;font-weight:600;line-height:1.3">This page didn't open.</div>
+          <div style="font-size:15px;line-height:1.55;color:var(--body)">Your Echoes are safe. Try again, or head home.</div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap"><span style="display:inline-flex;align-items:center;height:48px;padding:0 20px;border-radius:6px;background:var(--primary);color:var(--on-primary);font-size:15px;font-weight:600">Try again</span><span style="display:inline-flex;align-items:center;height:48px;padding:0 16px;font-size:15px;font-weight:600">Go home</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="shell" data-screen-label="App shell" style="display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--hairline);padding-top:24px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">11</div>
+      <h2 style="margin:0;font-size:28px;font-weight:600;letter-spacing:-.01em">Sidebar, rail, mobile header, bottom tab bar</h2>
+      <p style="margin:0;font-size:15px;line-height:1.55;color:var(--body);max-width:680px">Active nav: <code>surface-strong</code> fill and 600 weight, never the accent. Add Echo is the only accent in the chrome.</p>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;color:var(--muted)">Sidebar · 256px · ≥1128</div>
+        <aside style="width:256px;min-height:780px;display:flex;flex-direction:column;gap:16px;padding:16px;box-sizing:border-box;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding-left:8px"><span style="font-size:20px;font-weight:600;letter-spacing:-.02em">Echo</span><span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center;border-radius:999px;color:var(--muted)">{{ ic.panel }}</span></div>
+          <span style="display:flex;align-items:center;gap:8px;height:48px;padding:0 16px;border-radius:6px;background:var(--primary);color:var(--on-primary);font-size:15px;font-weight:600">{{ ic.plusSm }}Add Echo</span>
+          <div style="display:flex;align-items:center;gap:8px;height:44px;padding:0 12px;border:1px solid var(--border-input);border-radius:6px;color:var(--muted);font-size:15px">{{ ic.searchSm }}<span style="flex:1">Search</span><span style="font-size:12px;padding:2px 6px;border:1px solid var(--hairline);border-radius:4px">/</span></div>
+          <nav style="display:flex;flex-direction:column;gap:2px">
+            <span style="display:flex;align-items:center;gap:12px;height:44px;padding:0 12px;border-radius:6px;background:var(--surface-strong);font-size:15px;font-weight:600">{{ ic.home }}Home</span>
+            <span style="display:flex;align-items:center;gap:12px;height:44px;padding:0 12px;border-radius:6px;font-size:15px;color:var(--body)">{{ ic.book }}Library</span>
+            <span style="display:flex;align-items:center;gap:12px;height:44px;padding:0 12px;border-radius:6px;font-size:15px;color:var(--body)">{{ ic.heart }}Favorites</span>
+            <span style="display:flex;align-items:center;gap:12px;height:44px;padding:0 12px;border-radius:6px;font-size:15px;color:var(--body)">{{ ic.layers }}Collections</span>
+            <span style="display:flex;align-items:center;gap:12px;height:44px;padding:0 12px;border-radius:6px;font-size:15px;color:var(--body)">{{ ic.cal }}Revisits</span>
+          </nav>
+          <div style="display:flex;flex-direction:column;gap:2px;padding-top:12px;border-top:1px solid var(--hairline-soft)">
+            <div style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:4px 12px 6px">Collections</div>
+            <span style="display:flex;align-items:center;gap:10px;height:40px;padding:0 12px;font-size:14px;color:var(--body)"><span style="width:8px;height:8px;border-radius:50%;background:var(--mark-moss)"></span><span style="flex:1">Starting Over</span><span style="color:var(--muted)">18</span></span>
+            <span style="display:flex;align-items:center;gap:10px;height:40px;padding:0 12px;font-size:14px;color:var(--body)"><span style="width:8px;height:8px;border-radius:50%;background:var(--mark-ochre)"></span><span style="flex:1">For Difficult Days</span><span style="color:var(--muted)">11</span></span>
+            <span style="display:flex;align-items:center;gap:10px;height:40px;padding:0 12px;font-size:14px;color:var(--body)"><span style="width:8px;height:8px;border-radius:50%;background:var(--mark-moss)"></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Things I Want to Remember</span><span style="color:var(--muted)">24</span></span>
+            <span style="display:flex;align-items:center;gap:10px;height:40px;padding:0 12px;font-size:14px;color:var(--body)"><span style="width:8px;height:8px;border-radius:50%;border:1.5px solid var(--mark-neutral);box-sizing:border-box"></span><span style="flex:1">Work</span><span style="color:var(--muted)">7</span></span>
+            <span style="display:flex;align-items:center;gap:10px;height:40px;padding:0 12px;font-size:14px;color:var(--body)"><span style="width:8px;height:8px;border-radius:50%;border:1.5px solid var(--mark-neutral);box-sizing:border-box"></span><span style="flex:1">Books That Changed Me</span><span style="color:var(--muted)">15</span></span>
+            <span style="display:flex;align-items:center;height:40px;padding:0 12px;font-size:14px;font-weight:500;color:var(--primary)">All collections</span>
+          </div>
+          <div style="margin-top:auto;display:flex;flex-direction:column;gap:2px;padding-top:12px;border-top:1px solid var(--hairline-soft)">
+            <span style="display:flex;align-items:center;gap:12px;height:44px;padding:0 12px;font-size:15px;color:var(--body)">{{ ic.settings }}Settings</span>
+            <span style="display:flex;align-items:center;gap:12px;height:52px;padding:0 12px;font-size:14px"><span style="flex:none;width:32px;height:32px;border-radius:50%;background:var(--tint-heather);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px">A</span><span style="display:flex;flex-direction:column;min-width:0"><span style="font-weight:600">Ana Reyes</span><span style="font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis">ana.reyes@gmail.com</span></span></span>
+          </div>
+        </aside>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;color:var(--muted)">Rail · 96px · 744–1127</div>
+        <aside style="width:96px;min-height:780px;display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 0;box-sizing:border-box;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+          <span style="font-size:18px;font-weight:600;letter-spacing:-.02em;height:44px;display:flex;align-items:center">Echo</span>
+          <span style="display:flex;width:56px;height:56px;align-items:center;justify-content:center;border-radius:999px;background:var(--primary);color:var(--on-primary);margin-bottom:10px" aria-label="Add Echo">{{ ic.plus }}</span>
+          <span style="display:flex;flex-direction:column;align-items:center;gap:4px;width:80px;padding:8px 0;border-radius:6px;background:var(--surface-strong);font-size:12px;font-weight:600">{{ ic.home }}Home</span>
+          <span style="display:flex;flex-direction:column;align-items:center;gap:4px;width:80px;padding:8px 0;font-size:12px;color:var(--body)">{{ ic.book }}Library</span>
+          <span style="display:flex;flex-direction:column;align-items:center;gap:4px;width:80px;padding:8px 0;font-size:12px;color:var(--body)">{{ ic.heart }}Favorites</span>
+          <span style="display:flex;flex-direction:column;align-items:center;gap:4px;width:80px;padding:8px 0;font-size:12px;color:var(--body)">{{ ic.layers }}Collections</span>
+          <span style="display:flex;flex-direction:column;align-items:center;gap:4px;width:80px;padding:8px 0;font-size:12px;color:var(--body)">{{ ic.cal }}Revisits</span>
+          <span style="display:flex;flex-direction:column;align-items:center;gap:4px;width:80px;padding:8px 0;font-size:12px;color:var(--body)">{{ ic.search }}Search</span>
+          <span style="margin-top:auto;display:flex;flex-direction:column;align-items:center;gap:4px;width:80px;padding:8px 0;font-size:12px;color:var(--body)">{{ ic.settings }}Settings</span>
+          <span style="width:36px;height:36px;border-radius:50%;background:var(--tint-heather);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px">A</span>
+        </aside>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;color:var(--muted)">Mobile · 64px header + bottom tab bar · &lt;744</div>
+        <div style="width:390px;max-width:100%;height:780px;display:flex;flex-direction:column;background:var(--surface-soft);border:1px solid var(--hairline);border-radius:10px;overflow:hidden">
+          <header style="height:64px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 10px 0 20px;background:var(--canvas);border-bottom:1px solid var(--hairline)"><span style="font-size:20px;font-weight:600;letter-spacing:-.02em">Echo</span><span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center"><span style="width:32px;height:32px;border-radius:50%;background:var(--tint-heather);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px">A</span></span></header>
+          <div style="flex:1;display:flex;flex-direction:column;gap:12px;padding:20px">
+            <div style="height:22px;width:60%;border-radius:4px;background:var(--surface-strong)"></div>
+            <div style="flex:1;border-radius:10px;background:var(--canvas);border:1px solid var(--hairline)"></div>
+          </div>
+          <nav style="height:72px;flex:none;display:grid;grid-template-columns:repeat(5,1fr);align-items:center;background:var(--canvas);border-top:1px solid var(--hairline)">
+            <span style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:600"><span style="display:flex;padding:4px 16px;border-radius:999px;background:var(--surface-strong)">{{ ic.home }}</span>Home</span>
+            <span style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;color:var(--body)"><span style="display:flex;padding:4px 16px">{{ ic.book }}</span>Library</span>
+            <span style="display:flex;justify-content:center"><span style="display:flex;width:56px;height:56px;margin-top:-24px;align-items:center;justify-content:center;border-radius:999px;background:var(--primary);color:var(--on-primary);box-shadow:var(--shadow-1)" aria-label="Add Echo">{{ ic.plus }}</span></span>
+            <span style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;color:var(--body)"><span style="display:flex;padding:4px 16px">{{ ic.search }}</span>Search</span>
+            <span style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;color:var(--body)"><span style="display:flex;padding:4px 16px">{{ ic.layers }}</span>Collections</span>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;'light' | 'dark'&quot;}}">
+const L = {primary:'#2d4a72','primary-hover':'#253f62','primary-active':'#1c3150','primary-disabled':'#d5dce6','on-primary':'#fbf8f2',ink:'#2b2622',body:'#463f39',muted:'#675e55','muted-soft':'#9a9085',hairline:'#ddd4c4','hairline-soft':'#e8e1d3','border-input':'#8a7f72',canvas:'#fbf8f2','surface-soft':'#f3eee4','surface-strong':'#e9e2d4',error:'#a8301c','error-hover':'#8f2716','on-error':'#fbf8f2','error-tint':'#f7e4dd','tint-moss':'#ecefe0','tint-ochre':'#f5ecda','tint-heather':'#f2e7ec','tint-neutral':'#efe9df','mark-moss':'#56703a','mark-ochre':'#8a5a12','mark-heather':'#74405f','mark-neutral':'#675e55'};
+const D = {primary:'#a3bce3','primary-hover':'#b6cbea','primary-active':'#c9d8ef','primary-disabled':'#2b3442','on-primary':'#14202f',ink:'#f0e9de',body:'#d3c9bb',muted:'#a39888','muted-soft':'#6f665b',hairline:'#3a332c','hairline-soft':'#2d2823','border-input':'#857a6c',canvas:'#221e1a','surface-soft':'#1a1714','surface-strong':'#2d2823',error:'#f09a86','error-hover':'#f4ae9d','on-error':'#2a120c','error-tint':'#3a221c','tint-moss':'#262b1d','tint-ochre':'#2e2619','tint-heather':'#2e2129','tint-neutral':'#2a2520','mark-moss':'#a8bf86','mark-ochre':'#d9a55a','mark-heather':'#d39cbd','mark-neutral':'#a39888'};
+const ROLES = {primary:'CTAs, links, favorite-on, focus','primary-hover':'Primary hover','primary-active':'Primary pressed','primary-disabled':'Disabled CTA fill','on-primary':'Text on primary',ink:'Headings, primary text',body:'Long-form text',muted:'Meta, secondary','muted-soft':'Disabled text only',hairline:'Panel borders','hairline-soft':'Inner dividers','border-input':'Input outline (≥3:1)',canvas:'Panels, cards, public bg','surface-soft':'App page (with grain)','surface-strong':'Hover, chips, active nav',error:'Validation, destructive','error-hover':'Danger hover','on-error':'Text on danger','error-tint':'Error panel','tint-moss':'Moss panel, monogram','tint-ochre':'Revisits panel','tint-heather':'From the past panel','tint-neutral':'Neutral panel','mark-moss':'Collection mark','mark-ochre':'Collection mark','mark-heather':'Collection mark','mark-neutral':'Neutral mark (ring)'};
+const PAIRS = [
+  ['ink / canvas','ink','canvas',4.5],['ink / surface-soft','ink','surface-soft',4.5],['ink / surface-strong','ink','surface-strong',4.5],
+  ['body / canvas','body','canvas',4.5],['body / surface-soft','body','surface-soft',4.5],['body / surface-strong','body','surface-strong',4.5],
+  ['muted / canvas','muted','canvas',4.5],['muted / surface-soft','muted','surface-soft',4.5],['muted / surface-strong','muted','surface-strong',4.5],
+  ['primary (link) / canvas','primary','canvas',4.5],['primary (link) / surface-soft','primary','surface-soft',4.5],
+  ['on-primary / primary','on-primary','primary',4.5],['on-primary / primary-hover','on-primary','primary-hover',4.5],['on-primary / primary-active','on-primary','primary-active',4.5],
+  ['on-error / error','on-error','error',4.5],['on-error / error-hover','on-error','error-hover',4.5],
+  ['error / canvas','error','canvas',4.5],['error / error-tint','error','error-tint',4.5],['ink / error-tint','ink','error-tint',4.5],
+  ['canvas / ink (toast, selected chip)','canvas','ink',4.5],
+  ['ink / tint-moss','ink','tint-moss',4.5],['ink / tint-ochre','ink','tint-ochre',4.5],['ink / tint-heather','ink','tint-heather',4.5],['ink / tint-neutral','ink','tint-neutral',4.5],
+  ['body / tint-ochre','body','tint-ochre',4.5],['body / tint-heather','body','tint-heather',4.5],['muted / tint-neutral','muted','tint-neutral',4.5],
+  ['mark-moss / canvas','mark-moss','canvas',3],['mark-ochre / canvas','mark-ochre','canvas',3],['mark-heather / canvas','mark-heather','canvas',3],['mark-neutral / canvas','mark-neutral','canvas',3],
+  ['mark-moss / tint-moss','mark-moss','tint-moss',3],
+  ['border-input / canvas','border-input','canvas',3],['border-input / surface-soft','border-input','surface-soft',3],
+  ['focus ring / canvas','primary','canvas',3],['focus ring / surface-soft','primary','surface-soft',3]
+];
+const HEART = 'M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z';
+const GEAR = 'M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z';
+const LAYERS = ['m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z','m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65','m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65'];
+
+class Component extends DCLogic {
+  lum(h) { const c = [1,3,5].map(i => parseInt(h.slice(i,i+2),16)/255).map(v => v <= 0.04045 ? v/12.92 : Math.pow((v+0.055)/1.055,2.4)); return 0.2126*c[0]+0.7152*c[1]+0.0722*c[2]; }
+  ratio(a,b) { const x=this.lum(a), y=this.lum(b); return (Math.max(x,y)+0.05)/(Math.min(x,y)+0.05); }
+  icons() {
+    if (this._ic) return this._ic;
+    const h = React.createElement;
+    const P = d => h('path',{d}); const C = (cx,cy,r) => h('circle',{cx,cy,r}); const R = (x,y,w,ht,rx) => h('rect',{x,y,width:w,height:ht,rx});
+    const svg = (size, kids, fill) => h('svg',{width:size,height:size,viewBox:'0 0 24 24',fill:fill||'none',stroke:'currentColor',strokeWidth:1.75,strokeLinecap:'round',strokeLinejoin:'round','aria-hidden':true,style:{flex:'none'}}, ...kids);
+    this._ic = {
+      heart: svg(20,[P(HEART)]), heartFill: svg(20,[P(HEART)],'currentColor'),
+      more: svg(20,[C(12,12,1),C(19,12,1),C(5,12,1)]),
+      alert: svg(16,[C(12,12,10),P('M12 8v4'),P('M12 16h.01')]),
+      chevDown: svg(20,[P('m6 9 6 6 6-6')]), chevLeft: svg(20,[P('m15 18-6-6 6-6')]), chevRight: svg(20,[P('m9 18 6-6-6-6')]),
+      xSm: svg(14,[P('M18 6 6 18'),P('m6 6 12 12')]), checkSm: svg(14,[P('M20 6 9 17l-5-5')]),
+      plusSm: svg(18,[P('M5 12h14'),P('M12 5v14')]), plus: svg(24,[P('M5 12h14'),P('M12 5v14')]),
+      searchSm: svg(18,[C(11,11,8),P('m21 21-4.3-4.3')]), search: svg(20,[C(11,11,8),P('m21 21-4.3-4.3')]),
+      quoteSm: svg(18,[P('M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z'),P('M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z')]),
+      editSm: svg(18,[P('M12 20h9'),P('M16.38 3.62a1 1 0 0 1 3 3L7.37 18.64a2 2 0 0 1-.86.5l-2.87.84a.5.5 0 0 1-.62-.62l.84-2.87a2 2 0 0 1 .5-.86z')]),
+      layersSm: svg(18,LAYERS.map(P)), layers: svg(20,LAYERS.map(P)),
+      calSm: svg(18,[R(3,4,18,18,2),P('M16 2v4'),P('M8 2v4'),P('M3 10h18')]), cal: svg(20,[R(3,4,18,18,2),P('M16 2v4'),P('M8 2v4'),P('M3 10h18')]),
+      trashSm: svg(18,[P('M3 6h18'),P('M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6'),P('M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2')]),
+      book: svg(20,[P('M12 7v14'),P('M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z')]),
+      home: svg(20,[P('M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8'),P('M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z')]),
+      settings: svg(20,[P(GEAR),C(12,12,3)]),
+      panel: svg(20,[R(3,3,18,18,2),P('M9 3v18')])
+    };
+    return this._ic;
+  }
+  block(sel, T, extra) { return sel + ' {\n' + Object.keys(T).map(k => '  --' + k + ': ' + T[k] + ';').join('\n') + (extra ? '\n' + extra : '') + '\n}'; }
+  renderVals() {
+    const dark = this.props.theme === 'dark';
+    const T = dark ? D : L;
+    const swatches = Object.keys(L).map(k => ({ name: k, hex: T[k], css: 'var(--' + k + ')', role: ROLES[k] }));
+    const contrast = PAIRS.map(([label,f,b,min]) => { const l = this.ratio(L[f],L[b]), d = this.ratio(D[f],D[b]); return { label, min: min + ':1', l: l.toFixed(2), d: d.toFixed(2), ok: (l >= min && d >= min) ? 'Pass' : 'Fail' }; });
+    const shared = ['  --font-quote: "EB Garamond", Georgia, serif;','  --font-sans: "Hanken Grotesk", system-ui, sans-serif;','  --shadow-1: 0 1px 2px rgb(43 38 34 / .06), 0 8px 24px rgb(43 38 34 / .10);','  --scrim: rgb(43 38 34 / .5);','  --grain: rgb(60 40 20 / .035);','  --duration-fast: 150ms;','  --duration-base: 200ms;','  --duration-slow: 250ms;','  --ease-out: cubic-bezier(.2, 0, 0, 1);','  --ease-in: cubic-bezier(.4, 0, 1, 1);'].join('\n');
+    const darkExtra = '  --shadow-1: 0 1px 2px rgb(0 0 0 / .4), 0 8px 24px rgb(0 0 0 / .45);\n  --scrim: rgb(0 0 0 / .6);\n  --grain: rgb(255 240 220 / .025);';
+    const cssRoot = this.block(':root', L, shared) + '\n\n' + this.block('[data-theme="dark"]', D, darkExtra) +
+      '\n\n/* System: same values as dark */\n@media (prefers-color-scheme: dark) {\n' + this.block('  [data-theme="system"]', D, darkExtra).replace(/\n  --/g,'\n    --').replace(/\n}$/,'\n  }') + '\n}' +
+      '\n\n@media (prefers-reduced-motion: reduce) {\n  :root { --duration-fast: 0ms; --duration-base: 150ms; --duration-slow: 150ms; }\n  *, *::before, *::after { transition-property: opacity, color, background-color !important; animation: none !important; }\n}';
+    const cssTheme = '@import "tailwindcss";\n@import "./tokens.css";\n\n@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));\n\n@theme inline {\n' +
+      Object.keys(L).map(k => '  --color-' + k + ': var(--' + k + ');').join('\n') +
+      '\n\n  --font-quote: var(--font-quote);\n  --font-sans: var(--font-sans);\n\n  --radius-xs: 2px;\n  --radius-sm: 4px;\n  --radius-md: 6px;\n  --radius-lg: 10px;\n\n  --shadow-1: var(--shadow-1);\n\n  --text-quote-display: 3.5rem;\n  --text-quote-display--line-height: 1.1;\n  --text-quote-hero: 2.375rem;\n  --text-quote-hero--line-height: 1.28;\n  --text-quote-card: 1.4375rem;\n  --text-quote-card--line-height: 1.42;\n  --text-quote-compact: 1.1875rem;\n  --text-quote-compact--line-height: 1.42;\n  --text-display-xl: 2.25rem;\n  --text-display-xl--line-height: 1.15;\n  --text-display-lg: 1.75rem;\n  --text-display-lg--line-height: 1.2;\n  --text-display-sm: 1.25rem;\n  --text-display-sm--line-height: 1.3;\n  --text-title-md: 1rem;\n  --text-title-md--line-height: 1.35;\n  --text-body-md: 1rem;\n  --text-body-md--line-height: 1.55;\n  --text-body-sm: .875rem;\n  --text-body-sm--line-height: 1.5;\n  --text-caption-sm: .8125rem;\n  --text-caption-sm--line-height: 1.4;\n  --text-label: .75rem;\n  --text-label--line-height: 1.2;\n\n  --ease-out: var(--ease-out);\n  --ease-in: var(--ease-in);\n}\n\n@layer base {\n  body {\n    background-color: var(--surface-soft);\n    background-image: radial-gradient(var(--grain) 1px, transparent 1px);\n    background-size: 3px 3px;\n    color: var(--ink);\n    font-family: var(--font-sans);\n  }\n  :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }\n}\n\n@utility user-text {\n  white-space: pre-wrap;\n  overflow-wrap: anywhere;\n}';
+    const calDays = [{n:'',bg:'transparent',fg:'inherit',w:400},{n:'',bg:'transparent',fg:'inherit',w:400},{n:'',bg:'transparent',fg:'inherit',w:400}];
+    for (let d = 1; d <= 30; d++) calDays.push({ n: d, bg: d === 1 ? 'var(--primary)' : 'transparent', fg: d === 1 ? 'var(--on-primary)' : 'var(--ink)', w: d === 1 ? 600 : 400 });
+    return { theme: dark ? 'dark' : 'light', swatches, contrast, cssRoot, cssTheme, calDays, ic: this.icons() };
+  }
+}
+</script>
+</body>
+</html>

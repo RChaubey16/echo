@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/modernist-94cbaf16-5413-4121-ae7e-7b72c74e10e0/styles.css">
+<script src="_ds/modernist-94cbaf16-5413-4121-ae7e-7b72c74e10e0/_ds_bundle.js"></script>
+<script src="echo-icons.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Hanken+Grotesk:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#d8d2c6}
+h1,h2,h3,h4,blockquote,p,ul,li{font-family:inherit} h1,h2,h3,h4{letter-spacing:inherit;color:inherit;text-transform:none}
+a{color:var(--primary,#2d4a72);text-underline-offset:3px} a:hover{color:var(--primary-active,#1c3150)}
+[data-theme="dark"]{--primary:#a3bce3;--primary-hover:#b6cbea;--primary-active:#c9d8ef;--primary-disabled:#2b3442;--on-primary:#14202f;--ink:#f0e9de;--body:#d3c9bb;--muted:#a39888;--muted-soft:#6f665b;--hairline:#3a332c;--hairline-soft:#2d2823;--border-input:#857a6c;--canvas:#221e1a;--surface-soft:#1a1714;--surface-strong:#2d2823;--error:#f09a86;--error-hover:#f4ae9d;--on-error:#2a120c;--error-tint:#3a221c;--tint-moss:#262b1d;--tint-ochre:#2e2619;--tint-heather:#2e2129;--tint-neutral:#2a2520;--mark-moss:#a8bf86;--mark-ochre:#d9a55a;--mark-heather:#d39cbd;--mark-neutral:#a39888;--grain:rgba(255,240,220,.025);--shadow-1:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.45);--scrim:rgba(0,0,0,.6)}
+</style>
+</helmet>
+
+<div data-theme="{{ theme }}" style="--primary:#2d4a72;--primary-hover:#253f62;--primary-active:#1c3150;--primary-disabled:#d5dce6;--on-primary:#fbf8f2;--ink:#2b2622;--body:#463f39;--muted:#675e55;--muted-soft:#9a9085;--hairline:#ddd4c4;--hairline-soft:#e8e1d3;--border-input:#8a7f72;--canvas:#fbf8f2;--surface-soft:#f3eee4;--surface-strong:#e9e2d4;--error:#a8301c;--error-hover:#8f2716;--on-error:#fbf8f2;--error-tint:#f7e4dd;--tint-moss:#ecefe0;--tint-ochre:#f5ecda;--tint-heather:#f2e7ec;--tint-neutral:#efe9df;--mark-moss:#56703a;--mark-ochre:#8a5a12;--mark-heather:#74405f;--mark-neutral:#675e55;--grain:rgba(60,40,20,.035);--shadow-1:0 1px 2px rgba(43,38,34,.06),0 8px 24px rgba(43,38,34,.10);--scrim:rgba(43,38,34,.5);--sans:'Hanken Grotesk',system-ui,sans-serif;--quote:'EB Garamond',Georgia,serif;font-family:var(--sans);padding:64px;display:flex;flex-direction:column;gap:56px;background:#d8d2c6">
+
+  <header style="display:flex;flex-direction:column;gap:8px;max-width:900px;color:#2b2622">
+    <div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#5a5249">Echo · Step 3 · Screens 5 of 5</div>
+    <h1 style="margin:0;font-size:40px;font-weight:600;letter-spacing:-.02em">Settings, Landing &amp; Sign in</h1>
+    <p style="margin:0;font-size:16px;line-height:1.5;color:#463f39">Use the <strong>theme</strong> tweak for dark.</p>
+  </header>
+
+  <!-- ===== P1 Settings desktop ===== -->
+  <div style="display:flex;gap:48px;flex-wrap:wrap;align-items:flex-start">
+  <section id="settings-desktop" data-screen-label="Settings desktop" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">P1</span>Settings · desktop 1440</div>
+    <div style="width:1440px;display:flex;background-color:var(--surface-soft);background-image:radial-gradient(var(--grain) 1px,transparent 1px);background-size:3px 3px;color:var(--ink);border-radius:10px;overflow:hidden">
+      <dc-import name="Echo Nav" variant="sidebar" active="settings" hint-size="256px,100%" style="align-self:stretch"></dc-import>
+      <main style="flex:1;min-width:0;padding:48px 48px 72px;display:grid;grid-template-columns:200px minmax(0,680px);gap:56px;align-items:start">
+        <nav style="position:sticky;top:48px;display:flex;flex-direction:column;gap:2px;padding-top:56px">
+          <span style="display:flex;align-items:center;height:40px;padding:0 12px;border-radius:6px;background:var(--surface-strong);font-size:15px;font-weight:600">Account</span>
+          <span style="display:flex;align-items:center;height:40px;padding:0 12px;font-size:15px;color:var(--body)">Appearance</span>
+          <span style="display:flex;align-items:center;height:40px;padding:0 12px;font-size:15px;color:var(--body)">Privacy</span>
+          <span style="display:flex;align-items:center;height:40px;padding:0 12px;font-size:15px;color:var(--body)">Data</span>
+        </nav>
+        <div style="display:flex;flex-direction:column;gap:40px">
+          <h1 style="margin:0;font-size:28px;font-weight:600;letter-spacing:-.01em">Settings</h1>
+          <section style="display:flex;flex-direction:column;gap:20px;padding:28px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+            <h2 style="margin:0;font-size:20px;font-weight:600">Account</h2>
+            <div style="display:flex;align-items:center;gap:16px"><span style="width:56px;height:56px;border-radius:50%;background:var(--tint-heather);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:20px">A</span><span style="font-size:14px;color:var(--muted)">Your photo comes from Google.</span></div>
+            <div style="display:flex;flex-direction:column;gap:6px"><label style="font-size:14px;font-weight:500">Name</label><div style="display:flex;gap:10px"><div style="flex:1;height:52px;display:flex;align-items:center;padding:0 16px;border:1px solid var(--border-input);border-radius:6px;font-size:16px;box-sizing:border-box">Ana Reyes</div><span style="display:inline-flex;align-items:center;height:52px;padding:0 20px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;font-weight:600;box-sizing:border-box">Save</span></div></div>
+            <div style="display:flex;flex-direction:column;gap:6px"><label style="font-size:14px;font-weight:500">Email</label><div style="height:52px;display:flex;align-items:center;gap:10px;padding:0 16px;border:1px solid var(--hairline);background:var(--surface-soft);border-radius:6px;font-size:16px;color:var(--body);box-sizing:border-box"><span style="display:flex;color:var(--muted)">{{ ic.lockSm }}</span>ana.reyes@gmail.com</div><span style="font-size:13px;color:var(--muted)">Managed by your Google account.</span></div>
+          </section>
+          <section style="display:flex;flex-direction:column;gap:16px;padding:28px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+            <h2 style="margin:0;font-size:20px;font-weight:600">Appearance</h2>
+            <div role="radiogroup" aria-label="Theme" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+              <span role="radio" style="display:flex;align-items:center;gap:10px;height:56px;padding:0 16px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;font-weight:500;box-sizing:border-box">{{ ic.sun }}Light</span>
+              <span role="radio" style="display:flex;align-items:center;gap:10px;height:56px;padding:0 16px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;font-weight:500;box-sizing:border-box">{{ ic.moon }}Dark</span>
+              <span role="radio" aria-checked="true" style="display:flex;align-items:center;gap:10px;height:56px;padding:0 16px;border:2px solid var(--ink);background:var(--surface-strong);border-radius:6px;font-size:15px;font-weight:600;box-sizing:border-box">{{ ic.monitor }}<span style="flex:1">System</span>{{ ic.checkSm }}</span>
+            </div>
+            <span style="font-size:14px;color:var(--muted)">System follows your device, and switches at night if it does.</span>
+          </section>
+          <section style="display:flex;flex-direction:column;gap:12px;padding:28px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+            <h2 style="margin:0;font-size:20px;font-weight:600">Privacy</h2>
+            <p style="margin:0;font-size:16px;line-height:1.6;color:var(--body);text-wrap:pretty">Echo is private by design. Your Echoes, Reflections and Collections are visible only to you. There are no profiles, followers or public pages, and nothing you save is shown to anyone else.</p>
+            <a href="#" style="font-size:15px;font-weight:500">Read the privacy policy</a>
+          </section>
+          <section style="display:flex;flex-direction:column;gap:20px;padding:28px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+            <h2 style="margin:0;font-size:20px;font-weight:600">Data</h2>
+            <div style="display:flex;flex-direction:column;gap:12px"><div style="font-size:16px;font-weight:600">Export your library</div><p style="margin:0;font-size:15px;line-height:1.55;color:var(--body)">Everything you've saved, including Reflections, tags and Collections.</p><div style="display:flex;gap:10px"><span style="display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 18px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;font-weight:600;box-sizing:border-box">{{ ic.downloadSm }}Export as JSON</span><span style="display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 18px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;font-weight:600;box-sizing:border-box">{{ ic.downloadSm }}Export as CSV</span></div></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding-top:20px;border-top:1px solid var(--hairline-soft)"><div style="display:flex;flex-direction:column;gap:4px"><div style="font-size:16px;font-weight:600">Delete account</div><p style="margin:0;font-size:15px;line-height:1.55;color:var(--body)">Permanently removes your account and everything in it.</p></div><span style="flex:none;display:inline-flex;align-items:center;height:48px;padding:0 18px;border:1px solid var(--error);border-radius:6px;color:var(--error);font-size:15px;font-weight:600;box-sizing:border-box">Delete account</span></div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </section>
+  </div>
+
+  <div style="display:flex;gap:48px;flex-wrap:wrap;align-items:flex-start">
+  <section id="settings-delete" data-screen-label="Delete account dialog" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">P2</span>Delete account · destructive confirmation</div>
+    <div style="width:720px;height:560px;display:flex;align-items:center;justify-content:center;background:var(--scrim);border-radius:10px;color:var(--ink)">
+      <div role="alertdialog" aria-labelledby="del-title" style="width:480px;display:flex;flex-direction:column;gap:16px;padding:32px;background:var(--canvas);border-radius:10px;box-shadow:var(--shadow-1)">
+        <span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center;border-radius:999px;background:var(--error-tint);color:var(--error)">{{ ic.alert }}</span>
+        <h2 id="del-title" style="margin:0;font-size:22px;font-weight:600">Delete your account?</h2>
+        <p style="margin:0;font-size:16px;line-height:1.6;color:var(--body)">This permanently deletes your 142 Echoes, their Reflections, and your 5 Collections. This can't be undone.</p>
+        <p style="margin:0;font-size:15px;line-height:1.55;color:var(--body)">Want a copy first? <a href="#">Export as JSON</a></p>
+        <div style="display:flex;justify-content:flex-end;gap:10px;padding-top:8px"><span style="display:inline-flex;align-items:center;height:48px;padding:0 20px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;font-weight:600;box-sizing:border-box;outline:2px solid var(--primary);outline-offset:2px">Keep my account</span><span style="display:inline-flex;align-items:center;height:48px;padding:0 20px;border-radius:6px;background:var(--error);color:var(--on-error);font-size:15px;font-weight:600">Delete account</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="settings-mobile" data-screen-label="Settings mobile" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">P3</span>Settings · mobile</div>
+    <div style="width:390px;display:flex;flex-direction:column;background-color:var(--surface-soft);background-image:radial-gradient(var(--grain) 1px,transparent 1px);background-size:3px 3px;color:var(--ink);border-radius:10px;overflow:hidden">
+      <dc-import name="Echo Nav" variant="header" hint-size="100%,64px"></dc-import>
+      <main style="padding:24px 20px 32px;display:flex;flex-direction:column;gap:20px">
+        <h1 style="margin:0;font-size:24px;font-weight:600">Settings</h1>
+        <section style="display:flex;flex-direction:column;gap:14px;padding:20px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px"><h2 style="margin:0;font-size:18px;font-weight:600">Account</h2><div style="display:flex;flex-direction:column;gap:6px"><label style="font-size:14px;font-weight:500">Name</label><div style="height:52px;display:flex;align-items:center;padding:0 16px;border:1px solid var(--border-input);border-radius:6px;font-size:16px;box-sizing:border-box">Ana Reyes</div></div><div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:14px;font-weight:500">Email</span><span style="font-size:15px;color:var(--body);overflow-wrap:anywhere">ana.reyes@gmail.com</span></div></section>
+        <section style="display:flex;flex-direction:column;gap:12px;padding:20px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px"><h2 style="margin:0;font-size:18px;font-weight:600">Appearance</h2>
+          <div role="radiogroup" style="display:flex;flex-direction:column;gap:8px">
+            <span style="display:flex;align-items:center;gap:10px;height:48px;padding:0 14px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;box-sizing:border-box">{{ ic.sun }}Light</span>
+            <span style="display:flex;align-items:center;gap:10px;height:48px;padding:0 14px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;box-sizing:border-box">{{ ic.moon }}Dark</span>
+            <span style="display:flex;align-items:center;gap:10px;height:48px;padding:0 14px;border:2px solid var(--ink);background:var(--surface-strong);border-radius:6px;font-size:15px;font-weight:600;box-sizing:border-box">{{ ic.monitor }}<span style="flex:1">System</span>{{ ic.checkSm }}</span>
+          </div>
+        </section>
+        <section style="display:flex;flex-direction:column;gap:10px;padding:20px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px"><h2 style="margin:0;font-size:18px;font-weight:600">Privacy</h2><p style="margin:0;font-size:15px;line-height:1.6;color:var(--body)">Your Echoes are visible only to you. No profiles, no followers, no public pages.</p></section>
+        <section style="display:flex;flex-direction:column;gap:10px;padding:20px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px"><h2 style="margin:0;font-size:18px;font-weight:600">Data</h2><span style="display:flex;align-items:center;gap:8px;height:48px;padding:0 16px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;font-weight:600;box-sizing:border-box">{{ ic.downloadSm }}Export as JSON</span><span style="display:flex;align-items:center;gap:8px;height:48px;padding:0 16px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;font-weight:600;box-sizing:border-box">{{ ic.downloadSm }}Export as CSV</span><span style="display:flex;align-items:center;height:48px;padding:0 4px;margin-top:6px;color:var(--error);font-size:15px;font-weight:600">Delete account</span></section>
+      </main>
+      <dc-import name="Echo Nav" variant="tabs" active="settings" hint-size="100%,72px"></dc-import>
+    </div>
+  </section>
+  </div>
+
+  <!-- ===== W1 Landing desktop ===== -->
+  <section id="landing-desktop" data-screen-label="Landing desktop" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">W1</span>Landing · desktop 1440</div>
+    <div style="width:1440px;display:flex;flex-direction:column;background:var(--canvas);color:var(--ink);border-radius:10px;overflow:hidden">
+      <header style="display:flex;align-items:center;justify-content:space-between;padding:20px 80px;border-bottom:1px solid var(--hairline-soft)"><span style="font-size:22px;font-weight:600;letter-spacing:-.02em">Echo</span><div style="display:flex;align-items:center;gap:8px"><a href="#" style="display:inline-flex;align-items:center;height:44px;padding:0 14px;font-size:15px;font-weight:500;color:var(--ink);text-decoration:none">Sign in</a></div></header>
+      <section style="display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:80px;align-items:center;padding:120px 80px 128px">
+        <div style="display:flex;flex-direction:column;gap:32px">
+          <h1 style="margin:0;font-family:var(--quote);font-weight:400;font-size:84px;line-height:1.02;letter-spacing:-.015em">Words worth<br>coming back to.</h1>
+          <p style="margin:0;font-size:20px;line-height:1.55;color:var(--body);max-width:520px;text-wrap:pretty">A private library for the quotes that stay with you, and what they meant to you at the time.</p>
+          <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start">
+            <span style="display:inline-flex;align-items:center;gap:12px;height:52px;padding:0 22px 0 18px;border-radius:6px;background:var(--primary);color:var(--on-primary);font-size:16px;font-weight:600"><span style="display:flex;width:24px;height:24px;align-items:center;justify-content:center;border-radius:4px;background:#ffffff">{{ google }}</span>Continue with Google</span>
+            <span style="font-size:14px;color:var(--muted)">Private by design. No feed.</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:20px;padding:44px;background:var(--surface-soft);border-radius:10px">
+          <div style="font-size:13px;font-weight:600;color:var(--muted)">Today's Echo</div>
+          <div style="font-family:var(--quote);font-size:34px;line-height:1.26">“Begin anywhere.”</div>
+          <div style="font-size:15px;font-weight:600">John Cage</div>
+          <div style="padding:14px 16px;background:var(--canvas);border-radius:6px;font-size:15px;line-height:1.55;color:var(--body)"><span style="display:block;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:4px">You wrote</span>Maybe I should finally start.</div>
+          <div style="font-size:13px;color:var(--muted)">Saved a year ago. Back today.</div>
+        </div>
+      </section>
+      <section style="padding:88px 80px;border-top:1px solid var(--hairline-soft);display:flex;flex-direction:column;gap:48px">
+        <h2 style="margin:0;font-size:36px;font-weight:600;letter-spacing:-.02em;max-width:640px;line-height:1.15">Somewhere to keep them, and a way back to them.</h2>
+        <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:40px">
+          <div style="display:flex;flex-direction:column;gap:12px;padding-top:20px;border-top:1px solid var(--ink)"><span style="display:flex;color:var(--ink)">{{ ic.featherLg }}</span><h3 style="margin:0;font-size:18px;font-weight:600">Save in seconds</h3><p style="margin:0;font-size:16px;line-height:1.55;color:var(--body)">Paste the words and go. Author, source and why it mattered can come later.</p></div>
+          <div style="display:flex;flex-direction:column;gap:12px;padding-top:20px;border-top:1px solid var(--ink)"><span style="display:flex;color:var(--ink)">{{ ic.layersLg }}</span><h3 style="margin:0;font-size:18px;font-weight:600">Organize</h3><p style="margin:0;font-size:16px;line-height:1.55;color:var(--body)">Gather Echoes into Collections and tags that make sense to you.</p></div>
+          <div style="display:flex;flex-direction:column;gap:12px;padding-top:20px;border-top:1px solid var(--ink)"><span style="display:flex;color:var(--ink)">{{ ic.searchLg }}</span><h3 style="margin:0;font-size:18px;font-weight:600">Find anything</h3><p style="margin:0;font-size:16px;line-height:1.55;color:var(--body)">Search every word, including what you wrote about it.</p></div>
+          <div style="display:flex;flex-direction:column;gap:12px;padding-top:20px;border-top:1px solid var(--ink)"><span style="display:flex;color:var(--ink)">{{ ic.historyLg }}</span><h3 style="margin:0;font-size:18px;font-weight:600">Rediscover</h3><p style="margin:0;font-size:16px;line-height:1.55;color:var(--body)">Today's Echo and Revisits bring old words back when you might need them.</p></div>
+        </div>
+      </section>
+      <section style="margin:0 80px 88px;padding:56px;background:var(--tint-moss);border-radius:10px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:14px"><span style="display:flex;color:var(--mark-moss)">{{ ic.lockLg }}</span><h2 style="margin:0;font-size:36px;font-weight:600;letter-spacing:-.02em;line-height:1.15">Private by design</h2></div>
+        <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:16px;font-size:17px;line-height:1.55;color:var(--body)">
+          <li style="display:flex;gap:12px"><span style="display:flex;padding-top:4px;color:var(--mark-moss)">{{ ic.check }}</span>Only you can see your Echoes and Reflections.</li>
+          <li style="display:flex;gap:12px"><span style="display:flex;padding-top:4px;color:var(--mark-moss)">{{ ic.check }}</span>No profiles, followers, feeds or likes.</li>
+          <li style="display:flex;gap:12px"><span style="display:flex;padding-top:4px;color:var(--mark-moss)">{{ ic.check }}</span>Export everything, or delete it, whenever you like.</li>
+        </ul>
+      </section>
+      <footer style="display:flex;align-items:center;justify-content:space-between;padding:28px 80px;border-top:1px solid var(--hairline-soft);font-size:14px;color:var(--muted)"><span>© 2026 Echo</span><div style="display:flex;gap:8px"><a href="#" style="display:inline-flex;align-items:center;height:44px;padding:0 10px;color:var(--body)">Privacy</a><a href="#" style="display:inline-flex;align-items:center;height:44px;padding:0 10px;color:var(--body)">Terms</a></div></footer>
+    </div>
+  </section>
+
+  <!-- ===== Public mobile + sign in ===== -->
+  <div style="display:flex;gap:48px;flex-wrap:wrap;align-items:flex-start">
+  <section id="landing-mobile" data-screen-label="Landing mobile" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">W2</span>Landing · mobile</div>
+    <div style="width:390px;display:flex;flex-direction:column;background:var(--canvas);color:var(--ink);border-radius:10px;overflow:hidden">
+      <header style="height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 8px 0 20px;border-bottom:1px solid var(--hairline-soft)"><span style="font-size:20px;font-weight:600;letter-spacing:-.02em">Echo</span><a href="#" style="display:inline-flex;align-items:center;height:44px;padding:0 12px;font-size:15px;font-weight:500;color:var(--ink);text-decoration:none">Sign in</a></header>
+      <section style="padding:56px 20px 48px;display:flex;flex-direction:column;gap:24px">
+        <h1 style="margin:0;font-family:var(--quote);font-weight:400;font-size:46px;line-height:1.05;letter-spacing:-.01em">Words worth coming back to.</h1>
+        <p style="margin:0;font-size:17px;line-height:1.55;color:var(--body)">A private library for the quotes that stay with you, and what they meant to you at the time.</p>
+        <span style="display:flex;align-items:center;justify-content:center;gap:12px;height:52px;border-radius:6px;background:var(--primary);color:var(--on-primary);font-size:16px;font-weight:600"><span style="display:flex;width:24px;height:24px;align-items:center;justify-content:center;border-radius:4px;background:#ffffff">{{ google }}</span>Continue with Google</span>
+      </section>
+      <section style="padding:40px 20px;border-top:1px solid var(--hairline-soft);display:flex;flex-direction:column;gap:28px">
+        <div style="display:flex;gap:14px"><span style="display:flex;color:var(--ink)">{{ ic.feather }}</span><div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font-size:17px;font-weight:600">Save in seconds</h3><p style="margin:0;font-size:15px;line-height:1.55;color:var(--body)">Paste the words and go.</p></div></div>
+        <div style="display:flex;gap:14px"><span style="display:flex;color:var(--ink)">{{ ic.layers }}</span><div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font-size:17px;font-weight:600">Organize</h3><p style="margin:0;font-size:15px;line-height:1.55;color:var(--body)">Collections and tags that make sense to you.</p></div></div>
+        <div style="display:flex;gap:14px"><span style="display:flex;color:var(--ink)">{{ ic.search }}</span><div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font-size:17px;font-weight:600">Find anything</h3><p style="margin:0;font-size:15px;line-height:1.55;color:var(--body)">Including what you wrote about it.</p></div></div>
+        <div style="display:flex;gap:14px"><span style="display:flex;color:var(--ink)">{{ ic.history }}</span><div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font-size:17px;font-weight:600">Rediscover</h3><p style="margin:0;font-size:15px;line-height:1.55;color:var(--body)">Old words, back when you need them.</p></div></div>
+      </section>
+      <section style="margin:0 20px 40px;padding:28px 24px;background:var(--tint-moss);border-radius:10px;display:flex;flex-direction:column;gap:12px"><h2 style="margin:0;font-size:24px;font-weight:600">Private by design</h2><p style="margin:0;font-size:15px;line-height:1.6;color:var(--body)">Only you can see your Echoes. No profiles, followers or feeds. Export or delete everything, any time.</p></section>
+      <footer style="display:flex;align-items:center;justify-content:space-between;padding:12px 10px 12px 20px;border-top:1px solid var(--hairline-soft);font-size:14px;color:var(--muted)"><span>© 2026 Echo</span><div style="display:flex"><a href="#" style="display:inline-flex;align-items:center;height:44px;padding:0 10px;color:var(--body)">Privacy</a><a href="#" style="display:inline-flex;align-items:center;height:44px;padding:0 10px;color:var(--body)">Terms</a></div></footer>
+    </div>
+  </section>
+
+  <section id="signin-desktop" data-screen-label="Sign in desktop" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">W3</span>Sign in · desktop</div>
+    <div style="width:1000px;height:720px;display:flex;align-items:center;justify-content:center;background-color:var(--surface-soft);background-image:radial-gradient(var(--grain) 1px,transparent 1px);background-size:3px 3px;color:var(--ink);border-radius:10px">
+      <div style="width:420px;display:flex;flex-direction:column;align-items:center;gap:24px;padding:48px 40px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px;box-sizing:border-box;text-align:center">
+        <span style="font-size:28px;font-weight:600;letter-spacing:-.02em">Echo</span>
+        <p style="margin:0;font-size:17px;line-height:1.5;color:var(--body)">Welcome back. Your words are waiting.</p>
+        <span style="width:100%;display:flex;align-items:center;justify-content:center;gap:12px;height:52px;border-radius:6px;background:var(--primary);color:var(--on-primary);font-size:16px;font-weight:600"><span style="display:flex;width:24px;height:24px;align-items:center;justify-content:center;border-radius:4px;background:#ffffff">{{ google }}</span>Continue with Google</span>
+        <span style="font-size:13px;line-height:1.5;color:var(--muted)">By continuing you agree to the <a href="#">Terms</a> and <a href="#">Privacy policy</a>.</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="signin-mobile" data-screen-label="Sign in mobile" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">W4</span>Sign in · mobile</div>
+    <div style="width:390px;height:720px;display:flex;align-items:center;padding:20px;box-sizing:border-box;background-color:var(--surface-soft);background-image:radial-gradient(var(--grain) 1px,transparent 1px);background-size:3px 3px;color:var(--ink);border-radius:10px">
+      <div style="width:100%;display:flex;flex-direction:column;align-items:center;gap:20px;padding:40px 24px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px;box-sizing:border-box;text-align:center">
+        <span style="font-size:26px;font-weight:600;letter-spacing:-.02em">Echo</span>
+        <p style="margin:0;font-size:16px;line-height:1.5;color:var(--body)">Welcome back. Your words are waiting.</p>
+        <span style="width:100%;display:flex;align-items:center;justify-content:center;gap:12px;height:52px;border-radius:6px;background:var(--primary);color:var(--on-primary);font-size:16px;font-weight:600"><span style="display:flex;width:24px;height:24px;align-items:center;justify-content:center;border-radius:4px;background:#ffffff">{{ google }}</span>Continue with Google</span>
+      </div>
+    </div>
+  </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;'light' | 'dark'&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() { if (!window.EchoIcons) { this._l = () => this.forceUpdate(); window.addEventListener('echo-icons', this._l); } }
+  componentWillUnmount() { if (this._l) window.removeEventListener('echo-icons', this._l); }
+  renderVals() {
+    const ic = window.EchoIcons ? window.EchoIcons(React) : {};
+    if (!this._g) {
+      const h = React.createElement;
+      this._g = h('svg', { width: 18, height: 18, viewBox: '0 0 48 48', 'aria-hidden': true },
+        h('path', { fill: '#EA4335', d: 'M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z' }),
+        h('path', { fill: '#4285F4', d: 'M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z' }),
+        h('path', { fill: '#FBBC05', d: 'M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z' }),
+        h('path', { fill: '#34A853', d: 'M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z' }));
+    }
+    return { theme: this.props.theme === 'dark' ? 'dark' : 'light', ic, google: this._g };
+  }
+}
+</script>
+</body>
+</html>

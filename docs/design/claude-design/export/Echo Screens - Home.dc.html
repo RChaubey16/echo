@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/modernist-94cbaf16-5413-4121-ae7e-7b72c74e10e0/styles.css">
+<script src="_ds/modernist-94cbaf16-5413-4121-ae7e-7b72c74e10e0/_ds_bundle.js"></script>
+<script src="echo-icons.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Hanken+Grotesk:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#d8d2c6}
+h1,h2,h3,h4,blockquote,p{font-family:inherit} h1,h2,h3,h4{letter-spacing:inherit;color:inherit;text-transform:none}
+a{color:var(--primary,#2d4a72);text-underline-offset:3px} a:hover{color:var(--primary-active,#1c3150)}
+[data-theme="dark"]{--primary:#a3bce3;--primary-hover:#b6cbea;--primary-active:#c9d8ef;--primary-disabled:#2b3442;--on-primary:#14202f;--ink:#f0e9de;--body:#d3c9bb;--muted:#a39888;--muted-soft:#6f665b;--hairline:#3a332c;--hairline-soft:#2d2823;--border-input:#857a6c;--canvas:#221e1a;--surface-soft:#1a1714;--surface-strong:#2d2823;--error:#f09a86;--error-hover:#f4ae9d;--on-error:#2a120c;--error-tint:#3a221c;--tint-moss:#262b1d;--tint-ochre:#2e2619;--tint-heather:#2e2129;--tint-neutral:#2a2520;--mark-moss:#a8bf86;--mark-ochre:#d9a55a;--mark-heather:#d39cbd;--mark-neutral:#a39888;--grain:rgba(255,240,220,.025);--shadow-1:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.45);--scrim:rgba(0,0,0,.6)}
+</style>
+</helmet>
+
+<div data-theme="{{ theme }}" style="--primary:#2d4a72;--primary-hover:#253f62;--primary-active:#1c3150;--primary-disabled:#d5dce6;--on-primary:#fbf8f2;--ink:#2b2622;--body:#463f39;--muted:#675e55;--muted-soft:#9a9085;--hairline:#ddd4c4;--hairline-soft:#e8e1d3;--border-input:#8a7f72;--canvas:#fbf8f2;--surface-soft:#f3eee4;--surface-strong:#e9e2d4;--error:#a8301c;--error-hover:#8f2716;--on-error:#fbf8f2;--error-tint:#f7e4dd;--tint-moss:#ecefe0;--tint-ochre:#f5ecda;--tint-heather:#f2e7ec;--tint-neutral:#efe9df;--mark-moss:#56703a;--mark-ochre:#8a5a12;--mark-heather:#74405f;--mark-neutral:#675e55;--grain:rgba(60,40,20,.035);--shadow-1:0 1px 2px rgba(43,38,34,.06),0 8px 24px rgba(43,38,34,.10);--scrim:rgba(43,38,34,.5);--sans:'Hanken Grotesk',system-ui,sans-serif;--quote:'EB Garamond',Georgia,serif;font-family:var(--sans);padding:64px;display:flex;flex-direction:column;gap:56px;background:#d8d2c6">
+
+  <header style="display:flex;flex-direction:column;gap:8px;max-width:900px;color:#2b2622">
+    <div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#5a5249">Echo · Step 3 · Screens 1 of 5</div>
+    <h1 style="margin:0;font-size:40px;font-weight:600;letter-spacing:-.02em">Home</h1>
+    <p style="margin:0;font-size:16px;line-height:1.5;color:#463f39">Desktop 1440, tablet 900 (rail), mobile 390. Use the <strong>theme</strong> tweak for dark.</p>
+  </header>
+
+  <!-- ===== 1a Desktop Home ===== -->
+  <section id="home-desktop" data-screen-label="Home desktop" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">H1</span>Home · desktop 1440</div>
+    <div style="width:1440px;display:flex;background-color:var(--surface-soft);background-image:radial-gradient(var(--grain) 1px,transparent 1px);background-size:3px 3px;color:var(--ink);border-radius:10px;overflow:hidden">
+      <dc-import name="Echo Nav" variant="sidebar" active="home" hint-size="256px,100%" style="align-self:stretch"></dc-import>
+      <main style="flex:1;min-width:0;padding:48px 48px 64px;display:flex;flex-direction:column;gap:40px">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <h1 style="margin:0;font-size:28px;font-weight:600;letter-spacing:-.01em;line-height:1.2">Good evening, Ana</h1>
+          <p style="margin:0;font-size:16px;color:var(--body)">2 Echoes are due for a revisit. <a href="#">See them</a></p>
+        </div>
+
+        <article style="display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:48px;padding:56px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+          <div style="display:flex;flex-direction:column;gap:28px;min-width:0">
+            <div style="display:flex;align-items:baseline;gap:12px;font-size:14px;color:var(--muted)"><span style="font-weight:600;color:var(--ink)">Today's Echo</span><span>Something you once wanted to remember.</span></div>
+            <blockquote style="margin:0;font-family:var(--quote);font-size:44px;line-height:1.24;letter-spacing:-.005em;text-wrap:pretty;overflow-wrap:anywhere;max-width:760px">“It is never too late to be what you might have been.”</blockquote>
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <div style="font-size:16px;font-weight:600">George Eliot</div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)"><span style="width:8px;height:8px;border-radius:50%;background:var(--mark-moss)"></span>From Starting Over · saved 2 years ago</div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding-top:8px">
+              <span style="display:flex;align-items:center;gap:8px;height:48px;padding:0 20px;background:var(--primary);color:var(--on-primary);border-radius:6px;font-size:15px;font-weight:600">{{ ic.refreshSm }}Echo me something</span>
+              <span style="display:flex;align-items:center;height:48px;padding:0 20px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;font-weight:600;box-sizing:border-box">Open</span>
+              <span style="display:flex;width:48px;height:48px;align-items:center;justify-content:center;border-radius:999px;background:var(--surface-strong);color:var(--primary)" aria-label="Favorite">{{ ic.heartFill }}</span>
+            </div>
+          </div>
+          <aside style="align-self:start;display:flex;flex-direction:column;gap:10px;padding:20px;background:var(--surface-soft);border-radius:6px;margin-top:44px">
+            <div style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">You wrote</div>
+            <div style="font-size:16px;line-height:1.55;color:var(--body);white-space:pre-wrap">I was feeling like I'd already wasted too much time.</div>
+            <div style="font-size:13px;color:var(--muted)">Mar 4, 2024</div>
+          </aside>
+        </article>
+
+        <div style="display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:32px;align-items:start">
+          <section style="display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between"><h2 style="margin:0;font-size:20px;font-weight:600">Recently added</h2><a href="#" style="font-size:14px;font-weight:500">Library</a></div>
+            <div style="display:flex;flex-direction:column;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px;padding:6px">
+              <sc-for list="{{ recent }}" as="r" hint-placeholder-count="5">
+                <div style="display:flex;gap:14px;align-items:flex-start;padding:12px;border-radius:6px"><span style="flex:none;width:40px;height:40px;border-radius:6px;background:{{ r.tint }};color:var(--ink);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600">{{ r.mono }}</span><div style="min-width:0;display:flex;flex-direction:column;gap:4px"><div style="font-family:var(--quote);font-size:19px;line-height:1.42;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere">{{ r.q }}</div><div style="font-size:13px;color:var(--muted)">{{ r.meta }}</div></div></div>
+              </sc-for>
+            </div>
+          </section>
+          <div style="display:flex;flex-direction:column;gap:24px">
+            <section style="display:flex;flex-direction:column;gap:14px;padding:24px;background:var(--tint-ochre);border-radius:10px">
+              <div style="display:flex;align-items:center;gap:10px"><span style="display:flex;color:var(--mark-ochre)">{{ ic.cal }}</span><h2 style="margin:0;font-size:20px;font-weight:600">Revisits due</h2></div>
+              <div style="display:flex;flex-direction:column;gap:12px;padding:16px;background:var(--canvas);border-radius:6px">
+                <div style="font-family:var(--quote);font-size:19px;line-height:1.42;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">“…be patient toward all that is unsolved in your heart and try to love the questions themselves, like locked rooms and like books that are now written in a very foreign tongue.”</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap"><span style="font-size:13px;color:var(--muted)">Letters to a Young Poet · due today</span><span style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 12px;border:1px solid var(--border-input);border-radius:6px;font-size:14px;font-weight:600;box-sizing:border-box">{{ ic.checkSm }}Mark as reflected</span></div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:12px;padding:16px;background:var(--canvas);border-radius:6px">
+                <div style="font-family:var(--quote);font-size:19px;line-height:1.42">“Something my grandmother used to say: you can't pour from an empty cup.”</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap"><span style="font-size:13px;color:var(--muted)">Grandma · due yesterday</span><span style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 12px;border:1px solid var(--border-input);border-radius:6px;font-size:14px;font-weight:600;box-sizing:border-box">{{ ic.checkSm }}Mark as reflected</span></div>
+              </div>
+            </section>
+            <section style="display:flex;flex-direction:column;gap:12px;padding:24px;background:var(--tint-heather);border-radius:10px">
+              <div style="display:flex;align-items:center;gap:10px"><span style="display:flex;color:var(--mark-heather)">{{ ic.history }}</span><h2 style="margin:0;font-size:20px;font-weight:600">From the past</h2><span style="margin-left:auto;font-size:13px;color:var(--body)">1 year ago</span></div>
+              <div style="font-family:var(--quote);font-size:28px;line-height:1.3">“Begin anywhere.”</div>
+              <div style="font-size:14px;font-weight:600">John Cage</div>
+              <div style="font-size:14px;line-height:1.5;color:var(--body)">You wrote: Maybe I should finally start.</div>
+            </section>
+          </div>
+        </div>
+
+        <section style="display:flex;flex-direction:column;gap:14px">
+          <h2 style="margin:0;font-size:20px;font-weight:600">Your library</h2>
+          <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+            <div style="padding:20px 24px;display:flex;flex-direction:column;gap:2px"><span style="font-size:28px;font-weight:600;letter-spacing:-.01em">142</span><span style="font-size:14px;color:var(--muted)">Echoes</span></div>
+            <div style="padding:20px 24px;display:flex;flex-direction:column;gap:2px;border-left:1px solid var(--hairline-soft)"><span style="font-size:28px;font-weight:600;letter-spacing:-.01em">31</span><span style="font-size:14px;color:var(--muted)">Favorites</span></div>
+            <div style="padding:20px 24px;display:flex;flex-direction:column;gap:2px;border-left:1px solid var(--hairline-soft)"><span style="font-size:28px;font-weight:600;letter-spacing:-.01em">5</span><span style="font-size:14px;color:var(--muted)">Collections</span></div>
+            <div style="padding:20px 24px;display:flex;flex-direction:column;gap:2px;border-left:1px solid var(--hairline-soft)"><span style="font-size:28px;font-weight:600;letter-spacing:-.01em">2</span><span style="font-size:14px;color:var(--muted)">Revisits due</span></div>
+          </div>
+        </section>
+
+        <section style="display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;align-items:baseline;justify-content:space-between"><h2 style="margin:0;font-size:20px;font-weight:600">Favorites</h2><a href="#" style="font-size:14px;font-weight:500">View all</a></div>
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start">
+            <div style="display:flex;flex-direction:column;gap:16px;padding:24px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+              <div style="font-family:var(--quote);font-size:23px;line-height:1.42">“It is never too late to be what you might have been.”</div>
+              <div style="font-size:14px;font-weight:600">George Eliot</div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--hairline-soft);font-size:13px;color:var(--muted)"><span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:var(--mark-moss)"></span>Starting Over</span><span style="display:flex;width:44px;height:44px;margin:-12px -12px -12px 0;align-items:center;justify-content:center;color:var(--primary)">{{ ic.heartFill }}</span></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:16px;padding:24px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+              <div style="font-family:var(--quote);font-size:23px;line-height:1.42">“Tell me, what is it you plan to do with your one wild and precious life?”</div>
+              <div style="font-size:14px;color:var(--body)"><span style="font-weight:600;color:var(--ink)">Mary Oliver</span> · The Summer Day</div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--hairline-soft);font-size:13px;color:var(--muted)"><span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:var(--mark-moss)"></span>Things I Want to Remember</span><span style="display:flex;width:44px;height:44px;margin:-12px -12px -12px 0;align-items:center;justify-content:center;color:var(--primary)">{{ ic.heartFill }}</span></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:16px;padding:24px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+              <div style="font-family:var(--quote);font-size:23px;line-height:1.42">“Something my grandmother used to say: you can't pour from an empty cup.”</div>
+              <div style="font-size:14px;color:var(--body)">Grandma</div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--hairline-soft);font-size:13px;color:var(--muted)"><span>rest · tender</span><span style="display:flex;width:44px;height:44px;margin:-12px -12px -12px 0;align-items:center;justify-content:center;color:var(--primary)">{{ ic.heartFill }}</span></div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </section>
+
+  <!-- ===== Swap ===== -->
+  <section id="home-swap" data-screen-label="Echo me something swap" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">H2</span>“Echo me something” · before → after</div>
+    <div style="display:flex;gap:32px;align-items:stretch;flex-wrap:wrap">
+      <div style="width:620px;display:flex;flex-direction:column;gap:24px;padding:44px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px;color:var(--ink);box-sizing:border-box">
+        <div style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">Before</div>
+        <div style="font-family:var(--quote);font-size:36px;line-height:1.26">“It is never too late to be what you might have been.”</div>
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="font-size:16px;font-weight:600">George Eliot</div><div style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)"><span style="width:8px;height:8px;border-radius:50%;background:var(--mark-moss)"></span>From Starting Over · saved 2 years ago</div></div>
+        <div style="display:flex;gap:12px;margin-top:auto"><span style="display:flex;align-items:center;gap:8px;height:48px;padding:0 20px;background:var(--primary-active);color:var(--on-primary);border-radius:6px;font-size:15px;font-weight:600;outline:2px solid var(--primary);outline-offset:2px">{{ ic.refreshSm }}Echo me something</span><span style="display:flex;align-items:center;height:48px;padding:0 20px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;font-weight:600;box-sizing:border-box">Open</span></div>
+        <div style="font-size:13px;color:var(--muted)">Pressed (active + focus ring)</div>
+      </div>
+      <div style="width:620px;display:flex;flex-direction:column;gap:24px;padding:44px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px;color:var(--ink);box-sizing:border-box">
+        <div style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">After · 250ms</div>
+        <div style="font-family:var(--quote);font-size:36px;line-height:1.26">“The cure for anything is salt water: sweat, tears, or the sea.”</div>
+        <div style="display:flex;flex-direction:column;gap:4px"><div style="font-size:16px;font-weight:600">Isak Dinesen</div><div style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)"><span style="width:8px;height:8px;border-radius:50%;background:var(--mark-ochre)"></span>From For Difficult Days · saved 8 months ago</div></div>
+        <div style="display:flex;gap:12px;margin-top:auto"><span style="display:flex;align-items:center;gap:8px;height:48px;padding:0 20px;background:var(--primary);color:var(--on-primary);border-radius:6px;font-size:15px;font-weight:600;outline:2px solid var(--primary);outline-offset:2px">{{ ic.refreshSm }}Echo me something</span><span style="display:flex;align-items:center;height:48px;padding:0 20px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;font-weight:600;box-sizing:border-box">Open</span></div>
+        <div style="font-size:13px;color:var(--muted)">No Reflection, so the “You wrote” block is simply absent.</div>
+      </div>
+      <div style="width:360px;display:flex;flex-direction:column;gap:14px;padding:28px;background:#fbf8f2;border:1px solid #ddd4c4;border-radius:10px;color:#2b2622;font-size:14px;line-height:1.55;box-sizing:border-box">
+        <div style="font-size:16px;font-weight:600">Motion note</div>
+        <div style="display:grid;grid-template-columns:64px 1fr;gap:8px 12px">
+          <strong>0–150</strong><span>Quote, attribution and “You wrote” fade to 0 and rise 4px. <code>ease-in</code>.</span>
+          <strong>150</strong><span>Content swaps. Panel height eases to the new height over 250ms, so long quotes never jump.</span>
+          <strong>150–400</strong><span>New quote fades in from 4px below, 250ms <code>ease-out</code>; attribution follows 50ms later.</span>
+        </div>
+        <div><strong>Focus</strong> stays on the button. A polite live region reads “Now showing an Echo by Isak Dinesen.”</div>
+        <div><strong>Reduced motion:</strong> a single 150ms cross-fade, no movement, no height animation.</div>
+        <div><strong>No spinner</strong> unless the fetch passes 400ms; then the button shows its loading state.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Welcome ===== -->
+  <section id="home-welcome" data-screen-label="Home welcome 0 Echoes" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">H3</span>First run · 0 Echoes · desktop</div>
+    <div style="width:1440px;height:900px;display:flex;background-color:var(--surface-soft);background-image:radial-gradient(var(--grain) 1px,transparent 1px);background-size:3px 3px;color:var(--ink);border-radius:10px;overflow:hidden">
+      <dc-import name="Echo Nav" variant="sidebar" active="home" hint-size="256px,100%" style="align-self:stretch"></dc-import>
+      <main style="flex:1;display:flex;align-items:center;justify-content:center;padding:48px">
+        <div style="width:100%;max-width:560px;display:flex;flex-direction:column;gap:20px;padding:56px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px;box-sizing:border-box">
+          <span style="display:flex;width:48px;height:48px;align-items:center;justify-content:center;border-radius:999px;background:var(--tint-moss);color:var(--mark-moss)">{{ ic.feather }}</span>
+          <h1 style="margin:0;font-size:28px;font-weight:600;letter-spacing:-.01em;line-height:1.2">Welcome to Echo, Ana</h1>
+          <p style="margin:0;font-size:17px;line-height:1.6;color:var(--body);text-wrap:pretty">Your library is waiting. Save the first words that stayed with you — a line from a book, something a friend said, a lyric you can't shake.</p>
+          <div style="display:flex;flex-direction:column;gap:12px;padding-top:4px">
+            <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 20px;border-radius:6px;background:var(--primary);color:var(--on-primary);font-size:15px;font-weight:600">{{ ic.plusSm }}Add your first Echo</span>
+            <span style="font-size:14px;color:var(--muted)">Only the words are needed. Everything else can wait.</span>
+          </div>
+        </div>
+      </main>
+    </div>
+  </section>
+
+  <div style="display:flex;gap:56px;align-items:flex-start;flex-wrap:wrap">
+  <!-- ===== Tablet ===== -->
+  <section id="home-tablet" data-screen-label="Home tablet rail" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">H4</span>Home · tablet 900 · rail</div>
+    <div style="width:900px;height:1240px;display:flex;background-color:var(--surface-soft);background-image:radial-gradient(var(--grain) 1px,transparent 1px);background-size:3px 3px;color:var(--ink);border-radius:10px;overflow:hidden">
+      <dc-import name="Echo Nav" variant="rail" active="home" hint-size="96px,100%" style="align-self:stretch"></dc-import>
+      <main style="flex:1;min-width:0;padding:40px 32px;display:flex;flex-direction:column;gap:32px">
+        <div style="display:flex;flex-direction:column;gap:6px"><h1 style="margin:0;font-size:28px;font-weight:600;letter-spacing:-.01em">Good evening, Ana</h1><p style="margin:0;font-size:16px;color:var(--body)">2 Echoes are due for a revisit. <a href="#">See them</a></p></div>
+        <article style="display:flex;flex-direction:column;gap:24px;padding:40px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+          <div style="display:flex;align-items:baseline;gap:12px;font-size:14px;color:var(--muted)"><span style="font-weight:600;color:var(--ink)">Today's Echo</span><span>Something you once wanted to remember.</span></div>
+          <blockquote style="margin:0;font-family:var(--quote);font-size:38px;line-height:1.28">“It is never too late to be what you might have been.”</blockquote>
+          <div style="display:flex;flex-direction:column;gap:4px"><div style="font-size:16px;font-weight:600">George Eliot</div><div style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)"><span style="width:8px;height:8px;border-radius:50%;background:var(--mark-moss)"></span>From Starting Over · saved 2 years ago</div></div>
+          <div style="display:flex;flex-direction:column;gap:6px;padding:16px 20px;background:var(--surface-soft);border-radius:6px"><div style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">You wrote</div><div style="font-size:16px;line-height:1.55;color:var(--body)">I was feeling like I'd already wasted too much time.</div></div>
+          <div style="display:flex;gap:12px;align-items:center"><span style="display:flex;align-items:center;gap:8px;height:48px;padding:0 20px;background:var(--primary);color:var(--on-primary);border-radius:6px;font-size:15px;font-weight:600">{{ ic.refreshSm }}Echo me something</span><span style="display:flex;align-items:center;height:48px;padding:0 20px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;font-weight:600;box-sizing:border-box">Open</span><span style="margin-left:auto;display:flex;width:48px;height:48px;align-items:center;justify-content:center;border-radius:999px;background:var(--surface-strong);color:var(--primary)">{{ ic.heartFill }}</span></div>
+        </article>
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start">
+          <section style="display:flex;flex-direction:column;gap:12px"><h2 style="margin:0;font-size:20px;font-weight:600">Recently added</h2>
+            <div style="display:flex;flex-direction:column;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px;padding:6px">
+              <sc-for list="{{ recent3 }}" as="r" hint-placeholder-count="3"><div style="display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:6px"><span style="flex:none;width:36px;height:36px;border-radius:6px;background:{{ r.tint }};display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600">{{ r.mono }}</span><div style="min-width:0;display:flex;flex-direction:column;gap:4px"><div style="font-family:var(--quote);font-size:18px;line-height:1.42;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{ r.q }}</div><div style="font-size:13px;color:var(--muted)">{{ r.meta }}</div></div></div></sc-for>
+            </div>
+          </section>
+          <section style="display:flex;flex-direction:column;gap:12px;padding:20px;background:var(--tint-ochre);border-radius:10px"><div style="display:flex;align-items:center;gap:10px"><span style="display:flex;color:var(--mark-ochre)">{{ ic.cal }}</span><h2 style="margin:0;font-size:20px;font-weight:600">Revisits due</h2></div>
+            <div style="display:flex;flex-direction:column;gap:12px;padding:16px;background:var(--canvas);border-radius:6px"><div style="font-family:var(--quote);font-size:18px;line-height:1.42;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">“…be patient toward all that is unsolved in your heart and try to love the questions themselves…”</div><span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 12px;border:1px solid var(--border-input);border-radius:6px;font-size:14px;font-weight:600;box-sizing:border-box">{{ ic.checkSm }}Mark as reflected</span></div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </section>
+
+  <!-- ===== Mobile ===== -->
+  <section id="home-mobile" data-screen-label="Home mobile" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">H5</span>Home · mobile 390</div>
+    <div style="width:390px;display:flex;flex-direction:column;background-color:var(--surface-soft);background-image:radial-gradient(var(--grain) 1px,transparent 1px);background-size:3px 3px;color:var(--ink);border-radius:10px;overflow:hidden">
+      <dc-import name="Echo Nav" variant="header" hint-size="100%,64px"></dc-import>
+      <main style="padding:24px 20px 32px;display:flex;flex-direction:column;gap:28px">
+        <div style="display:flex;flex-direction:column;gap:4px"><h1 style="margin:0;font-size:24px;font-weight:600;letter-spacing:-.01em">Good evening, Ana</h1><p style="margin:0;font-size:15px;color:var(--body)">2 Echoes are due for a revisit.</p></div>
+        <article style="display:flex;flex-direction:column;gap:20px;padding:28px 24px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+          <div style="font-size:14px;font-weight:600">Today's Echo</div>
+          <blockquote style="margin:0;font-family:var(--quote);font-size:28px;line-height:1.3;overflow-wrap:anywhere">“It is never too late to be what you might have been.”</blockquote>
+          <div style="display:flex;flex-direction:column;gap:4px"><div style="font-size:15px;font-weight:600">George Eliot</div><div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)"><span style="width:8px;height:8px;border-radius:50%;background:var(--mark-moss)"></span>From Starting Over · 2 years ago</div></div>
+          <div style="display:flex;flex-direction:column;gap:6px;padding:14px 16px;background:var(--surface-soft);border-radius:6px"><div style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">You wrote</div><div style="font-size:15px;line-height:1.55;color:var(--body)">I was feeling like I'd already wasted too much time.</div></div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="display:flex;align-items:center;justify-content:center;gap:8px;height:48px;background:var(--primary);color:var(--on-primary);border-radius:6px;font-size:15px;font-weight:600">{{ ic.refreshSm }}Echo me something</span>
+            <div style="display:flex;gap:10px"><span style="flex:1;display:flex;align-items:center;justify-content:center;height:48px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;font-weight:600;box-sizing:border-box">Open</span><span style="display:flex;width:48px;height:48px;align-items:center;justify-content:center;border-radius:999px;background:var(--surface-strong);color:var(--primary)">{{ ic.heartFill }}</span></div>
+          </div>
+        </article>
+        <section style="display:flex;flex-direction:column;gap:12px"><div style="display:flex;align-items:baseline;justify-content:space-between"><h2 style="margin:0;font-size:18px;font-weight:600">Recently added</h2><a href="#" style="font-size:14px;font-weight:500">Library</a></div>
+          <div style="display:flex;flex-direction:column;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px;padding:4px">
+            <sc-for list="{{ recent3 }}" as="r" hint-placeholder-count="3"><div style="display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:6px"><span style="flex:none;width:36px;height:36px;border-radius:6px;background:{{ r.tint }};display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600">{{ r.mono }}</span><div style="min-width:0;display:flex;flex-direction:column;gap:4px"><div style="font-family:var(--quote);font-size:18px;line-height:1.42;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{ r.q }}</div><div style="font-size:13px;color:var(--muted)">{{ r.meta }}</div></div></div></sc-for>
+          </div>
+        </section>
+        <section style="display:flex;flex-direction:column;gap:12px;padding:20px;background:var(--tint-ochre);border-radius:10px"><div style="display:flex;align-items:center;gap:10px"><span style="display:flex;color:var(--mark-ochre)">{{ ic.cal }}</span><h2 style="margin:0;font-size:18px;font-weight:600">Revisits due</h2></div>
+          <div style="display:flex;flex-direction:column;gap:12px;padding:16px;background:var(--canvas);border-radius:6px"><div style="font-family:var(--quote);font-size:18px;line-height:1.42;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">“…be patient toward all that is unsolved in your heart and try to love the questions themselves…”</div><span style="display:flex;align-items:center;justify-content:center;gap:6px;height:44px;border:1px solid var(--border-input);border-radius:6px;font-size:14px;font-weight:600;box-sizing:border-box">{{ ic.checkSm }}Mark as reflected</span></div>
+        </section>
+        <section style="display:flex;flex-direction:column;gap:10px;padding:20px;background:var(--tint-heather);border-radius:10px"><div style="display:flex;align-items:center;gap:10px"><span style="display:flex;color:var(--mark-heather)">{{ ic.history }}</span><h2 style="margin:0;font-size:18px;font-weight:600">From the past</h2><span style="margin-left:auto;font-size:13px;color:var(--body)">1 year ago</span></div><div style="font-family:var(--quote);font-size:24px;line-height:1.3">“Begin anywhere.”</div><div style="font-size:14px;font-weight:600">John Cage</div></section>
+        <section style="display:flex;flex-direction:column;gap:12px"><h2 style="margin:0;font-size:18px;font-weight:600">Your library</h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+            <div style="padding:16px 20px;display:flex;flex-direction:column;gap:2px"><span style="font-size:24px;font-weight:600">142</span><span style="font-size:13px;color:var(--muted)">Echoes</span></div>
+            <div style="padding:16px 20px;display:flex;flex-direction:column;gap:2px;border-left:1px solid var(--hairline-soft)"><span style="font-size:24px;font-weight:600">31</span><span style="font-size:13px;color:var(--muted)">Favorites</span></div>
+            <div style="padding:16px 20px;display:flex;flex-direction:column;gap:2px;border-top:1px solid var(--hairline-soft)"><span style="font-size:24px;font-weight:600">5</span><span style="font-size:13px;color:var(--muted)">Collections</span></div>
+            <div style="padding:16px 20px;display:flex;flex-direction:column;gap:2px;border-left:1px solid var(--hairline-soft);border-top:1px solid var(--hairline-soft)"><span style="font-size:24px;font-weight:600">2</span><span style="font-size:13px;color:var(--muted)">Revisits due</span></div>
+          </div>
+        </section>
+      </main>
+      <dc-import name="Echo Nav" variant="tabs" active="home" hint-size="100%,72px"></dc-import>
+    </div>
+  </section>
+
+  <!-- ===== Mobile welcome ===== -->
+  <section id="home-mobile-welcome" data-screen-label="Home mobile welcome" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">H6</span>First run · mobile</div>
+    <div style="width:390px;height:844px;display:flex;flex-direction:column;background-color:var(--surface-soft);background-image:radial-gradient(var(--grain) 1px,transparent 1px);background-size:3px 3px;color:var(--ink);border-radius:10px;overflow:hidden">
+      <dc-import name="Echo Nav" variant="header" hint-size="100%,64px"></dc-import>
+      <main style="flex:1;display:flex;align-items:center;padding:20px">
+        <div style="display:flex;flex-direction:column;gap:16px;padding:32px 24px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+          <span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center;border-radius:999px;background:var(--tint-moss);color:var(--mark-moss)">{{ ic.feather }}</span>
+          <h1 style="margin:0;font-size:24px;font-weight:600;letter-spacing:-.01em">Welcome to Echo, Ana</h1>
+          <p style="margin:0;font-size:16px;line-height:1.6;color:var(--body)">Your library is waiting. Save the first words that stayed with you.</p>
+          <span style="display:flex;align-items:center;justify-content:center;gap:8px;height:48px;border-radius:6px;background:var(--primary);color:var(--on-primary);font-size:15px;font-weight:600">{{ ic.plusSm }}Add your first Echo</span>
+        </div>
+      </main>
+      <dc-import name="Echo Nav" variant="tabs" active="home" hint-size="100%,72px"></dc-import>
+    </div>
+  </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;'light' | 'dark'&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() { if (!window.EchoIcons) { this._l = () => this.forceUpdate(); window.addEventListener('echo-icons', this._l); } }
+  componentWillUnmount() { if (this._l) window.removeEventListener('echo-icons', this._l); }
+  renderVals() {
+    const ic = window.EchoIcons ? window.EchoIcons(React) : {};
+    const recent = [
+      { mono: 'R', tint: 'var(--tint-neutral)', q: '“…be patient toward all that is unsolved in your heart and try to love the questions themselves, like locked rooms and like books that are now written in a very foreign tongue.”', meta: 'Rainer Maria Rilke · today' },
+      { mono: 'G', tint: 'var(--tint-neutral)', q: '“Something my grandmother used to say: you can\u2019t pour from an empty cup.”', meta: 'Grandma · yesterday' },
+      { mono: '“', tint: 'var(--tint-neutral)', q: '“You don\u2019t have to have it all figured out before you begin.”', meta: '3 days ago' },
+      { mono: 'I', tint: 'var(--tint-ochre)', q: '“The cure for anything is salt water: sweat, tears, or the sea.”', meta: 'Isak Dinesen · last week' },
+      { mono: 'M', tint: 'var(--tint-moss)', q: '“Tell me, what is it you plan to do with your one wild and precious life?”', meta: 'Mary Oliver · The Summer Day · 2 weeks ago' }
+    ];
+    return { theme: this.props.theme === 'dark' ? 'dark' : 'light', ic, recent, recent3: recent.slice(0, 3) };
+  }
+}
+</script>
+</body>
+</html>

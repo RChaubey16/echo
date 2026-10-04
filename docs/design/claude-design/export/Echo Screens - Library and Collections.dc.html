@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/modernist-94cbaf16-5413-4121-ae7e-7b72c74e10e0/styles.css">
+<script src="_ds/modernist-94cbaf16-5413-4121-ae7e-7b72c74e10e0/_ds_bundle.js"></script>
+<script src="echo-icons.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Hanken+Grotesk:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#d8d2c6}
+h1,h2,h3,h4,blockquote,p{font-family:inherit} h1,h2,h3,h4{letter-spacing:inherit;color:inherit;text-transform:none}
+a{color:var(--primary,#2d4a72);text-underline-offset:3px} a:hover{color:var(--primary-active,#1c3150)}
+[data-theme="dark"]{--primary:#a3bce3;--primary-hover:#b6cbea;--primary-active:#c9d8ef;--primary-disabled:#2b3442;--on-primary:#14202f;--ink:#f0e9de;--body:#d3c9bb;--muted:#a39888;--muted-soft:#6f665b;--hairline:#3a332c;--hairline-soft:#2d2823;--border-input:#857a6c;--canvas:#221e1a;--surface-soft:#1a1714;--surface-strong:#2d2823;--error:#f09a86;--error-hover:#f4ae9d;--on-error:#2a120c;--error-tint:#3a221c;--tint-moss:#262b1d;--tint-ochre:#2e2619;--tint-heather:#2e2129;--tint-neutral:#2a2520;--mark-moss:#a8bf86;--mark-ochre:#d9a55a;--mark-heather:#d39cbd;--mark-neutral:#a39888;--grain:rgba(255,240,220,.025);--shadow-1:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.45);--scrim:rgba(0,0,0,.6)}
+</style>
+</helmet>
+
+<div data-theme="{{ theme }}" style="--primary:#2d4a72;--primary-hover:#253f62;--primary-active:#1c3150;--primary-disabled:#d5dce6;--on-primary:#fbf8f2;--ink:#2b2622;--body:#463f39;--muted:#675e55;--muted-soft:#9a9085;--hairline:#ddd4c4;--hairline-soft:#e8e1d3;--border-input:#8a7f72;--canvas:#fbf8f2;--surface-soft:#f3eee4;--surface-strong:#e9e2d4;--error:#a8301c;--error-hover:#8f2716;--on-error:#fbf8f2;--error-tint:#f7e4dd;--tint-moss:#ecefe0;--tint-ochre:#f5ecda;--tint-heather:#f2e7ec;--tint-neutral:#efe9df;--mark-moss:#56703a;--mark-ochre:#8a5a12;--mark-heather:#74405f;--mark-neutral:#675e55;--grain:rgba(60,40,20,.035);--shadow-1:0 1px 2px rgba(43,38,34,.06),0 8px 24px rgba(43,38,34,.10);--scrim:rgba(43,38,34,.5);--sans:'Hanken Grotesk',system-ui,sans-serif;--quote:'EB Garamond',Georgia,serif;font-family:var(--sans);padding:64px;display:flex;flex-direction:column;gap:56px;background:#d8d2c6">
+
+  <header style="display:flex;flex-direction:column;gap:8px;max-width:900px;color:#2b2622">
+    <div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#5a5249">Echo · Step 3 · Screens 3 of 5</div>
+    <h1 style="margin:0;font-size:40px;font-weight:600;letter-spacing:-.02em">Library &amp; Collections</h1>
+    <p style="margin:0;font-size:16px;line-height:1.5;color:#463f39">Use the <strong>theme</strong> tweak for dark.</p>
+  </header>
+
+  <!-- ===== L1 Library desktop ===== -->
+  <section id="library-desktop" data-screen-label="Library desktop" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">L1</span>Library · desktop 1440 · sort, tag filter, pagination</div>
+    <div style="width:1440px;display:flex;background-color:var(--surface-soft);background-image:radial-gradient(var(--grain) 1px,transparent 1px);background-size:3px 3px;color:var(--ink);border-radius:10px;overflow:hidden">
+      <dc-import name="Echo Nav" variant="sidebar" active="library" hint-size="256px,100%" style="align-self:stretch"></dc-import>
+      <main style="flex:1;min-width:0;padding:48px 48px 64px;display:flex;flex-direction:column;gap:28px">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
+          <div style="display:flex;flex-direction:column;gap:4px"><h1 style="margin:0;font-size:28px;font-weight:600;letter-spacing:-.01em">Library</h1><p style="margin:0;font-size:15px;color:var(--muted)">142 Echoes</p></div>
+          <div style="display:flex;align-items:center;gap:10px"><label style="font-size:14px;font-weight:500;color:var(--body)">Sort</label><span style="display:inline-flex;align-items:center;justify-content:space-between;gap:16px;height:44px;min-width:200px;padding:0 10px 0 14px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;box-sizing:border-box">Newest<span style="display:flex;color:var(--muted)">{{ ic.chevDown }}</span></span></div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding-bottom:20px;border-bottom:1px solid var(--hairline)">
+          <span style="font-size:14px;font-weight:500;color:var(--body);margin-right:4px">Tags</span>
+          <span style="display:inline-flex;align-items:center;height:36px;padding:0 12px;border-radius:4px;background:var(--ink);color:var(--canvas);font-size:14px;font-weight:500">All</span>
+          <sc-for list="{{ tags }}" as="t" hint-placeholder-count="7"><span style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 12px;border-radius:4px;background:var(--surface-strong);color:var(--body);font-size:14px;font-weight:500">{{ t.n }}<span style="color:var(--muted);font-weight:400">{{ t.c }}</span></span></sc-for>
+        </div>
+        <div style="columns:3 300px;column-gap:16px">
+          <sc-for list="{{ cards }}" as="c" hint-placeholder-count="9">
+            <div style="break-inside:avoid;margin-bottom:16px;display:flex;flex-direction:column;gap:14px;padding:24px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px">
+              <div style="font-family:var(--quote);font-size:{{ c.size }};line-height:1.42;white-space:pre-wrap;overflow-wrap:anywhere">{{ c.q }}</div>
+              <sc-if value="{{ c.by }}"><div style="font-size:14px;color:var(--body)">{{ c.by }}</div></sc-if>
+              <sc-if value="{{ c.refl }}"><div style="font-size:14px;line-height:1.5;color:var(--body);padding-left:12px;border-left:2px solid var(--hairline)">{{ c.refl }}</div></sc-if>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:12px;border-top:1px solid var(--hairline-soft);font-size:13px;color:var(--muted)"><span style="display:flex;align-items:center;gap:6px;min-width:0"><sc-if value="{{ c.col }}"><span style="flex:none;width:8px;height:8px;border-radius:50%;background:{{ c.dot }}"></span></sc-if><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ c.meta }}</span></span><span style="flex:none;display:flex;width:44px;height:44px;margin:-12px -12px -12px 0;align-items:center;justify-content:center;color:{{ c.hc }}">{{ c.heart }}</span></div>
+            </div>
+          </sc-for>
+        </div>
+        <nav style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:8px;border-top:1px solid var(--hairline)">
+          <span style="font-size:14px;color:var(--muted)">1–24 of 142</span>
+          <div style="display:flex;align-items:center;gap:4px;font-size:15px">
+            <span style="display:inline-flex;align-items:center;gap:4px;height:44px;padding:0 12px;color:var(--muted-soft)">{{ ic.chevLeftSm }}Previous</span>
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:6px;background:var(--ink);color:var(--canvas);font-weight:600">1</span>
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:6px">2</span>
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:6px">3</span>
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:44px;color:var(--muted)">…</span>
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:6px">6</span>
+            <span style="display:inline-flex;align-items:center;gap:4px;height:44px;padding:0 12px;font-weight:500">Next{{ ic.chevRightSm }}</span>
+          </div>
+        </nav>
+      </main>
+    </div>
+  </section>
+
+  <!-- ===== K1 Collections grid desktop + K2 dialog ===== -->
+  <div style="display:flex;gap:48px;flex-wrap:wrap;align-items:flex-start">
+  <section id="collections-desktop" data-screen-label="Collections desktop" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">K1</span>Collections · desktop 1440</div>
+    <div style="width:1440px;min-height:900px;display:flex;background-color:var(--surface-soft);background-image:radial-gradient(var(--grain) 1px,transparent 1px);background-size:3px 3px;color:var(--ink);border-radius:10px;overflow:hidden">
+      <dc-import name="Echo Nav" variant="sidebar" active="collections" hint-size="256px,100%" style="align-self:stretch"></dc-import>
+      <main style="flex:1;min-width:0;padding:48px;display:flex;flex-direction:column;gap:28px">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px">
+          <div style="display:flex;flex-direction:column;gap:4px"><h1 style="margin:0;font-size:28px;font-weight:600;letter-spacing:-.01em">Collections</h1><p style="margin:0;font-size:15px;color:var(--muted)">5 Collections · an Echo can live in several</p></div>
+          <span style="display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 18px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;font-weight:600;box-sizing:border-box">{{ ic.plusSm }}New collection</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px">
+          <sc-for list="{{ collections }}" as="k" hint-placeholder-count="5">
+            <div style="display:flex;flex-direction:column;gap:12px;min-height:180px;padding:24px;background:var(--canvas);border:1px solid var(--hairline);border-top:4px solid {{ k.top }};border-radius:10px;box-sizing:border-box">
+              <div style="display:flex;align-items:center;gap:10px"><span style="flex:none;width:10px;height:10px;border-radius:50%;background:{{ k.dot }};border:{{ k.ring }};box-sizing:border-box"></span><h2 style="margin:0;font-size:18px;font-weight:600;line-height:1.3">{{ k.name }}</h2></div>
+              <p style="margin:0;font-size:15px;line-height:1.55;color:var(--body);text-wrap:pretty">{{ k.desc }}</p>
+              <div style="margin-top:auto;font-size:14px;color:var(--muted)">{{ k.count }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </main>
+    </div>
+  </section>
+
+  <section id="collection-new" data-screen-label="New collection dialog" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">K2</span>New collection · dialog</div>
+    <div style="width:600px;height:820px;display:flex;align-items:center;justify-content:center;background:var(--scrim);border-radius:10px;color:var(--ink)">
+      <div role="dialog" style="width:480px;display:flex;flex-direction:column;gap:20px;padding:28px;background:var(--canvas);border-radius:10px;box-shadow:var(--shadow-1)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin:-8px -12px 0 0"><h2 style="margin:0;font-size:20px;font-weight:600">New collection</h2><span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center;color:var(--muted)">{{ ic.x }}</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><label style="font-size:14px;font-weight:500">Name</label><div style="height:52px;display:flex;align-items:center;padding:0 15px;border:2px solid var(--ink);border-radius:6px;font-size:16px;box-sizing:border-box;outline:2px solid var(--primary);outline-offset:2px">Letters</div></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><label style="font-size:14px;font-weight:500">Description <span style="font-weight:400;color:var(--muted)">(optional)</span></label><div style="min-height:80px;padding:14px 16px;border:1px solid var(--border-input);border-radius:6px;font-size:16px;line-height:1.55;color:var(--muted);box-sizing:border-box">What ties these together?</div></div>
+        <fieldset style="margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:8px"><legend style="font-size:14px;font-weight:500;padding:0;margin-bottom:8px">Color</legend>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <span style="display:flex;align-items:center;gap:10px;height:48px;padding:0 14px;border:2px solid var(--ink);background:var(--surface-strong);border-radius:6px;font-size:15px;font-weight:600;box-sizing:border-box"><span style="width:12px;height:12px;border-radius:50%;background:var(--mark-moss)"></span><span style="flex:1">Moss</span>{{ ic.checkSm }}</span>
+            <span style="display:flex;align-items:center;gap:10px;height:48px;padding:0 14px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;box-sizing:border-box"><span style="width:12px;height:12px;border-radius:50%;background:var(--mark-ochre)"></span>Ochre</span>
+            <span style="display:flex;align-items:center;gap:10px;height:48px;padding:0 14px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;box-sizing:border-box"><span style="width:12px;height:12px;border-radius:50%;background:var(--mark-heather)"></span>Heather</span>
+            <span style="display:flex;align-items:center;gap:10px;height:48px;padding:0 14px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;box-sizing:border-box"><span style="width:12px;height:12px;border-radius:50%;border:1.5px solid var(--mark-neutral);box-sizing:border-box"></span>Neutral</span>
+          </div>
+        </fieldset>
+        <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:4px"><span style="display:inline-flex;align-items:center;height:48px;padding:0 16px;font-size:15px;font-weight:600">Cancel</span><span style="display:inline-flex;align-items:center;height:48px;padding:0 20px;border-radius:6px;background:var(--primary);color:var(--on-primary);font-size:15px;font-weight:600">Create collection</span></div>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <!-- ===== K3 Collection detail desktop ===== -->
+  <div style="display:flex;gap:48px;flex-wrap:wrap;align-items:flex-start">
+  <section id="collection-detail" data-screen-label="Collection detail desktop" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">K3</span>Collection detail · desktop 1440</div>
+    <div style="width:1440px;display:flex;background-color:var(--surface-soft);background-image:radial-gradient(var(--grain) 1px,transparent 1px);background-size:3px 3px;color:var(--ink);border-radius:10px;overflow:hidden">
+      <dc-import name="Echo Nav" variant="sidebar" active="collections" hint-size="256px,100%" style="align-self:stretch"></dc-import>
+      <main style="flex:1;min-width:0;padding:32px 48px 64px;display:flex;flex-direction:column;gap:28px">
+        <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 12px 0 8px;margin-left:-8px;font-size:15px;font-weight:500;color:var(--body)">{{ ic.arrowLeftSm }}Collections</span>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:32px;padding:32px;background:var(--tint-moss);border-radius:10px">
+          <div style="display:flex;flex-direction:column;gap:10px;max-width:640px">
+            <div style="display:flex;align-items:center;gap:10px"><span style="width:12px;height:12px;border-radius:50%;background:var(--mark-moss)"></span><h1 style="margin:0;font-size:28px;font-weight:600;letter-spacing:-.01em">Starting Over</h1></div>
+            <p style="margin:0;font-size:16px;line-height:1.55;color:var(--body)">For the mornings I need a push. Words about beginnings, second chances and being late but not too late.</p>
+            <span style="font-size:14px;color:var(--body)">18 Echoes</span>
+          </div>
+          <div style="display:flex;gap:8px;flex:none">
+            <span style="display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 14px;border-radius:6px;background:var(--canvas);border:1px solid var(--border-input);font-size:15px;font-weight:600;box-sizing:border-box">{{ ic.plusSm }}Add Echo</span>
+            <span style="display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 12px;border-radius:6px;font-size:15px;font-weight:500">{{ ic.editSm }}Rename</span>
+            <span style="display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 12px;border-radius:6px;font-size:15px;font-weight:500;color:var(--error)">{{ ic.trashSm }}Delete</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px;padding:6px">
+          <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+            <div style="display:flex;gap:16px;align-items:flex-start;padding:16px;border-radius:6px;background:{{ r.bg }}">
+              <span style="flex:none;width:40px;height:40px;border-radius:6px;background:var(--tint-moss);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600">{{ r.mono }}</span>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px"><div style="font-family:var(--quote);font-size:19px;line-height:1.42;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{ r.q }}</div><div style="font-size:13px;color:var(--muted)">{{ r.meta }}</div></div>
+              <span style="flex:none;display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 12px;border-radius:6px;font-size:14px;font-weight:500;color:var(--body);opacity:{{ r.op }}">{{ ic.xSm }}Remove</span>
+            </div>
+          </sc-for>
+        </div>
+        <nav style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:14px;color:var(--muted)">1–12 of 18</span><div style="display:flex;gap:4px;font-size:15px"><span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:6px;background:var(--ink);color:var(--canvas);font-weight:600">1</span><span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:6px">2</span><span style="display:inline-flex;align-items:center;gap:4px;height:44px;padding:0 12px;font-weight:500">Next{{ ic.chevRightSm }}</span></div></nav>
+      </main>
+    </div>
+  </section>
+
+  <div style="display:flex;flex-direction:column;gap:48px">
+  <section id="collection-delete" data-screen-label="Delete collection dialog" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">K4</span>Delete collection</div>
+    <div style="width:560px;height:360px;display:flex;align-items:center;justify-content:center;background:var(--scrim);border-radius:10px;color:var(--ink)">
+      <div role="alertdialog" style="width:440px;display:flex;flex-direction:column;gap:14px;padding:28px;background:var(--canvas);border-radius:10px;box-shadow:var(--shadow-1)">
+        <h2 style="margin:0;font-size:20px;font-weight:600">Delete “Starting Over”?</h2>
+        <p style="margin:0;font-size:15px;line-height:1.55;color:var(--body)">Your Echoes are kept. Only the Collection goes.</p>
+        <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:8px"><span style="display:inline-flex;align-items:center;height:48px;padding:0 20px;border:1px solid var(--border-input);border-radius:6px;font-size:15px;font-weight:600;box-sizing:border-box">Cancel</span><span style="display:inline-flex;align-items:center;height:48px;padding:0 20px;border-radius:6px;background:var(--error);color:var(--on-error);font-size:15px;font-weight:600">Delete collection</span></div>
+      </div>
+    </div>
+  </section>
+  <section id="collection-add" data-screen-label="Add Echo picker" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">K5</span>Add Echo to collection · picker</div>
+    <div style="width:560px;height:620px;display:flex;align-items:center;justify-content:center;background:var(--scrim);border-radius:10px;color:var(--ink)">
+      <div role="dialog" style="width:480px;display:flex;flex-direction:column;background:var(--canvas);border-radius:10px;box-shadow:var(--shadow-1)">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 16px 0 24px"><h2 style="margin:0;font-size:20px;font-weight:600">Add to Starting Over</h2><span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center;color:var(--muted)">{{ ic.x }}</span></div>
+        <div style="padding:16px 24px"><div style="height:48px;display:flex;align-items:center;gap:8px;padding:0 14px;border:2px solid var(--ink);border-radius:6px;font-size:16px;box-sizing:border-box">{{ ic.searchSm }}salt</div></div>
+        <div style="display:flex;flex-direction:column;padding:0 12px">
+          <div style="display:flex;align-items:flex-start;gap:12px;padding:12px;border-radius:6px;background:var(--surface-strong)"><span style="flex:none;margin-top:3px;width:20px;height:20px;border-radius:4px;background:var(--primary);color:var(--on-primary);display:flex;align-items:center;justify-content:center">{{ ic.checkSm }}</span><div style="display:flex;flex-direction:column;gap:2px"><div style="font-family:var(--quote);font-size:18px;line-height:1.42">“The cure for anything is salt water: sweat, tears, or the sea.”</div><div style="font-size:13px;color:var(--body)">Isak Dinesen</div></div></div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px;margin-top:16px;border-top:1px solid var(--hairline-soft)"><span style="font-size:14px;color:var(--muted)">1 selected</span><div style="display:flex;gap:8px"><span style="display:inline-flex;align-items:center;height:48px;padding:0 14px;font-size:15px;font-weight:600">Cancel</span><span style="display:inline-flex;align-items:center;height:48px;padding:0 20px;border-radius:6px;background:var(--primary);color:var(--on-primary);font-size:15px;font-weight:600">Add 1 Echo</span></div></div>
+      </div>
+    </div>
+  </section>
+  </div>
+  </div>
+
+  <!-- ===== Mobile ===== -->
+  <div style="display:flex;gap:48px;flex-wrap:wrap;align-items:flex-start">
+  <section id="library-mobile" data-screen-label="Library mobile" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">L2</span>Library · mobile · filtered by tag</div>
+    <div style="width:390px;display:flex;flex-direction:column;background-color:var(--surface-soft);background-image:radial-gradient(var(--grain) 1px,transparent 1px);background-size:3px 3px;color:var(--ink);border-radius:10px;overflow:hidden">
+      <dc-import name="Echo Nav" variant="header" hint-size="100%,64px"></dc-import>
+      <main style="padding:24px 20px 28px;display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between"><div style="display:flex;flex-direction:column;gap:2px"><h1 style="margin:0;font-size:24px;font-weight:600">Library</h1><p style="margin:0;font-size:14px;color:var(--muted)">6 Echoes tagged courage</p></div><span style="display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 8px 0 12px;border:1px solid var(--border-input);border-radius:6px;font-size:14px;box-sizing:border-box">Newest<span style="display:flex;color:var(--muted)">{{ ic.chevDownSm }}</span></span></div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <span style="display:inline-flex;align-items:center;height:36px;padding:0 12px;border-radius:4px;background:var(--surface-strong);color:var(--body);font-size:14px;font-weight:500">All</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 6px 0 12px;border-radius:4px;background:var(--ink);color:var(--canvas);font-size:14px;font-weight:500">courage<span style="display:flex;width:24px;height:24px;align-items:center;justify-content:center" aria-label="Clear filter">{{ ic.xSm }}</span></span>
+          <span style="display:inline-flex;align-items:center;height:36px;padding:0 12px;border-radius:4px;background:var(--surface-strong);color:var(--body);font-size:14px;font-weight:500">change</span>
+          <span style="display:inline-flex;align-items:center;height:36px;padding:0 12px;border-radius:4px;background:var(--surface-strong);color:var(--body);font-size:14px;font-weight:500">rest</span>
+          <span style="display:inline-flex;align-items:center;height:36px;padding:0 12px;font-size:14px;font-weight:500;color:var(--primary)">More tags</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;flex-direction:column;gap:12px;padding:20px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px"><div style="font-family:var(--quote);font-size:21px;line-height:1.42">“It is never too late to be what you might have been.”</div><div style="font-size:14px;color:var(--body)">George Eliot</div><div style="display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--hairline-soft);font-size:13px;color:var(--muted)"><span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:var(--mark-moss)"></span>Starting Over</span><span style="display:flex;width:44px;height:44px;margin:-12px -12px -12px 0;align-items:center;justify-content:center;color:var(--primary)">{{ ic.heartFill }}</span></div></div>
+          <div style="display:flex;flex-direction:column;gap:12px;padding:20px;background:var(--canvas);border:1px solid var(--hairline);border-radius:10px"><div style="font-family:var(--quote);font-size:21px;line-height:1.42">“You don't have to have it all figured out before you begin.”</div><div style="display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--hairline-soft);font-size:13px;color:var(--muted)"><span>Sep 12</span><span style="display:flex;width:44px;height:44px;margin:-12px -12px -12px 0;align-items:center;justify-content:center">{{ ic.heart }}</span></div></div>
+        </div>
+        <nav style="display:flex;align-items:center;justify-content:space-between;font-size:15px"><span style="display:inline-flex;align-items:center;gap:4px;height:44px;padding:0 8px;color:var(--muted-soft)">{{ ic.chevLeftSm }}Previous</span><span style="font-size:14px;color:var(--muted)">Page 1 of 2</span><span style="display:inline-flex;align-items:center;gap:4px;height:44px;padding:0 8px;font-weight:500">Next{{ ic.chevRightSm }}</span></nav>
+      </main>
+      <dc-import name="Echo Nav" variant="tabs" active="library" hint-size="100%,72px"></dc-import>
+    </div>
+  </section>
+
+  <section id="collections-mobile" data-screen-label="Collections mobile" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">K6</span>Collections · mobile</div>
+    <div style="width:390px;display:flex;flex-direction:column;background-color:var(--surface-soft);background-image:radial-gradient(var(--grain) 1px,transparent 1px);background-size:3px 3px;color:var(--ink);border-radius:10px;overflow:hidden">
+      <dc-import name="Echo Nav" variant="header" hint-size="100%,64px"></dc-import>
+      <main style="padding:24px 20px 28px;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;align-items:center;justify-content:space-between"><h1 style="margin:0;font-size:24px;font-weight:600">Collections</h1><span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center;border-radius:999px;background:var(--surface-strong)" aria-label="New collection">{{ ic.plus }}</span></div>
+        <sc-for list="{{ collections }}" as="k" hint-placeholder-count="5">
+          <div style="display:flex;align-items:center;gap:14px;padding:18px 16px;background:var(--canvas);border:1px solid var(--hairline);border-left:4px solid {{ k.top }};border-radius:10px">
+            <span style="flex:none;width:10px;height:10px;border-radius:50%;background:{{ k.dot }};border:{{ k.ring }};box-sizing:border-box"></span>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><span style="font-size:16px;font-weight:600">{{ k.name }}</span><span style="font-size:13px;color:var(--muted)">{{ k.count }}</span></div>
+            <span style="display:flex;color:var(--muted)">{{ ic.chevRight }}</span>
+          </div>
+        </sc-for>
+      </main>
+      <dc-import name="Echo Nav" variant="tabs" active="collections" hint-size="100%,72px"></dc-import>
+    </div>
+  </section>
+
+  <section id="collection-detail-mobile" data-screen-label="Collection detail mobile" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2b2622"><span style="font-weight:600;background:#2b2622;color:#fbf8f2;padding:4px 8px;border-radius:2px">K7</span>Collection detail · mobile</div>
+    <div style="width:390px;display:flex;flex-direction:column;background-color:var(--surface-soft);background-image:radial-gradient(var(--grain) 1px,transparent 1px);background-size:3px 3px;color:var(--ink);border-radius:10px;overflow:hidden">
+      <div style="height:64px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 8px;background:var(--canvas);border-bottom:1px solid var(--hairline)"><span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center">{{ ic.arrowLeft }}</span><span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center" aria-label="Collection actions">{{ ic.more }}</span></div>
+      <main style="display:flex;flex-direction:column">
+        <div style="display:flex;flex-direction:column;gap:8px;padding:24px 20px;background:var(--tint-ochre)">
+          <div style="display:flex;align-items:center;gap:10px"><span style="width:10px;height:10px;border-radius:50%;background:var(--mark-ochre)"></span><h1 style="margin:0;font-size:24px;font-weight:600">For Difficult Days</h1></div>
+          <span style="font-size:14px;color:var(--body)">11 Echoes</span>
+          <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 14px;margin-top:8px;border-radius:6px;background:var(--canvas);border:1px solid var(--border-input);font-size:15px;font-weight:600;box-sizing:border-box">{{ ic.plusSm }}Add Echo</span>
+        </div>
+        <div style="display:flex;flex-direction:column;padding:8px 8px 24px">
+          <div style="display:flex;gap:12px;align-items:flex-start;padding:12px"><div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px"><div style="font-family:var(--quote);font-size:18px;line-height:1.42">“The cure for anything is salt water: sweat, tears, or the sea.”</div><div style="font-size:13px;color:var(--muted)">Isak Dinesen</div></div><span style="flex:none;display:flex;width:44px;height:44px;align-items:center;justify-content:center;color:var(--muted)" aria-label="Remove from collection">{{ ic.x }}</span></div>
+          <div style="display:flex;gap:12px;align-items:flex-start;padding:12px;border-top:1px solid var(--hairline-soft)"><div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px"><div style="font-family:var(--quote);font-size:18px;line-height:1.42">“Something my grandmother used to say: you can't pour from an empty cup.”</div><div style="font-size:13px;color:var(--muted)">Grandma</div></div><span style="flex:none;display:flex;width:44px;height:44px;align-items:center;justify-content:center;color:var(--muted)">{{ ic.x }}</span></div>
+        </div>
+      </main>
+      <div style="margin:0 16px 16px;display:flex;align-items:center;gap:12px;min-height:52px;padding:0 8px 0 16px;background:var(--ink);color:var(--canvas);border-radius:6px;box-shadow:var(--shadow-1);font-size:15px"><span style="flex:1">Removed from For Difficult Days</span><span style="display:inline-flex;align-items:center;height:44px;padding:0 12px;font-weight:600;text-decoration:underline;text-underline-offset:3px">Undo</span></div>
+      <dc-import name="Echo Nav" variant="tabs" active="collections" hint-size="100%,72px"></dc-import>
+    </div>
+  </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;'light' | 'dark'&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() { if (!window.EchoIcons) { this._l = () => this.forceUpdate(); window.addEventListener('echo-icons', this._l); } }
+  componentWillUnmount() { if (this._l) window.removeEventListener('echo-icons', this._l); }
+  renderVals() {
+    const ic = window.EchoIcons ? window.EchoIcons(React) : {};
+    const M = { moss: 'var(--mark-moss)', ochre: 'var(--mark-ochre)', heather: 'var(--mark-heather)' };
+    const raw = [
+      { q: '“…be patient toward all that is unsolved in your heart and try to love the questions themselves, like locked rooms and like books that are now written in a very foreign tongue. Do not now seek the answers, which cannot be given you because you would not be able to live them. And the point is, to live everything. Live the questions now.”', by: 'Rainer Maria Rilke · Letters to a Young Poet', meta: 'Today', size: '20px' },
+      { q: '“Something my grandmother used to say: you can\u2019t pour from an empty cup.”', by: 'Grandma', meta: 'rest · tender', fav: true },
+      { q: '“You don\u2019t have to have it all figured out before you begin.”', refl: 'I\u2019m scared to start.', meta: 'Sep 12' },
+      { q: '“The cure for anything is salt water: sweat, tears, or the sea.”', by: 'Isak Dinesen', col: 'ochre', meta: 'For Difficult Days' },
+      { q: '“Tell me, what is it you plan to do with your one wild and precious life?”', by: 'Mary Oliver · The Summer Day', col: 'moss', meta: 'Things I Want to Remember', fav: true },
+      { q: '“It is never too late to be what you might have been.”', by: 'George Eliot', refl: 'I was feeling like I\u2019d already wasted too much time.', col: 'moss', meta: 'Starting Over', fav: true },
+      { q: '“We suffer more often in imagination than in reality.”', by: 'Seneca', meta: 'Aug 30' },
+      { q: '“Begin anywhere.”', by: 'John Cage', refl: 'Maybe I should finally start.', meta: 'Oct 2025', size: '32px' },
+      { q: '“The impediment to action advances action. What stands in the way becomes the way.”', by: 'Marcus Aurelius · Meditations', col: 'ochre', meta: 'For Difficult Days' }
+    ];
+    const cards = raw.map(c => ({ size: '23px', by: null, refl: null, col: null, ...c, dot: M[c.col] || 'transparent', heart: c.fav ? ic.heartFill : ic.heart, hc: c.fav ? 'var(--primary)' : 'var(--muted)' }));
+    const tags = [['courage',6],['change',9],['starting-over',12],['rest',4],['grief',3],['work',7],['wonder',5]].map(([n,c]) => ({ n, c }));
+    const collections = [
+      { name: 'Starting Over', desc: 'For the mornings I need a push.', count: '18 Echoes', dot: 'var(--mark-moss)', top: 'var(--mark-moss)', ring: '0' },
+      { name: 'For Difficult Days', desc: 'Things to read slowly when everything is too much.', count: '11 Echoes', dot: 'var(--mark-ochre)', top: 'var(--mark-ochre)', ring: '0' },
+      { name: 'Things I Want to Remember', desc: 'Lines I never want to lose, from anywhere.', count: '24 Echoes', dot: 'var(--mark-moss)', top: 'var(--mark-moss)', ring: '0' },
+      { name: 'Work', desc: '', count: '7 Echoes', dot: 'transparent', top: 'var(--hairline)', ring: '1.5px solid var(--mark-neutral)' },
+      { name: 'Books That Changed Me', desc: 'One line from each, so I remember why.', count: '15 Echoes', dot: 'transparent', top: 'var(--hairline)', ring: '1.5px solid var(--mark-neutral)' }
+    ];
+    const rows = [
+      { mono: 'G', q: '“It is never too late to be what you might have been.”', meta: 'George Eliot · Mar 4, 2024' },
+      { mono: 'J', q: '“Begin anywhere.”', meta: 'John Cage · Oct 2025' },
+      { mono: '“', q: '“You don\u2019t have to have it all figured out before you begin.”', meta: 'Sep 12' },
+      { mono: 'M', q: '“The impediment to action advances action. What stands in the way becomes the way.”', meta: 'Marcus Aurelius · Meditations' },
+      { mono: 'R', q: '“…be patient toward all that is unsolved in your heart and try to love the questions themselves, like locked rooms and like books that are now written in a very foreign tongue.”', meta: 'Rainer Maria Rilke · Letters to a Young Poet' },
+      { mono: 'S', q: '“We suffer more often in imagination than in reality.”', meta: 'Seneca · Aug 30' }
+    ].map((r, i) => ({ ...r, bg: i === 1 ? 'var(--surface-strong)' : 'transparent', op: i === 1 ? 1 : 0.85 }));
+    return { theme: this.props.theme === 'dark' ? 'dark' : 'light', ic, cards, tags, collections, rows };
+  }
+}
+</script>
+</body>
+</html>
