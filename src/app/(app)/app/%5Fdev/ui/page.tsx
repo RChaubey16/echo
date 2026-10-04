@@ -168,7 +168,7 @@ export default function UiCatalogPage() {
         </ul>
       </Group>
       <Group title="EchoRow">
-        <ul className="grid grid-cols-1 rounded-md border border-hairline-soft bg-canvas px-6">
+        <ul className="grid grid-cols-1 rounded-lg border border-hairline-soft bg-canvas px-6">
           {ECHOES.slice(0, 2).map(({ label, echo }) => (
             <li key={label} className="min-w-0">
               <EchoRow echo={echo} monogram />

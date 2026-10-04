@@ -15,7 +15,7 @@ python3 .agents/skills/echo-design-system/scripts/contrast.py --theme dark
 
 - **Errors from `audit_ui.py`** must be fixed. The only alternative is a deliberate, justified exception marked `audit-ignore` with a reason in the line comment.
 - **Warnings** must be looked at. Each one is either fixed or understood (for example, `outline-none` on an input that has a documented focus style on the same element).
-- **`contrast.py`**: run it for both themes (`--theme dark`). The only known failure is `legal-link`, which Echo doesn't use. Any other FAIL is new and needs fixing.
+- **`contrast.py`**: run it for both themes (`--theme dark`). There are no known failures; any FAIL is new and needs fixing.
 
 ## 2. State review (always)
 
@@ -49,7 +49,7 @@ Read the screenshots back, and check that:
 
 - there is no horizontal scroll, and nothing clipped or overlapping;
 - the bottom bar and sticky header don't cover content or focus;
-- the quote is the strongest element on the screen, and there are only one or two Lagoon moments;
+- the quote is the strongest element on the screen, and the primary accent appears only once or twice;
 - spacing follows the rhythm: 16px between cards, 48–64px between sections;
 - the layout at 320px looks designed, not squeezed.
 

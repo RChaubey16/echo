@@ -1,276 +1,151 @@
 # Tokens: DESIGN.md → Tailwind v4
 
-Echo uses Tailwind CSS v4, so tokens live in CSS (`@theme`), not in a `tailwind.config.js`. The token block sits in `src/app/globals.css`. Token names match the DESIGN.md frontmatter keys exactly, which keeps the two easy to diff.
+Echo uses Tailwind CSS v4, so tokens live in CSS (`@theme` in `src/app/globals.css`), not in a
+`tailwind.config.js`. Token names match the DESIGN.md frontmatter keys exactly, which keeps the
+two easy to diff.
 
-**If the block below and DESIGN.md disagree, DESIGN.md wins.** Update the block, and this file, to match it.
+**If `globals.css` and DESIGN.md disagree, DESIGN.md wins.** Fix `globals.css`, and this file if
+needed. This file doesn't copy the token block, so it can't drift. Read `globals.css` for the
+values.
 
 ## Contents
 
-1. [The `@theme` block](#the-theme-block)
+1. [How globals.css is laid out](#how-globalscss-is-laid-out)
 2. [Font loading](#font-loading)
 3. [Utility cheat sheet](#utility-cheat-sheet)
 4. [Spacing map](#spacing-map)
 5. [Rules](#rules)
 
-## The `@theme` block
+## How globals.css is laid out
 
-```css
-@import "tailwindcss";
+1. **`@theme`** resets Tailwind's colors, shadows, radii and breakpoints (`--color-*: initial`
+   and so on), so a stray `bg-blue-500` or `shadow-lg` compiles to nothing. It then defines:
+   - the light colors;
+   - the fonts and the type scale (`--text-*` with line height, tracking and weight);
+   - the radii `xs` 2, `sm` 4, `md` 6, `lg` 10;
+   - `shadow-float`;
+   - the breakpoints `tablet` 744, `desktop` 1128, `wide` 1440;
+   - the eases and the `animate-*` keyframes.
+2. **The dark theme** redefines the same `--color-*` names, plus `--shadow-float` and `--grain`:
+   - under `@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) }`, for System;
+   - under `:root[data-theme="dark"]`, for an explicit choice.
 
-@theme {
-  /* Reset Tailwind's defaults so that only Echo tokens exist.
-     A stray `bg-blue-500` or `shadow-lg` then fails to compile into anything. */
-  --color-*: initial;
-  --shadow-*: initial;
-  --radius-*: initial;
-  --breakpoint-*: initial;
+   Components never change between themes.
+3. **`:root`** holds the duration tokens (`--duration-fast` 150ms, `--duration-base` 200ms,
+   `--duration-slow` 250ms) and the light `--grain`.
+4. **Utilities:**
+   - `duration-fast`, `duration-base`, `duration-slow`;
+   - `bg-paper` (surface-soft plus the 3px dot grain);
+   - `user-text` (`white-space: pre-wrap; overflow-wrap: anywhere`).
+5. **`@layer base`** holds the html colors, the body font, the focus ring (2px `primary`, offset
+   2px) and the reduced-motion safety net.
 
-  /* ── Colors (DESIGN.md › colors) ── */
-  --color-primary: #0e7c6b;            /* Lagoon: primary CTA, saved/favorite state, links */
-  --color-primary-active: #0a5f52;     /* pressed + hover */
-  --color-primary-disabled: #c5e8e1;
-  --color-primary-error-text: #c13515;
-  --color-primary-error-text-hover: #b32505;
-  --color-luxe: #8a5a12;               /* Bronze: small accent marks only (dots, icon chips) */
-  --color-plus: #6b2a5e;               /* Plum: small accent marks only (dots, icon chips) */
-  --color-ink: #222222;
-  --color-body: #3f3f3f;
-  --color-muted: #6a6a6a;
-  --color-muted-soft: #929292;
-  --color-hairline: #dddddd;
-  --color-hairline-soft: #ebebeb;
-  --color-border-strong: #c1c1c1;
-  --color-border-input: #858585;       /* resting outline of inputs: 3.7:1 (SC 1.4.11) */
-  --color-canvas: #ffffff;
-  --color-surface-soft: #f7f7f7;
-  --color-surface-card: #ffffff;
-  --color-surface-strong: #f2f2f2;
-  --color-tint-lagoon: #ecf5f3;        /* featured panel (Today's Echo) */
-  --color-tint-bronze: #f6f2ec;        /* time panels (Revisits), Bronze marks */
-  --color-tint-plum: #f3eef2;          /* memory panels (From the past), Plum marks */
-  --color-on-primary: #ffffff;
-  --color-on-primary-disabled: #0a5f52; /* disabled CTA label, 5.8:1 */
-  --color-on-dark: #ffffff;
-  --color-legal-link: #428bff;         /* 3.3:1 on white; never for running text */
-  --color-star-rating: #222222;
-  --color-scrim: #000000;              /* always used as bg-scrim/50 */
-
-  /* ── Type (DESIGN.md › typography) ── */
-  --font-sans: var(--font-inter), "Airbnb Cereal VF", Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
-  --font-quote: var(--font-newsreader), Georgia, "Times New Roman", serif;   /* quotes only */
-
-  --text-quote-hero: 28px;    --text-quote-hero--line-height: 1.36;    --text-quote-hero--letter-spacing: -0.2px;  --text-quote-hero--font-weight: 400;
-  --text-quote-card: 20px;    --text-quote-card--line-height: 1.45;    --text-quote-card--font-weight: 400;
-  --text-quote-compact: 17px; --text-quote-compact--line-height: 1.45; --text-quote-compact--font-weight: 400;
-
-  --text-rating-display: 64px; --text-rating-display--line-height: 1.1;  --text-rating-display--letter-spacing: -1px;    --text-rating-display--font-weight: 700;
-  --text-display-xl: 28px;     --text-display-xl--line-height: 1.43;     --text-display-xl--letter-spacing: 0;           --text-display-xl--font-weight: 700;
-  --text-display-lg: 22px;     --text-display-lg--line-height: 1.18;     --text-display-lg--letter-spacing: -0.44px;     --text-display-lg--font-weight: 500;
-  --text-display-md: 21px;     --text-display-md--line-height: 1.43;     --text-display-md--letter-spacing: 0;           --text-display-md--font-weight: 700;
-  --text-display-sm: 20px;     --text-display-sm--line-height: 1.2;      --text-display-sm--letter-spacing: -0.18px;     --text-display-sm--font-weight: 600;
-  --text-title-md: 16px;       --text-title-md--line-height: 1.25;       --text-title-md--font-weight: 600;
-  --text-title-sm: 16px;       --text-title-sm--line-height: 1.25;       --text-title-sm--font-weight: 500;
-  --text-body-md: 16px;        --text-body-md--line-height: 1.5;         --text-body-md--font-weight: 400;
-  --text-body-sm: 14px;        --text-body-sm--line-height: 1.43;        --text-body-sm--font-weight: 400;
-  --text-caption: 14px;        --text-caption--line-height: 1.29;        --text-caption--font-weight: 500;
-  --text-caption-sm: 13px;     --text-caption-sm--line-height: 1.23;     --text-caption-sm--font-weight: 400;
-  --text-badge: 11px;          --text-badge--line-height: 1.18;          --text-badge--font-weight: 600;
-  --text-micro-label: 12px;    --text-micro-label--line-height: 1.33;    --text-micro-label--font-weight: 700;
-  --text-uppercase-tag: 8px;   --text-uppercase-tag--line-height: 1.25;  --text-uppercase-tag--letter-spacing: 0.32px;   --text-uppercase-tag--font-weight: 700;
-  --text-button-md: 16px;      --text-button-md--line-height: 1.25;      --text-button-md--font-weight: 500;
-  --text-button-sm: 14px;      --text-button-sm--line-height: 1.29;      --text-button-sm--font-weight: 500;
-  --text-link: 14px;           --text-link--line-height: 1.43;           --text-link--font-weight: 400;
-  --text-nav-link: 16px;       --text-nav-link--line-height: 1.25;       --text-nav-link--font-weight: 600;
-
-  /* ── Rounded (DESIGN.md › rounded). rounded-none and rounded-full are built in. ── */
-  --radius-xs: 4px;
-  --radius-sm: 8px;    /* buttons, inputs */
-  --radius-md: 14px;   /* cards, dialogs, menus */
-  --radius-lg: 20px;
-  --radius-xl: 32px;
-
-  /* ── Elevation: the one shadow tier ── */
-  --shadow-float: rgba(0,0,0,0.02) 0 0 0 1px, rgba(0,0,0,0.04) 0 2px 6px 0, rgba(0,0,0,0.1) 0 4px 8px 0;
-
-  /* ── Breakpoints (DESIGN.md › Responsive Behavior). Mobile is the unprefixed base. ── */
-  --breakpoint-tablet: 744px;
-  --breakpoint-desktop: 1128px;
-  --breakpoint-wide: 1440px;
-
-  /* ── Motion (see motion.md) ── */
-  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);   /* entering, arriving */
-  --ease-in-soft: cubic-bezier(0.4, 0, 1, 1);        /* leaving */
-  --ease-standard: cubic-bezier(0.2, 0, 0, 1);       /* state changes in place */
-  --animate-fade-in: fade-in 200ms var(--ease-out-soft) both;
-  --animate-rise-in: rise-in 320ms var(--ease-out-soft) both;
-  --animate-heart-pop: heart-pop 320ms var(--ease-out-soft);
-  --animate-menu-in: menu-in 200ms var(--ease-out-soft) both;   /* menus, popovers, listboxes; set origin-* to the trigger side */
-  --animate-skeleton: skeleton 1.6s ease-in-out infinite;
-
-  @keyframes fade-in { from { opacity: 0 } to { opacity: 1 } }
-  @keyframes rise-in { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
-  @keyframes menu-in { from { opacity: 0; transform: scale(0.98) } to { opacity: 1; transform: none } }
-  @keyframes heart-pop { 0% { transform: scale(1) } 40% { transform: scale(1.2) } 100% { transform: scale(1) } }
-  @keyframes skeleton { 0%, 100% { opacity: 1 } 50% { opacity: 0.55 } }
-}
-
-/* Dark theme (DESIGN.md › colors-dark). Same names, different values: components never change.
-   System preference applies unless the user picked a theme; data-theme on <html> wins both ways. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --color-primary: #3cbaa5;
-    --color-primary-active: #5fcbb8;
-    --color-primary-disabled: #1f3b36;
-    --color-primary-error-text: #ff8f7a;
-    --color-primary-error-text-hover: #ffa898;
-    --color-luxe: #d9a55a;
-    --color-plus: #d68cc4;
-    --color-ink: #ecefee;
-    --color-body: #c8cecc;
-    --color-muted: #9ba4a2;
-    --color-muted-soft: #6c7573;
-    --color-hairline: #323837;
-    --color-hairline-soft: #272c2b;
-    --color-border-strong: #454c4b;
-    --color-border-input: #7d8786;
-    --color-canvas: #1b1f1e;
-    --color-surface-soft: #121514;
-    --color-surface-card: #1b1f1e;
-    --color-surface-strong: #262b2a;
-    --color-tint-lagoon: #15302b;
-    --color-tint-bronze: #2e2619;
-    --color-tint-plum: #2c2029;
-    --color-on-primary: #06201b;
-    --color-on-primary-disabled: #5fcbb8;
-    --color-on-dark: #121514;
-    --color-legal-link: #7fb0ff;
-    --color-star-rating: #ecefee;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --color-primary: #3cbaa5;
-  --color-primary-active: #5fcbb8;
-  --color-primary-disabled: #1f3b36;
-  --color-primary-error-text: #ff8f7a;
-  --color-primary-error-text-hover: #ffa898;
-  --color-luxe: #d9a55a;
-  --color-plus: #d68cc4;
-  --color-ink: #ecefee;
-  --color-body: #c8cecc;
-  --color-muted: #9ba4a2;
-  --color-muted-soft: #6c7573;
-  --color-hairline: #323837;
-  --color-hairline-soft: #272c2b;
-  --color-border-strong: #454c4b;
-  --color-border-input: #7d8786;
-  --color-canvas: #1b1f1e;
-  --color-surface-soft: #121514;
-  --color-surface-card: #1b1f1e;
-  --color-surface-strong: #262b2a;
-  --color-tint-lagoon: #15302b;
-  --color-tint-bronze: #2e2619;
-  --color-tint-plum: #2c2029;
-  --color-on-primary: #06201b;
-  --color-on-primary-disabled: #5fcbb8;
-  --color-on-dark: #121514;
-  --color-legal-link: #7fb0ff;
-  --color-star-rating: #ecefee;
-  color-scheme: dark;
-}
-
-/* Duration tokens. Tailwind v4 has no duration namespace, so expose named utilities. */
-:root { --duration-fast: 120ms; --duration-base: 200ms; --duration-slow: 320ms; }
-@utility duration-fast { transition-duration: var(--duration-fast); }
-@utility duration-base { transition-duration: var(--duration-base); }
-@utility duration-slow { transition-duration: var(--duration-slow); }
-
-@layer base {
-  html { color: var(--color-ink); background: var(--color-canvas); -webkit-font-smoothing: antialiased; }
-  body { font-family: var(--font-sans); font-size: 16px; line-height: 1.5; }
-  :focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; scroll-behavior: auto !important; }
-  }
-}
-```
-
-The reduced-motion block in `@layer base` is a safety net, not the plan. Each component should still state its own `motion-reduce:` behavior, because "no motion" sometimes needs a different end state (see motion.md).
+**Theme:** `data-theme` on `<html>` is rendered on the server from the theme cookie, which mirrors
+`User.theme`. It is absent for System, so the page never flashes the wrong theme. The export's
+`data-theme="system"` attribute is intentionally not used.
 
 ## Font loading
 
-Airbnb Cereal VF is a licensed Airbnb font, so Echo does not ship it. DESIGN.md names **Inter** as the substitute. Load it with `next/font`, which self-hosts it, so no third-party requests are made and there is no layout shift:
+Both fonts are self-hosted by `next/font` in `src/app/layout.tsx`, so there are no third-party
+requests and no layout shift:
 
 ```tsx
-// src/app/layout.tsx
-import { Inter, Newsreader } from "next/font/google";
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
-const newsreader = Newsreader({ subsets: ["latin"], variable: "--font-newsreader", display: "swap", style: ["normal", "italic"] });
-// <html lang="en" className={`${inter.variable} ${newsreader.variable}`} data-theme={themeFromCookie}>
+import { EB_Garamond, Hanken_Grotesk } from "next/font/google";
+const sans = Hanken_Grotesk({ subsets: ["latin"], variable: "--font-hanken", display: "swap" });
+const quote = EB_Garamond({ subsets: ["latin"], variable: "--font-garamond", display: "swap", style: ["normal", "italic"] });
 ```
 
-DESIGN.md suggests tightening display line-heights by about 2% for Inter. Treat that as a later tweak: change it in DESIGN.md first, then here.
+`--font-sans` and `--font-quote` in `@theme` point at those variables.
 
-**Newsreader is for quotes only** (`font-quote` with the `text-quote-*` styles, wrapped in `QuoteText`). Never use it for headings, labels or buttons. The contrast between the serif quote and the sans interface is the point.
-
-**Theme:** render `data-theme` on `<html>` on the server from the user's saved choice (a cookie mirrors `User.theme`), so the page never flashes the wrong theme. Leave it off for "System".
+- **EB Garamond is for quotes only.** Use `QuoteText` or `quoteClasses()`, which apply
+  `font-quote` and a `text-quote-*` size. Never use it for headings, labels or buttons. The one
+  exception is the landing tagline (`text-quote-display`), which is treated as a quote.
+- **The OG image** (`src/app/opengraph-image.tsx`) renders outside the browser, so it reads static
+  TTFs from `assets/fonts/` and mirrors the light colors by hand.
 
 ## Utility cheat sheet
 
 | Need | Use | Not |
 |---|---|---|
-| Page background (app) | `bg-surface-soft`, with white panels on it. Marketing pages use `bg-canvas`. | `bg-white`, `bg-gray-50` |
-| Panel / card | `bg-canvas border border-hairline-soft rounded-md` | |
-| Featured panel (one per view) | `bg-tint-lagoon` | arbitrary pastels |
-| Time / memory panels | `bg-tint-bronze` / `bg-tint-plum` | |
-| Accent mark (dot, icon chip) | `bg-primary` / `bg-luxe` / `bg-plus`, icon on matching `bg-tint-*` | Bronze or Plum for text or buttons |
-| Main text | `text-ink` | `text-black`, `text-gray-900` |
-| Secondary running text | `text-body` | |
-| Metadata, labels, captions | `text-muted` | `text-gray-500` |
+| App page background | `bg-paper` | `bg-white`, `bg-surface-soft` on its own for a page |
+| Public page background | `bg-canvas` (bands may use `bg-surface-soft`) | |
+| Panel / card | `rounded-lg border border-hairline bg-canvas` | shadows on cards |
+| Card hover | `hover:border-border-input` (no lift, no shadow) | `hover:shadow-float` |
+| Revisits panel / From the past panel | `bg-tint-ochre` / `bg-tint-heather` | arbitrary pastels |
+| Collection mark (dot, chip, card bar) | `bg-mark-moss` / `-ochre` / `-heather`; neutral is `border-2 border-mark-neutral` | marks as text or button colors |
+| Monogram / icon chip | `bg-tint-<slot> text-mark-<slot>` | |
+| Main text | `text-ink` | `text-black` |
+| Long-form text | `text-body` | |
+| Metadata, captions | `text-muted` | `text-gray-500` |
+| Section kicker | `text-label uppercase text-muted` | |
 | Disabled text | `text-muted-soft` | `opacity-50` on text |
-| Dividers, card borders | `border-hairline` (`border-hairline-soft` for long lists) | `border-gray-200` |
-| Input outline after focus, strong stroke | `border-border-strong` | |
-| Subtle fill (hover rows, skeleton range, disabled field) | `bg-surface-soft` | |
-| Icon-button fill, skeleton blocks | `bg-surface-strong` | |
-| Primary action | `bg-primary text-on-primary` | |
-| Inline link | `text-primary underline-offset-2 hover:underline` | `text-legal-link` |
-| Error text and border | `text-primary-error-text`, `border-primary-error-text` | `text-red-600` |
-| Modal backdrop | `bg-scrim/50` | `bg-black/50` |
-| Float (hover card, menu, popover) | `shadow-float` | `shadow-md`, `shadow-lg` |
-| Section heading | `text-display-sm` / `text-display-md` | `text-xl font-bold` |
-| Page title | `text-display-lg` (detail) / `text-display-xl` (home) | |
-| Body copy | `text-body-md` | `text-base` |
-| Card meta | `text-body-sm text-muted` | `text-sm text-gray-500` |
-| Field label | `text-caption text-muted` | |
+| Panel border | `border-hairline` (`border-hairline-soft` inside panels) | `border-gray-200` |
 | Input outline | `border-border-input` | `border-hairline` (1.4:1) |
-| Quote text | `QuoteText` → `font-quote text-quote-*` | `font-serif`, `italic` on whole quotes |
+| Hover row, chip, active nav | `bg-surface-strong` (rows on canvas may use `bg-surface-soft`) | |
+| Primary action | `bg-primary text-on-primary hover:bg-primary-hover active:bg-primary-active` | |
+| Disabled primary | `disabled:bg-primary-disabled disabled:text-muted-soft` | |
+| Inline link | `text-primary underline-offset-2 hover:underline` | |
+| Danger action | `bg-error text-on-error hover:bg-error-hover` | |
+| Error text / border / panel | `text-error`, `border-error`, `bg-error-tint` | `text-red-600` |
+| Inverted surface (toast, selected chip) | `bg-ink text-canvas` | `text-white` |
+| Modal backdrop | `bg-scrim` (opacity is in the token) | `bg-black/50` |
+| Float (dialog, menu, toast, raised Add) | `shadow-float` | `shadow-md` |
+| Page title | `text-display-lg` (app) / `text-display-xl` (public) | `text-2xl font-bold` |
+| Section heading | `text-display-sm` | |
+| Body copy / meta | `text-body-md` / `text-body-sm text-muted` | `text-base` |
+| Field label | `text-caption` | |
+| Quote | `QuoteText size="today" \| "hero" \| "card" \| "compact"` | `font-serif`, italic whole quotes |
+| User-written text | `user-text` | `whitespace-pre-wrap [overflow-wrap:anywhere]` by hand |
 
-Name clash to watch: the **color** `text-body` (#3f3f3f) and the **type styles** `text-body-md` and `text-body-sm` are different utilities. Combining them, as in `text-body-sm text-body`, is valid and intended.
+**Quote sizes are responsive inside `QuoteText`**, so don't add breakpoints at call sites:
+
+| Size | Mobile | Tablet (≥744px) | Desktop (≥1128px) |
+|---|---|---|---|
+| `today` | `quote-hero-sm` (26) | `quote-hero` (38) | `quote-today` (44) |
+| `hero` | `quote-hero-sm` (26) | `quote-hero` (38) | `quote-hero` (38) |
+| `card` | `quote-card-sm` (21) | `quote-card` (23) | `quote-card` (23) |
+| `compact` | 19 | 19 | 19 |
+
+**Name clash to watch:** the color `text-body` and the type styles `text-body-md` / `text-body-sm`
+are different utilities. `text-body-sm text-body` is valid and intended.
 
 ## Spacing map
 
-Tailwind's default `--spacing` is 4px, which matches DESIGN.md's 4px base unit. Use the numeric scale:
+Tailwind's default `--spacing` is 4px, matching DESIGN.md's base unit.
 
-| DESIGN.md | px | Tailwind step | Typical use in Echo |
-|---|---|---|---|
-| `spacing.xxs` | 2 | `0.5` | icon-to-text nudges |
-| `spacing.xs` | 4 | `1` | tight chip gaps |
-| `spacing.sm` | 8 | `2` | label to input, meta rows |
-| `spacing.md` | 12 | `3` | list row padding, chip padding |
-| `spacing.base` | 16 | `4` | card grid gaps, mobile gutter, compact card padding |
-| `spacing.lg` | 24 | `6` | card padding, dialog padding, tablet gutter |
-| `spacing.xl` | 32 | `8` | gaps between groups inside a section |
-| `spacing.xxl` | 48 | `12` | mobile section spacing |
-| `spacing.section` | 64 | `16` | section spacing at tablet and wider |
+| px | Tailwind step | Typical use in Echo |
+|---|---|---|
+| 2 | `0.5` | icon-to-text nudges |
+| 4 | `1` | tight chip gaps |
+| 8 | `2` | label to input, meta rows |
+| 12 | `3` | list row padding, chip padding |
+| 16 | `4` | card grid gaps, compact card padding |
+| 24 | `6` | card padding, dialog padding |
+| 32 | `8` | the desktop gutter, gaps between groups |
+| 48 | `12` | mobile section spacing |
+| 64 | `16` | section spacing at tablet and wider |
+| 96 | `24` | the landing page's section rhythm |
 
-Steps not in this table (`7`, `9`, `10`, `11`, and so on) are off-system. `2.5` (10px) and `5` (20px) appear only where DESIGN.md specifies them directly (pill and badge padding). The other exception is control heights that DESIGN.md specifies directly: buttons `h-12` (48), inputs `h-14` (56), the search bar `h-16` (64) and the top nav `h-20` (80).
+Off-system steps (`7`, `9`, `10`, `11`, …) are flagged by `audit_ui.py`, with a few exceptions:
+
+- `5` (20px) is the mobile gutter and button padding.
+- `14` (56px) is Today's Echo's desktop padding.
+- Control heights the design specifies directly: buttons `h-12` (48), small buttons `h-10` (40)
+  with a 44px hit area, inputs `h-13` (52).
 
 ## Rules
 
-- **No raw colors in components.** That means no hex, `rgb()`, `bg-[#…]` or `text-[…]` color values. `scripts/audit_ui.py` flags them. The token block above is the only place a color literal may appear.
-- **No arbitrary sizes** (`text-[15px]`, `rounded-[12px]`, `p-[13px]`) unless DESIGN.md states that exact value for that exact component. In that case, leave a comment naming the DESIGN.md component.
-- **Opacity modifiers on tokens are fine** where they mean something: `bg-scrim/50`, or `bg-ink/5` for a pressed ghost button. Don't use opacity to invent new grays for text. Use `muted` or `muted-soft` instead.
-- **Bronze (`luxe`) and Plum (`plus`) are accent colors for small marks.** Use them only for collection dots and icon chips on their matching tint. Never use them for buttons, links or blocks of text.
-- **Layered surfaces.** App screens sit on `surface-soft`; panels are white; at most one or two featured panels per view use a tint. If everything is tinted, nothing stands out.
-- **Dark mode is a token swap.** Components use only semantic tokens, so the dark block above is the whole implementation. Never write `dark:` variants with literal colors. If a component looks wrong in dark, the fix belongs in `colors-dark` in DESIGN.md.
-- **`on-dark` flips in dark mode.** It is the text on `ink` fills (toasts, selected chips). Always pair `bg-ink` with `text-on-dark` or `text-canvas`, never with `text-white`.
+- **No raw colors in components.** That means no hex, `rgb()`, `bg-[#…]` or `text-[…]` color
+  values. `scripts/audit_ui.py` flags them. Colors may only be written in `globals.css` and in the
+  places that can't read CSS variables (the OG image, `themeColor`, `icon.svg`), and those carry
+  an `audit-ignore` comment.
+- **No arbitrary sizes** unless DESIGN.md states that exact value for that component. In that
+  case, leave a comment naming it.
+- **Opacity modifiers on tokens are fine** where they mean something, such as `bg-canvas/60` for a
+  hover on a tinted panel. Don't use opacity to invent new grays for text.
+- **The accent is rare.** It is for primary CTAs, links, the favorite-on state and the focus ring.
+  Nav state, headings, tags and icons stay ink or muted.
+- **Marks stay small.** Collection marks are dots, chips and 4px bars; tints are panels. A
+  collection always shows its name beside its colour.
+- **Dark mode is a token swap.** Never write `dark:` variants with literal colors. If something
+  looks wrong in dark, fix `colors-dark` in DESIGN.md and the dark blocks in `globals.css`.

@@ -29,7 +29,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
   });
 
   return (
-    <div className="bg-surface-soft text-ink">
+    <div className="bg-paper text-ink">
       <SkipLink />
       <AppProviders>
         <AppFrame

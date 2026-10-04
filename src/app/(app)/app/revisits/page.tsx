@@ -58,7 +58,7 @@ export default async function RevisitsPage() {
         />
       ) : (
         <div className="grid grid-cols-1 items-start gap-8 desktop:grid-cols-2">
-          <section aria-labelledby="due-heading" className="rounded-md bg-tint-bronze p-6">
+          <section aria-labelledby="due-heading" className="rounded-lg bg-tint-ochre p-6">
             <h2 id="due-heading" className="text-display-sm text-ink">
               Due now <span className="text-body-md text-muted tabular-nums">({due.length})</span>
             </h2>
@@ -84,7 +84,7 @@ export default async function RevisitsPage() {
 
           <section
             aria-labelledby="upcoming-heading"
-            className="rounded-md border border-hairline-soft bg-canvas p-6"
+            className="rounded-lg border border-hairline-soft bg-canvas p-6"
           >
             <h2 id="upcoming-heading" className="text-display-sm text-ink">
               Upcoming{" "}

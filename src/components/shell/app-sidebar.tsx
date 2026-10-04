@@ -37,7 +37,7 @@ type AppSidebarProps = {
  * detects literal class strings, so keep the variant written out in full.
  */
 const ITEM = [
-  "flex h-16 w-full flex-col items-center justify-center gap-1 rounded-sm text-caption-sm text-muted transition-colors duration-fast ease-standard hover:bg-surface-soft hover:text-ink",
+  "flex h-16 w-full flex-col items-center justify-center gap-1 rounded-md text-caption-sm text-muted transition-colors duration-fast ease-standard hover:bg-surface-soft hover:text-ink",
   "aria-[current=page]:bg-surface-soft aria-[current=page]:font-semibold aria-[current=page]:text-ink",
   `desktop:group-data-[expanded=true]/side:h-10 desktop:group-data-[expanded=true]/side:flex-row desktop:group-data-[expanded=true]/side:justify-start desktop:group-data-[expanded=true]/side:gap-3 desktop:group-data-[expanded=true]/side:px-3 desktop:group-data-[expanded=true]/side:text-body-md desktop:group-data-[expanded=true]/side:text-body`,
 ].join(" ");
@@ -147,7 +147,7 @@ function SidebarCollectionList({
               <Link
                 href={href}
                 aria-current={pathname === href ? "page" : undefined}
-                className="flex h-10 min-w-0 items-center gap-3 rounded-sm px-3 text-body-sm text-body transition-colors duration-fast ease-standard hover:bg-surface-soft hover:text-ink aria-[current=page]:bg-surface-soft aria-[current=page]:font-semibold aria-[current=page]:text-ink"
+                className="flex h-10 min-w-0 items-center gap-3 rounded-md px-3 text-body-sm text-body transition-colors duration-fast ease-standard hover:bg-surface-soft hover:text-ink aria-[current=page]:bg-surface-soft aria-[current=page]:font-semibold aria-[current=page]:text-ink"
               >
                 <AccentDot accent={collection.accent} />
                 <span className="min-w-0 flex-1 truncate" title={collection.name}>
@@ -165,7 +165,7 @@ function SidebarCollectionList({
       </ul>
       <Link
         href="/app/collections"
-        className="mt-0.5 flex h-10 items-center gap-1.5 rounded-sm px-3 text-body-sm text-muted transition-colors duration-fast ease-standard hover:bg-surface-soft hover:text-ink"
+        className="mt-0.5 flex h-10 items-center gap-1.5 rounded-md px-3 text-body-sm text-muted transition-colors duration-fast ease-standard hover:bg-surface-soft hover:text-ink"
       >
         All collections
         <ArrowRightIcon className="h-4 w-4" />
@@ -199,7 +199,7 @@ export function AppSidebar({ collapsed, onCollapsedChange, user, collections }: 
       >
         <Link
           href="/app"
-          className="flex items-center gap-2 rounded-sm text-ink"
+          className="flex items-center gap-2 rounded-md text-ink"
           aria-label="Echo home"
         >
           <LogoMark />
@@ -265,7 +265,7 @@ export function AppSidebar({ collapsed, onCollapsedChange, user, collections }: 
               className="min-w-0 flex-1 bg-transparent text-body-sm text-ink placeholder:text-muted focus-visible:outline-none"
             />
             <kbd
-              className="rounded-xs border border-hairline px-1.5 text-caption-sm text-muted"
+              className="rounded-sm border border-hairline px-1.5 text-caption-sm text-muted"
               aria-hidden
             >
               /
@@ -307,7 +307,7 @@ export function AppSidebar({ collapsed, onCollapsedChange, user, collections }: 
         <AccountMenu
           placement="up"
           email={user.email}
-          triggerClassName={`mt-1 flex w-full items-center justify-center gap-3 rounded-sm p-2 text-left transition-colors duration-fast ease-standard hover:bg-surface-soft desktop:group-data-[expanded=true]/side:justify-start`}
+          triggerClassName={`mt-1 flex w-full items-center justify-center gap-3 rounded-md p-2 text-left transition-colors duration-fast ease-standard hover:bg-surface-soft desktop:group-data-[expanded=true]/side:justify-start`}
           trigger={
             <>
               <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface-strong text-ink">

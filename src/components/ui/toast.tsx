@@ -89,14 +89,14 @@ function ToastItem({ toast, onDismiss }: { toast: Toast; onDismiss: () => void }
       onPointerLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
-      className="pointer-events-auto flex max-w-md animate-rise-in items-center gap-4 rounded-sm bg-ink px-4 py-3 text-body-sm text-on-dark shadow-float motion-reduce:animate-fade-in"
+      className="pointer-events-auto flex max-w-md animate-rise-in items-center gap-4 rounded-md bg-ink px-4 py-3 text-body-sm text-canvas shadow-float motion-reduce:animate-fade-in"
     >
       <span className="min-w-0">{toast.message}</span>
       {toast.action && (
         <Link
           href={toast.action.href}
           onClick={onDismiss}
-          className="shrink-0 font-semibold text-on-dark underline underline-offset-4 focus-visible:outline-on-dark"
+          className="shrink-0 font-semibold text-canvas underline underline-offset-4 focus-visible:outline-canvas"
         >
           {toast.action.label}
         </Link>

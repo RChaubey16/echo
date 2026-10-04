@@ -1,11 +1,13 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-export type QuoteSize = "hero" | "card" | "compact";
+export type QuoteSize = "today" | "hero" | "card" | "compact";
 
 const SIZES: Record<QuoteSize, string> = {
-  hero: "font-quote text-quote-card tablet:text-quote-hero",
-  card: "font-quote text-quote-card",
+  // Today's Echo is the one place quote type reaches 44px.
+  today: "font-quote text-quote-hero-sm tablet:text-quote-hero desktop:text-quote-today",
+  hero: "font-quote text-quote-hero-sm tablet:text-quote-hero",
+  card: "font-quote text-quote-card-sm tablet:text-quote-card",
   compact: "font-quote text-quote-compact",
 };
 
@@ -17,7 +19,7 @@ const SIZES: Record<QuoteSize, string> = {
  * @returns The class string.
  */
 export function quoteClasses(size: QuoteSize): string {
-  return cn(SIZES[size], "whitespace-pre-wrap text-pretty text-ink [overflow-wrap:anywhere]");
+  return cn(SIZES[size], "user-text text-pretty text-ink");
 }
 
 type QuoteTextProps = {
@@ -28,7 +30,7 @@ type QuoteTextProps = {
   className?: string;
 };
 
-/** A quote in Newsreader. Wrap it in a `<figure>` with the attribution in a `<figcaption>`. */
+/** A quote in EB Garamond. Wrap it in a `<figure>` with the attribution in a `<figcaption>`. */
 export function QuoteText({ size, children, className }: QuoteTextProps) {
   return <blockquote className={cn(quoteClasses(size), className)}>{children}</blockquote>;
 }

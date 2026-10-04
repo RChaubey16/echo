@@ -15,7 +15,7 @@ export default function RootError({
   return (
     <main
       id="main"
-      className="flex min-h-dvh flex-col items-center justify-center bg-surface-soft px-4 py-12 text-ink"
+      className="flex min-h-dvh flex-col items-center justify-center bg-paper px-4 py-12 text-ink"
     >
       <ErrorState
         body="We couldn't load this page. Try again in a moment."

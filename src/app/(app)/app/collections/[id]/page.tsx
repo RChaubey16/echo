@@ -43,7 +43,7 @@ export default async function CollectionPage({
     <div className="flex flex-col py-8 tablet:py-12">
       <Link
         href="/app/collections"
-        className="-ml-1 inline-flex h-11 items-center gap-1.5 self-start rounded-sm px-1 text-body-sm text-muted transition-colors duration-fast ease-standard hover:text-ink"
+        className="-ml-1 inline-flex h-11 items-center gap-1.5 self-start rounded-md px-1 text-body-sm text-muted transition-colors duration-fast ease-standard hover:text-ink"
       >
         <ArrowLeftIcon className="h-4 w-4" />
         Collections
@@ -56,9 +56,7 @@ export default async function CollectionPage({
             <span className="[overflow-wrap:anywhere]">{collection.name}</span>
           </h1>
           {collection.description && (
-            <p className="mt-2 text-body-md [overflow-wrap:anywhere] whitespace-pre-wrap text-body">
-              {collection.description}
-            </p>
+            <p className="mt-2 text-body-md user-text text-body">{collection.description}</p>
           )}
           <p className="mt-2 text-body-sm text-muted tabular-nums">
             {echoCount(collection.echoCount)}

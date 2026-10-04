@@ -70,7 +70,7 @@ function ErrorId({ id }: { id: string }) {
       <span className="[overflow-wrap:anywhere]">Error ID: {id}</span>
       <button
         type="button"
-        className="inline-flex h-11 items-center rounded-xs px-2 underline underline-offset-4 hover:text-ink"
+        className="inline-flex h-11 items-center rounded-sm px-2 underline underline-offset-4 hover:text-ink"
         onClick={() => {
           void navigator.clipboard?.writeText(id).then(() => setCopied(true));
         }}

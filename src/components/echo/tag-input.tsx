@@ -193,8 +193,8 @@ export function TagInput({
           }
         }}
         className={cn(
-          "flex min-h-14 w-full flex-wrap items-center gap-1.5 rounded-sm border bg-canvas px-3 py-2 focus-within:border-ink focus-within:outline-1 focus-within:-outline-offset-2 focus-within:outline-ink",
-          invalid || notice ? "border-primary-error-text" : "border-border-input",
+          "flex min-h-14 w-full flex-wrap items-center gap-1.5 rounded-md border bg-canvas px-3 py-2 focus-within:border-ink focus-within:outline-1 focus-within:-outline-offset-2 focus-within:outline-ink",
+          invalid || notice ? "border-error" : "border-border-input",
           disabled && "bg-surface-soft",
         )}
       >
@@ -217,7 +217,7 @@ export function TagInput({
                       className={cn(
                         "relative flex h-6 w-6 shrink-0 items-center justify-center rounded-full transition-colors duration-fast ease-standard before:absolute before:-inset-2",
                         armed
-                          ? "hover:bg-on-dark/20"
+                          ? "hover:bg-canvas/20"
                           : "text-muted hover:bg-surface-strong hover:text-ink",
                       )}
                     >
@@ -279,7 +279,7 @@ export function TagInput({
           id={listId}
           role="listbox"
           aria-label="Tag suggestions"
-          className="absolute inset-x-0 top-full z-40 mt-2 max-h-72 origin-top animate-menu-in overflow-y-auto rounded-md bg-canvas py-2 shadow-float motion-reduce:animate-fade-in" // audit-ignore: 72 caps the list at about seven rows
+          className="absolute inset-x-0 top-full z-40 mt-2 max-h-72 origin-top animate-menu-in overflow-y-auto rounded-lg bg-canvas py-2 shadow-float motion-reduce:animate-fade-in" // audit-ignore: 72 caps the list at about seven rows
         >
           {options.map((option, index) => (
             <li
@@ -314,7 +314,7 @@ export function TagInput({
         Press Enter or comma to add a tag.
       </p>
       {notice && (
-        <p id={noticeId} role="alert" className="mt-1.5 text-body-sm text-primary-error-text">
+        <p id={noticeId} role="alert" className="mt-1.5 text-body-sm text-error">
           {notice}
         </p>
       )}

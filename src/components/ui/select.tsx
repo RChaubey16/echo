@@ -23,7 +23,7 @@ export function Select({ label, inline = false, options, className, id, ...rest 
       <div className="relative">
         <select
           id={selectId}
-          className="h-10 w-full appearance-none rounded-sm border border-border-input bg-canvas pr-8 pl-3 text-body-md text-ink focus:border-ink focus:outline-1 focus:-outline-offset-2 focus:outline-ink disabled:bg-surface-soft disabled:text-muted-soft"
+          className="h-10 w-full appearance-none rounded-md border border-border-input bg-canvas pr-8 pl-3 text-body-md text-ink focus:border-ink focus:outline-1 focus:-outline-offset-2 focus:outline-ink disabled:bg-surface-soft disabled:text-muted-soft"
           {...rest}
         >
           {options.map((option) => (

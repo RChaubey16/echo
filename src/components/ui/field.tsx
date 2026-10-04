@@ -10,7 +10,7 @@ import { cn } from "@/lib/cn";
 import { AlertIcon } from "./icons";
 
 const CONTROL =
-  "w-full rounded-sm border bg-canvas px-3 text-body-md text-ink placeholder:text-muted focus:border-ink focus:outline-1 focus:-outline-offset-2 focus:outline-ink disabled:bg-surface-soft disabled:text-muted-soft";
+  "w-full rounded-md border bg-canvas px-3 text-body-md text-ink placeholder:text-muted focus:border-ink focus:outline-1 focus:-outline-offset-2 focus:outline-ink disabled:bg-surface-soft disabled:text-muted-soft";
 
 /**
  * Returns the border classes for a control in its normal or error state.
@@ -19,7 +19,7 @@ const CONTROL =
  * @returns The border class string.
  */
 function borderFor(invalid: boolean | undefined): string {
-  return invalid ? "border-primary-error-text" : "border-border-input";
+  return invalid ? "border-error" : "border-border-input";
 }
 
 /**
@@ -89,7 +89,7 @@ export const Textarea = forwardRef<
 export function FieldError({ id, children }: { id: string; children?: string }) {
   if (!children) return null;
   return (
-    <p id={id} className="flex items-start gap-1.5 text-body-sm text-primary-error-text">
+    <p id={id} className="flex items-start gap-1.5 text-body-sm text-error">
       <AlertIcon className="mt-0.5 h-3.5 w-3.5 shrink-0" />
       <span>{children}</span>
     </p>
@@ -108,7 +108,7 @@ export function CharacterCount({ length, max }: { length: number; max: number })
     <p
       className={cn(
         "text-right text-caption-sm tabular-nums",
-        length > max ? "text-primary-error-text" : "text-muted",
+        length > max ? "text-error" : "text-muted",
       )}
     >
       {length.toLocaleString("en-US")} / {max.toLocaleString("en-US")}

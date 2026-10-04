@@ -101,11 +101,11 @@ export default async function HomePage() {
         </div>
         <div className="grid min-w-0 grid-cols-1 content-start gap-8">
           {counts.revisitsDue > 0 && (
-            <Suspense fallback={<SidePanelSkeleton tint="bg-tint-bronze" />}>
+            <Suspense fallback={<SidePanelSkeleton tint="bg-tint-ochre" />}>
               <RevisitsDueSection data={due} total={counts.revisitsDue} />
             </Suspense>
           )}
-          <Suspense fallback={<SidePanelSkeleton tint="bg-tint-plum" />}>
+          <Suspense fallback={<SidePanelSkeleton tint="bg-tint-heather" />}>
             <FromThePastSection data={past} />
           </Suspense>
           <LibrarySection counts={counts} />

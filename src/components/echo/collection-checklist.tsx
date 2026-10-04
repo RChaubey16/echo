@@ -162,8 +162,8 @@ export function CollectionChecklist({
                 }}
                 placeholder="e.g. Morning pages"
                 className={cn(
-                  "h-10 min-w-0 flex-1 rounded-sm border bg-canvas px-3 text-body-md text-ink placeholder:text-muted focus:border-ink focus:outline-1 focus:-outline-offset-2 focus:outline-ink",
-                  error ? "border-primary-error-text" : "border-border-input",
+                  "h-10 min-w-0 flex-1 rounded-md border bg-canvas px-3 text-body-md text-ink placeholder:text-muted focus:border-ink focus:outline-1 focus:-outline-offset-2 focus:outline-ink",
+                  error ? "border-error" : "border-border-input",
                 )}
               />
               <Button size="sm" variant="secondary" loading={saving} onClick={() => void create()}>
@@ -173,7 +173,7 @@ export function CollectionChecklist({
             {error && (
               <p
                 id={`${id}-new-error`}
-                className="flex items-start gap-1.5 text-body-sm text-primary-error-text"
+                className="flex items-start gap-1.5 text-body-sm text-error"
               >
                 <AlertIcon className="mt-0.5 h-3.5 w-3.5 shrink-0" />
                 {error}
@@ -185,7 +185,7 @@ export function CollectionChecklist({
             ref={newButtonRef}
             type="button"
             onClick={() => setCreating(true)}
-            className="flex h-11 w-full items-center gap-3 rounded-sm px-2 text-left text-body-md text-ink transition-colors duration-fast ease-standard hover:bg-surface-soft"
+            className="flex h-11 w-full items-center gap-3 rounded-md px-2 text-left text-body-md text-ink transition-colors duration-fast ease-standard hover:bg-surface-soft"
           >
             <PlusIcon className="h-4 w-4 shrink-0 text-muted" />
             New collection

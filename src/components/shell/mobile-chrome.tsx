@@ -16,7 +16,7 @@ export function MobileHeader({ email }: { email: string }) {
       <div className="flex h-16 items-center justify-between px-4">
         <Link
           href="/app"
-          className="flex h-11 items-center gap-2 rounded-sm text-ink"
+          className="flex h-11 items-center gap-2 rounded-md text-ink"
           aria-label="Echo home"
         >
           <LogoMark />

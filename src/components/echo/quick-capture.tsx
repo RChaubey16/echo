@@ -196,7 +196,7 @@ function QuickCapture({
         />
 
         {failure && (
-          <p role="alert" className="flex items-start gap-1.5 text-body-sm text-primary-error-text">
+          <p role="alert" className="flex items-start gap-1.5 text-body-sm text-error">
             <AlertIcon className="mt-0.5 h-3.5 w-3.5 shrink-0" />
             {failure}
           </p>
@@ -206,7 +206,7 @@ function QuickCapture({
           <div
             role="group"
             aria-labelledby={`${titleId}-discard`}
-            className="flex flex-col gap-3 rounded-sm bg-surface-soft p-4 tablet:flex-row tablet:items-center tablet:justify-between"
+            className="flex flex-col gap-3 rounded-md bg-surface-soft p-4 tablet:flex-row tablet:items-center tablet:justify-between"
           >
             <p id={`${titleId}-discard`} className="text-body-md text-ink">
               Discard this quote?

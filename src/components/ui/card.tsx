@@ -8,7 +8,7 @@ type CardProps = HTMLAttributes<HTMLElement> & {
   compact?: boolean;
 };
 
-export const CARD_CLASSES = "relative rounded-md border border-hairline bg-surface-card";
+export const CARD_CLASSES = "relative rounded-lg border border-hairline bg-canvas";
 export const CARD_INTERACTIVE =
   "transition-shadow duration-base ease-standard hover:border-transparent hover:shadow-float";
 

@@ -10,12 +10,12 @@ export default function EditEchoLoading() {
       <Skeleton className="h-7 w-36" />
       <div className="flex flex-col gap-1.5">
         <Skeleton className="h-3 w-12" />
-        <Skeleton className="h-32 w-full rounded-sm" />
+        <Skeleton className="h-32 w-full rounded-md" />
       </div>
       {[0, 1].map((field) => (
         <div key={field} className="flex flex-col gap-1.5">
           <Skeleton className="h-3 w-16" />
-          <Skeleton className="h-14 w-full rounded-sm" />
+          <Skeleton className="h-14 w-full rounded-md" />
         </div>
       ))}
     </LoadingState>

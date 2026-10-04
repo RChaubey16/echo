@@ -82,7 +82,7 @@ export function TodaysEcho({ echo: initial, date, dateLabel }: TodaysEchoProps) 
   };
 
   return (
-    <section aria-labelledby="today-heading" className="rounded-md bg-tint-lagoon p-6 tablet:p-8">
+    <section aria-labelledby="today-heading" className="rounded-lg bg-tint-moss p-6 tablet:p-8">
       <h2 id="today-heading" className="text-caption text-primary">
         Today&apos;s Echo · <time dateTime={date}>{dateLabel}</time>
       </h2>
@@ -101,7 +101,7 @@ export function TodaysEcho({ echo: initial, date, dateLabel }: TodaysEchoProps) 
         <div key={swaps} className={cn(swaps > 0 && "animate-rise-in motion-reduce:animate-none")}>
           <OpenQuoteIcon className="mb-3 h-8 w-8 text-primary opacity-40" />
           <figure>
-            <QuoteText size="hero">{echo.quote}</QuoteText>
+            <QuoteText size="today">{echo.quote}</QuoteText>
             {credit && <figcaption className="mt-4 text-body-md text-body">{credit}</figcaption>}
           </figure>
           <p className="mt-2 flex flex-wrap items-center gap-x-2 text-body-sm text-muted">
@@ -115,11 +115,9 @@ export function TodaysEcho({ echo: initial, date, dateLabel }: TodaysEchoProps) 
             </time>
           </p>
           {echo.reflection && (
-            <div className="mt-8 rounded-sm bg-canvas p-4 tablet:p-6">
+            <div className="mt-8 rounded-md bg-canvas p-4 tablet:p-6">
               <p className="text-caption text-muted">You wrote:</p>
-              <p className="mt-2 text-body-md [overflow-wrap:anywhere] whitespace-pre-wrap text-body">
-                {echo.reflection}
-              </p>
+              <p className="mt-2 text-body-md user-text text-body">{echo.reflection}</p>
             </div>
           )}
         </div>

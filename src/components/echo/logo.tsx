@@ -1,6 +1,6 @@
 import { cn } from "@/lib/cn";
 
-/** The Echo mark: a Lagoon circle with sound waves. Decorative; pair it with a label. */
+/** The Echo mark: a primary-colored circle with sound waves. Decorative; pair it with a label. */
 export function LogoMark({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 32 32" className={cn("h-8 w-8 shrink-0 text-primary", className)} aria-hidden>

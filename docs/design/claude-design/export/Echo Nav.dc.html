@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/modernist-94cbaf16-5413-4121-ae7e-7b72c74e10e0/styles.css">
+<script src="_ds/modernist-94cbaf16-5413-4121-ae7e-7b72c74e10e0/_ds_bundle.js"></script>
+<script src="echo-icons.js"></script>
+</helmet>
+
+<sc-if value="{{ isSidebar }}" hint-placeholder-val="{{ true }}">
+  <aside style="width:256px;height:100%;min-height:100%;flex:none;display:flex;flex-direction:column;gap:16px;padding:16px;box-sizing:border-box;background:var(--canvas);border-right:1px solid var(--hairline);font-family:var(--sans);color:var(--ink)">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding-left:8px;flex:none"><span style="font-size:20px;font-weight:600;letter-spacing:-.02em">Echo</span><span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center;border-radius:999px;color:var(--muted)" aria-label="Collapse sidebar">{{ ic.panel }}</span></div>
+    <span style="flex:none;display:flex;align-items:center;gap:8px;height:48px;padding:0 16px;border-radius:6px;background:var(--primary);color:var(--on-primary);font-size:15px;font-weight:600">{{ ic.plusSm }}Add Echo</span>
+    <div style="flex:none;display:flex;align-items:center;gap:8px;height:44px;padding:0 12px;border:1px solid var(--border-input);border-radius:6px;color:var(--muted);font-size:15px;box-sizing:border-box">{{ ic.searchSm }}<span style="flex:1">Search</span><span style="font-size:12px;padding:1px 6px;border:1px solid var(--hairline);border-radius:4px">/</span></div>
+    <nav style="flex:none;display:flex;flex-direction:column;gap:2px">
+      <sc-for list="{{ items }}" as="it" hint-placeholder-count="5">
+        <span style="display:flex;align-items:center;gap:12px;height:44px;padding:0 12px;border-radius:6px;background:{{ it.bg }};color:{{ it.fg }};font-weight:{{ it.w }};font-size:15px">{{ it.icon }}<span style="flex:1">{{ it.label }}</span><sc-if value="{{ it.badge }}"><span style="font-size:12px;font-weight:500;padding:2px 7px;border-radius:4px;background:var(--surface-strong);color:var(--ink)">{{ it.badge }}</span></sc-if></span>
+      </sc-for>
+    </nav>
+    <div style="flex:none;display:flex;flex-direction:column;gap:2px;padding-top:12px;border-top:1px solid var(--hairline-soft)">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:4px 12px 6px">Collections</div>
+      <span style="display:flex;align-items:center;gap:10px;height:40px;padding:0 12px;font-size:14px;color:var(--body)"><span style="width:8px;height:8px;border-radius:50%;background:var(--mark-moss)"></span><span style="flex:1">Starting Over</span><span style="color:var(--muted)">18</span></span>
+      <span style="display:flex;align-items:center;gap:10px;height:40px;padding:0 12px;font-size:14px;color:var(--body)"><span style="width:8px;height:8px;border-radius:50%;background:var(--mark-ochre)"></span><span style="flex:1">For Difficult Days</span><span style="color:var(--muted)">11</span></span>
+      <span style="display:flex;align-items:center;gap:10px;height:40px;padding:0 12px;font-size:14px;color:var(--body)"><span style="flex:none;width:8px;height:8px;border-radius:50%;background:var(--mark-moss)"></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Things I Want to Remember</span><span style="color:var(--muted)">24</span></span>
+      <span style="display:flex;align-items:center;gap:10px;height:40px;padding:0 12px;font-size:14px;color:var(--body)"><span style="width:8px;height:8px;border-radius:50%;border:1.5px solid var(--mark-neutral);box-sizing:border-box"></span><span style="flex:1">Work</span><span style="color:var(--muted)">7</span></span>
+      <span style="display:flex;align-items:center;gap:10px;height:40px;padding:0 12px;font-size:14px;color:var(--body)"><span style="width:8px;height:8px;border-radius:50%;border:1.5px solid var(--mark-neutral);box-sizing:border-box"></span><span style="flex:1">Books That Changed Me</span><span style="color:var(--muted)">15</span></span>
+      <span style="display:flex;align-items:center;height:40px;padding:0 12px;font-size:14px;font-weight:500;color:var(--primary)">All collections</span>
+    </div>
+    <div style="margin-top:auto;flex:none;display:flex;flex-direction:column;gap:2px;padding-top:12px;border-top:1px solid var(--hairline-soft)">
+      <span style="display:flex;align-items:center;gap:12px;height:44px;padding:0 12px;border-radius:6px;font-size:15px;background:{{ settingsBg }};font-weight:{{ settingsW }};color:var(--body)">{{ ic.settings }}Settings</span>
+      <span style="display:flex;align-items:center;gap:12px;height:52px;padding:0 12px;font-size:14px"><span style="flex:none;width:32px;height:32px;border-radius:50%;background:var(--tint-heather);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px">A</span><span style="display:flex;flex-direction:column;min-width:0"><span style="font-weight:600">Ana Reyes</span><span style="font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis">ana.reyes@gmail.com</span></span></span>
+    </div>
+  </aside>
+</sc-if>
+
+<sc-if value="{{ isRail }}" hint-placeholder-val="{{ false }}">
+  <aside style="width:96px;height:100%;flex:none;display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 0;box-sizing:border-box;background:var(--canvas);border-right:1px solid var(--hairline);font-family:var(--sans);color:var(--ink)">
+    <span style="flex:none;font-size:18px;font-weight:600;letter-spacing:-.02em;height:44px;display:flex;align-items:center">Echo</span>
+    <span style="flex:none;display:flex;width:56px;height:56px;align-items:center;justify-content:center;border-radius:999px;background:var(--primary);color:var(--on-primary);margin-bottom:10px" aria-label="Add Echo">{{ ic.plusLg }}</span>
+    <sc-for list="{{ railItems }}" as="it" hint-placeholder-count="6">
+      <span style="flex:none;display:flex;flex-direction:column;align-items:center;gap:4px;width:80px;padding:8px 0;border-radius:6px;background:{{ it.bg }};color:{{ it.fg }};font-weight:{{ it.w }};font-size:12px">{{ it.icon }}{{ it.label }}</span>
+    </sc-for>
+    <span style="margin-top:auto;flex:none;display:flex;flex-direction:column;align-items:center;gap:4px;width:80px;padding:8px 0;font-size:12px;color:var(--body)">{{ ic.settings }}Settings</span>
+    <span style="flex:none;width:36px;height:36px;border-radius:50%;background:var(--tint-heather);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px">A</span>
+  </aside>
+</sc-if>
+
+<sc-if value="{{ isHeader }}" hint-placeholder-val="{{ false }}">
+  <header style="height:64px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 10px 0 20px;background:var(--canvas);border-bottom:1px solid var(--hairline);font-family:var(--sans);color:var(--ink)"><span style="font-size:20px;font-weight:600;letter-spacing:-.02em">Echo</span><span style="display:flex;width:44px;height:44px;align-items:center;justify-content:center" aria-label="Account"><span style="width:32px;height:32px;border-radius:50%;background:var(--tint-heather);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px">A</span></span></header>
+</sc-if>
+
+<sc-if value="{{ isTabs }}" hint-placeholder-val="{{ false }}">
+  <nav style="height:72px;flex:none;display:grid;grid-template-columns:repeat(5,1fr);align-items:center;background:var(--canvas);border-top:1px solid var(--hairline);font-family:var(--sans);color:var(--ink)">
+    <sc-for list="{{ tabsL }}" as="t" hint-placeholder-count="2">
+      <span style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:{{ t.w }};color:{{ t.fg }}"><span style="display:flex;padding:4px 16px;border-radius:999px;background:{{ t.bg }}">{{ t.icon }}</span>{{ t.label }}</span>
+    </sc-for>
+    <span style="display:flex;justify-content:center"><span style="display:flex;width:56px;height:56px;margin-top:-24px;align-items:center;justify-content:center;border-radius:999px;background:var(--primary);color:var(--on-primary);box-shadow:var(--shadow-1)" aria-label="Add Echo">{{ ic.plusLg }}</span></span>
+    <sc-for list="{{ tabsR }}" as="t" hint-placeholder-count="2">
+      <span style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:{{ t.w }};color:{{ t.fg }}"><span style="display:flex;padding:4px 16px;border-radius:999px;background:{{ t.bg }}">{{ t.icon }}</span>{{ t.label }}</span>
+    </sc-for>
+  </nav>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:256,&quot;height&quot;:900},&quot;variant&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;sidebar&quot;,&quot;rail&quot;,&quot;header&quot;,&quot;tabs&quot;],&quot;default&quot;:&quot;sidebar&quot;,&quot;tsType&quot;:&quot;'sidebar' | 'rail' | 'header' | 'tabs'&quot;},&quot;active&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;home&quot;,&quot;library&quot;,&quot;favorites&quot;,&quot;collections&quot;,&quot;revisits&quot;,&quot;search&quot;,&quot;settings&quot;],&quot;default&quot;:&quot;home&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() { if (!window.EchoIcons) { this._l = () => this.forceUpdate(); window.addEventListener('echo-icons', this._l); } }
+  componentWillUnmount() { if (this._l) window.removeEventListener('echo-icons', this._l); }
+  renderVals() {
+    const ic = window.EchoIcons ? window.EchoIcons(React) : {};
+    const v = this.props.variant || 'sidebar';
+    const active = this.props.active || 'home';
+    const st = (k) => active === k ? { bg: 'var(--surface-strong)', fg: 'var(--ink)', w: 600 } : { bg: 'transparent', fg: 'var(--body)', w: 400 };
+    const defs = [['home','Home','home'],['library','Library','book'],['favorites','Favorites','heart'],['collections','Collections','layers'],['revisits','Revisits','cal']];
+    const items = defs.map(([k,label,i]) => ({ label, icon: ic[i], badge: k === 'revisits' ? '2' : null, ...st(k) }));
+    const railItems = defs.concat([['search','Search','search']]).map(([k,label,i]) => ({ label, icon: ic[i], ...st(k) }));
+    const tab = ([k,label,i]) => ({ label, icon: ic[i], ...st(k), w: active === k ? 600 : 400 });
+    return {
+      ic, items, railItems,
+      tabsL: [['home','Home','home'],['library','Library','book']].map(tab),
+      tabsR: [['search','Search','search'],['collections','Collections','layers']].map(tab),
+      isSidebar: v === 'sidebar', isRail: v === 'rail', isHeader: v === 'header', isTabs: v === 'tabs',
+      settingsBg: active === 'settings' ? 'var(--surface-strong)' : 'transparent', settingsW: active === 'settings' ? 600 : 400
+    };
+  }
+}
+</script>
+</body>
+</html>

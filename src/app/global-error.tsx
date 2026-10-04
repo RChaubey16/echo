@@ -18,7 +18,7 @@ export default function GlobalError({
       <body>
         <main
           id="main"
-          className="flex min-h-dvh flex-col items-center justify-center bg-surface-soft px-4 py-12 text-ink"
+          className="flex min-h-dvh flex-col items-center justify-center bg-paper px-4 py-12 text-ink"
         >
           <ErrorState
             body="Echo couldn't load. Your Echoes are safe. Try again in a moment."

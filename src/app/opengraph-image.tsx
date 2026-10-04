@@ -5,20 +5,20 @@ import { OG_IMAGE } from "@/lib/site";
 
 // The link preview shown when an Echo page is shared. Satori renders it outside the browser, so
 // it can't read the Tailwind tokens: the colors below mirror DESIGN.md's light theme by hand.
-const INK = "#222222"; // audit-ignore: mirrors ink
-const MUTED = "#6a6a6a"; // audit-ignore: mirrors muted
-const CANVAS = "#ffffff"; // audit-ignore: mirrors canvas
-const PRIMARY = "#0e7c6b"; // audit-ignore: mirrors primary
+const INK = "#2b2622"; // audit-ignore: mirrors ink
+const MUTED = "#675e55"; // audit-ignore: mirrors muted
+const CANVAS = "#fbf8f2"; // audit-ignore: mirrors canvas
+const PRIMARY = "#2d4a72"; // audit-ignore: mirrors primary
 
 export const alt = OG_IMAGE.alt;
 export const size = { width: OG_IMAGE.width, height: OG_IMAGE.height };
 export const contentType = "image/png";
 
 const fontsDir = join(process.cwd(), "assets/fonts");
-const [interRegular, interSemiBold, newsreader] = await Promise.all([
-  readFile(join(fontsDir, "Inter-Regular.ttf")),
-  readFile(join(fontsDir, "Inter-SemiBold.ttf")),
-  readFile(join(fontsDir, "Newsreader-Regular.ttf")),
+const [sansRegular, sansSemiBold, quoteRegular] = await Promise.all([
+  readFile(join(fontsDir, "HankenGrotesk-Regular.ttf")),
+  readFile(join(fontsDir, "HankenGrotesk-SemiBold.ttf")),
+  readFile(join(fontsDir, "EBGaramond-Regular.ttf")),
 ]);
 
 /**
@@ -39,7 +39,7 @@ export default function OpengraphImage(): ImageResponse {
         padding: 80,
         background: CANVAS,
         color: INK,
-        fontFamily: "Inter",
+        fontFamily: "Hanken Grotesk",
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
@@ -71,10 +71,10 @@ export default function OpengraphImage(): ImageResponse {
           style={{
             display: "flex",
             flexDirection: "column",
-            fontFamily: "Newsreader",
-            fontSize: 104,
+            fontFamily: "EB Garamond",
+            fontSize: 112,
             lineHeight: 1.08,
-            letterSpacing: -1.5,
+            letterSpacing: -1,
           }}
         >
           <span>Words worth</span>
@@ -88,9 +88,9 @@ export default function OpengraphImage(): ImageResponse {
     {
       ...size,
       fonts: [
-        { name: "Inter", data: interRegular, weight: 400, style: "normal" },
-        { name: "Inter", data: interSemiBold, weight: 600, style: "normal" },
-        { name: "Newsreader", data: newsreader, weight: 400, style: "normal" },
+        { name: "Hanken Grotesk", data: sansRegular, weight: 400, style: "normal" },
+        { name: "Hanken Grotesk", data: sansSemiBold, weight: 600, style: "normal" },
+        { name: "EB Garamond", data: quoteRegular, weight: 400, style: "normal" },
       ],
     },
   );

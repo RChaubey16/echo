@@ -7,7 +7,7 @@ the current source of truth. No dependencies.
 Usage:
   python3 contrast.py                      # report Echo's standard pairs
   python3 contrast.py ink canvas           # one pair, by token name
-  python3 contrast.py "#0e7c6b" canvas     # hex values work too
+  python3 contrast.py "#2d4a72" canvas     # hex values work too
   python3 contrast.py --theme dark          # same pairs against the colors-dark block
   python3 contrast.py --design path/to/DESIGN.md
 """
@@ -17,35 +17,49 @@ import sys
 from pathlib import Path
 
 # (foreground, background, minimum ratio, what the pair is used for)
-# Pairs in KNOWN_FAILURES are open decisions in SKILL.md: reported, but they do not fail the run.
+# Pairs in KNOWN_FAILURES are open decisions: reported, but they do not fail the run (none today).
 STANDARD_PAIRS = [
     ("ink", "canvas", 4.5, "primary text"),
-    ("body", "canvas", 4.5, "secondary running text"),
+    ("ink", "surface-soft", 4.5, "text on app background"),
+    ("ink", "surface-strong", 4.5, "text on strong fill"),
+    ("body", "canvas", 4.5, "long-form text"),
+    ("body", "surface-soft", 4.5, "long-form text on app background"),
     ("muted", "canvas", 4.5, "metadata and labels"),
-    ("muted", "surface-soft", 4.5, "metadata on soft fill"),
-    ("muted", "tint-lagoon", 4.5, "metadata on featured panel"),
-    ("muted", "tint-bronze", 4.5, "metadata on time panel"),
-    ("muted", "tint-plum", 4.5, "metadata on memory panel"),
-    ("primary", "tint-lagoon", 4.5, "links and icons on featured panel"),
-    ("luxe", "tint-bronze", 3.0, "bronze icon chip"),
-    ("plus", "tint-plum", 3.0, "plum icon chip"),
-    ("muted-soft", "canvas", None, "disabled text (exempt)"),
-    ("on-primary", "primary", 4.5, "primary button label"),
-    ("on-primary", "primary-active", 4.5, "pressed button label"),
+    ("muted", "surface-soft", 4.5, "metadata on app background"),
+    ("muted", "surface-strong", 4.5, "metadata on strong fill"),
+    ("muted", "tint-moss", 4.5, "metadata on moss panel"),
+    ("muted", "tint-ochre", 4.5, "metadata on Revisits panel"),
+    ("muted", "tint-heather", 4.5, "metadata on From the past panel"),
+    ("muted", "tint-neutral", 4.5, "metadata on neutral panel"),
+    ("muted", "error-tint", 4.5, "metadata on error panel"),
     ("primary", "canvas", 4.5, "inline links, saved heart"),
-    ("on-primary", "primary-error-text", 4.5, "danger button label"),
-    ("primary-error-text", "canvas", 4.5, "error text"),
-    ("on-primary-disabled", "primary-disabled", 4.5, "disabled CTA label"),
-    ("legal-link", "canvas", 4.5, "legal links"),
-    ("canvas", "ink", 4.5, "selected chip text"),
-    ("on-dark", "ink", 4.5, "toast text"),
+    ("primary", "surface-soft", 4.5, "links on app background"),
+    ("primary", "tint-ochre", 4.5, "links on Revisits panel"),
+    ("primary", "tint-heather", 4.5, "links on From the past panel"),
+    ("on-primary", "primary", 4.5, "primary button label"),
+    ("on-primary", "primary-hover", 4.5, "hovered button label"),
+    ("on-primary", "primary-active", 4.5, "pressed button label"),
+    ("on-error", "error", 4.5, "danger button label"),
+    ("on-error", "error-hover", 4.5, "hovered danger button label"),
+    ("error", "canvas", 4.5, "error text"),
+    ("error", "error-tint", 4.5, "error text on error panel"),
+    ("canvas", "ink", 4.5, "toast and selected chip text"),
+    ("mark-moss", "canvas", 3.0, "moss mark"),
+    ("mark-ochre", "canvas", 3.0, "ochre mark"),
+    ("mark-heather", "canvas", 3.0, "heather mark"),
+    ("mark-neutral", "canvas", 3.0, "neutral ring"),
+    ("mark-moss", "tint-moss", 3.0, "moss monogram"),
+    ("mark-ochre", "tint-ochre", 3.0, "ochre monogram, Revisits icon"),
+    ("mark-heather", "tint-heather", 3.0, "heather monogram, From the past icon"),
+    ("mark-neutral", "tint-neutral", 3.0, "neutral monogram"),
     ("border-input", "canvas", 3.0, "input boundary (SC 1.4.11)"),
     ("border-input", "surface-soft", 3.0, "input boundary on app background"),
-    ("ink", "surface-soft", 4.5, "text on app background"),
-    ("muted", "surface-strong", 4.5, "metadata on strong fill"),
+    ("primary", "surface-soft", 3.0, "focus ring on app background"),
+    ("muted-soft", "canvas", None, "disabled text (exempt)"),
+    ("muted-soft", "primary-disabled", None, "disabled CTA label (exempt)"),
     ("hairline", "canvas", None, "decorative divider"),
 ]
-KNOWN_FAILURES = {("legal-link", "canvas")}  # legal-link is unused in Echo; links use primary
+KNOWN_FAILURES = set()
 
 
 def find_design_md(explicit):

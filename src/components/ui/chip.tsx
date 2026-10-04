@@ -5,8 +5,8 @@ import { cn } from "@/lib/cn";
 const CHIP =
   "inline-flex h-8 max-w-full items-center gap-1.5 rounded-full border px-3 text-button-sm transition-colors duration-fast ease-standard";
 const RESTING = "border-hairline bg-canvas text-ink hover:border-ink";
-// Ink fill is Echo's selection language; Lagoon stays reserved for saved state and primary actions.
-const SELECTED = "border-ink bg-ink text-on-dark";
+// Ink fill is Echo's selection language; the primary accent stays reserved for saved state and primary actions.
+const SELECTED = "border-ink bg-ink text-canvas";
 
 /**
  * Returns the tag-chip classes (DESIGN.md category-strip pill), for links, buttons and spans.

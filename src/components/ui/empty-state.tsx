@@ -23,7 +23,7 @@ export function EmptyState({
   return (
     <section
       className={cn(
-        "mx-auto w-full max-w-sm rounded-md border border-hairline-soft bg-canvas px-6 py-16 text-center",
+        "mx-auto w-full max-w-sm rounded-lg border border-hairline-soft bg-canvas px-6 py-16 text-center",
         className,
       )}
     >

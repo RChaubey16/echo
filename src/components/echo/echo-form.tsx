@@ -122,7 +122,7 @@ export function EchoForm({
           ref={summaryRef}
           tabIndex={-1}
           role="alert"
-          className="flex items-start gap-2 rounded-sm border border-primary-error-text bg-canvas p-4 text-body-sm text-primary-error-text"
+          className="flex items-start gap-2 rounded-md border border-error bg-canvas p-4 text-body-sm text-error"
         >
           <AlertIcon className="mt-0.5 h-4 w-4 shrink-0" />
           <p>{summary}</p>

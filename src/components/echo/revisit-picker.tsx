@@ -163,7 +163,7 @@ export function RevisitPicker({
       )}
 
       {error && (
-        <p id={errorId} role="alert" className="text-body-sm text-primary-error-text">
+        <p id={errorId} role="alert" className="text-body-sm text-error">
           {error}
         </p>
       )}
@@ -229,7 +229,7 @@ function RevisitCalendar({ selected, onSelect, disabled }: RevisitCalendarProps)
     "flex h-11 w-11 items-center justify-center rounded-full text-ink transition-colors duration-fast ease-standard hover:bg-surface-soft disabled:cursor-not-allowed disabled:text-muted-soft disabled:hover:bg-transparent";
 
   return (
-    <div className="w-full max-w-sm rounded-md border border-hairline bg-canvas p-3 tablet:p-4">
+    <div className="w-full max-w-sm rounded-lg border border-hairline bg-canvas p-3 tablet:p-4">
       <div className="flex items-center justify-between gap-2">
         <button
           type="button"

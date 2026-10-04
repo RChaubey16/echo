@@ -58,8 +58,8 @@ export function Dialog({
         if (event.target === event.currentTarget) onRequestClose();
       }}
       className={cn(
-        "m-0 mt-auto w-full max-w-none animate-rise-in overflow-y-auto rounded-t-xl bg-canvas text-ink shadow-float backdrop:animate-fade-in backdrop:bg-scrim/50 motion-reduce:animate-fade-in",
-        "max-h-[92dvh] tablet:m-auto tablet:max-h-[85dvh] tablet:rounded-md", // audit-ignore: sheet and dialog height caps
+        "m-0 mt-auto w-full max-w-none animate-rise-in overflow-y-auto rounded-t-lg bg-canvas text-ink shadow-float backdrop:animate-fade-in backdrop:bg-scrim motion-reduce:animate-fade-in",
+        "max-h-[92dvh] tablet:m-auto tablet:max-h-[85dvh] tablet:rounded-lg", // audit-ignore: sheet and dialog height caps
         size === "lg" ? "tablet:max-w-lg" : "tablet:max-w-md",
       )}
     >

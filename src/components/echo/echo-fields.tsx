@@ -95,7 +95,7 @@ export function EchoFields({
           aria-expanded={detailsOpen}
           aria-controls={detailsId}
           onClick={() => onDetailsOpenChange(!detailsOpen)}
-          className="-mx-1 inline-flex h-11 items-center gap-1.5 rounded-sm px-1 text-button-sm text-ink underline-offset-4 hover:underline"
+          className="-mx-1 inline-flex h-11 items-center gap-1.5 rounded-md px-1 text-button-sm text-ink underline-offset-4 hover:underline"
         >
           More details
           <ChevronDownIcon

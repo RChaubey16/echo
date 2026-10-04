@@ -1,5 +1,12 @@
 # Echo components
 
+> **Inkwell migration in progress.** Tokens moved to Inkwell in PR 1 (see DESIGN.md). Component
+> styles and structure move in PR 2 (primitives and shell) and PR 3 (Echo components and screens).
+> Until then, the classes below describe the code as built. When this file and the export's
+> component sheet (`docs/design/claude-design/export/Echo Design System.dc.html`) differ, the
+> export is the target, and `docs/design/claude-design/implementation-plan.md` lists the
+> structural changes.
+
 This file is the inventory of Echo's components. For each one it gives the DESIGN.md component it borrows its treatment from, the build spec, and the states it must ship with. Class strings are a starting point, so adapt them to the real props. All values come from `tokens.md`.
 
 ## Contents
@@ -21,9 +28,9 @@ This file is the inventory of Echo's components. For each one it gives the DESIG
 | Side gutter | `px-4 tablet:px-6 desktop:px-8` |
 | Section rhythm | `py-12 tablet:py-16` between major sections; `gap-8` between groups inside one |
 | Card grids | `grid gap-4 items-start`, with 1 column, then `tablet:grid-cols-2`, then `desktop:grid-cols-3`. Cards are as tall as their content: equal-height cards leave empty gaps under short quotes. Quotes need line length, so never use 4 columns, even though DESIGN.md's photo cards do. |
-| Surfaces | App background `bg-surface-soft`. Panels and cards are `bg-canvas` with `border-hairline-soft`. The featured panel uses `bg-tint-lagoon`; time and memory panels may use `bg-tint-bronze` / `bg-tint-plum`. |
+| Surfaces | App background `bg-surface-soft`. Panels and cards are `bg-canvas` with `border-hairline-soft`. The featured panel uses `bg-tint-moss`; time and memory panels may use `bg-tint-ochre` / `bg-tint-heather`. |
 | Separation | Separate with whitespace first, surfaces second, and a hairline third. |
-| Collection accents | Each collection gets an accent (lagoon, bronze, plum or neutral) shown as an 8px dot or an icon chip, always next to its name. |
+| Collection accents | Each collection gets an accent slot, stored as lagoon, bronze, plum or neutral and shown as moss, ochre, heather or a neutral ring. It appears as an 8px dot, an icon chip or a 4px card bar, always next to its name. |
 
 ## State matrix
 
@@ -48,11 +55,11 @@ A component isn't finished until it handles every state that applies to it.
 
 | Variant | Classes | Use |
 |---|---|---|
-| `primary` | `h-12 px-6 rounded-sm bg-primary text-on-primary text-button-md hover:bg-primary-active active:bg-primary-active active:scale-98 disabled:bg-primary-disabled disabled:text-on-primary-disabled` | One per view: Save Echo, Create collection |
-| `secondary` | `h-12 px-6 rounded-sm border border-ink bg-canvas text-ink text-button-md hover:bg-surface-soft active:bg-surface-strong` | Cancel, Edit, other secondary actions |
+| `primary` | `h-12 px-6 rounded-md bg-primary text-on-primary text-button-md hover:bg-primary-active active:bg-primary-active active:scale-98 disabled:bg-primary-disabled disabled:text-muted-soft` | One per view: Save Echo, Create collection |
+| `secondary` | `h-12 px-6 rounded-md border border-ink bg-canvas text-ink text-button-md hover:bg-surface-soft active:bg-surface-strong` | Cancel, Edit, other secondary actions |
 | `tertiary` | `h-auto px-0 text-ink text-button-md underline-offset-4 hover:underline` | Show more, Skip, inline actions |
 | `pill` | `rounded-full px-5 py-2.5 bg-primary text-on-primary text-button-sm hover:bg-primary-active` | Featured soft call to action: **Echo me something** |
-| `danger` | `h-12 px-6 rounded-sm bg-primary-error-text text-on-primary hover:bg-primary-error-text-hover` | Confirm buttons inside delete dialogs only |
+| `danger` | `h-12 px-6 rounded-md bg-error text-on-primary hover:bg-error-hover` | Confirm buttons inside delete dialogs only |
 
 - **Sizes:** `md` (48px, the default) and `sm` (`h-10 px-4 text-button-sm`), for dense desktop toolbars only. On touch, keep a hit area of at least 44px.
 - **Loading:** show a 16px spinner before the label, change the label to its progressive form ("Saving…"), and set `disabled`. Keep the button the same width so the layout doesn't jump.
@@ -68,22 +75,22 @@ A component isn't finished until it handles every state that applies to it.
 
 ### Input / Textarea (DESIGN.md `text-input`)
 
-- `h-14 px-3 rounded-sm border border-border-input bg-canvas text-body-md text-ink placeholder:text-muted`. `border-input` (#858585) is 3.7:1 on white, meeting the 3:1 boundary contrast WCAG requires.
+- `h-14 px-3 rounded-md border border-border-input bg-canvas text-body-md text-ink placeholder:text-muted`. `border-input` (#8a7f72) is 3.7:1 on canvas, meeting the 3:1 boundary contrast WCAG requires.
 - **Focus:** DESIGN.md asks for "2px ink, no glow, no ring". Get it without layout shift by keeping the 1px border and adding an inset outline: `focus:border-ink focus:outline-1 focus:outline-ink focus:-outline-offset-2`. If you choose a different technique, check it at runtime.
 - **Label:** a visible `<label>` above the field, in `text-caption text-muted`, with `gap-1.5`. A placeholder is an example of the input, not a label.
-- **Error:** `border-primary-error-text`, `aria-invalid="true"`, and a message below the field in `text-body-sm text-primary-error-text` with a 14px icon, linked through `aria-describedby`. Validate on blur and on submit, not on every keystroke.
+- **Error:** `border-error`, `aria-invalid="true"`, and a message below the field in `text-body-sm text-error` with a 14px icon, linked through `aria-describedby`. Validate on blur and on submit, not on every keystroke.
 - **Disabled:** `bg-surface-soft text-muted-soft`.
 - **Textarea:** grows with its content (`field-sizing: content` where supported, otherwise grow in JS), with `min-h-32`, and has no manual resize handle on touch devices.
 - **Counter:** show it only when within 10% of the maximum length (the spec limits a quote to 10,000 characters and author to 500). Use `text-caption-sm text-muted`, turning to error color once the limit is passed.
 
 ### Card (base for QuoteCard and CollectionCard)
 
-`relative rounded-md border border-hairline bg-surface-card p-6`. When interactive, add `transition-shadow duration-base ease-standard hover:border-transparent hover:shadow-float`. When the content is the click target, use the stretched-link pattern: the main `<Link>` gets `after:absolute after:inset-0`, and nested buttons get `relative z-10`. Never nest interactive elements inside a `<a>`.
+`relative rounded-lg border border-hairline bg-canvas p-6`. When interactive, add `transition-shadow duration-base ease-standard hover:border-transparent hover:shadow-float`. When the content is the click target, use the stretched-link pattern: the main `<Link>` gets `after:absolute after:inset-0`, and nested buttons get `relative z-10`. Never nest interactive elements inside a `<a>`.
 
 ### Tag chip (DESIGN.md `category-strip` / `button-sm` pill)
 
 - `inline-flex h-8 items-center rounded-full border border-hairline px-3 text-button-sm text-ink hover:border-ink`.
-- **Selected or active filter:** `bg-ink text-canvas border-ink`. Ink fill is Echo's selection language (it matches `date-picker-day-selected`). Don't use Lagoon here: Lagoon means *saved* and *primary action*.
+- **Selected or active filter:** `bg-ink text-canvas border-ink`. Ink fill is Echo's selection language (it matches `date-picker-day-selected`). Don't use the primary accent here: it means *saved* and *primary action*.
 - **Removable chip** (TagInput): a trailing × IconButton labelled `Remove tag courage`.
 
 ### Badge (DESIGN.md `guest-favorite-badge`)
@@ -92,19 +99,19 @@ A component isn't finished until it handles every state that applies to it.
 
 ### Dialog / Sheet
 
-- **Backdrop:** `bg-scrim/50`, fading in with `animate-fade-in`.
-- **Panel:** `rounded-md bg-canvas p-6 shadow-float w-full max-w-md`, entering with `animate-rise-in`.
-- **Below 744px,** it becomes a bottom sheet: `rounded-t-xl` (32px), full width, with a drag handle (`h-1 w-10 rounded-full bg-hairline`) and bottom safe-area padding.
+- **Backdrop:** `bg-scrim`, fading in with `animate-fade-in`.
+- **Panel:** `rounded-lg bg-canvas p-6 shadow-float w-full max-w-md`, entering with `animate-rise-in`.
+- **Below 744px,** it becomes a bottom sheet: `rounded-t-lg` (32px), full width, with a drag handle (`h-1 w-10 rounded-full bg-hairline`) and bottom safe-area padding.
 - Focus is trapped and returns to the trigger when the dialog closes. Esc closes it. The title is linked with `aria-labelledby`. Prefer Radix Dialog if it's installed; otherwise use native `<dialog>` with `showModal()`.
 - **Destructive dialogs:** the primary (danger) button sits on the right, and Cancel gets initial focus.
 
 ### Dropdown / Menu / Popover
 
-`rounded-md bg-canvas shadow-float py-2 min-w-48`. Items are `h-10 px-4 text-body-md hover:bg-surface-soft focus-visible:bg-surface-soft`. Use full keyboard support (arrows, Home/End, typeahead, Esc). Prefer Radix.
+`rounded-lg bg-canvas shadow-float py-2 min-w-48`. Items are `h-10 px-4 text-body-md hover:bg-surface-soft focus-visible:bg-surface-soft`. Use full keyboard support (arrows, Home/End, typeahead, Esc). Prefer Radix.
 
 ### Toast
 
-`rounded-sm bg-ink text-on-dark px-4 py-3 text-body-sm shadow-float`, placed at the bottom center (above the bottom tab bar on mobile). Toasts live in an `aria-live="polite"` region, auto-dismiss after 4s, pause on hover or focus, and can carry one optional action ("Undo", "View"). Use toasts to confirm an action, never to report a form error.
+`rounded-md bg-ink text-canvas px-4 py-3 text-body-sm shadow-float`, placed at the bottom center (above the bottom tab bar on mobile). Toasts live in an `aria-live="polite"` region, auto-dismiss after 4s, pause on hover or focus, and can carry one optional action ("Undo", "View"). Use toasts to confirm an action, never to report a form error.
 
 ### Tabs / nav tabs (DESIGN.md `product-tab-*`)
 
@@ -112,13 +119,13 @@ The active tab is `text-ink border-b-2 border-ink`, inactive tabs are `text-mute
 
 ### Skeleton
 
-`rounded-xs bg-surface-strong animate-skeleton motion-reduce:animate-none`. Always shape it like the content it replaces (see below), and keep the same container size so nothing shifts when the content arrives.
+`rounded-sm bg-surface-strong animate-skeleton motion-reduce:animate-none`. Always shape it like the content it replaces (see below), and keep the same container size so nothing shifts when the content arrives.
 
 ## Echo components
 
 ### QuoteText: the one place quote typography is defined
 
-Quotes are set in Newsreader (`font-quote`) with the DESIGN.md `quote-*` styles. Keep them in this single component, so the classes aren't repeated across screens and the quote typeface can change in one place.
+Quotes are set in EB Garamond (`font-quote`) with the DESIGN.md `quote-*` styles. Keep them in this single component, so the classes aren't repeated across screens and the quote typeface can change in one place.
 
 | `size` | Classes | Where |
 |---|---|---|
@@ -146,7 +153,7 @@ Built on Card, in this order:
 ### FavoriteButton (DESIGN.md heart save state)
 
 - A 24px heart inside a 44px hit area.
-- **Saved:** filled `text-primary` (Lagoon), which is the DESIGN.md "heart save state". **Unsaved:** a `text-muted` outline, turning `hover:text-ink`.
+- **Saved:** filled `text-primary`, the favorite-on state. **Unsaved:** a `text-muted` outline, turning `hover:text-ink`.
 - Use `aria-pressed`, with the label "Add to favorites" or "Remove from favorites".
 - **Optimistic:** flip the state immediately and play `animate-heart-pop` (only when it becomes saved). If the request fails, revert and show a toast: "Couldn't update favorites. Try again."
 
@@ -216,10 +223,10 @@ Used on the Echo detail page for Author, Source, Saved, Collections and Revisit.
   - `fixed inset-y-0 left-0 w-64 border-r border-hairline bg-canvas`, with the page content offset by the same width;
   - top: logo plus a collapse button (`aria-expanded`, `aria-controls`);
   - a full-width primary **Add Echo** button, then a search field (press `/`);
-  - nav items Home, Library, Favorites, Collections, Revisits: `h-10 px-3 rounded-sm text-body-md text-body hover:bg-surface-soft`. The active item (`aria-current="page"`) gets `bg-surface-soft text-ink font-semibold`. Never Lagoon;
+  - nav items Home, Library, Favorites, Collections, Revisits: `h-10 px-3 rounded-md text-body-md text-body hover:bg-surface-soft`. The active item (`aria-current="page"`) gets `bg-surface-soft text-ink font-semibold`. Never the primary accent;
   - a Collections list: at most 5 rows of accent dot, name and count (`text-body-sm`), then "All collections";
   - Settings and the account at the bottom, above a hairline.
-- **Rail (744–1127px, or collapsed on desktop):** `w-24`. Items stack an icon over a `text-caption-sm` label (labels stay visible; never icon-only). Add becomes the 48px round Lagoon button, and Search becomes a nav item. On desktop an Expand button sits at the end of the nav.
+- **Rail (744–1127px, or collapsed on desktop):** `w-24`. Items stack an icon over a `text-caption-sm` label (labels stay visible; never icon-only). Add becomes the 48px round primary button, and Search becomes a nav item. On desktop an Expand button sits at the end of the nav.
 - **Mobile (<744px):** no sidebar. A 64px header with the logo and account, plus the BottomTabBar: Home, Library, **Add** (the orb, raised `-mt-4`), Search, Collections. Favorites, Revisits and Settings live in the account menu.
 - The user's collapse choice is remembered per browser.
 - **The sidebar never scrolls sideways.** Its middle section is `overflow-y-auto overflow-x-hidden [scrollbar-width:thin]`. Every list in it uses `grid grid-cols-1` (a `minmax(0,1fr)` track), so long collection names truncate instead of widening the column. A plain `grid` sizes its column to the longest row.
@@ -227,7 +234,7 @@ Used on the Echo detail page for Author, Source, Saved, Collections and Revisit.
 
 ### EchoRow (dense lists inside panels)
 
-- `relative flex gap-4 py-4 -mx-3 px-3 rounded-sm`, with a hover fill: `hover:bg-surface-soft` on white panels, `hover:bg-canvas/60` on tinted ones.
+- `relative flex gap-4 py-4 -mx-3 px-3 rounded-md`, with a hover fill: `hover:bg-surface-soft` on white panels, `hover:bg-canvas/60` on tinted ones.
 - Optional 40px **monogram**: the author's initial (or a quote mark) on the Echo's collection tint (`bg-tint-*` with matching text). It is decorative, so `aria-hidden`.
 - The quote uses QuoteText `compact`, clamped to 2 lines. Below it, a `text-body-sm text-muted` meta line: attribution `·` saved date, joined by a middle dot.
 - A FavoriteButton on the right. An optional action ("Mark as reflected") sits under the meta line.
@@ -237,7 +244,7 @@ Used on the Echo detail page for Author, Source, Saved, Collections and Revisit.
 
 Add Echo opens a dialog instead of a page, so saving takes seconds. `n` opens it from anywhere.
 
-- A native `<dialog>` with `showModal()`, which traps focus and makes the page inert. `rounded-md bg-canvas p-6 shadow-float w-full max-w-lg`; a bottom sheet below 744px.
+- A native `<dialog>` with `showModal()`, which traps focus and makes the page inert. `rounded-lg bg-canvas p-6 shadow-float w-full max-w-lg`; a bottom sheet below 744px.
 - **Fields:** Quote (Textarea, autofocused, the only required field, typed text shown in QuoteText `card`). A "More details" disclosure holds Author, Source, Reflection and Collection.
 - **Actions:** Save Echo (primary) and Cancel (secondary). `Cmd/Ctrl+Enter` saves, and Esc cancels.
 - **Validation:** an empty quote shows the inline error "Add the quote you want to save." under the field and moves focus to it.
@@ -249,7 +256,7 @@ Add Echo opens a dialog instead of a page, so saving takes seconds. `n` opens it
 
 | Screen | Structure |
 |---|---|
-| `/app` Home (dashboard) | A greeting header ("Good evening" in `text-display-lg`, plus one quiet line such as "2 Echoes are due for a revisit."). Then a 3-column grid at desktop. Main column (span 2): TodaysEcho in a `bg-tint-lagoon` panel, then Recently added (≤5 EchoRows with monograms) in a white panel. Side column: Revisits due (`bg-tint-bronze`), From the past (`bg-tint-plum`), then Your library (four counts with icon chips). Full width below: Favorites (≤3 QuoteCards at content height, `items-start`). The page is finite, with no "load more". |
+| `/app` Home (dashboard) | A greeting header ("Good evening" in `text-display-lg`, plus one quiet line such as "2 Echoes are due for a revisit."). Then a 3-column grid at desktop. Main column (span 2): TodaysEcho in a `bg-tint-moss` panel, then Recently added (≤5 EchoRows with monograms) in a white panel. Side column: Revisits due (`bg-tint-ochre`), From the past (`bg-tint-heather`), then Your library (four counts with icon chips). Full width below: Favorites (≤3 QuoteCards at content height, `items-start`). The page is finite, with no "load more". |
 | `/app/echoes` Library | Page title `text-display-lg`, a sort Select and filter chips in one row (wrapping on mobile), the QuoteCard grid, and pagination (Previous/Next with "Page 2 of 7"), not infinite scroll. |
 | `/app/echoes/:id` Detail | `max-w-3xl`: a back link, QuoteText `hero` with the full quote, the attribution, the reflection block, tags, MetaList, and an action row (Favorite, Edit, Revisit, Delete). On mobile, the action row becomes IconButtons with labels in a sticky bottom bar. |
 | `/app/echoes/new`, `/edit` | `max-w-3xl` EchoForm. |

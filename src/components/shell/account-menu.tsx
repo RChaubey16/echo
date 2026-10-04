@@ -113,7 +113,7 @@ export function AccountMenu({
           aria-label="Account"
           onKeyDown={onMenuKeyDown}
           className={cn(
-            "absolute z-40 min-w-56 animate-menu-in rounded-md bg-canvas py-2 shadow-float motion-reduce:animate-fade-in",
+            "absolute z-40 min-w-56 animate-menu-in rounded-lg bg-canvas py-2 shadow-float motion-reduce:animate-fade-in",
             placement === "up"
               ? "bottom-full left-0 mb-2 origin-bottom-left"
               : "top-full right-0 mt-2 origin-top-right",
