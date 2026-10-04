@@ -5,6 +5,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { SearchIcon } from "@/components/ui/icons";
 import { Pagination } from "@/components/ui/pagination";
 import { hrefWith, parsePage, parseString } from "@/lib/search-params";
+import { track } from "@/server/analytics";
 import { requireUserPage } from "@/server/auth";
 import { searchEchoes } from "@/server/services/search";
 import { SEARCH_MAX } from "@/server/validation/echo";
@@ -18,6 +19,7 @@ export default async function SearchPage({ searchParams }: PageProps<"/app/searc
   const q = (parseString(params.q) ?? "").trim().slice(0, SEARCH_MAX);
   const page = parsePage(params.page);
   const result = q ? await searchEchoes(user.id, { q, page, limit: PAGE_SIZE }) : null;
+  if (result && page === 1) track(user.id, "search_performed", { resultCount: result.total });
   const pageCount = result ? Math.max(1, Math.ceil(result.total / PAGE_SIZE)) : 1;
 
   return (

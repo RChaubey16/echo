@@ -71,6 +71,34 @@ export function failureMessage(error: unknown, what: string): string {
 }
 
 /**
+ * Reads a failed response's spec §39 error and throws it as an ApiError.
+ *
+ * @param response - The non-OK response.
+ * @param method - The HTTP method, for the console line.
+ * @param path - The request path, for the console line.
+ * @returns Never; always throws.
+ */
+async function throwApiError(response: Response, method: string, path: string): Promise<never> {
+  const body = (await response.json().catch(() => null)) as {
+    error?: { code: string; message: string; fields?: Record<string, string[]> };
+  } | null;
+  const error = body?.error;
+  // Technical details go to the console only: method, path, status and code, never the body.
+  console.error("api call failed", {
+    method,
+    path: path.split("?")[0],
+    status: response.status,
+    code: error?.code,
+  });
+  throw new ApiError(
+    response.status,
+    error?.code ?? "INTERNAL_ERROR",
+    error?.message ?? "Something went wrong.",
+    error?.fields,
+  );
+}
+
+/**
  * Calls one of the app's route handlers and returns its JSON, throwing ApiError on failure.
  *
  * @param path - The API path, e.g. "/api/echoes".
@@ -90,29 +118,59 @@ async function request<T>(path: string, init: RequestInit & { json?: unknown } =
     throw new ApiError(0, "NETWORK_ERROR", "Check your connection and try again.");
   }
   if (response.status === 204) return undefined as T;
-  const body = (await response.json().catch(() => null)) as {
-    error?: { code: string; message: string; fields?: Record<string, string[]> };
-  } | null;
-  if (!response.ok) {
-    const error = body?.error;
-    // Technical details go to the console only: method, path, status and code, never the body.
-    console.error("api call failed", {
-      method: rest.method ?? "GET",
-      path: path.split("?")[0],
-      status: response.status,
-      code: error?.code,
-    });
-    throw new ApiError(
-      response.status,
-      error?.code ?? "INTERNAL_ERROR",
-      error?.message ?? "Something went wrong.",
-      error?.fields,
-    );
+  if (!response.ok) return throwApiError(response, rest.method ?? "GET", path);
+  return (await response.json().catch(() => null)) as T;
+}
+
+/**
+ * Downloads the user's export and hands it to the browser as a file.
+ *
+ * @param format - "json" or "csv".
+ * @returns Nothing; the browser saves the file.
+ */
+async function downloadExport(format: "json" | "csv"): Promise<void> {
+  const path = `/api/export?format=${format}`;
+  let response: Response;
+  let blob: Blob;
+  try {
+    response = await fetch(path, { cache: "no-store" });
+    if (response.ok) blob = await response.blob();
+  } catch {
+    throw new ApiError(0, "NETWORK_ERROR", "Check your connection and try again.");
   }
-  return body as T;
+  if (!response.ok) return throwApiError(response, "GET", path);
+  const name =
+    /filename="([^"]+)"/.exec(response.headers.get("content-disposition") ?? "")?.[1] ??
+    `echo-export.${format}`;
+  const url = URL.createObjectURL(blob!);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = name;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  // Give the browser a moment to start the download before freeing the file.
+  setTimeout(() => URL.revokeObjectURL(url), 10_000);
 }
 
 export const api = {
+  /**
+   * Downloads everything the user has saved.
+   *
+   * @param format - "json" or "csv".
+   * @returns Nothing; the browser saves the file.
+   */
+  downloadExport,
+
+  /**
+   * Permanently deletes the signed-in user's account and all their data.
+   *
+   * @param confirm - What the user typed to confirm: DELETE or their email.
+   * @returns Nothing.
+   */
+  deleteAccount: (confirm: string) =>
+    request<void>("/api/account", { method: "DELETE", json: { confirm } }),
+
   /**
    * Saves a new Echo.
    *

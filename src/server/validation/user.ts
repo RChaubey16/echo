@@ -36,3 +36,22 @@ export const userUpdateSchema = z
 
 export type UserUpdate = z.output<typeof userUpdateSchema>;
 export type ThemeChoice = (typeof THEME_CHOICES)[number];
+
+/** The word the Delete account dialog asks the user to type. */
+export const DELETE_CONFIRMATION = "DELETE";
+
+/**
+ * Tells whether the typed confirmation matches: the word DELETE, or the user's own email.
+ *
+ * @param typed - What the user typed.
+ * @param email - The signed-in user's email.
+ * @returns True when the account may be deleted.
+ */
+export function isDeleteConfirmed(typed: string, email: string): boolean {
+  const value = typed.trim();
+  return value === DELETE_CONFIRMATION || value.toLowerCase() === email.toLowerCase();
+}
+
+export const accountDeleteSchema = z.object({
+  confirm: z.string({ error: `Type ${DELETE_CONFIRMATION} to confirm.` }).max(320),
+});

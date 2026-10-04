@@ -137,10 +137,21 @@ describe("Echo lifecycle", () => {
 
   it("rejects malformed JSON and an empty patch", async () => {
     const bad = await postEcho(
-      makeRequest("/api/echoes", { method: "POST", cookie: alice.cookie, body: "{nope" }),
+      makeRequest("/api/echoes", {
+        method: "POST",
+        cookie: alice.cookie,
+        headers: { "content-type": "application/json" },
+        body: "{nope",
+      }),
       ctx,
     );
     expect(bad.status).toBe(400);
+    // A body that isn't declared as JSON is refused outright (CSRF: no simple form posts).
+    const untyped = await postEcho(
+      makeRequest("/api/echoes", { method: "POST", cookie: alice.cookie, body: '{"quote":"x"}' }),
+      ctx,
+    );
+    expect(untyped.status).toBe(415);
     const echo = await create(alice, { quote: "Patch target" });
     const empty = await patchEcho(
       makeRequest(`/api/echoes/${echo.id}`, json({}, alice.cookie, "PATCH")),

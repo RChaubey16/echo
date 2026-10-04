@@ -55,6 +55,17 @@ export default async function LoginPage() {
               How Echo keeps your library private
             </Link>
           </p>
+          <p className="mt-4 text-caption text-muted">
+            By continuing you agree to the{" "}
+            <Link href="/terms" className="underline underline-offset-4 hover:text-ink">
+              terms
+            </Link>{" "}
+            and{" "}
+            <Link href="/privacy" className="underline underline-offset-4 hover:text-ink">
+              privacy policy
+            </Link>
+            .
+          </p>
         </section>
       </main>
     </div>

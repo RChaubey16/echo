@@ -22,7 +22,7 @@ function appRoutes(echoId: string, collectionId: string): string[] {
 
 base.describe("signed out", () => {
   for (const scheme of ["light", "dark"] as const) {
-    for (const path of ["/", "/login", "/no-such-page"]) {
+    for (const path of ["/", "/?goodbye=1", "/login", "/privacy", "/terms", "/no-such-page"]) {
       base(`${path} has no serious axe violations (${scheme})`, async ({ page }) => {
         await page.emulateMedia({ colorScheme: scheme });
         await page.goto(path);

@@ -12,6 +12,7 @@ import { buttonClasses } from "@/components/ui/button-classes";
 import { ChipLink } from "@/components/ui/chip";
 import { ArrowLeftIcon, EditIcon } from "@/components/ui/icons";
 import { fullDate } from "@/lib/dates";
+import { daysSince, track } from "@/server/analytics";
 import { requireUserPage } from "@/server/auth";
 import { getEchoOrNotFound } from "@/server/echo-pages";
 import { getPendingRevisit } from "@/server/services/revisits";
@@ -25,6 +26,7 @@ export default async function EchoDetailPage({ params }: PageProps<"/app/echoes/
     getEchoOrNotFound(user.id, id),
     getPendingRevisit(user.id, id),
   ]);
+  track(user.id, "echo_opened", { daysSinceSaved: daysSince(echo.savedAt) });
   const promptReflection = await shouldPromptFirstReflection(user.id, echo, user.onboardedAt);
   const credit = attribution(echo);
   const meta = [

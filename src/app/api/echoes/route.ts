@@ -1,3 +1,4 @@
+import { track } from "@/server/analytics";
 import { requireUser } from "@/server/auth";
 import { apiHandler, readJson } from "@/server/http";
 import { createEcho, listEchoes } from "@/server/services/echoes";
@@ -9,6 +10,12 @@ export const POST = apiHandler(async (request) => {
   const user = await requireUser();
   const input = echoCreateSchema.parse(await readJson(request));
   const echo = await createEcho(user.id, input);
+  track(user.id, "echo_created", {
+    hasAuthor: echo.author !== null,
+    hasReflection: echo.reflection !== null,
+    tagCount: echo.tags.length,
+    collectionCount: echo.collections.length,
+  });
   return Response.json(echo, { status: 201 });
 });
 

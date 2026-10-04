@@ -4,6 +4,9 @@ import { testDatabaseUrl } from "./tests/helpers/test-db.mts";
 
 const serverOnlyStub = fileURLToPath(new URL("./tests/stubs/server-only.ts", import.meta.url));
 
+// Tests never talk to PostHog, even when the local .env holds real keys.
+process.env.ANALYTICS_DISABLED = "1";
+
 export default defineConfig({
   resolve: { tsconfigPaths: true, alias: { "server-only": serverOnlyStub } },
   test: {

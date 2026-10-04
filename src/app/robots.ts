@@ -6,5 +6,11 @@ import type { MetadataRoute } from "next";
  * @returns The robots.txt rules.
  */
 export default function robots(): MetadataRoute.Robots {
-  return { rules: { userAgent: "*", allow: "/", disallow: ["/app", "/api"] } };
+  return {
+    rules: {
+      userAgent: "*",
+      allow: ["/", "/login", "/privacy", "/terms"],
+      disallow: ["/app", "/api"],
+    },
+  };
 }
