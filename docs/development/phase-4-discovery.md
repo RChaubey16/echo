@@ -111,7 +111,7 @@ const echo = await prisma.echo.findFirst({
 
 > Build with the `echo-design-system` skill. TodaysEcho is the screen's single bold moment, and the "Echo Me Something" swap uses the skill's motion recipe, with a reduced-motion fallback and an `aria-live` announcement.
 
-The home page is the **dashboard** from the approved mockup `docs/mockups/dashboard.html`. There is **no infinite feed**: every list is capped.
+The home page is the **dashboard** in `docs/design/claude-design/export/Echo Screens - Home.dc.html`. There is **no infinite feed**: every list is capped.
 
 - **Greeting header:** "Good morning / afternoon / evening" (`text-display-lg`) with one quiet line, e.g. "2 Echoes are due for a revisit." linking to Revisits (or "Here's something from your library.").
 - **Main column (two thirds at desktop):**

@@ -4,7 +4,7 @@
 
 **Spec refs:** §4, §5, §6, §8.1, §18, §19, §41 (auth), §59, §66 Phase 1
 
-**UI work in this phase:** use the `echo-design-system` skill (`.claude/skills/echo-design-system/`) for every section that touches the interface: §4 (the `/login` page) and §6 (the app shell and design tokens). The visual reference is the approved mockup `docs/mockups/dashboard.html` (with `docs/mockups/echo-ui.js`).
+**UI work in this phase:** use the `echo-design-system` skill (`.claude/skills/echo-design-system/`) for every section that touches the interface: §4 (the `/login` page) and §6 (the app shell and design tokens). The visual reference is the Inkwell export in `docs/design/claude-design/export/`.
 
 **Already done (before Phase 1):**
 - [x] Supabase project `echo-prod` created (PostgreSQL 17). The Data API is turned off, and both connection strings are verified working over SSL.
@@ -165,7 +165,7 @@ model VerificationToken {
 
 ## 6. App shell
 
-> Build with the `echo-design-system` skill. This section lays the foundation every later phase depends on. Match the approved mockup `docs/mockups/dashboard.html`.
+> Build with the `echo-design-system` skill. This section lays the foundation every later phase depends on. Match the Inkwell export in `docs/design/claude-design/export/`.
 
 **Design tokens and fonts**
 - [x] Create `src/app/globals.css` from the skill's `references/tokens.md`. It resets Tailwind's default colors, shadows, radii and breakpoints, then defines:

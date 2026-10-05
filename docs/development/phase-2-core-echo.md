@@ -105,7 +105,7 @@ Build only what this phase needs. Make every component accessible from the start
 
 ## 6. Echo components (`src/components/echo`)
 
-> Build with the `echo-design-system` skill. QuoteText, QuoteCard, EchoRow, FavoriteButton, EchoForm, QuickCapture and DeleteEchoDialog are all specified there. The approved visual reference is `docs/mockups/dashboard.html`.
+> Build with the `echo-design-system` skill. QuoteText, QuoteCard, EchoRow, FavoriteButton, EchoForm, QuickCapture and DeleteEchoDialog are all specified there. The visual reference is the Inkwell export in `docs/design/claude-design/export/`.
 
 - [x] `QuoteText`: the only place quote typography lives. Quotes are set in **Newsreader** (`font-quote` with `text-quote-hero` / `text-quote-card` / `text-quote-compact`); everything else stays in Inter.
 - [x] `QuoteCard`: props as in spec §48 (`echo`, `showReflection`, `showTags`, `showSavedDate`, `compact`).

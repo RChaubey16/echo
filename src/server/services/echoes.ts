@@ -347,19 +347,6 @@ export async function updateEcho(userId: string, id: string, patch: EchoUpdate):
 }
 
 /**
- * Marks or unmarks one of the user's Echoes as a favorite.
- *
- * @param userId - The owner's user ID.
- * @param id - The Echo ID.
- * @param value - True to favorite, false to unfavorite.
- * @returns The updated Echo.
- * @throws AppError ECHO_NOT_FOUND when the Echo is missing, deleted or owned by someone else.
- */
-export async function setFavorite(userId: string, id: string, value: boolean): Promise<EchoDto> {
-  return updateEcho(userId, id, { isFavorite: value });
-}
-
-/**
  * Soft-deletes one of the user's Echoes so it disappears from every read.
  *
  * @param userId - The owner's user ID.
