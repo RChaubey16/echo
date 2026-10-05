@@ -22,7 +22,7 @@ export const ECHO_INCLUDE = {
   collections: { select: { collection: { select: { id: true, name: true, accent: true } } } },
 } as const satisfies Prisma.EchoInclude;
 
-export type EchoWithRelations = Prisma.EchoGetPayload<{ include: typeof ECHO_INCLUDE }>;
+type EchoWithRelations = Prisma.EchoGetPayload<{ include: typeof ECHO_INCLUDE }>;
 
 const ORDER_BY: Record<EchoSort, Prisma.EchoOrderByWithRelationInput[]> = {
   newest: [{ savedAt: "desc" }, { id: "asc" }],
@@ -109,7 +109,7 @@ export function serializeEcho(echo: EchoWithRelations): EchoDto {
  * @returns Nothing.
  * @throws AppError FORBIDDEN when any ID is missing or owned by someone else.
  */
-export async function assertOwnedIds(
+async function assertOwnedIds(
   client: DbClient,
   userId: string,
   tagIds: readonly string[] = [],
@@ -344,19 +344,6 @@ export async function updateEcho(userId: string, id: string, patch: EchoUpdate):
     return tx.echo.findFirstOrThrow({ where, include: ECHO_INCLUDE });
   });
   return serializeEcho(echo);
-}
-
-/**
- * Marks or unmarks one of the user's Echoes as a favorite.
- *
- * @param userId - The owner's user ID.
- * @param id - The Echo ID.
- * @param value - True to favorite, false to unfavorite.
- * @returns The updated Echo.
- * @throws AppError ECHO_NOT_FOUND when the Echo is missing, deleted or owned by someone else.
- */
-export async function setFavorite(userId: string, id: string, value: boolean): Promise<EchoDto> {
-  return updateEcho(userId, id, { isFavorite: value });
 }
 
 /**

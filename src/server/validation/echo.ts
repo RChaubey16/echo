@@ -21,8 +21,8 @@ export const ECHO_SORTS = [
 ] as const;
 export type EchoSort = (typeof ECHO_SORTS)[number];
 
-export const LIST_LIMIT_DEFAULT = 20;
-export const LIST_LIMIT_MAX = 100;
+const LIST_LIMIT_DEFAULT = 20;
+const LIST_LIMIT_MAX = 100;
 export const SEARCH_MAX = 200;
 
 /**

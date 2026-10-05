@@ -1,10 +1,10 @@
 import type { CollectionAccent } from "@/server/validation/collection";
 
 /** A tag as attached to an Echo. */
-export type TagRefDto = { id: string; name: string };
+type TagRefDto = { id: string; name: string };
 
 /** A collection as attached to an Echo; the accent colors its dot. */
-export type CollectionRefDto = { id: string; name: string; accent: CollectionAccent };
+type CollectionRefDto = { id: string; name: string; accent: CollectionAccent };
 
 /** An Echo as returned by the API. Dates are ISO strings; `userId` and `deletedAt` are never exposed. */
 export type EchoDto = {

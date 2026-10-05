@@ -26,7 +26,7 @@ const SENSITIVE_KEYS = new Set([
 const REDACTED = "[redacted]";
 
 /** The parts of a Sentry event this scrubber touches; structurally compatible with ErrorEvent. */
-export type ScrubbableEvent = {
+type ScrubbableEvent = {
   request?: {
     url?: string;
     data?: unknown;
@@ -59,7 +59,7 @@ export function stripQuery(url: string): string {
  * @param depth - How deep the walk has gone; stops at 8 to bound the work.
  * @returns The scrubbed copy.
  */
-export function scrubValue(value: unknown, depth = 0): unknown {
+function scrubValue(value: unknown, depth = 0): unknown {
   if (depth > 8) return REDACTED;
   if (Array.isArray(value)) return value.map((item) => scrubValue(item, depth + 1));
   if (value && typeof value === "object") {

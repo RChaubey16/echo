@@ -73,15 +73,6 @@ export function PlusIcon(props: IconProps) {
   );
 }
 
-export function UserIcon(props: IconProps) {
-  return (
-    <svg {...base} {...props}>
-      <circle cx="12" cy="8" r="4" />
-      <path d="M4 21a8 8 0 0 1 16 0" />
-    </svg>
-  );
-}
-
 export function CollapseIcon(props: IconProps) {
   return (
     <svg {...base} strokeWidth={2} {...props}>
@@ -221,22 +212,6 @@ export function MoreIcon(props: IconProps) {
       <circle cx="5" cy="12" r="1" />
       <circle cx="12" cy="12" r="1" />
       <circle cx="19" cy="12" r="1" />
-    </svg>
-  );
-}
-
-export function ArrowRightIcon(props: IconProps) {
-  return (
-    <svg {...base} {...props}>
-      <path d="M5 12h14M12 5l7 7-7 7" />
-    </svg>
-  );
-}
-
-export function MinusIcon(props: IconProps) {
-  return (
-    <svg {...base} {...props}>
-      <path d="M5 12h14" />
     </svg>
   );
 }

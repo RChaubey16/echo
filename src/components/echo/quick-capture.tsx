@@ -23,10 +23,10 @@ import { submitOnModEnter } from "./echo-form";
 import { EMPTY_LINKS, EMPTY_VALUES, isDirty } from "./echo-values";
 import { useEchoDraft } from "./use-echo-draft";
 
-export const NEW_ECHO_HREF = "/app/echoes/new";
+const NEW_ECHO_HREF = "/app/echoes/new";
 
 /** How QuickCapture was opened; `firstRun` opens the new Echo afterwards for onboarding. */
-export type QuickCaptureOptions = { firstRun?: boolean };
+type QuickCaptureOptions = { firstRun?: boolean };
 type OpenQuickCapture = (options?: QuickCaptureOptions) => void;
 
 const QuickCaptureContext = createContext<OpenQuickCapture | null>(null);
@@ -36,7 +36,7 @@ const QuickCaptureContext = createContext<OpenQuickCapture | null>(null);
  *
  * @returns A function that opens QuickCapture, optionally as the first-run flow.
  */
-export function useQuickCapture(): OpenQuickCapture {
+function useQuickCapture(): OpenQuickCapture {
   const open = useContext(QuickCaptureContext);
   if (!open) throw new Error("useQuickCapture must be used inside <QuickCaptureProvider>");
   return open;

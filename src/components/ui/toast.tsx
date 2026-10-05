@@ -13,7 +13,7 @@ import {
 } from "react";
 import { cn } from "@/lib/cn";
 
-export type ToastInput = {
+type ToastInput = {
   message: string;
   /** One optional follow-up, e.g. { label: "View", href: "/app/echoes/…" }. */
   action?: { label: string; href: string };

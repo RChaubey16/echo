@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-export type QuoteSize = "today" | "hero" | "memory" | "card" | "compact";
+type QuoteSize = "today" | "hero" | "memory" | "card" | "compact";
 
 const SIZES: Record<QuoteSize, string> = {
   // Today's Echo is the one place quote type reaches 44px.

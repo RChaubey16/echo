@@ -11,7 +11,7 @@ import { FavoriteButton } from "./favorite-button";
 import { Attribution, QuoteText } from "./quote-text";
 import { SavedDate } from "./saved-date";
 
-export type QuoteCardProps = {
+type QuoteCardProps = {
   echo: EchoDto;
   showReflection?: boolean;
   /** Shows up to four tag chips, each opening the library filtered by that tag. */

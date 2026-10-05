@@ -54,7 +54,7 @@ These are deliberate. Update the spec if they stick.
 
 6. **Navigation is a left sidebar**, not the top nav in DESIGN.md's original analysis: a sidebar on desktop, a labelled rail on tablet and a bottom tab bar on mobile (DESIGN.md › App Navigation).
 7. **Add Echo opens a quick-capture dialog** (quote only, details optional); `/app/echoes/new` remains as the full form.
-8. **Design decisions settled in DESIGN.md:** serif quotes (Newsreader), a dark theme from Phase 1, tinted panels, darker input borders and readable disabled buttons. The approved visual reference is `docs/mockups/dashboard.html`.
+8. **Design decisions settled in DESIGN.md:** serif quotes (EB Garamond), a dark theme from Phase 1, tinted panels, darker input borders and readable disabled buttons. The visual reference is the Inkwell export in `docs/design/claude-design/export/`.
 
 ---
 

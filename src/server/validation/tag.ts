@@ -28,5 +28,3 @@ export const tagNameSchema = z
 
 export const tagCreateSchema = z.object({ name: tagNameSchema });
 export const tagUpdateSchema = tagCreateSchema;
-
-export type TagCreate = z.output<typeof tagCreateSchema>;

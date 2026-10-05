@@ -8,10 +8,9 @@ type CardProps = HTMLAttributes<HTMLElement> & {
   compact?: boolean;
 };
 
-export const CARD_CLASSES = "relative rounded-lg border border-hairline bg-canvas";
+const CARD_CLASSES = "relative rounded-lg border border-hairline bg-canvas";
 // Cards never lift or gain a shadow; the border darkens instead.
-export const CARD_INTERACTIVE =
-  "transition-colors duration-fast ease-standard hover:border-border-input";
+const CARD_INTERACTIVE = "transition-colors duration-fast ease-standard hover:border-border-input";
 
 /** The base surface for QuoteCard and CollectionCard. `className` is for layout only. */
 export function Card({

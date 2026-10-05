@@ -26,7 +26,7 @@ const RELATION_FIELDS = new Set(["tagIds", "tagNames", "collectionIds", "revisit
  * The Echo's own columns that a patch can change; tags, collections and the Revisit are written
  * separately.
  */
-export type EchoColumnPatch = Partial<
+type EchoColumnPatch = Partial<
   Omit<EchoUpdate, "tagIds" | "tagNames" | "collectionIds" | "revisitAt">
 >;
 

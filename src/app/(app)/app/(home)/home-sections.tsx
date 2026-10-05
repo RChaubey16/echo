@@ -14,7 +14,7 @@ import type { LibraryCounts } from "@/server/services/discovery";
 import type { EchoDto, EchoListDto, RevisitWithEchoDto, TodaysEchoDto } from "@/types/echo";
 
 /** A section's data, or the failure that kept it from loading. */
-export type Settled<T> = { ok: true; value: T } | { ok: false };
+type Settled<T> = { ok: true; value: T } | { ok: false };
 
 /**
  * Turns a section's data promise into one that never rejects, so one failing panel shows an inline

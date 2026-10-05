@@ -4,7 +4,7 @@ import { isValidTimeZone } from "@/lib/daily";
 export const USER_NAME_MAX = 100;
 
 /** The Appearance choices; "system" is stored as null and follows the device setting. */
-export const THEME_CHOICES = ["light", "dark", "system"] as const;
+const THEME_CHOICES = ["light", "dark", "system"] as const;
 
 /** The display name rule, shared by the Settings form and the API. */
 export const userNameSchema = z

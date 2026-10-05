@@ -4,7 +4,7 @@ import { z } from "zod";
 // imports.
 
 export const REVISIT_MAX_YEARS = 10;
-export const REVISIT_STATUSES = ["due", "upcoming", "completed"] as const;
+const REVISIT_STATUSES = ["due", "upcoming", "completed"] as const;
 export type RevisitStatus = (typeof REVISIT_STATUSES)[number];
 
 /**
@@ -13,7 +13,7 @@ export type RevisitStatus = (typeof REVISIT_STATUSES)[number];
  * @param now - The current time.
  * @returns The moment `REVISIT_MAX_YEARS` years from now.
  */
-export function revisitLimit(now: Date): Date {
+function revisitLimit(now: Date): Date {
   const limit = new Date(now);
   limit.setUTCFullYear(limit.getUTCFullYear() + REVISIT_MAX_YEARS);
   return limit;
