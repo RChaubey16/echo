@@ -34,7 +34,7 @@ type Option = { name: string; isNew: boolean };
  * @param chosen - The tags already on the Echo.
  * @returns At most eight options.
  */
-export function tagOptions(query: string, suggestions: string[], chosen: string[]): Option[] {
+function tagOptions(query: string, suggestions: string[], chosen: string[]): Option[] {
   const available = suggestions.filter((name) => !chosen.includes(name) && name.includes(query));
   available.sort(
     (a, b) => Number(!a.startsWith(query)) - Number(!b.startsWith(query)) || compareNames(a, b),

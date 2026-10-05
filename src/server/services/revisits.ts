@@ -14,7 +14,7 @@ import { echoIdSchema } from "@/server/validation/echo";
 import type { RevisitDto, RevisitWithEchoDto } from "@/types/echo";
 
 /** The most Revisits one list request returns; the page has no pagination. */
-export const REVISIT_LIST_MAX = 100;
+const REVISIT_LIST_MAX = 100;
 
 type RevisitRow = Prisma.RevisitGetPayload<object>;
 

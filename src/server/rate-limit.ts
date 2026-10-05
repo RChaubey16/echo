@@ -5,7 +5,7 @@ import { logger } from "@/lib/logger";
 import { AppError } from "@/server/http";
 
 /** The spec §41 limits, plus export (Phase 6). Keys are per user, except `auth` (per IP). */
-export const RATE_LIMITS = {
+const RATE_LIMITS = {
   mutation: { tokens: 60, window: "1 m" },
   search: { tokens: 30, window: "1 m" },
   auth: { tokens: 20, window: "1 m" },

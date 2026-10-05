@@ -22,7 +22,7 @@ export const ECHO_INCLUDE = {
   collections: { select: { collection: { select: { id: true, name: true, accent: true } } } },
 } as const satisfies Prisma.EchoInclude;
 
-export type EchoWithRelations = Prisma.EchoGetPayload<{ include: typeof ECHO_INCLUDE }>;
+type EchoWithRelations = Prisma.EchoGetPayload<{ include: typeof ECHO_INCLUDE }>;
 
 const ORDER_BY: Record<EchoSort, Prisma.EchoOrderByWithRelationInput[]> = {
   newest: [{ savedAt: "desc" }, { id: "asc" }],
@@ -109,7 +109,7 @@ export function serializeEcho(echo: EchoWithRelations): EchoDto {
  * @returns Nothing.
  * @throws AppError FORBIDDEN when any ID is missing or owned by someone else.
  */
-export async function assertOwnedIds(
+async function assertOwnedIds(
   client: DbClient,
   userId: string,
   tagIds: readonly string[] = [],

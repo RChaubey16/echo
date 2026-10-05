@@ -1,9 +1,9 @@
 /** Above this many Echoes, Today's Echo prefers ones saved more than a week ago. */
 export const PREFER_OLDER_THRESHOLD = 10;
 /** How old an Echo must be to count as "older" for Today's Echo. */
-export const PREFER_OLDER_DAYS = 7;
+const PREFER_OLDER_DAYS = 7;
 /** How long Echo Me Something avoids an Echo it has just shown. */
-export const RECENTLY_SURFACED_HOURS = 24;
+const RECENTLY_SURFACED_HOURS = 24;
 /** The most IDs the client may ask Echo Me Something to skip. */
 export const RANDOM_EXCLUDE_MAX = 5;
 

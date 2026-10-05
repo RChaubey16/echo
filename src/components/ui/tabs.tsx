@@ -3,7 +3,7 @@
 import { useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-export type TabItem = { id: string; label: string; content: ReactNode };
+type TabItem = { id: string; label: string; content: ReactNode };
 
 type TabsProps = {
   /** Names the tab list for screen readers. */

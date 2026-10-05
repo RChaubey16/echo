@@ -6,7 +6,7 @@ import { runAfterResponse } from "@/server/after-response";
  * Every analytics event and the only props it may carry (spec §43). Props are counts and flags,
  * never content: no quote, reflection, author, name or search text.
  */
-export type AnalyticsEvents = {
+type AnalyticsEvents = {
   signup_completed: Record<string, never>;
   echo_created: {
     hasAuthor: boolean;
@@ -25,7 +25,7 @@ export type AnalyticsEvents = {
   collection_opened: Record<string, never>;
 };
 
-export type AnalyticsEvent = keyof AnalyticsEvents;
+type AnalyticsEvent = keyof AnalyticsEvents;
 
 type PropsArg<E extends AnalyticsEvent> =
   AnalyticsEvents[E] extends Record<string, never> ? [] : [props: AnalyticsEvents[E]];

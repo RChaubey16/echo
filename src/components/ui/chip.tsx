@@ -9,7 +9,7 @@ const SIZES = {
   md: "h-9 px-3 text-caption before:-inset-y-1",
   sm: "h-7 px-2 text-badge before:-inset-y-2",
 } as const;
-export type ChipSize = keyof typeof SIZES;
+type ChipSize = keyof typeof SIZES;
 const RESTING = "bg-surface-strong text-body hover:bg-hairline hover:text-ink";
 // Ink fill is Echo's selection language; the primary accent stays reserved for saved state and primary actions.
 const SELECTED = "bg-ink text-canvas";

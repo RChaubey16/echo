@@ -4,13 +4,13 @@ import { db } from "@/server/db";
 import { liveEchoes } from "@/server/services/echoes";
 
 export const EXPORT_FORMATS = ["json", "csv"] as const;
-export type ExportFormat = (typeof EXPORT_FORMATS)[number];
+type ExportFormat = (typeof EXPORT_FORMATS)[number];
 
 /** Echoes are read in pages of this size, so a large library never sits in memory at once. */
-export const EXPORT_BATCH_SIZE = 500;
+const EXPORT_BATCH_SIZE = 500;
 
 /** One exported Echo (spec §54), with names instead of IDs so the file stands on its own. */
-export type ExportedEcho = {
+type ExportedEcho = {
   id: string;
   quote: string;
   author: string | null;
@@ -115,7 +115,7 @@ export async function* exportedEchoes(
  * @param now - The export time.
  * @returns A name like "echo-export-2026-10-04.json".
  */
-export function exportFileName(format: ExportFormat, now: Date = new Date()): string {
+function exportFileName(format: ExportFormat, now: Date = new Date()): string {
   return `echo-export-${now.toISOString().slice(0, 10)}.${format}`;
 }
 
@@ -125,7 +125,7 @@ export function exportFileName(format: ExportFormat, now: Date = new Date()): st
  * @param echo - The exported Echo.
  * @returns The CSV line.
  */
-export function echoCsvRow(echo: ExportedEcho): string {
+function echoCsvRow(echo: ExportedEcho): string {
   const nextRevisit = echo.revisits.find((revisit) => revisit.completedAt === null);
   return csvRow([
     echo.id,

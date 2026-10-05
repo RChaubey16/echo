@@ -23,7 +23,7 @@ const STABLE_ORDER: Prisma.EchoOrderByWithRelationInput[] = [{ savedAt: "asc" },
  * @param userId - The user's ID.
  * @returns The IANA time zone name.
  */
-export async function getUserTimeZone(userId: string): Promise<string> {
+async function getUserTimeZone(userId: string): Promise<string> {
   // eslint-disable-next-line no-restricted-syntax -- the user's own row, by their own ID.
   const user = await db.user.findUnique({ where: { id: userId }, select: { timezone: true } });
   return user?.timezone ?? "UTC";

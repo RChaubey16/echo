@@ -64,7 +64,7 @@ export class AppError extends Error {
 }
 
 /** Every API response is private to its user and never stored by a cache. */
-export const NO_STORE = "private, no-store";
+const NO_STORE = "private, no-store";
 
 export type ErrorBody = {
   error: { code: ErrorCode; message: string; fields?: Record<string, string[]>; errorId?: string };
@@ -184,7 +184,7 @@ export function assertSameOrigin(request: Request): void {
   if (originHost !== host) throw new AppError("FORBIDDEN");
 }
 
-export type ApiHandlerOptions = {
+type ApiHandlerOptions = {
   /**
    * The rate limit counted against the signed-in user once requireUser() resolves them. Defaults
    * to `mutation` for POST, PATCH, PUT and DELETE, and to no limit for reads.

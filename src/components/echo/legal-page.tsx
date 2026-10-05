@@ -4,7 +4,7 @@ import { MarketingNav } from "@/components/echo/marketing-nav";
 import { SkipLink } from "@/components/ui/skip-link";
 
 /** The contact address shown on the legal pages; set NEXT_PUBLIC_CONTACT_EMAIL in production. */
-export const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? null;
+const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? null;
 
 /** A long-form legal page (privacy, terms) at reading width, with the marketing nav and footer. */
 export function LegalPage({

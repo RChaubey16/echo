@@ -12,7 +12,7 @@ import {
 export type NavId =
   "home" | "library" | "favorites" | "collections" | "revisits" | "search" | "settings";
 
-export type NavItem = {
+type NavItem = {
   id: NavId;
   label: string;
   href: string;

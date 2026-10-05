@@ -2,7 +2,7 @@ import { AsyncLocalStorage } from "node:async_hooks";
 import type { RateLimitPolicy } from "@/server/rate-limit";
 
 /** Per-request state that apiHandler sets and requireUser reads. */
-export type RequestScope = {
+type RequestScope = {
   /** The limit to count once the user is known, or null for an unlimited route. */
   rateLimit: RateLimitPolicy | null;
 };

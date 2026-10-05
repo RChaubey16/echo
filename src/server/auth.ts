@@ -40,7 +40,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
 });
 
-export type SessionUser = {
+type SessionUser = {
   id: string;
   email: string;
   name: string | null;

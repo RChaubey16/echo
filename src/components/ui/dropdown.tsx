@@ -15,7 +15,7 @@ import {
 import { cn } from "@/lib/cn";
 import { useDismiss } from "@/lib/use-dismiss";
 
-export type DropdownItem = {
+type DropdownItem = {
   label: string;
   icon?: ComponentType<SVGProps<SVGSVGElement>>;
   onSelect: () => void;
